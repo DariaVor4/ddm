@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  server:
+    image: ${DOCKER_REGISTRY-}server
+    networks:
+      - custom
+    build:
+      context: .
+      dockerfile: Server/Dockerfile
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    networks:
+      - custom
+    ports:
+      - "1435:1433"
+    volumes:
+      - ./mssql_data/data:/var/opt/mssql/data
+      - ./mssql_data/log:/var/opt/mssql/log
+      - ./mssql_data/secrets:/var/opt/mssql/secrets
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=MsBd_123
+      - MSSQL_COLLATION=Cyrillic_General_CI_AS
+networks:
+  custom:
+    name: custom

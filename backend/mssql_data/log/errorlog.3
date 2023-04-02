@@ -1,0 +1,544 @@
+2023-04-02 14:17:24.21 Server      Microsoft SQL Server 2022 (RTM-CU2) (KB5023127) - 16.0.4015.1 (X64) 
+	Feb 27 2023 15:40:01 
+	Copyright (C) 2022 Microsoft Corporation
+	Developer Edition (64-bit) on Linux (Ubuntu 20.04.5 LTS) <X64>
+2023-04-02 14:17:24.21 Server      UTC adjustment: 0:00
+2023-04-02 14:17:24.21 Server      (c) Microsoft Corporation.
+2023-04-02 14:17:24.22 Server      All rights reserved.
+2023-04-02 14:17:24.22 Server      Server process ID is 468.
+2023-04-02 14:17:24.22 Server      Logging SQL Server messages in file '/var/opt/mssql/log/errorlog'.
+2023-04-02 14:17:24.22 Server      Registry startup parameters: 
+	 -d /var/opt/mssql/data/master.mdf
+	 -l /var/opt/mssql/data/mastlog.ldf
+	 -e /var/opt/mssql/log/errorlog
+2023-04-02 14:17:24.23 Server      SQL Server detected 1 sockets with 4 cores per socket and 8 logical processors per socket, 8 total logical processors; using 8 logical processors based on SQL Server licensing. This is an informational message; no user action is required.
+2023-04-02 14:17:24.23 Server      SQL Server is starting at normal priority base (=7). This is an informational message only. No user action is required.
+2023-04-02 14:17:24.24 Server      Detected 6275 MB of RAM. This is an informational message; no user action is required.
+2023-04-02 14:17:24.24 Server      Using conventional memory in the memory manager.
+2023-04-02 14:17:24.24 Server      Detected pause instruction latency: 118 cycles.
+2023-04-02 14:17:24.24 Server      Spin divider value used: 2
+2023-04-02 14:17:24.24 Server      Page exclusion bitmap is enabled.
+2023-04-02 14:17:24.28 Server      Buffer pool extension is not supported on Linux platform.
+2023-04-02 14:17:24.28 Server      Buffer Pool: Allocating 1048576 bytes for 912051 hashPages.
+2023-04-02 14:17:24.40 Server      Buffer pool extension is already disabled. No action is necessary.
+2023-04-02 14:17:24.85 Server      Installing Client TLS certificates to the store.
+2023-04-02 14:17:24.87 Server      Error searching first file in /var/opt/mssql/security/ca-certificates: 3(The system cannot find the path specified.)
+2023-04-02 14:17:24.87 Server      CPU vectorization level(s) detected:  SSE SSE2 SSE3 SSSE3 SSE41 SSE42 AVX AVX2 POPCNT BMI1 BMI2 AVX512 (F CD BW DQ VL IFMA VBMI VBMI2 VNNI BITALG VPOQCNTDQ VP2INTERSECT)
+2023-04-02 14:17:24.92 Server      Successfully initialized the TLS configuration. Allowed TLS protocol versions are ['1.0 1.1 1.2']. Allowed TLS ciphers are ['ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:!DHE-RSA-AES256-GCM-SHA384:!DHE-RSA-AES128-GCM-SHA256:!DHE-RSA-AES256-SHA:!DHE-RSA-AES128-SHA'].
+2023-04-02 14:17:24.94 Server      Query Store settings initialized with enabled = 1, 
+2023-04-02 14:17:24.95 Server      The maximum number of dedicated administrator connections for this instance is '1'
+2023-04-02 14:17:24.95 Server      Node configuration: node 0: CPU mask: 0x00000000000000ff:0 Active CPU mask: 0x00000000000000ff:0. This message provides a description of the NUMA configuration for this computer. This is an informational message only. No user action is required.
+2023-04-02 14:17:24.97 Server      Using dynamic lock allocation.  Initial allocation of 2500 Lock blocks and 5000 Lock Owner blocks per node.  This is an informational message only.  No user action is required.
+2023-04-02 14:17:24.99 Server      In-Memory OLTP initialized on lowend machine.
+2023-04-02 14:17:25.07 Server      CLR version v4.0.30319 loaded.
+2023-04-02 14:17:25.13 Server      [INFO] Created Extended Events session 'hkenginexesession'
+2023-04-02 14:17:25.13 Server      Database Instant File Initialization: enabled. For security and performance considerations see the topic 'Database Instant File Initialization' in SQL Server Books Online. This is an informational message only. No user action is required.
+2023-04-02 14:17:25.15 Server      Total Log Writer threads: 2, Node CPUs: 4, Nodes: 1, Log Writer threads per CPU: 1, Log Writer threads per Node: 2
+2023-04-02 14:17:25.16 Server      clwb is selected for pmem flush operation.
+2023-04-02 14:17:25.17 Server      Software Usage Metrics is disabled.
+2023-04-02 14:17:25.17 spid27s     [1]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:17:25.18 spid27s     Starting up database 'master'.
+2023-04-02 14:17:25.40 Server      Common language runtime (CLR) functionality initialized.
+2023-04-02 14:17:26.00 spid27s     [32762]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:17:26.01 spid28s     [32767]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:17:26.01 spid27s     Starting up database 'model_replicatedmaster'.
+2023-04-02 14:17:26.01 spid28s     Starting up database 'mssqlsystemresource'.
+2023-04-02 14:17:26.02 spid28s     The resource database build version is 16.00.4015. This is an informational message only. No user action is required.
+2023-04-02 14:17:26.06 spid28s     [3]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:17:26.06 spid28s     Starting up database 'model'.
+2023-04-02 14:17:26.52 spid37s     A self-generated certificate was successfully loaded for encryption.
+2023-04-02 14:17:26.52 spid37s     Server is listening on [ 'any' <ipv6> 1433] accept sockets 1.
+2023-04-02 14:17:26.53 spid37s     Server is listening on [ 'any' <ipv4> 1433] accept sockets 1.
+2023-04-02 14:17:26.53 Server      Server is listening on [ ::1 <ipv6> 1434] accept sockets 1.
+2023-04-02 14:17:26.53 Server      Server is listening on [ 127.0.0.1 <ipv4> 1434] accept sockets 1.
+2023-04-02 14:17:26.54 Server      Dedicated admin connection support was established for listening locally on port 1434.
+2023-04-02 14:17:26.54 spid37s     Server is listening on [ ::1 <ipv6> 1431] accept sockets 1.
+2023-04-02 14:17:26.54 spid37s     Server is listening on [ 127.0.0.1 <ipv4> 1431] accept sockets 1.
+2023-04-02 14:17:26.55 spid37s     SQL Server is now ready for client connections. This is an informational message; no user action is required.
+2023-04-02 14:17:27.07 spid27s     [32761]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:17:27.07 spid27s     Starting up database 'model_msdb'.
+2023-04-02 14:17:27.72 spid27s     Resource governor reconfiguration succeeded.
+2023-04-02 14:17:27.72 spid40s     External governance manager initialized
+2023-04-02 14:17:27.72 spid27s     SQL Server Audit is starting the audits. This is an informational message. No user action is required.
+2023-04-02 14:17:27.72 spid40s     Attribute synchronization manager initialized
+2023-04-02 14:17:27.73 spid27s     SQL Server Audit has started the audits. This is an informational message. No user action is required.
+2023-04-02 14:17:27.73 spid27s     XE session 'system_health' started.
+2023-04-02 14:17:27.85 spid27s     XE session 'telemetry_xevents' started.
+2023-04-02 14:17:27.90 spid27s     SQL Trace ID 1 was started by login "sa".
+2023-04-02 14:17:27.91 spid27s     Server name is '509952757e8f'. This is an informational message only. No user action is required.
+2023-04-02 14:17:27.93 spid28s     Clearing tempdb database.
+2023-04-02 14:17:27.93 spid46s     Always On: The availability replica manager is starting. This is an informational message only. No user action is required.
+2023-04-02 14:17:27.93 spid49s     [4]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:17:27.94 spid46s     Always On: The availability replica manager is waiting for the instance of SQL Server to allow client connections. This is an informational message only. No user action is required.
+2023-04-02 14:17:27.94 spid49s     Starting up database 'msdb'.
+2023-04-02 14:17:29.31 spid28s     [2]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:17:29.32 spid28s     Starting up database 'tempdb'.
+2023-04-02 14:17:30.19 spid26s     Using 'dbghelp.dll' version '4.0.5'
+2023-04-02 14:17:34.59 spid28s     The tempdb database has 8 data file(s).
+2023-04-02 14:17:34.61 spid53s     The Service Broker endpoint is in disabled or stopped state.
+2023-04-02 14:17:34.61 spid53s     The Database Mirroring endpoint is in disabled or stopped state.
+2023-04-02 14:17:34.63 spid53s     Service Broker manager has started.
+2023-04-02 14:17:34.63 spid27s     Recovery is complete. This is an informational message only. No user action is required.
+2023-04-02 14:22:27.93 spid56      XE session 'telemetry_xevents' stopping.
+2023-04-02 14:22:27.94 spid56      XE session 'telemetry_xevents' started.
+2023-04-02 14:22:43.58 spid56      Attempting to load library 'xplog70.dll' into memory. This is an informational message only. No user action is required.
+2023-04-02 14:22:43.59 spid56      Using 'xplog70.dll' version '2022.160.4015' to execute extended stored procedure 'xp_msver'. This is an informational message only; no user action is required.
+2023-04-02 14:25:05.89 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:05.89 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:06.43 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:06.43 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:06.94 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:06.94 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:07.46 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:07.46 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:07.98 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:07.98 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:08.49 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:08.49 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:09.01 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:09.01 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:09.13 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:09.13 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:09.53 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:09.53 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:09.65 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:09.65 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:10.04 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:10.04 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:10.17 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:10.17 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:10.56 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:10.56 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:10.68 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:10.68 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:11.08 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:11.08 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:11.20 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:11.20 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:11.60 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:11.60 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:11.71 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:11.71 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:12.11 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:12.11 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:12.23 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:12.23 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:12.63 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:12.63 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:12.75 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:12.75 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:13.15 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:13.15 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:13.26 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:13.26 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:13.66 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:13.66 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:13.78 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:13.78 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:14.18 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:14.18 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:14.30 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:14.30 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:14.69 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:14.69 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:14.81 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:14.81 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:15.21 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:15.21 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:15.32 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:15.32 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:15.73 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:15.73 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:15.84 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:15.84 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:16.25 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:16.25 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:16.35 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:16.35 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:16.76 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:16.76 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:16.87 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:16.87 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:17.28 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:17.28 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:17.39 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:17.39 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:17.80 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:17.80 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:17.91 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:17.91 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:18.31 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:18.31 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:18.43 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:18.43 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:18.83 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:18.83 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:18.94 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:18.94 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:19.35 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:19.35 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:19.46 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:19.46 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:19.86 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:19.86 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:19.97 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:19.97 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:20.38 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:20.38 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:20.49 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:20.49 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:20.90 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:20.90 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:21.00 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:21.00 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:21.41 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:21.41 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:21.52 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:21.52 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:21.93 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:21.93 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:22.03 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:22.03 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:22.45 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:22.45 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:22.55 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:22.55 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:22.97 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:22.97 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:23.07 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:23.07 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:23.49 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:23.49 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:23.59 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:23.59 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:24.00 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:24.00 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:24.10 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:24.10 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:24.52 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:24.52 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:24.61 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:24.61 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:25.03 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:25.03 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:25.13 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:25.13 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:25.55 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:25.55 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:25.65 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:25.65 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:26.06 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:26.06 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:26.16 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:26.16 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:26.58 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:26.58 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:26.68 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:26.68 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:27.10 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:27.10 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:27.20 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:27.20 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:27.61 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:27.61 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:27.72 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:27.72 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:28.13 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:28.13 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:28.23 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:28.23 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:28.65 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:28.65 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:28.75 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:28.75 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:29.16 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:29.16 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:29.26 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:29.26 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:29.68 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:29.68 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:29.77 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:29.77 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:30.19 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:30.19 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:30.29 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:30.29 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:30.71 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:30.71 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:30.81 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:30.81 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:31.23 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:31.23 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:31.32 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:31.32 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:31.75 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:31.75 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:31.83 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:31.83 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:32.27 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:32.27 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:32.35 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:32.35 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:32.79 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:32.79 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:32.87 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:32.87 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:33.31 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:33.31 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:33.38 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:33.38 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:33.82 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:33.82 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:33.90 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:33.90 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:34.34 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:34.34 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:34.41 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:34.41 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:34.85 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:34.85 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:34.93 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:34.93 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:35.38 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:35.38 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:35.44 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:35.44 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:35.89 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:35.89 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:35.96 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:35.96 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:36.41 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:36.41 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:36.48 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:36.48 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:36.93 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:36.93 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:36.99 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:36.99 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:37.44 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:37.44 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:37.51 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:37.51 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:37.96 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:37.96 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:38.03 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:38.03 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:38.48 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:38.48 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:38.54 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:38.54 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:38.99 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:38.99 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:39.06 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:39.06 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:39.51 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:39.51 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:39.57 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:39.57 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:40.03 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:40.03 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:40.09 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:40.09 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:40.55 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:40.55 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:40.60 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:40.60 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:41.07 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:41.07 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:41.12 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:41.12 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:41.58 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:41.58 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:41.64 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:41.64 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:42.10 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:42.10 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:42.16 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:42.16 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:42.62 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:42.62 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:42.67 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:42.67 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:43.13 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:43.13 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:43.18 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:43.18 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:43.65 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:43.65 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:43.70 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:43.70 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:44.16 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:44.16 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:44.21 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:44.21 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:44.68 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:44.68 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:44.73 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:44.73 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:45.20 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:45.20 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:45.24 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:45.24 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:45.72 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:45.72 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:45.76 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:45.76 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:46.23 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:46.23 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:46.27 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:46.27 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:46.75 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:46.75 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:46.78 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:46.78 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:47.26 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:47.26 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:47.30 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:47.30 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:47.78 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:47.78 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:47.81 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:47.81 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:48.29 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:48.29 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:48.33 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:48.33 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:48.81 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:48.81 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:48.85 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:48.85 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:49.32 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:49.32 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:49.36 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:49.36 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:49.83 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:49.83 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:49.88 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:49.88 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:50.35 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:50.35 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:50.40 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:50.40 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:50.87 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:50.87 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:50.91 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:50.91 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:51.38 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:51.38 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:51.43 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:51.43 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:51.90 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:51.90 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:51.94 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:51.94 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:52.42 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:52.42 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:52.46 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:52.46 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:52.94 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:52.94 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:52.98 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:52.98 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:53.45 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:53.45 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:53.49 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:53.49 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:53.97 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:53.97 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:54.01 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:54.01 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:54.49 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:54.49 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:54.52 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:54.52 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:55.01 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:55.01 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:55.04 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:55.04 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:55.53 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:55.53 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:55.55 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:55.55 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:56.04 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:56.04 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:56.07 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:56.07 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:56.56 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:56.56 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:56.58 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:56.58 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:57.07 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:57.07 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:57.10 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:57.10 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:57.59 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:57.59 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:57.61 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:57.61 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:58.11 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:58.11 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:58.13 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:58.13 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:58.63 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:58.63 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:58.64 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:58.64 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:59.14 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:59.14 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:59.16 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:59.16 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:25:59.66 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:25:59.66 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:00.18 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:00.18 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:00.69 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:00.69 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:01.21 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:01.21 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:01.73 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:01.73 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:02.25 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:02.25 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:02.77 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:02.77 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:03.29 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:03.29 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:03.81 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:03.81 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:04.32 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:04.32 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:04.84 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:04.84 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:05.35 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:05.35 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:05.86 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:26:05.86 Logon       Login failed for user 'sa'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:50.02 Logon       Error: 18456, Severity: 14, State: 38.
+2023-04-02 14:26:50.02 Logon       Login failed for user 'sa'. Reason: Failed to open the explicitly specified database 'visa_center'. [CLIENT: 172.19.0.2]
+2023-04-02 14:26:51.50 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:26:51.50 spid52      Starting up database 'visa_center'.
+2023-04-02 14:26:51.50 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2023-04-02 14:26:51.50 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2023-04-02 14:26:52.05 spid52      Parallel redo is started for database 'visa_center' with worker pool size [4].
+2023-04-02 14:26:52.09 spid52      Parallel redo is shutdown for database 'visa_center' with worker pool size [4].
+2023-04-02 14:26:52.18 spid52      Setting database option READ_COMMITTED_SNAPSHOT to ON for database 'visa_center'.
+2023-04-02 14:26:52.23 spid52      RBPEX::NotifyFileShutdown: Called for database ID: [5], file Id [0]
+2023-04-02 14:26:52.25 spid52      [5]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1. ConcurrentGAMUpdate: 1. ConcurrentSGAMUpdate: 1, CleanupUnderUserTransaction: 0. TranLevelPVS: 0
+2023-04-02 14:26:52.25 spid52      Starting up database 'visa_center'.
+2023-04-02 14:26:52.25 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries called for database ID: [5]
+2023-04-02 14:26:52.25 spid52      RemoveStaleDbEntries: Cleanup of stale DB entries skipped because master db is not memory optimized. DbId: 5.
+2023-04-02 14:26:52.75 spid52      Parallel redo is started for database 'visa_center' with worker pool size [4].
+2023-04-02 14:26:52.83 spid43s     Parallel redo is shutdown for database 'visa_center' with worker pool size [4].
+2023-04-02 14:33:03.23 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:33:03.23 Logon       Login failed for user 'SA'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.3]
+2023-04-02 14:33:08.69 Logon       Error: 18456, Severity: 14, State: 8.
+2023-04-02 14:33:08.69 Logon       Login failed for user 'SA'. Reason: Password did not match that for the login provided. [CLIENT: 172.19.0.3]
+2023-04-02 14:33:38.48 spid27s     Always On: The availability replica manager is going offline because SQL Server is shutting down. This is an informational message only. No user action is required.
+2023-04-02 14:33:38.48 spid27s     SQL Server is terminating in response to a 'stop' request from Service Control Manager. This is an informational message only. No user action is required.
+2023-04-02 14:33:38.48 spid27s     .NET Framework runtime has been stopped.
+2023-04-02 14:33:38.51 spid27s     RBPEX::NotifyFileShutdown: Called for database ID: [32762], file Id [0]
+2023-04-02 14:33:38.54 spid27s     RBPEX::NotifyFileShutdown: Called for database ID: [32761], file Id [0]
+2023-04-02 14:33:38.59 spid27s     RBPEX::NotifyFileShutdown: Called for database ID: [5], file Id [0]
+2023-04-02 14:33:38.62 spid27s     RBPEX::NotifyFileShutdown: Called for database ID: [4], file Id [0]
+2023-04-02 14:33:38.64 spid27s     RBPEX::NotifyFileShutdown: Called for database ID: [3], file Id [0]
+2023-04-02 14:33:38.67 spid27s     SQL Trace was stopped due to server shutdown. Trace ID = '1'. This is an informational message only; no user action is required.
