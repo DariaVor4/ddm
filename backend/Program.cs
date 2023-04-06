@@ -1,7 +1,11 @@
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using VisaCenterBackend.Modules.AuthModule;
+using VisaCenterBackend.Shared;
 using VisaCenterBackend.Shared.DB;
+using VisaCenterBackend.Shared.DB.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Добавление различных сервисов
+builder.Services.AddTransient<AppConfigService>();
 
 // Подключение к БД
 builder.Services.AddDbContext<AppDbContext>();
@@ -29,15 +36,15 @@ builder.Services.AddAuthorization(options => {
 builder.Services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); });
 
 // Подключение JWT аутентификации
-// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//   .AddJwtBearer(options => {
-//     var accessTokenSecret = builder.Configuration.GetValue<string>("accessTokenSecret");
-//     if (string.IsNullOrEmpty(accessTokenSecret))
-//       throw new Exception("Не указан accessTokenSecret в конфигурации");
-//     options.TokenValidationParameters = new TokenValidationParameters() {
-//       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(accessTokenSecret)),
-//     };
-//   });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+  var accessTokenSecret = builder.Configuration.GetValue<string>("accessTokenSecret");
+  if (string.IsNullOrEmpty(accessTokenSecret))
+    throw new Exception("Не указан accessTokenSecret в конфигурации");
+  options.TokenValidationParameters = new TokenValidationParameters() {
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(accessTokenSecret)),
+    ValidateIssuerSigningKey = true,
+  };
+});
 
 var app = builder.Build();
 

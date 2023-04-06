@@ -1,24 +1,49 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using VisaCenterBackend.Shared.DB.Entities;
 
 namespace VisaCenterBackend.Shared.DB;
 
 /// Контекст базы данных
 public class AppDbContext : DbContext {
-  private readonly IConfiguration _appConfig;
+  private readonly AppConfigService _appConfig;
   private readonly IWebHostEnvironment _env;
   private readonly ILogger _logger;
 
   // Конструктор с инъекцией зависимостей: Конфигурация приложения
-  public AppDbContext(IConfiguration appConfig, IWebHostEnvironment env, ILogger<AppDbContext> logger) {
-    _appConfig = appConfig;
-    _env = env;
-    _logger = logger;
+  public AppDbContext(AppConfigService appConfig, IWebHostEnvironment env, ILogger<AppDbContext> logger) {
+    this._appConfig = appConfig;
+    this._env = env;
+    this._logger = logger;
+    this.SavingChanges += this.OnSaveChanges;
+    if (_env.IsDevelopment()) {
+      Database.EnsureDeleted();
+      Database.EnsureCreated();
+    }
+  }
+
+  private void OnSaveChanges(object? sender, SaveChangesEventArgs args) {
+    _logger.LogDebug("Saving Changes...");
+
+    ChangeTracker.DetectChanges();
+    foreach (var entry in ChangeTracker.Entries()) {
+      // Обновление свойства UpdatedAt до now() при изменении записи
+      if (entry is { Entity: AppBaseEntity appBaseEntity, State: EntityState.Modified })
+        appBaseEntity.UpdatedAt = DateTime.Now;
+      // if (entry.State == EntityState.Modified && entry.Properties.Any(p => p.Metadata.Name == "UpdatedAt"))
+      // entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
+
+      // Если запись это UserEntity и пароль не является хэшем bcrypt - вычислить хэш
+      if (entry.Entity is UserEntity userEntity
+          && !userEntity.Password.IsNullOrEmpty()
+          && !userEntity.Password.StartsWith("$2a$"))
+        userEntity.Password = BCrypt.Net.BCrypt.HashPassword(userEntity.Password, 10);
+    }
   }
 
   // Подключение драйвера базы данных
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-    optionsBuilder.UseSqlServer(_appConfig.GetConnectionString("DefaultConnection"));
+    optionsBuilder.UseSqlServer(_appConfig.DefaultConnection);
 
   // Подключение моделей в контекст
   public DbSet<ConfirmationEmailEntity> ConfirmationEmail { get; set; } = null!;
@@ -63,17 +88,17 @@ public class AppDbContext : DbContext {
     var user1 = new UserEntity {
       Id = Guid.NewGuid(),
       Email = "admin@mail.ru",
-      Password = "123",
+      Password = BCrypt.Net.BCrypt.HashPassword("123", 6),
     };
     var user2 = new UserEntity {
       Id = Guid.NewGuid(),
       Email = "employee@mail.ru",
-      Password = "321",
+      Password = BCrypt.Net.BCrypt.HashPassword("321", 6),
     };
     var user3 = new UserEntity {
       Id = Guid.NewGuid(),
       Email = "student@mail.ru",
-      Password = "123321"
+      Password = BCrypt.Net.BCrypt.HashPassword("123321", 6),
     };
     modelBuilder.Entity<UserEntity>().HasData(user1, user2, user3);
 
@@ -90,12 +115,11 @@ public class AppDbContext : DbContext {
       LastName = "Петров",
     };
     modelBuilder.Entity<EmployeeEntity>().HasData(employee1, employee2);
-    
+
     // Seeding StudentEntity
 
     var student1 = new StudentEntity {
       UserId = user3.Id,
-      
     };
 
     // Seeding NotificationEntity
