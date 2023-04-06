@@ -8,17 +8,19 @@ using VisaCenterBackend.Shared.DB;
 using VisaCenterBackend.Shared.DB.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication("Cookie")
+    .AddCookie("Cookie", config =>
+    {
+        config.LoginPath = "/Admin/Login";
+    });
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<AppDbContext>();  // Подключение к БД
 
 // Добавление различных сервисов
 builder.Services.AddTransient<AppConfigService>();
-
-// Подключение к БД
-builder.Services.AddDbContext<AppDbContext>();
 
 // Глобальная конфигурация JSON сериализации: игнорирование циклических ссылок
 builder.Services.AddControllers().AddJsonOptions(options => {
@@ -28,7 +30,8 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 // Добавление ролей
 builder.Services.AddAuthorization(options => {
   options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-  options.AddPolicy("User", policy => policy.RequireRole("User"));
+  options.AddPolicy("Employee", policy => policy.RequireRole("Employee"));
+  options.AddPolicy("Student", policy => policy.RequireRole("Student"));
 });
 
 // Включение CORS
@@ -61,13 +64,19 @@ if (app.Environment.IsDevelopment()) {
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 
 // Получение данных
 // TODO: нужно убрать это отсюда
 app.MapGet(pattern: "/User", handler: (AppDbContext db) => db.User.ToList());
+app.MapGet(pattern: "/Emp", handler: (AppDbContext db) => db.Employee.ToList());
+app.MapGet(pattern: "/Stud", handler: (AppDbContext db) => db.Student.ToList());
 app.MapGet(pattern: "/NotificationToUser", handler: (AppDbContext db) => db.NotificationToUser.ToList());
 app.MapGet(pattern: "/Notification", handler: (AppDbContext db) => db.Notification.ToList());
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();

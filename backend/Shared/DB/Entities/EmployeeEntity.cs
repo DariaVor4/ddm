@@ -10,7 +10,6 @@ public class EmployeeEntity : AppBaseEntity {
   /// Пользователь к которому привязан сотрудник
   [ForeignKey(nameof(UserId))]
   public UserEntity User { get; set; } = null!;
-
   [Key] public Guid UserId { get; set; }
 
   /// Фамилия

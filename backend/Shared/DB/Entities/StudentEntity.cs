@@ -15,22 +15,22 @@ public class StudentEntity : AppBaseEntity {
   /// Уведомление о прибытии студента
   [ForeignKey(nameof(ArrivalNoticeId))]
   public StudentArrivalNoticeEntity? ArrivalNotice { get; set; }
-  public Guid ArrivalNoticeId { get; set; }
+  public Guid? ArrivalNoticeId { get; set; }
 
   /// Миграционная карта студента
   [ForeignKey(nameof(MigrationCardId))]
   public StudentMigrationCardEntity? MigrationCard { get; set; }
-  public Guid MigrationCardId { get; set; }
+  public Guid? MigrationCardId { get; set; }
 
   /// Виза студента. Её id - строка, идентификатор самой визы
   [ForeignKey(nameof(VisaId))]
   public StudentVisaEntity? Visa { get; set; }
-  public string VisaId { get; set; } = null!;
+  public string? VisaId { get; set; }
 
   /// Паспорт студента
   [ForeignKey(nameof(PassportId))]
   public StudentPassportEntity? Passport { get; set; }
-  public Guid PassportId { get; set; }
+  public Guid? PassportId { get; set; }
 
   /// Телефон
   public string? Phone { get; set; }
