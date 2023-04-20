@@ -13,3 +13,14 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=MsBd_123
       - MSSQL_COLLATION=Cyrillic_General_CI_AS
+
+  postgres_db:
+    image: postgres:15-alpine3.17
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: dev

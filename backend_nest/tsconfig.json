@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "sourceRoot": "./src",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@common/*": [
+        "./src/common/*"
+      ],
+      "@common": [
+        "./src/common"
+      ],
+      "@prisma-client": [
+        "./prisma/client"
+      ],
+      "@prisma-graphql/*": [
+        "./src/generated/prisma-nestjs-graphql/*"
+      ],
+      "@prisma-types": [
+        "./src/prisma/types"
+      ],
+      "@prisma/client": [
+        "./node_modules/@prisma/client"
+      ]
+    }
+  }
+}

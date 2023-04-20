@@ -1,0 +1,14 @@
+// Variables:
+//   name
+//   message
+
+doctype html
+html
+    head
+        title My Email Template
+    body
+        if name
+            h1 Здравствуйте, #{name}!
+        else
+            h1 Здравствуйте!
+        p #{message}
