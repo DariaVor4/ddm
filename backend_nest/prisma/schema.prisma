@@ -1,0 +1,411 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "client"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+// generator nestgraphql {
+//   provider             = "node node_modules/prisma-nestjs-graphql"
+//   provider = "prisma-nestjs-graphql"
+//   output               = "../src/generated/prisma-nestjs-graphql"
+//   reExport             = Directories
+//   combineScalarFilters = true
+//   emitSingle           = true
+//   purgeOutput          = true
+// }
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [uuidOssp(map: "uuid-ossp")]
+}
+
+/// Подтверждение почтового адреса
+model ConfirmationEmail {
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
+
+  email       String
+  code        String
+  isConfirmed Boolean @default(false) @map("is_confirmed")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("confirmation_email")
+}
+
+/// Подтверждение номера телефона
+model ConfirmationPhone {
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
+
+  phone       String
+  code        String
+  isConfirmed Boolean @default(false) @map("is_confirmed")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("confirmation_phone")
+}
+
+/// Пользователь
+model User {
+  /// Идентификатор пользователя
+  id            String               @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  /// Электронная почта (должна быть подтверждена)
+  email         String               @unique
+  /// Bcrypt хэш пароля
+  password      String
+  /// Авторизован ли сейчас пользователь?
+  tokenHash     String?              @map("token_hash")
+  /// Последняя активность
+  lastActivity  DateTime?            @map("last_activity")
+  /// Если пользователь - сотрудник
+  employee      Employee?
+  /// Если пользователь - студент
+  student       Student?
+  /// Уведомления пользователя
+  notifications NotificationToUser[]
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("user")
+}
+
+/// Сотрудник
+model Employee {
+  user User   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id   String @id() @unique @map("id_user") @db.Uuid
+
+  /// Фамилия
+  lastName   String? @map("last_name")
+  /// Имя
+  firstName  String? @map("first_name")
+  /// Отчество
+  patronymic String?
+  /// Является ли админом?
+  isAdmin    Boolean @default(false) @map("is_admin")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("employee")
+}
+
+/// Уведомление
+model Notification {
+  id      String               @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  /// Заголовок
+  title   String
+  /// Содержимое
+  content String
+  /// Получатели
+  users   NotificationToUser[]
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("notification")
+}
+
+/// Уведомления для пользователей
+model NotificationToUser {
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notificationId String       @map("id_notification") @db.Uuid
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId String @map("id_user") @db.Uuid
+
+  /// Прочитано ли уведомление?
+  isRead Boolean @default(false) @map("is_read")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@id([userId, notificationId])
+  @@map("notification_to_user")
+}
+
+/// Студент
+model Student {
+  user User   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id   String @id() @unique @map("id_user") @db.Uuid
+
+  /// Уведомление о прибытии
+  arrivalNotice StudentArrivalNotice?
+  /// Миграционная карта
+  migrationCard StudentMigrationCard?
+  /// Виза
+  visa          StudentVisa?
+  /// Паспорт
+  passport      StudentPassport?
+
+  /// Телефон
+  phone   String?
+  /// Куратор
+  curator String?
+  /// Факультет
+  faculty String?
+  /// Курс
+  course  Int?
+  /// Группа
+  group   String?
+
+  /// Близкие родственники
+  closeRelatives StudentCloseRelative[]
+  /// Визовые анкеты
+  visaRequests   StudentVisaRequest[]
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("student")
+}
+
+/// Близкие родственники студента
+model StudentCloseRelative {
+  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   Student @relation(fields: [studentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  studentId String  @map("id_student") @db.Uuid
+
+  /// Фамилия
+  lastName                  String?   @map("last_name")
+  /// Имя
+  firstName                 String?   @map("first_name")
+  /// Отчество
+  patronymic                String?
+  /// Дата рождения
+  birthDate                 DateTime? @map("birth_date")
+  /// Гражданство
+  citizenship               String?
+  /// Постоянное место жительства
+  addressContinuosResidence String?   @map("address_continuos_residence")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("student_close_relative")
+}
+
+/// Уведомление о прибытии студента
+model StudentArrivalNotice {
+  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String  @unique @map("id_student") @db.Uuid
+
+  /// Профессия
+  profession    String?
+  /// Адрес регистрации
+  address       String?   @map("registration_address")
+  /// Дата регистрации
+  date          DateTime? @map("registration_date")
+  /// Дата окончания регистрации
+  expires       DateTime? @map("registration_expires")
+  /// Приглашающая сторона
+  invitingSide  String?   @map("inviting_side")
+  /// Принимающая сторона
+  receivingSide String?   @map("receiving_side")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("student_arrival_notice")
+}
+
+/// Миграционная карта студента
+model StudentMigrationCard {
+  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String  @unique @map("id_student") @db.Uuid
+
+  /// Серия
+  series         String?
+  /// Номер
+  number         String?
+  /// Дата выдачи
+  issueDate      DateTime? @map("issue_date")
+  /// Дата истечения
+  expirationDate DateTime? @map("expiration_date")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("student_migration_card")
+}
+
+/// Виза студента
+model StudentVisa {
+  /// Идентификатор визы
+  id        String  @id()
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String  @unique @map("id_student") @db.Uuid
+
+  /// Серия бланка
+  blankSeries      String?   @map("blank_series")
+  /// Номер
+  number           String?
+  /// Дата выдачи
+  issueDate        DateTime? @map("issue_date")
+  /// Дата истечения
+  expirationDate   DateTime? @map("expiration_date")
+  /// Номер приглашения
+  invitationNumber String?   @map("invitation_number")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("student_visa")
+}
+
+/// Пол
+enum GenderEnum {
+  MALE
+  FEMALE
+}
+
+/// Паспорт студента
+model StudentPassport {
+  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String  @unique @map("id_student") @db.Uuid
+
+  /// Фамилия
+  lastName       String?     @map("last_name")
+  /// Имя
+  firstName      String?     @map("first_name")
+  /// Отчество
+  patronymic     String?
+  /// Дата рождения
+  birthDate      DateTime?   @map("birth_date")
+  /// Место рождения
+  birthPlace     String?     @map("birth_place")
+  /// Пол
+  gender         GenderEnum?
+  /// Гражданство
+  citizenship    String?
+  /// Серия
+  series         String?
+  /// Номер
+  number         String?
+  /// Дата выдачи
+  issueDate      DateTime?   @map("issue_date")
+  /// Кем выдан
+  issuedBy       String?     @map("issued_by")
+  /// Дата истечения
+  expirationDate DateTime?   @map("expiration_date")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("student_passport")
+}
+
+/// Требуемая кратность визы в визовой анкете
+enum VisaMultiplicityEnum {
+  /// Однократная
+  SINGLE
+  /// Двукратная
+  DOUBLE
+  /// Многократная
+  MULTIPLE
+}
+
+/// Требуемая категория визы в визовой анкете
+enum VisaCategoryEnum {
+  /// обыкновенная - частная
+  REGULAR_PRIVATE
+  /// обыкновенная - гуманитарная
+  REGULAR_HUMANITARIAN
+  /// обыкновенная - деловая
+  REGULAR_BUSINESS
+  /// обыкновенная - рабочая
+  REGULAR_WORKING
+  /// обыкновенная - туристическая
+  REGULAR_TOURIST
+  /// обыкновенная - туристическая групповая
+  REGULAR_GROUP_TRAVEL
+  /// обыкновенная - учебная
+  REGULAR_STUDY
+  /// обыкновенная - на въезд в РФ в целях приёма в гражданство РФ
+  REGULAR_NATIONAL_ENTRY
+  /// транзитная
+  TRANSIT
+  /// временно проживающего лица
+  TEMPORARY_RESIDENT
+}
+
+/// Статус анкеты на визу
+enum VisaRequestStatusEnum {
+  /// Ожидает проверки сотрудником
+  PENDING
+  /// Требуются правки студента
+  PENDING_CORRECTIONS_BY_STUDENT
+  /// Проверена
+  VERIFIED
+  /// Передана в визовый отдел
+  FINISHED
+}
+
+/// Визовая анкета студента
+model StudentVisaRequest {
+  id              String                @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student         Student               @relation(fields: [studentId], references: [id])
+  studentId       String                @db.Uuid
+  /// Статус визовой анкеты
+  status          VisaRequestStatusEnum @default(PENDING)
+  /// Комментарий сотрудника
+  employeeComment String?
+
+  /// Регистрационный номер заполняемый только сотрудником
+  registrationNumber                      String?               @map("registration_number")
+  /// Категория визы
+  category                                VisaCategoryEnum?
+  /// Кратность визы
+  multiplicity                            VisaMultiplicityEnum?
+  /// В связи с ...
+  reason                                  String?
+  /// Адрес постановки на миграционный учет
+  addressOfMigrationRegistration          String?               @map("address_of_migration_registration")
+  /// Маршрут предполагаемого пребывания
+  estimatedRouteOfStay                    String?               @map("estimated_route_of_stay")
+  /// Адрес в стране постоянного проживания
+  addressInCountryOfContinuousResidence   String?               @map("address_in_country_of_continuous_residence")
+  /// Место работы или учёбы, должность
+  placeOfWorkOrStudyAndEmploymentPosition String?               @map("place_of_work_or_study_and_employment_position")
+  /// Родственники на территории РФ
+  russianFederationRelatives              String?               @map("russian_federation_relatives")
+  /// Прилагаемые документы
+  attachedDocuments                       String?               @map("attached_documents")
+
+  // Служебные поля
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("student_visa_request")
+}
