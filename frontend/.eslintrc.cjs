@@ -27,6 +27,7 @@ module.exports = {
     'react/jsx-key': 'error',
     'import/no-absolute-path': 'off',
     'jsx-quotes': ['error', 'prefer-single'],
+    'jsx-a11y/no-access-key': ['off']
     // 'semi': 'off',
     // '@typescript-eslint/semi': ['error', 'never'],
   },

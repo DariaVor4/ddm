@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router-dom';
+import { Container, Content } from 'rsuite';
 
 function Main() {
   return (
-    <div className="container content">
-      <Outlet />
-    </div>
+    <Container style={{ margin: '2rem' }}>
+      <Content>
+        <Outlet />
+      </Content>
+    </Container>
   );
 }
 

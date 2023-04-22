@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Button, Nav, Navbar, Stack,
 } from 'rsuite';
@@ -7,6 +7,7 @@ import { AppRoutesEnum } from './AppRouter/app-routes';
 import useMainStore from '../store/main.store';
 
 function Header() {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { isDarkMode, toggleDarkMode } = useMainStore();
 
@@ -26,8 +27,8 @@ function Header() {
         </Nav.Item>
         <Stack spacing={5}>
           <Button appearance='primary' onClick={toggleDarkMode}>{isDarkMode ? '🌞' : '🌑'}</Button>
-          <Button appearance='primary'>Вход</Button>
-          <Button appearance='primary'>Регистрация</Button>
+          <Button appearance='primary' onClick={() => navigate('login')}>Вход</Button>
+          <Button appearance='primary' onClick={() => navigate('registration')}>Регистрация</Button>
         </Stack>
       </Nav>
     </Navbar>
