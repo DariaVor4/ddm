@@ -1,0 +1,9 @@
+schema: ./src/api/schema.gql
+documents: ./src/queries/**/*.{gql,graphql}
+extensions:
+  endpoints:
+    nest:
+      url: http://localhost:5000/graphql
+      headers:
+        user-agent: JS GraphQL
+      introspect: true

@@ -1,29 +1,29 @@
 import {
-  ConfirmationEmail,
-  ConfirmationPhone,
-  Employee,
-  Notification,
-  NotificationToUser,
-  Student,
-  StudentArrivalNotice,
-  StudentCloseRelative,
-  StudentMigrationCard,
-  StudentPassport,
-  StudentVisa,
-  StudentVisaRequest,
-  User,
+  ConfirmationEmailEntity,
+  ConfirmationPhoneEntity,
+  EmployeeEntity,
+  NotificationEntity,
+  NotificationToUserEntity,
+  StudentArrivalNoticeEntity,
+  StudentCloseRelativeEntity,
+  StudentEntity,
+  StudentMigrationCardEntity,
+  StudentPassportEntity,
+  StudentVisaEntity,
+  StudentVisaRequestEntity,
+  UserEntity,
 } from '@prisma-client';
 
-export type TUser = User;
-export type TConfirmationEmail = ConfirmationEmail;
-export type TConfirmationPhone = ConfirmationPhone;
-export type TEmployee = Employee;
-export type TNotification = Notification;
-export type TNotificationToUser = NotificationToUser;
-export type TStudent = Student;
-export type TStudentCloseRelative = StudentCloseRelative;
-export type TStudentArrivalNotice = StudentArrivalNotice;
-export type TStudentMigrationCard = StudentMigrationCard;
-export type TStudentVisa = StudentVisa;
-export type TStudentPassport = StudentPassport;
-export type TStudentVisaRequest = StudentVisaRequest;
+export type TUser = UserEntity;
+export type TConfirmationEmail = ConfirmationEmailEntity;
+export type TConfirmationPhone = ConfirmationPhoneEntity;
+export type TEmployee = EmployeeEntity;
+export type TNotification = NotificationEntity;
+export type TNotificationToUser = NotificationToUserEntity;
+export type TStudent = StudentEntity;
+export type TStudentCloseRelative = StudentCloseRelativeEntity;
+export type TStudentArrivalNotice = StudentArrivalNoticeEntity;
+export type TStudentMigrationCard = StudentMigrationCardEntity;
+export type TStudentVisa = StudentVisaEntity;
+export type TStudentPassport = StudentPassportEntity;
+export type TStudentVisaRequest = StudentVisaRequestEntity;

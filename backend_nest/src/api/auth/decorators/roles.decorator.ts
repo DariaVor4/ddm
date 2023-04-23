@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import UserRoleEnum from '../interfaces/UserRoleEnum';
+import UserRoleEnum from '../interfaces/user-role.enum';
 
 /**
  * Metadata key for roles array

@@ -2,6 +2,11 @@
 /dist
 /node_modules
 /prisma/client
+/src/generated
+/package-lock.json
+/pnpm-lock.yaml
+/yarn.lock
+/.env.development
 
 # Logs
 logs

@@ -2,15 +2,20 @@ import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { compact, isNil } from 'lodash';
 import { assert, joi } from '@common';
 import * as uuid from 'uuid';
+import ms from 'ms';
 import { PrismaService } from '../../prisma/prisma.service';
-import UserRoleEnum from '../auth/interfaces/UserRoleEnum';
+import UserRoleEnum from '../auth/interfaces/user-role.enum';
+import { ConfigService } from '../../config/config.service';
 
 /**
  * Сервис для работы с пользователями.
  */
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   /**
    * Полученеи массива ролей пользователя.
@@ -19,10 +24,13 @@ export class UserService {
    */
   async getUserRoles(userId: string): Promise<UserRoleEnum[]> {
     assert(!userId || uuid.validate(userId), new NotAcceptableException('Некорректный uuid'));
-    const [student, employee] = await Promise.all([
-      this.prisma.student.count({ where: { id: userId } }),
-      this.prisma.employee.findUnique({ where: { id: userId }, select: { isAdmin: true } }),
-    ]);
+    const { student, employee } = await this.prisma.userEntity.findUniqueOrThrow({
+      where: { id: userId },
+      select: {
+        student: { select: { id: true } },
+        employee: { select: { id: true, isAdmin: true } },
+      },
+    });
     return compact([
       student ? UserRoleEnum.Student : undefined,
       employee ? UserRoleEnum.Employee : undefined,
@@ -33,17 +41,41 @@ export class UserService {
   /**
    * Проверка почты на доступность.
    * @param email Почта.
-   * @param exceptUserId Исключаемый из проверки пользователь, если он хочет обновить свою почту.
-   * @returns true, если почта свободна.
+   * @param options[exceptUserId] Исключить пользователя с данным id.
+   * @param options[notThrow] Не выбрасывать исключение, если почта некорректна.
+   * @throws NotAcceptableException, если notThrow=false и почта некорректна.
+   * @returns true: почта свободна; false: почта занята; null: если notThrow=true и почта некорректна.
    */
-  async isEmailFree(email: string, exceptUserId?: string): Promise<boolean> {
-    assert(!exceptUserId || uuid.validate(exceptUserId), new NotAcceptableException('Некорректный uuid'));
-    assert(isNil(joi.string().email().validate(email).error), new NotAcceptableException('Некорректный email'));
-    return !await this.prisma.user.count({
+  async isEmailFree(email: string, options?: { exceptUserId?: string, notThrow?: boolean }): Promise<boolean | null> {
+    assert(!options?.exceptUserId || uuid.validate(options?.exceptUserId), new NotAcceptableException('Некорректный uuid'));
+    const { error } = joi.string().email().validate(email);
+    if (!options?.notThrow) {
+      assert(isNil(error), new NotAcceptableException('Некорректный email'));
+    } else if (error) {
+      return null;
+    }
+    // Если есть пользователь с такой почтой, то почта занята.
+    if (await this.prisma.userEntity.count({
       where: {
         email,
-        id: exceptUserId && { not: exceptUserId },
+        id: options?.exceptUserId && { not: options?.exceptUserId },
       },
-    });
+    })) {
+      return false;
+    }
+    // Если есть подтверждённая почта и время завершения регистрации не истекло, то почта занята.
+    if (await this.prisma.confirmationEmailEntity.count({
+      where: {
+        email,
+        isConfirmed: true,
+        createdAt: {
+          lte: new Date(Date.now() + ms(this.configService.config.emailConfirmationCodeExpires)),
+        },
+      },
+    })) {
+      return false;
+    }
+    // Почта свободна.
+    return true;
   }
 }

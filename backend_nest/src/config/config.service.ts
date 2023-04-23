@@ -1,5 +1,4 @@
-import assert from '@common/assert';
-import joi, { vercelMsValidator } from '@common/joi-configured';
+import { assert, joi, vercelMsValidator } from '@common';
 import { Injectable, Logger } from '@nestjs/common';
 import dotenv from 'dotenv';
 import * as process from 'process';

@@ -67,5 +67,6 @@ module.exports = {
     // Отключение предупреждений о Unix или Windows окончаниях строк, т.к. их автоматически исправляет github
     // https://eslint.org/docs/latest/rules/linebreak-style
     'linebreak-style': 'off',
+    'no-underscore-dangle': 'off',
   },
 };

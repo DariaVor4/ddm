@@ -4,15 +4,15 @@ generator client {
   previewFeatures = ["postgresqlExtensions"]
 }
 
-// generator nestgraphql {
-//   provider             = "node node_modules/prisma-nestjs-graphql"
-//   provider = "prisma-nestjs-graphql"
-//   output               = "../src/generated/prisma-nestjs-graphql"
-//   reExport             = Directories
-//   combineScalarFilters = true
-//   emitSingle           = true
-//   purgeOutput          = true
-// }
+generator nestgraphql {
+  provider             = "node node_modules/prisma-nestjs-graphql"
+  // provider = "prisma-nestjs-graphql"
+  output               = "../src/generated/prisma-nestjs-graphql"
+  reExport             = All
+  combineScalarFilters = true
+  // emitSingle           = true
+  purgeOutput          = true
+}
 
 datasource db {
   provider   = "postgresql"
@@ -21,7 +21,7 @@ datasource db {
 }
 
 /// Подтверждение почтового адреса
-model ConfirmationEmail {
+model ConfirmationEmailEntity {
   id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
 
   email       String
@@ -29,15 +29,16 @@ model ConfirmationEmail {
   isConfirmed Boolean @default(false) @map("is_confirmed")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("confirmation_email")
 }
 
 /// Подтверждение номера телефона
-model ConfirmationPhone {
+model ConfirmationPhoneEntity {
   id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
 
   phone       String
@@ -45,44 +46,48 @@ model ConfirmationPhone {
   isConfirmed Boolean @default(false) @map("is_confirmed")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("confirmation_phone")
 }
 
 /// Пользователь
-model User {
+model UserEntity {
   /// Идентификатор пользователя
-  id            String               @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id            String                     @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// Электронная почта (должна быть подтверждена)
-  email         String               @unique
+  email         String                     @unique
   /// Bcrypt хэш пароля
+  /// @HideField({ input: false, output: true })
   password      String
   /// Авторизован ли сейчас пользователь?
-  tokenHash     String?              @map("token_hash")
+  /// @HideField({ input: true, output: true })
+  tokenHash     String?                    @map("token_hash")
   /// Последняя активность
-  lastActivity  DateTime?            @map("last_activity")
+  lastActivity  DateTime?                  @map("last_activity")
   /// Если пользователь - сотрудник
-  employee      Employee?
+  employee      EmployeeEntity?
   /// Если пользователь - студент
-  student       Student?
+  student       StudentEntity?
   /// Уведомления пользователя
-  notifications NotificationToUser[]
+  notifications NotificationToUserEntity[]
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("user")
 }
 
 /// Сотрудник
-model Employee {
-  user User   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  id   String @id() @unique @map("id_user") @db.Uuid
+model EmployeeEntity {
+  user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id   String     @id() @unique @map("id_user") @db.Uuid
 
   /// Фамилия
   lastName   String? @map("last_name")
@@ -94,64 +99,67 @@ model Employee {
   isAdmin    Boolean @default(false) @map("is_admin")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("employee")
 }
 
 /// Уведомление
-model Notification {
-  id      String               @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+model NotificationEntity {
+  id      String                     @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// Заголовок
   title   String
   /// Содержимое
   content String
   /// Получатели
-  users   NotificationToUser[]
+  users   NotificationToUserEntity[]
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("notification")
 }
 
 /// Уведомления для пользователей
-model NotificationToUser {
-  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  notificationId String       @map("id_notification") @db.Uuid
+model NotificationToUserEntity {
+  notification   NotificationEntity @relation(fields: [notificationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notificationId String             @map("id_notification") @db.Uuid
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  userId String @map("id_user") @db.Uuid
+  user   UserEntity @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId String     @map("id_user") @db.Uuid
 
   /// Прочитано ли уведомление?
   isRead Boolean @default(false) @map("is_read")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@id([userId, notificationId])
   @@map("notification_to_user")
 }
 
 /// Студент
-model Student {
-  user User   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  id   String @id() @unique @map("id_user") @db.Uuid
+model StudentEntity {
+  user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id   String     @id() @unique @map("id_user") @db.Uuid
 
   /// Уведомление о прибытии
-  arrivalNotice StudentArrivalNotice?
+  arrivalNotice StudentArrivalNoticeEntity?
   /// Миграционная карта
-  migrationCard StudentMigrationCard?
+  migrationCard StudentMigrationCardEntity?
   /// Виза
-  visa          StudentVisa?
+  visa          StudentVisaEntity?
   /// Паспорт
-  passport      StudentPassport?
+  passport      StudentPassportEntity?
 
   /// Телефон
   phone   String?
@@ -160,28 +168,30 @@ model Student {
   /// Факультет
   faculty String?
   /// Курс
+  // TODO: какой максимальный курс может быть?
   course  Int?
   /// Группа
   group   String?
 
   /// Близкие родственники
-  closeRelatives StudentCloseRelative[]
+  closeRelatives StudentCloseRelativeEntity[]
   /// Визовые анкеты
-  visaRequests   StudentVisaRequest[]
+  visaRequests   StudentVisaRequestEntity[]
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("student")
 }
 
 /// Близкие родственники студента
-model StudentCloseRelative {
-  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  student   Student @relation(fields: [studentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  studentId String  @map("id_student") @db.Uuid
+model StudentCloseRelativeEntity {
+  id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  studentId String        @map("id_student") @db.Uuid
 
   /// Фамилия
   lastName                  String?   @map("last_name")
@@ -197,18 +207,19 @@ model StudentCloseRelative {
   addressContinuosResidence String?   @map("address_continuos_residence")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("student_close_relative")
 }
 
 /// Уведомление о прибытии студента
-model StudentArrivalNotice {
-  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId String  @unique @map("id_student") @db.Uuid
+model StudentArrivalNoticeEntity {
+  id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   StudentEntity @relation(fields: [studentId], references: [id])
+  studentId String        @unique @map("id_student") @db.Uuid
 
   /// Профессия
   profession    String?
@@ -224,18 +235,19 @@ model StudentArrivalNotice {
   receivingSide String?   @map("receiving_side")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("student_arrival_notice")
 }
 
 /// Миграционная карта студента
-model StudentMigrationCard {
-  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId String  @unique @map("id_student") @db.Uuid
+model StudentMigrationCardEntity {
+  id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   StudentEntity @relation(fields: [studentId], references: [id])
+  studentId String        @unique @map("id_student") @db.Uuid
 
   /// Серия
   series         String?
@@ -247,19 +259,20 @@ model StudentMigrationCard {
   expirationDate DateTime? @map("expiration_date")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("student_migration_card")
 }
 
 /// Виза студента
-model StudentVisa {
+model StudentVisaEntity {
   /// Идентификатор визы
-  id        String  @id()
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId String  @unique @map("id_student") @db.Uuid
+  id        String        @id()
+  student   StudentEntity @relation(fields: [studentId], references: [id])
+  studentId String        @unique @map("id_student") @db.Uuid
 
   /// Серия бланка
   blankSeries      String?   @map("blank_series")
@@ -273,24 +286,25 @@ model StudentVisa {
   invitationNumber String?   @map("invitation_number")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("student_visa")
 }
 
 /// Пол
 enum GenderEnum {
-  MALE
-  FEMALE
+  Male
+  Female
 }
 
 /// Паспорт студента
-model StudentPassport {
-  id        String  @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId String  @unique @map("id_student") @db.Uuid
+model StudentPassportEntity {
+  id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  student   StudentEntity @relation(fields: [studentId], references: [id])
+  studentId String        @unique @map("id_student") @db.Uuid
 
   /// Фамилия
   lastName       String?     @map("last_name")
@@ -318,9 +332,10 @@ model StudentPassport {
   expirationDate DateTime?   @map("expiration_date")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("student_passport")
 }
@@ -328,56 +343,56 @@ model StudentPassport {
 /// Требуемая кратность визы в визовой анкете
 enum VisaMultiplicityEnum {
   /// Однократная
-  SINGLE
+  Single
   /// Двукратная
-  DOUBLE
+  Double
   /// Многократная
-  MULTIPLE
+  Multiple
 }
 
 /// Требуемая категория визы в визовой анкете
 enum VisaCategoryEnum {
   /// обыкновенная - частная
-  REGULAR_PRIVATE
+  RegularPrivate
   /// обыкновенная - гуманитарная
-  REGULAR_HUMANITARIAN
+  RegularHumanitarian
   /// обыкновенная - деловая
-  REGULAR_BUSINESS
+  RegularBusiness
   /// обыкновенная - рабочая
-  REGULAR_WORKING
+  RegularWorking
   /// обыкновенная - туристическая
-  REGULAR_TOURIST
+  RegularTourist
   /// обыкновенная - туристическая групповая
-  REGULAR_GROUP_TRAVEL
+  RegularGroupTravel
   /// обыкновенная - учебная
-  REGULAR_STUDY
+  RegularStudy
   /// обыкновенная - на въезд в РФ в целях приёма в гражданство РФ
-  REGULAR_NATIONAL_ENTRY
+  RegularNationalEntry
   /// транзитная
-  TRANSIT
+  Transit
   /// временно проживающего лица
-  TEMPORARY_RESIDENT
+  TemporaryResident
 }
 
 /// Статус анкеты на визу
 enum VisaRequestStatusEnum {
   /// Ожидает проверки сотрудником
-  PENDING
+  Pending
   /// Требуются правки студента
-  PENDING_CORRECTIONS_BY_STUDENT
+  PendingCorrectionsByStudent
   /// Проверена
-  VERIFIED
+  Verified
   /// Передана в визовый отдел
-  FINISHED
+  Finished
 }
 
 /// Визовая анкета студента
-model StudentVisaRequest {
+model StudentVisaRequestEntity {
   id              String                @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  student         Student               @relation(fields: [studentId], references: [id])
+  student         StudentEntity         @relation(fields: [studentId], references: [id])
   studentId       String                @db.Uuid
   /// Статус визовой анкеты
-  status          VisaRequestStatusEnum @default(PENDING)
+  status          VisaRequestStatusEnum @default(Pending)
   /// Комментарий сотрудника
   employeeComment String?
 
@@ -403,9 +418,10 @@ model StudentVisaRequest {
   attachedDocuments                       String?               @map("attached_documents")
 
   // Служебные поля
+  /// @HideField({ input: true, output: false })
   createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
   updatedAt DateTime? @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
 
   @@map("student_visa_request")
 }

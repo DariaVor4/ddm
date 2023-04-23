@@ -1,14 +1,15 @@
-// import { registerEnumType } from '@nestjs/graphql';
+import { registerEnumType } from '@nestjs/graphql';
 
-enum EmailVerdictEnum {
-  InvalidEmail = 'InvalidEmail',
-  EmailAlreadyInUse = 'EmailAlreadyInUse',
+/**
+ * Вердикт проверки почты на доступность
+ */
+export enum EmailAvailabilityVerdictEnum {
   Ok = 'Ok',
+  Occupied = 'Occupied',
+  Incorrect = 'Incorrect',
 }
 
-// registerEnumType(EmailVerdictEnum, {
-//   name: 'EmailVerdictEnum',
-//   description: 'Email verdict',
-// });
-//
-export default EmailVerdictEnum;
+registerEnumType(EmailAvailabilityVerdictEnum, {
+  name: 'EmailAvailabilityVerdictEnum',
+  description: 'Вердикт проверки почты на доступность',
+});

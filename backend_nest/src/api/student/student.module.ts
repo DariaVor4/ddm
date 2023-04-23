@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
 import { StudentService } from './student.service';
-import { StudentRegistrationController } from './student-registration.controller';
 import { EmailModule } from '../../email/email.module';
-import { StudentController } from './student.controller';
 import { UserModule } from '../user/user.module';
+import { StudentResolver } from './resolvers/student.resolver';
+import { StudentRegistrationResolver } from './resolvers/student-registration.resolver';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     EmailModule,
     StudentModule,
     UserModule,
   ],
   providers: [
     StudentService,
+    StudentResolver,
+    StudentRegistrationResolver,
   ],
-  controllers: [StudentRegistrationController, StudentController],
 })
 export class StudentModule {}

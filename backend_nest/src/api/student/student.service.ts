@@ -1,12 +1,16 @@
-import { Injectable, NotAcceptableException } from '@nestjs/common';
-import { TStudent, TStudentPassport, TUser } from '@prisma-types';
+import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { assert } from '@common';
-import { isNil } from 'lodash';
-import StudentCreateInput from './inputs/student-create.input';
+import { pick } from 'lodash';
+import { Prisma } from '@prisma-client';
+import * as uuid from 'uuid';
+import { UserEntity } from '@prisma-graphql/user-entity';
+import { StudentEntity } from '@prisma-graphql/student-entity';
+import { StudentPassportEntity } from '@prisma-graphql/student-passport-entity';
 import { PrismaService } from '../../prisma/prisma.service';
-import { SecurityService } from '../../security/security.service';
-import StudentUpdateInput from './inputs/student-update.input';
 import { UserService } from '../user/user.service';
+import StudentCreateInput from './inputs/student-create.input';
+import StudentUpdateInput from './inputs/student-update.input';
+import { AuthService } from '../auth/auth.service';
 
 /**
  * Сервис для работы со студентами.
@@ -15,84 +19,68 @@ import { UserService } from '../user/user.service';
 export class StudentService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly securityService: SecurityService,
+    private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
-
-  /**
-   * Разделение свойств различных сущностей из входных данных.
-   */
-  private async extractProperties(input: StudentCreateInput | StudentUpdateInput) {
-    const userProperties = <TUser>{
-      email: input.email,
-      password: input.password && await this.securityService.passwordHash(input.password),
-    };
-    const studentProperties = <TStudent>{
-      curator: input.curator,
-      faculty: input.faculty,
-      course: input.course,
-      group: input.group,
-      phone: input.phone,
-    };
-    const passportProperties = <TStudentPassport>{
-      lastName: input.lastName,
-      firstName: input.firstName,
-      patronymic: input.patronymic,
-    };
-    return { userProperties, studentProperties, passportProperties };
-  }
 
   /**
    * Создание/регистрация студента.
    * С проверкой почты на уникальность.
    */
-  async createStudent(input: StudentCreateInput) {
-    assert(
-      await this.userService.isEmailFree(input.email),
-      new NotAcceptableException('Пользователь с таким email уже существует'),
-    );
-    const { userProperties, studentProperties, passportProperties } = await this.extractProperties(input);
-    return this.prisma.user.create({
+  async studentCreate(input: StudentCreateInput, select?: Prisma.StudentEntitySelect): Promise<StudentEntity> {
+    if (!await this.userService.isEmailFree(input.email)) {
+      throw new NotAcceptableException('Пользователь с таким email уже существует');
+    }
+    const [userProperties, studentProperties, passportProperties] = [
+      pick(input, ['email'] satisfies (keyof UserEntity & keyof StudentCreateInput)[]),
+      pick(input, ['phone', 'faculty', 'group', 'course', 'curator'] satisfies (keyof StudentEntity & keyof StudentCreateInput)[]),
+      pick(input, ['lastName', 'firstName', 'patronymic'] satisfies (keyof StudentPassportEntity & keyof StudentCreateInput)[]),
+    ];
+    return await this.prisma.studentEntity.create({
       data: {
-        ...userProperties,
-        student: {
+        ...studentProperties,
+        passport: { create: passportProperties },
+        user: {
           create: {
-            ...studentProperties,
-            passport: {
-              create: passportProperties,
-            },
+            ...userProperties,
+            password: await this.authService.passwordHash(input.password),
           },
         },
       },
-    });
+      select,
+    }) as StudentEntity;
   }
 
   /**
    * Обновление студента.
    * С проверкой почты на уникальность.
    */
-  async updateStudent(user: TUser, input: StudentUpdateInput) {
-    assert(
-      isNil(input.email) || await this.userService.isEmailFree(input.email, user.id),
-      new NotAcceptableException('Пользователь с таким email уже существует'),
-    );
-    const { userProperties, studentProperties, passportProperties } = await this.extractProperties(input);
-    return this.prisma.user.update({
-      where: { id: user.id },
+  async updateStudent(input: StudentUpdateInput, select?: Prisma.StudentEntitySelect): Promise<StudentEntity> {
+    assert(uuid.validate(input.id), new NotAcceptableException('Неверный формат id'));
+    if (!await this.prisma.userEntity.count({ where: { id: input.id, NOT: { student: null } } })) {
+      throw new NotFoundException('Студент не найден');
+    }
+    if (input.email && !await this.userService.isEmailFree(input.email, { exceptUserId: input.id })) {
+      throw new NotAcceptableException('Пользователь с таким email уже существует');
+    }
+    const [userProperties, studentProperties, passportProperties] = [
+      pick(input, ['email'] satisfies (keyof UserEntity & keyof StudentUpdateInput)[]),
+      pick(input, ['phone', 'faculty', 'group', 'course', 'curator'] satisfies (keyof StudentEntity & keyof StudentUpdateInput)[]),
+      pick(input, ['lastName', 'firstName', 'patronymic'] satisfies (keyof StudentPassportEntity & keyof StudentUpdateInput)[]),
+    ];
+    return await this.prisma.studentEntity.update({
+      where: { id: input.id },
       data: {
-        ...userProperties,
-        student: {
+        ...studentProperties,
+        passport: { upsert: { update: passportProperties, create: passportProperties } },
+        user: {
           update: {
-            ...studentProperties,
-            passport: {
-              upsert: {
-                update: passportProperties,
-                create: passportProperties,
-              },
-            },
+            password: input.password ? await this.authService.passwordHash(input.password) : undefined,
+            ...userProperties,
           },
         },
       },
-    });
+      select,
+    }) as StudentEntity;
   }
 }

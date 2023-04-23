@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import { runtimeMode } from '@common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -10,7 +11,7 @@ async function bootstrap() {
   });
   // app.enableCors();
   app.enableCors({
-    origin: true,
+    origin: runtimeMode.isDebug,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });

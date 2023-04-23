@@ -1,13 +1,20 @@
-import UserRoleEnum from './UserRoleEnum';
+import UserRoleEnum from './user-role.enum';
+
+/**
+ * Creating payload of access token.
+ */
+export interface IAccessTokenPayloadCreate {
+  userId: string;
+  roles: UserRoleEnum[];
+}
 
 /**
  * Payload of access token.
  */
-export interface IAccessTokenPayload {
-  userId: string;
-  roles: UserRoleEnum[];
-  // The following fields are automatically inserted when creating a token.
-  // Maybe someday they will be needed, but for now, there is no need to interact with them manually.
-  // iat: number;
-  // exp: number;
+export interface IAccessTokenPayload extends IAccessTokenPayloadCreate {
+  /* The following fields are automatically inserted when creating a token. */
+  // Issued at: Seconds from Unix epoch.
+  iat: number;
+  // Expiration time: Seconds from Unix epoch.
+  exp: number;
 }

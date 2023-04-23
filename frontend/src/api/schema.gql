@@ -1,0 +1,696 @@
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type EmailAvailabilityResponse {
+  message: String!
+  verdict: EmailAvailabilityVerdictEnum!
+}
+
+"""Вердикт проверки почты на доступность"""
+enum EmailAvailabilityVerdictEnum {
+  Incorrect
+  Occupied
+  Ok
+}
+
+input EmployeeCreateInput {
+  """Электронная почта (должна быть подтверждена)"""
+  email: String!
+
+  """Имя"""
+  firstName: String
+
+  """Является ли админом?"""
+  isAdmin: Boolean! = false
+
+  """Фамилия"""
+  lastName: String
+
+  """Отчество"""
+  patronymic: String
+}
+
+"""Сотрудник"""
+type EmployeeEntity {
+  createdAt: DateTime!
+
+  """Имя"""
+  firstName: String
+  id: ID!
+
+  """Является ли админом?"""
+  isAdmin: Boolean!
+
+  """Фамилия"""
+  lastName: String
+
+  """Отчество"""
+  patronymic: String
+  updatedAt: DateTime
+  user: UserEntity!
+}
+
+type EmployeeEntityCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  firstName: Int!
+  id: Int!
+  isAdmin: Int!
+  lastName: Int!
+  patronymic: Int!
+  updatedAt: Int!
+}
+
+type EmployeeEntityMaxAggregate {
+  createdAt: DateTime
+  firstName: String
+  id: String
+  isAdmin: Boolean
+  lastName: String
+  patronymic: String
+  updatedAt: DateTime
+}
+
+type EmployeeEntityMinAggregate {
+  createdAt: DateTime
+  firstName: String
+  id: String
+  isAdmin: Boolean
+  lastName: String
+  patronymic: String
+  updatedAt: DateTime
+}
+
+input EmployeeUpdateInput {
+  """Электронная почта (должна быть подтверждена)"""
+  email: String
+
+  """Имя"""
+  firstName: String
+  id: ID!
+
+  """Является ли админом?"""
+  isAdmin: Boolean = false
+
+  """Фамилия"""
+  lastName: String
+
+  """Отчество"""
+  patronymic: String
+}
+
+"""Пол"""
+enum GenderEnum {
+  Female
+  Male
+}
+
+type Mutation {
+  """Создание сотрудника"""
+  createEmployee(input: EmployeeCreateInput!): EmployeeEntity!
+
+  """Удаление сотрудника"""
+  deleteEmployee(id: String!): EmployeeEntity!
+
+  """
+  Подтверждение электронной почты кодом. Возвращает true, если почта успешно подтверждена.
+  """
+  emailConfirmByCode(code: String!, email: String!): Boolean!
+
+  """Вход по почте и паролю, возвращает accessToken"""
+  loginByPassword(email: String!, password: String!): String!
+
+  """
+  Обновление пары токенов для авторизованного пользователя, возвращает новый accessToken
+  """
+  refreshTokens: String!
+
+  """Регистрация студента. Сначала необходимо подтвердить почту."""
+  registration(input: StudentCreateInput!): Boolean!
+
+  """
+  Отправка кода подтверждения почты. Устанавливает RegistrationToken в cookies. Возвращает время до которого необходимо завершить регистрацию.
+  """
+  sendConfirmationCode(email: String!): DateTime!
+
+  """Создание/регистрация студента."""
+  studentCreate(input: StudentCreateInput!): StudentEntity!
+
+  """Обновление студента."""
+  studentUpdate(input: StudentUpdateInput!): StudentEntity!
+
+  """Обновление сотрудника"""
+  updateEmployee(input: EmployeeUpdateInput!): EmployeeEntity!
+}
+
+"""Уведомление"""
+type NotificationEntity {
+  _count: NotificationEntityCount!
+
+  """Содержимое"""
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+
+  """Заголовок"""
+  title: String!
+  updatedAt: DateTime
+
+  """Получатели"""
+  users: [NotificationToUserEntity!]
+}
+
+type NotificationEntityCount {
+  users: Int!
+}
+
+"""Уведомления для пользователей"""
+type NotificationToUserEntity {
+  createdAt: DateTime!
+
+  """Прочитано ли уведомление?"""
+  isRead: Boolean!
+  notification: NotificationEntity!
+  notificationId: String!
+  updatedAt: DateTime
+  user: UserEntity!
+  userId: String!
+}
+
+type Query {
+  """Проверка почты на корректность и доступность"""
+  emailAvailability(email: String!): EmailAvailabilityResponse!
+
+  """Выборка сотрудника по id"""
+  getEmployeeById: EmployeeEntity!
+
+  """Выборка всех сотрудников"""
+  getEmployees: [EmployeeEntity!]!
+
+  """Получение студента по id."""
+  student(id: String!): StudentEntity!
+
+  """Получение списка студентов."""
+  students: [StudentEntity!]!
+
+  """Получить текущего пользователя"""
+  userCurrent: UserCurrentResponse!
+}
+
+"""Уведомление о прибытии студента"""
+type StudentArrivalNoticeEntity {
+  """Адрес регистрации"""
+  address: String
+  createdAt: DateTime!
+
+  """Дата регистрации"""
+  date: DateTime
+
+  """Дата окончания регистрации"""
+  expires: DateTime
+  id: ID!
+
+  """Приглашающая сторона"""
+  invitingSide: String
+
+  """Профессия"""
+  profession: String
+
+  """Принимающая сторона"""
+  receivingSide: String
+  student: StudentEntity!
+  studentId: String!
+  updatedAt: DateTime
+}
+
+"""Близкие родственники студента"""
+type StudentCloseRelativeEntity {
+  """Постоянное место жительства"""
+  addressContinuosResidence: String
+
+  """Дата рождения"""
+  birthDate: DateTime
+
+  """Гражданство"""
+  citizenship: String
+  createdAt: DateTime!
+
+  """Имя"""
+  firstName: String
+  id: ID!
+
+  """Фамилия"""
+  lastName: String
+
+  """Отчество"""
+  patronymic: String
+  student: StudentEntity!
+  studentId: String!
+  updatedAt: DateTime
+}
+
+input StudentCreateInput {
+  """Курс"""
+  course: Int
+
+  """Куратор"""
+  curator: String
+
+  """Электронная почта (должна быть подтверждена)"""
+  email: String!
+
+  """Факультет"""
+  faculty: String
+
+  """Имя"""
+  firstName: String
+
+  """Группа"""
+  group: String
+
+  """Фамилия"""
+  lastName: String
+
+  """Отчество"""
+  patronymic: String
+
+  """Телефон"""
+  phone: String
+}
+
+"""Студент"""
+type StudentEntity {
+  _count: StudentEntityCount!
+
+  """Уведомление о прибытии"""
+  arrivalNotice: StudentArrivalNoticeEntity
+
+  """Близкие родственники"""
+  closeRelatives: [StudentCloseRelativeEntity!]
+
+  """Курс"""
+  course: Int
+  createdAt: DateTime!
+
+  """Куратор"""
+  curator: String
+
+  """Факультет"""
+  faculty: String
+
+  """Группа"""
+  group: String
+  id: ID!
+
+  """Миграционная карта"""
+  migrationCard: StudentMigrationCardEntity
+
+  """Паспорт"""
+  passport: StudentPassportEntity
+
+  """Телефон"""
+  phone: String
+  updatedAt: DateTime
+  user: UserEntity!
+
+  """Виза"""
+  visa: StudentVisaEntity
+
+  """Визовые анкеты"""
+  visaRequests: [StudentVisaRequestEntity!]
+}
+
+type StudentEntityAvgAggregate {
+  course: Float
+}
+
+type StudentEntityCount {
+  closeRelatives: Int!
+  visaRequests: Int!
+}
+
+type StudentEntityCountAggregate {
+  _all: Int!
+  course: Int!
+  createdAt: Int!
+  curator: Int!
+  faculty: Int!
+  group: Int!
+  id: Int!
+  phone: Int!
+  updatedAt: Int!
+}
+
+type StudentEntityMaxAggregate {
+  course: Int
+  createdAt: DateTime
+  curator: String
+  faculty: String
+  group: String
+  id: String
+  phone: String
+  updatedAt: DateTime
+}
+
+type StudentEntityMinAggregate {
+  course: Int
+  createdAt: DateTime
+  curator: String
+  faculty: String
+  group: String
+  id: String
+  phone: String
+  updatedAt: DateTime
+}
+
+type StudentEntitySumAggregate {
+  course: Int
+}
+
+"""Миграционная карта студента"""
+type StudentMigrationCardEntity {
+  createdAt: DateTime!
+
+  """Дата истечения"""
+  expirationDate: DateTime
+  id: ID!
+
+  """Дата выдачи"""
+  issueDate: DateTime
+
+  """Номер"""
+  number: String
+
+  """Серия"""
+  series: String
+  student: StudentEntity!
+  studentId: String!
+  updatedAt: DateTime
+}
+
+"""Паспорт студента"""
+type StudentPassportEntity {
+  """Дата рождения"""
+  birthDate: DateTime
+
+  """Место рождения"""
+  birthPlace: String
+
+  """Гражданство"""
+  citizenship: String
+  createdAt: DateTime!
+
+  """Дата истечения"""
+  expirationDate: DateTime
+
+  """Имя"""
+  firstName: String
+
+  """Пол"""
+  gender: GenderEnum
+  id: ID!
+
+  """Дата выдачи"""
+  issueDate: DateTime
+
+  """Кем выдан"""
+  issuedBy: String
+
+  """Фамилия"""
+  lastName: String
+
+  """Номер"""
+  number: String
+
+  """Отчество"""
+  patronymic: String
+
+  """Серия"""
+  series: String
+  student: StudentEntity!
+  studentId: String!
+  updatedAt: DateTime
+}
+
+type StudentPassportEntityCountAggregate {
+  _all: Int!
+  birthDate: Int!
+  birthPlace: Int!
+  citizenship: Int!
+  createdAt: Int!
+  expirationDate: Int!
+  firstName: Int!
+  gender: Int!
+  id: Int!
+  issueDate: Int!
+  issuedBy: Int!
+  lastName: Int!
+  number: Int!
+  patronymic: Int!
+  series: Int!
+  studentId: Int!
+  updatedAt: Int!
+}
+
+type StudentPassportEntityMaxAggregate {
+  birthDate: DateTime
+  birthPlace: String
+  citizenship: String
+  createdAt: DateTime
+  expirationDate: DateTime
+  firstName: String
+  gender: GenderEnum
+  id: String
+  issueDate: DateTime
+  issuedBy: String
+  lastName: String
+  number: String
+  patronymic: String
+  series: String
+  studentId: String
+  updatedAt: DateTime
+}
+
+type StudentPassportEntityMinAggregate {
+  birthDate: DateTime
+  birthPlace: String
+  citizenship: String
+  createdAt: DateTime
+  expirationDate: DateTime
+  firstName: String
+  gender: GenderEnum
+  id: String
+  issueDate: DateTime
+  issuedBy: String
+  lastName: String
+  number: String
+  patronymic: String
+  series: String
+  studentId: String
+  updatedAt: DateTime
+}
+
+input StudentUpdateInput {
+  """Курс"""
+  course: Int
+
+  """Куратор"""
+  curator: String
+
+  """Электронная почта (должна быть подтверждена)"""
+  email: String
+
+  """Факультет"""
+  faculty: String
+
+  """Имя"""
+  firstName: String
+
+  """Группа"""
+  group: String
+
+  """Идентификатор пользователя"""
+  id: ID!
+
+  """Фамилия"""
+  lastName: String
+
+  """Отчество"""
+  patronymic: String
+
+  """Телефон"""
+  phone: String
+}
+
+"""Виза студента"""
+type StudentVisaEntity {
+  """Серия бланка"""
+  blankSeries: String
+  createdAt: DateTime!
+
+  """Дата истечения"""
+  expirationDate: DateTime
+
+  """Идентификатор визы"""
+  id: ID!
+
+  """Номер приглашения"""
+  invitationNumber: String
+
+  """Дата выдачи"""
+  issueDate: DateTime
+
+  """Номер"""
+  number: String
+  student: StudentEntity!
+  studentId: String!
+  updatedAt: DateTime
+}
+
+"""Визовая анкета студента"""
+type StudentVisaRequestEntity {
+  """Адрес в стране постоянного проживания"""
+  addressInCountryOfContinuousResidence: String
+
+  """Адрес постановки на миграционный учет"""
+  addressOfMigrationRegistration: String
+
+  """Прилагаемые документы"""
+  attachedDocuments: String
+
+  """Категория визы"""
+  category: VisaCategoryEnum
+  createdAt: DateTime!
+
+  """Комментарий сотрудника"""
+  employeeComment: String
+
+  """Маршрут предполагаемого пребывания"""
+  estimatedRouteOfStay: String
+  id: ID!
+
+  """Кратность визы"""
+  multiplicity: VisaMultiplicityEnum
+
+  """Место работы или учёбы, должность"""
+  placeOfWorkOrStudyAndEmploymentPosition: String
+
+  """В связи с ..."""
+  reason: String
+
+  """Регистрационный номер заполняемый только сотрудником"""
+  registrationNumber: String
+
+  """Родственники на территории РФ"""
+  russianFederationRelatives: String
+
+  """Статус визовой анкеты"""
+  status: VisaRequestStatusEnum!
+  student: StudentEntity!
+  studentId: String!
+  updatedAt: DateTime
+}
+
+type UserCurrentResponse {
+  """Дата истечения токена доступа"""
+  accessTokenExpires: DateTime!
+
+  """Роли текущего пользователя"""
+  roles: [UserRoleEnum!]!
+
+  """Текущий пользователь"""
+  user: UserEntity!
+}
+
+"""Пользователь"""
+type UserEntity {
+  _count: UserEntityCount!
+  createdAt: DateTime!
+
+  """Электронная почта (должна быть подтверждена)"""
+  email: String!
+
+  """Если пользователь - сотрудник"""
+  employee: EmployeeEntity
+
+  """Идентификатор пользователя"""
+  id: ID!
+
+  """Последняя активность"""
+  lastActivity: DateTime
+
+  """Уведомления пользователя"""
+  notifications: [NotificationToUserEntity!]
+
+  """Если пользователь - студент"""
+  student: StudentEntity
+  updatedAt: DateTime
+}
+
+type UserEntityCount {
+  notifications: Int!
+}
+
+type UserEntityCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  email: Int!
+  id: Int!
+  lastActivity: Int!
+  updatedAt: Int!
+}
+
+type UserEntityMaxAggregate {
+  createdAt: DateTime
+  email: String
+  id: String
+  lastActivity: DateTime
+  updatedAt: DateTime
+}
+
+type UserEntityMinAggregate {
+  createdAt: DateTime
+  email: String
+  id: String
+  lastActivity: DateTime
+  updatedAt: DateTime
+}
+
+"""Роли пользователя"""
+enum UserRoleEnum {
+  Admin
+  Any
+  Employee
+  Student
+}
+
+"""Требуемая категория визы в визовой анкете"""
+enum VisaCategoryEnum {
+  RegularBusiness
+  RegularGroupTravel
+  RegularHumanitarian
+  RegularNationalEntry
+  RegularPrivate
+  RegularStudy
+  RegularTourist
+  RegularWorking
+  TemporaryResident
+  Transit
+}
+
+"""Требуемая кратность визы в визовой анкете"""
+enum VisaMultiplicityEnum {
+  Double
+  Multiple
+  Single
+}
+
+"""Статус анкеты на визу"""
+enum VisaRequestStatusEnum {
+  Finished
+  Pending
+  PendingCorrectionsByStudent
+  Verified
+}

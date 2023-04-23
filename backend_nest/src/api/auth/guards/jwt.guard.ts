@@ -1,13 +1,13 @@
-import assert from '@common/assert';
+import { assert, runtimeMode } from '@common';
 import {
-  CanActivate,
-  Injectable,
-  UnauthorizedException,
+  CanActivate, Injectable, Logger, UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { AuthGuard } from '@nestjs/passport';
 import { TUser } from '@prisma-types';
+import { GqlExecutionContext } from '@nestjs/graphql';
+
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 // Order of methods calls:
@@ -21,6 +21,8 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
  */
 @Injectable()
 export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
+  private readonly logger = new Logger(JwtGuard.name);
+
   constructor(private reflector: Reflector) {
     super();
   }
@@ -28,21 +30,25 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
   /**
    * Method automatically callable for getting express request from graphql context
    */
-  // getRequest(context: ExecutionContextHost): Request {
-  //   return GqlExecutionContext
-  //     .create(context)
-  //     .getContext()
-  //     .req;
-  // }
+  getRequest(context: ExecutionContextHost): Request {
+    return GqlExecutionContext.create(context).getContext().req;
+  }
 
   /**
    * Method automatically callable after all guard and strategy validations
    */
   handleRequest(strategyErr?: Error, payload?: TUser | false, jwtErr?: Error): any {
-    // console.log('strategyErr:', strategyErr?.message);
-    // console.log('payload:', payload);
-    // console.log('jwtErr:', jwtErr?.message);
-    assert(!strategyErr && !jwtErr && payload, new UnauthorizedException());
+    const isNoError = !strategyErr && !jwtErr && payload;
+    if (!isNoError && runtimeMode.isDebug) {
+      const errors = {
+        strategyErr: strategyErr?.message,
+        jwtErr: jwtErr?.message,
+        payload,
+      };
+      this.logger.debug(`Ошибка валидации JWT: ${JSON.stringify(errors, null, 2)}`);
+      assert(isNoError, new UnauthorizedException(JSON.stringify(errors)));
+    }
+    assert(isNoError, new UnauthorizedException());
     return payload;
   }
 

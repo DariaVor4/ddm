@@ -1,15 +1,16 @@
-import assert from '@common/assert';
+import { assert, _throw } from '@common';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { TUser } from '@prisma-types';
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+
 import { ConfigService } from '../../../config/config.service';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { CookieKeys } from '../types/cookie-keys';
 import { IAccessTokenPayload } from '../interfaces/access-token-payload.interface';
+import { ISessionContext } from '../decorators/current-session.decorator';
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -26,24 +27,26 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
+  // noinspection JSUnusedLocalSymbols
   /**
    * Method automatically callable after access token
    *    validation for additional checks of the current session.
    */
-  async validate(req: Request, payload: IAccessTokenPayload, done: Function): Promise<TUser> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/ban-types
+  async validate(req: Request, payload: IAccessTokenPayload, done: Function): Promise<ISessionContext> {
     // Get User
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.userEntity.findFirstOrThrow({
       where: {
         id: payload.userId,
         tokenHash: { not: null },
-        deletedAt: null,
       },
-      include: {
-        student: true,
-        employee: true,
+      select: {
+        id: true,
+        email: true,
+        tokenHash: true,
+        updatedAt: true,
       },
-    });
-    assert(user?.tokenHash, new UnauthorizedException('User not found or was not authorized'));
+    }).catch(_throw(new UnauthorizedException('User not found or was not authorized')));
     // Check RefreshToken
     const accessToken: string | undefined = req.headers.authorization?.split(' ')[1];
     const refreshToken: string | undefined = req.cookies[CookieKeys.RefreshTokenKey];
@@ -54,13 +57,22 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
       ignoreExpiration: false,
     }), new UnauthorizedException('Invalid RefreshToken'));
     // Check User.tokenHash
-    assert(await bcrypt.compare(accessToken, user.tokenHash), new UnauthorizedException('Invalid access token'));
+    assert(accessToken && user.tokenHash && await bcrypt.compare(accessToken, user.tokenHash), new UnauthorizedException('Invalid access token'));
     // Update user.lastActivity
-    await this.prisma.user.update({
+    await this.prisma.userEntity.update({
       where: { id: payload.userId },
       data: { lastActivity: new Date(), updatedAt: user.updatedAt },
     });
     // Return UserEntity
-    return user;
+    return {
+      userId: user.id,
+      userEmail: user.email,
+      accessToken,
+      refreshToken,
+      roles: payload.roles,
+      accessTokenExpires: new Date(payload.exp * 1000),
+      cookies: req.cookies,
+      headers: req.headers,
+    };
   }
 }

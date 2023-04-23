@@ -4,10 +4,10 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigService } from '../../config/config.service';
 import { EmailModule } from '../../email/email.module';
 import { UserModule } from '../user/user.module';
-import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './auth.service';
 import { AccessTokenStrategy } from './strategies/access-token.strategy';
-import { RegistrationController } from './controllers/registration.controller';
+import AuthResolver from './resolvers/auth.resolver';
+import { RegistrationResolver } from './resolvers/registration.resolver';
 
 /**
  * Module for authorization
@@ -33,10 +33,9 @@ import { RegistrationController } from './controllers/registration.controller';
   providers: [
     AuthService,
     AccessTokenStrategy,
+    AuthResolver,
+    RegistrationResolver,
   ],
-  controllers: [
-    AuthController,
-    RegistrationController,
-  ],
+  exports: [AuthService],
 })
 export class AuthModule {}

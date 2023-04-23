@@ -1,19 +1,10 @@
-import { joi } from '@common';
+import { InputType, IntersectionType, PickType } from '@nestjs/graphql';
+import { EmployeeEntity } from '@prisma-graphql/employee-entity';
+import { UserEntity } from '@prisma-graphql/user-entity';
 
-export interface IEmployeeCreateInput {
-  email: string;
-  password: string;
-  lastName: string;
-  firstName: string;
-  patronymic?: string;
-  isAdmin?: boolean;
-}
-
-export const EmployeeCreateInputSchema = joi.object({
-  email: joi.string().email().required(),
-  password: joi.string().min(8).required(),
-  lastName: joi.string().min(1).required(),
-  firstName: joi.string().min(1).required(),
-  patronymic: joi.string().min(1).optional(),
-  isAdmin: joi.boolean().optional(),
-}).required();
+@InputType()
+export default class EmployeeCreateInput extends IntersectionType(
+  PickType(UserEntity, ['email', 'password']),
+  PickType(EmployeeEntity, ['lastName', 'firstName', 'patronymic', 'isAdmin']),
+  InputType,
+) {}

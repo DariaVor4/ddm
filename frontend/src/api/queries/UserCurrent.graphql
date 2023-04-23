@@ -1,0 +1,57 @@
+query UserCurrent {
+    userCurrent {
+        roles
+        accessTokenExpires
+        user {
+            id
+            email
+            lastActivity
+            createdAt
+            updatedAt
+            employee {
+                id
+                lastName
+                firstName
+                patronymic
+                isAdmin
+                createdAt
+                updatedAt
+                user {
+                    id
+                    email
+                    lastActivity
+                    createdAt
+                    updatedAt
+                }
+            }
+            student {
+                id
+                phone
+                curator
+                faculty
+                course
+                group
+                createdAt
+                updatedAt
+                passport {
+                    id
+                    studentId
+                    lastName
+                    firstName
+                    patronymic
+                    birthDate
+                    birthPlace
+                    gender
+                    citizenship
+                    series
+                    number
+                    issueDate
+                    issuedBy
+                    expirationDate
+                    createdAt
+                    updatedAt
+                }
+            }
+        }
+    }
+}
