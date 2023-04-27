@@ -1,4 +1,4 @@
-import { CustomProvider } from 'rsuite';
+import { CustomProvider, Loader } from 'rsuite';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import React from 'react';
@@ -30,7 +30,7 @@ function App() {
   const { data, loading } = useUserCurrentQuery();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader size='lg' center />;
   }
 
   return (

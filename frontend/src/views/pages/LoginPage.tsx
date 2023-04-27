@@ -76,8 +76,8 @@ function LoginPage() {
             <Form.ControlLabel>Пароль</Form.ControlLabel>
             <InputGroup>
               <Form.Control name='password' type={isPasswordVisible ? 'text' : 'password'} />
-              <InputGroup.Button>
-                <Icon as={isPasswordVisible ? UnvisibleIcon : VisibleIcon} onClick={() => setIsPasswordVisible(v => !v)} />
+              <InputGroup.Button onClick={() => setIsPasswordVisible(v => !v)}>
+                <Icon as={isPasswordVisible ? UnvisibleIcon : VisibleIcon} />
               </InputGroup.Button>
             </InputGroup>
           </Form.Group>

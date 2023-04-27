@@ -1,5 +1,5 @@
 import {
-  Args, Mutation, Query, Resolver,
+  Args, Context, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import {
   InternalServerErrorException, Logger, NotAcceptableException, Req, Res,
@@ -81,7 +81,7 @@ export class RegistrationResolver {
   @Roles(UserRoleEnum.Any)
   async sendConfirmationCode(
     @Args('email') email: string,
-    @Res() res: Response,
+    @Context('res') res: Response,
   ): Promise<Date> {
     // Проверка почты на корректность и доступность
     const emailVerdict = await this.emailAvailability(email);
@@ -132,7 +132,7 @@ export class RegistrationResolver {
   async emailConfirmByCode(
     @Args('email') email: string,
     @Args('code') code: string,
-    @Req() req: Request,
+    @Context('req') req: Request,
     @CookiesPick(CookieKeys.RegistrationTokenKey) registrationToken: string,
   ): Promise<boolean> {
     this.logger.debug(`RegistrationTokenKey: ${req.cookies.RegistrationToken}`);
