@@ -281,7 +281,6 @@ export type GStudentCreateInput = {
   course: InputMaybe<Scalars['Int']>;
   /** Куратор */
   curator: InputMaybe<Scalars['String']>;
-  /** Электронная почта (должна быть подтверждена) */
   email: Scalars['String'];
   /** Факультет */
   faculty: InputMaybe<Scalars['String']>;
@@ -291,6 +290,7 @@ export type GStudentCreateInput = {
   group: InputMaybe<Scalars['String']>;
   /** Фамилия */
   lastName: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
   /** Отчество */
   patronymic: InputMaybe<Scalars['String']>;
   /** Телефон */
@@ -488,7 +488,6 @@ export type GStudentUpdateInput = {
   course: InputMaybe<Scalars['Int']>;
   /** Куратор */
   curator: InputMaybe<Scalars['String']>;
-  /** Электронная почта (должна быть подтверждена) */
   email: InputMaybe<Scalars['String']>;
   /** Факультет */
   faculty: InputMaybe<Scalars['String']>;
@@ -500,6 +499,7 @@ export type GStudentUpdateInput = {
   id: Scalars['ID'];
   /** Фамилия */
   lastName: InputMaybe<Scalars['String']>;
+  password: InputMaybe<Scalars['String']>;
   /** Отчество */
   patronymic: InputMaybe<Scalars['String']>;
   /** Телефон */
@@ -660,6 +660,14 @@ export type GEmailAvailabilityQueryVariables = Exact<{
 
 export type GEmailAvailabilityQuery = { emailAvailability: { verdict: GEmailAvailabilityVerdictEnum, message: string } };
 
+export type GEmailConfirmByCodeMutationVariables = Exact<{
+  email: Scalars['String'];
+  code: Scalars['String'];
+}>;
+
+
+export type GEmailConfirmByCodeMutation = { emailConfirmByCode: boolean };
+
 export type GLoginByPasswordMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -667,6 +675,20 @@ export type GLoginByPasswordMutationVariables = Exact<{
 
 
 export type GLoginByPasswordMutation = { loginByPassword: string };
+
+export type GRegistrationMutationVariables = Exact<{
+  input: GStudentCreateInput;
+}>;
+
+
+export type GRegistrationMutation = { registration: boolean };
+
+export type GSendConfirmationCodeMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type GSendConfirmationCodeMutation = { sendConfirmationCode: string };
 
 export type GUserCurrentQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -710,6 +732,38 @@ export function useEmailAvailabilityLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type EmailAvailabilityQueryHookResult = ReturnType<typeof useEmailAvailabilityQuery>;
 export type EmailAvailabilityLazyQueryHookResult = ReturnType<typeof useEmailAvailabilityLazyQuery>;
 export type EmailAvailabilityQueryResult = Apollo.QueryResult<GEmailAvailabilityQuery, GEmailAvailabilityQueryVariables>;
+export const EmailConfirmByCodeDocument = gql`
+    mutation EmailConfirmByCode($email: String!, $code: String!) {
+  emailConfirmByCode(email: $email, code: $code)
+}
+    `;
+export type GEmailConfirmByCodeMutationFn = Apollo.MutationFunction<GEmailConfirmByCodeMutation, GEmailConfirmByCodeMutationVariables>;
+
+/**
+ * __useEmailConfirmByCodeMutation__
+ *
+ * To run a mutation, you first call `useEmailConfirmByCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEmailConfirmByCodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [emailConfirmByCodeMutation, { data, loading, error }] = useEmailConfirmByCodeMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useEmailConfirmByCodeMutation(baseOptions?: Apollo.MutationHookOptions<GEmailConfirmByCodeMutation, GEmailConfirmByCodeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GEmailConfirmByCodeMutation, GEmailConfirmByCodeMutationVariables>(EmailConfirmByCodeDocument, options);
+      }
+export type EmailConfirmByCodeMutationHookResult = ReturnType<typeof useEmailConfirmByCodeMutation>;
+export type EmailConfirmByCodeMutationResult = Apollo.MutationResult<GEmailConfirmByCodeMutation>;
+export type EmailConfirmByCodeMutationOptions = Apollo.BaseMutationOptions<GEmailConfirmByCodeMutation, GEmailConfirmByCodeMutationVariables>;
 export const LoginByPasswordDocument = gql`
     mutation LoginByPassword($email: String!, $password: String!) {
   loginByPassword(email: $email, password: $password)
@@ -742,6 +796,68 @@ export function useLoginByPasswordMutation(baseOptions?: Apollo.MutationHookOpti
 export type LoginByPasswordMutationHookResult = ReturnType<typeof useLoginByPasswordMutation>;
 export type LoginByPasswordMutationResult = Apollo.MutationResult<GLoginByPasswordMutation>;
 export type LoginByPasswordMutationOptions = Apollo.BaseMutationOptions<GLoginByPasswordMutation, GLoginByPasswordMutationVariables>;
+export const RegistrationDocument = gql`
+    mutation Registration($input: StudentCreateInput!) {
+  registration(input: $input)
+}
+    `;
+export type GRegistrationMutationFn = Apollo.MutationFunction<GRegistrationMutation, GRegistrationMutationVariables>;
+
+/**
+ * __useRegistrationMutation__
+ *
+ * To run a mutation, you first call `useRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegistrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registrationMutation, { data, loading, error }] = useRegistrationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegistrationMutation(baseOptions?: Apollo.MutationHookOptions<GRegistrationMutation, GRegistrationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GRegistrationMutation, GRegistrationMutationVariables>(RegistrationDocument, options);
+      }
+export type RegistrationMutationHookResult = ReturnType<typeof useRegistrationMutation>;
+export type RegistrationMutationResult = Apollo.MutationResult<GRegistrationMutation>;
+export type RegistrationMutationOptions = Apollo.BaseMutationOptions<GRegistrationMutation, GRegistrationMutationVariables>;
+export const SendConfirmationCodeDocument = gql`
+    mutation SendConfirmationCode($email: String!) {
+  sendConfirmationCode(email: $email)
+}
+    `;
+export type GSendConfirmationCodeMutationFn = Apollo.MutationFunction<GSendConfirmationCodeMutation, GSendConfirmationCodeMutationVariables>;
+
+/**
+ * __useSendConfirmationCodeMutation__
+ *
+ * To run a mutation, you first call `useSendConfirmationCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendConfirmationCodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendConfirmationCodeMutation, { data, loading, error }] = useSendConfirmationCodeMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useSendConfirmationCodeMutation(baseOptions?: Apollo.MutationHookOptions<GSendConfirmationCodeMutation, GSendConfirmationCodeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GSendConfirmationCodeMutation, GSendConfirmationCodeMutationVariables>(SendConfirmationCodeDocument, options);
+      }
+export type SendConfirmationCodeMutationHookResult = ReturnType<typeof useSendConfirmationCodeMutation>;
+export type SendConfirmationCodeMutationResult = Apollo.MutationResult<GSendConfirmationCodeMutation>;
+export type SendConfirmationCodeMutationOptions = Apollo.BaseMutationOptions<GSendConfirmationCodeMutation, GSendConfirmationCodeMutationVariables>;
 export const UserCurrentDocument = gql`
     query UserCurrent {
   userCurrent {

@@ -20,7 +20,7 @@ export const CookiesPick = createParamDecorator(
   (key: CookieKeys | undefined, context: GqlExecutionContext) => {
     const { cookies } = GqlExecutionContext
       .create(context)
-      .getContext() as Request;
+      .getContext().req as Request;
     return key ? cookies[key] as string : cookies as TCookies;
   },
 );

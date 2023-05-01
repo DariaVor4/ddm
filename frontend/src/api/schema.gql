@@ -257,8 +257,6 @@ input StudentCreateInput {
 
   """Куратор"""
   curator: String
-
-  """Электронная почта (должна быть подтверждена)"""
   email: String!
 
   """Факультет"""
@@ -272,6 +270,7 @@ input StudentCreateInput {
 
   """Фамилия"""
   lastName: String
+  password: String!
 
   """Отчество"""
   patronymic: String
@@ -498,8 +497,6 @@ input StudentUpdateInput {
 
   """Куратор"""
   curator: String
-
-  """Электронная почта (должна быть подтверждена)"""
   email: String
 
   """Факультет"""
@@ -516,6 +513,7 @@ input StudentUpdateInput {
 
   """Фамилия"""
   lastName: String
+  password: String
 
   """Отчество"""
   patronymic: String

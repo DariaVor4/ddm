@@ -28,9 +28,9 @@ export class StudentService {
    * С проверкой почты на уникальность.
    */
   async studentCreate(input: StudentCreateInput, select?: Prisma.StudentEntitySelect): Promise<StudentEntity> {
-    if (!await this.userService.isEmailFree(input.email)) {
-      throw new NotAcceptableException('Пользователь с таким email уже существует');
-    }
+    // if (!await this.userService.isEmailFree(input.email)) {
+    //   throw new NotAcceptableException('Пользователь с таким email уже существует');
+    // }
     const [userProperties, studentProperties, passportProperties] = [
       pick(input, ['email'] satisfies (keyof UserEntity & keyof StudentCreateInput)[]),
       pick(input, ['phone', 'faculty', 'group', 'course', 'curator'] satisfies (keyof StudentEntity & keyof StudentCreateInput)[]),

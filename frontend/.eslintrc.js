@@ -35,6 +35,7 @@ module.exports = {
     'linebreak-style': 'off',
     'jsx-a11y/no-access-key': 'off',
     'no-nested-ternary': 'off',
+    '@typescript-eslint/no-shadow': 'off',
     // 'semi': 'off',
     // '@typescript-eslint/semi': ['error', 'never'],
   },

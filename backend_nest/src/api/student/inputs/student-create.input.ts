@@ -1,11 +1,11 @@
 import { InputType, IntersectionType, PickType } from '@nestjs/graphql';
-import { UserEntity } from '@prisma-graphql/user-entity';
+import {UserEntity, UserEntityCreateInput} from '@prisma-graphql/user-entity';
 import { StudentEntity } from '@prisma-graphql/student-entity';
 import { StudentPassportEntity } from '@prisma-graphql/student-passport-entity';
 
 @InputType()
 export default class StudentCreateInput extends IntersectionType(
-  PickType(UserEntity, ['email', 'password']),
+  PickType(UserEntityCreateInput, ['email', 'password']),
   IntersectionType(
     PickType(StudentEntity, ['phone', 'curator', 'faculty', 'course', 'group']),
     PickType(StudentPassportEntity, ['lastName', 'firstName', 'patronymic']),
