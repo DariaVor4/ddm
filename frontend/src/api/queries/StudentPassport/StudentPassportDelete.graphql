@@ -1,20 +1,3 @@
 mutation StudentPassportDelete($studentId: UUID!) {
-    studentPassportDelete(studentId: $studentId) {
-        id
-        studentId
-        lastName
-        firstName
-        patronymic
-        birthDate
-        birthPlace
-        gender
-        citizenship
-        series
-        number
-        issueDate
-        issuedBy
-        expirationDate
-        createdAt
-        updatedAt
-    }
+    studentPassportDelete(studentId: $studentId)
 }

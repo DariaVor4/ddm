@@ -13,6 +13,7 @@ import { UserModule } from './api/user/user.module';
 import { EmployeeModule } from './api/employee/employee.module';
 import { StudentModule } from './api/student/student.module';
 import { StudentPassportModule } from './api/student-passport/student-passport.module';
+import { StudentArrivalNoticeModule } from './api/student-arrival-notice/student-arrival-notice.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { StudentPassportModule } from './api/student-passport/student-passport.m
     StudentModule,
     EmployeeModule,
     StudentPassportModule,
+    StudentArrivalNoticeModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },

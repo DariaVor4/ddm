@@ -1,0 +1,3 @@
+mutation StudentArrivalNoticeUpsert($data: StudentArrivalNoticeUpsertInput!, $studentId: UUID) {
+    studentArrivalNoticeUpsert(data: $data, studentId: $studentId)
+}

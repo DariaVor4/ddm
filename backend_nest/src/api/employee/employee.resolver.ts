@@ -1,12 +1,11 @@
 import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
-import { ForbiddenException, NotFoundException, Param } from '@nestjs/common';
-import { _throw, assert, isRoleAdmin } from '@common';
-import * as uuid from 'uuid';
+import { ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { _throw, isRoleAdmin } from '@common';
 import { EmployeeEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
-import { EmailAddress, UUID } from '@common/scalars';
+import { UUID } from '@common/scalars';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmployeeService } from './employee.service';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -28,34 +27,39 @@ export class EmployeeResolver {
 
   /**
    * Выборка всех сотрудников.
+   * @param select Запрошенные поля через GraphQL.
+   * @return Список сотрудников.
    */
   @Query(() => [EmployeeEntity], {
     description: 'Выборка всех сотрудников',
   })
   @Roles(UserRoleEnum.Admin)
-  async getEmployees(@PrismaSelector() select: Prisma.EmployeeEntitySelect): Promise<EmployeeEntity[]> {
+  async employees(@PrismaSelector() select: Prisma.EmployeeEntitySelect): Promise<EmployeeEntity[]> {
     return await this.prisma.employeeEntity.findMany({ select }) as EmployeeEntity[];
   }
 
   /**
-   * Выборка сотрудника по id.
+   * Получение сотрудника по id.
+   * @param employeeId Идентификатор сотрудника.
+   * @param select Запрошенные поля через GraphQL.
    */
   @Query(() => EmployeeEntity, {
-    description: 'Выборка сотрудника по id',
+    description: 'Получение сотрудника по id',
   })
   @Roles(UserRoleEnum.Admin)
-  async getEmployeeById(
-    @Param('id') id: string,
+  async employee(
+    @Args('employeeId', { type: UUID }) employeeId: string,
     @PrismaSelector() select: Prisma.EmployeeEntitySelect,
   ): Promise<EmployeeEntity> {
-    assert(uuid.validate(id), new NotFoundException('Некорректный id'));
-    return await this.prisma.employeeEntity
-      .findUniqueOrThrow({ where: { id }, select })
+    return await this.prisma.employeeEntity.findUniqueOrThrow({ where: { id: employeeId }, select })
       .catch(_throw(new NotFoundException('Сотрудник не найден'))) as EmployeeEntity;
   }
 
   /**
    * Создание сотрудника.
+   * @param input Данные для создания.
+   * @return Созданный сотрудник.
+   * @throws {InternalServerErrorException} Ошибка при создании сотрудника.
    */
   @Mutation(() => EmployeeEntity, {
     description: 'Создание сотрудника',
@@ -63,45 +67,54 @@ export class EmployeeResolver {
   @Roles(UserRoleEnum.Admin)
   async createEmployee(
     @Args('input') input: EmployeeCreateInput,
-    @PrismaSelector() select: Prisma.EmployeeEntitySelect,
   ): Promise<EmployeeEntity> {
-    return this.employeeService.createEmployee(input, select);
+    return this.employeeService.createEmployee(input)
+      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при создании сотрудника: ${e.message}`)));
   }
 
   /**
-   * Обновление сотрудника.
+   * Перезапись сотрудника.
+   * @param input Данные для перезаписи.
+   * @param ctx Контекст текущей сессии пользователя.
+   * @return Успешность перезаписи.
+   * @throws {ForbiddenException} Вы не можете обновлять профиль другого сотрудника.
+   * @throws {InternalServerErrorException} Ошибка при обновлении сотрудника.
    */
-  @Mutation(() => EmployeeEntity, {
-    description: 'Обновление сотрудника',
+  @Mutation(() => Boolean, {
+    description: 'Перезапись сотрудника',
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
   async updateEmployee(
     @Args('input') input: EmployeeUpdateInput,
     @CurrentSession() ctx: ISessionContext,
-    @PrismaSelector() select: Prisma.EmployeeEntitySelect,
-  ): Promise<EmployeeEntity> {
+  ): Promise<boolean> {
     if (ctx.userId !== input.id || !isRoleAdmin(ctx.roles)) {
       throw new ForbiddenException('Вы не можете обновлять профиль другого сотрудника');
     }
-    return this.employeeService.updateEmployee(input, select);
+    return !!await this.employeeService.updateEmployee(input)
+      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при обновлении сотрудника: ${e.message}`)));
   }
 
   /**
    * Удаление сотрудника.
+   * @param employeeId Идентификатор сотрудника.
+   * @return Успешность удаления.
+   * @throws {NotFoundException} Сотрудник не найден.
+   * @throws {InternalServerErrorException} Ошибка при удалении сотрудника.
    */
-  @Mutation(() => EmployeeEntity, {
+  @Mutation(() => Boolean, {
     description: 'Удаление сотрудника',
   })
   @Roles(UserRoleEnum.Admin)
   async deleteEmployee(
-    @Args('id', { type: UUID }) id: string,
-    @PrismaSelector() select: Prisma.EmployeeEntitySelect,
-  ): Promise<EmployeeEntity> {
-    const result = await this.prisma.employeeEntity.delete({
-      where: { id },
-      select,
-    }) as EmployeeEntity;
-    await this.prisma.userEntity.delete({ where: { id } });
-    return result;
+    @Args('employeeId', { type: UUID }) employeeId: string,
+  ): Promise<boolean> {
+    if (await this.prisma.employeeEntity.count({ where: { id: employeeId } }) === 0) {
+      throw new NotFoundException('Сотрудник не найден');
+    }
+    return this.prisma.$transaction(
+      async (prisma) => !!await prisma.employeeEntity.delete({ where: { id: employeeId } })
+        && !!await prisma.userEntity.delete({ where: { id: employeeId } }),
+    ).catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении сотрудника: ${e.message}`)));
   }
 }

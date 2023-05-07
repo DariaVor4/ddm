@@ -1,5 +1,6 @@
 import { Route } from 'react-router-dom';
-import StudentPassportPage from '../../pages/student-pages/StudentPassportPage.tsx';
+import StudentPassportPage from '../../pages/student-documents/StudentPassportPage.tsx';
+import StudentArrivalNoticePage from '../../pages/student-documents/StudentArrivalNoticePage.tsx';
 
 const StudentRoutes: JSX.Element = (
   <>
@@ -12,7 +13,7 @@ const StudentRoutes: JSX.Element = (
       <Route path='passport' element={<StudentPassportPage />} />
       <Route path='visa' element={<h1>Visa Settings</h1>} />
       <Route path='migration-card' element={<h1>Migration Card Settings</h1>} />
-      <Route path='arrival-notice' element={<h1>Arrival Notice Settings</h1>} />
+      <Route path='arrival-notice' element={<StudentArrivalNoticePage />} />
       <Route path='close-relatives' element={<h1>Close Relatives Settings</h1>} />
     </Route>
   </>

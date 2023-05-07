@@ -14,14 +14,14 @@ const titlePullUp = { shrink: true };
 const FormikTextField: FC<TFormikTextFieldProps> = memo(forwardRef(({
   name, helpText, shrink, ...props
 }, ref) => {
-  const [{ value, ...field }, meta] = useField(name);
+  const [field, meta] = useField(name);
   const { isSubmitting } = useFormikContext();
 
   return (
     <TextField
       {...field}
       ref={ref}
-      value={props.type === 'date' ? dayjs(value).format('DD.MM.YYYY') : value}
+      // value={props.type === 'date' ? dayjs(value).format('YYYY-MM-DD') : value}
       error={meta.touched && !!meta.error}
       helperText={(meta.touched && meta.error) || helpText}
       disabled={isSubmitting}

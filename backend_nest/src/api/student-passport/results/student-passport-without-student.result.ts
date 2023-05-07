@@ -4,8 +4,8 @@ import { StudentPassportEntity } from '@prisma-nestjs-graphql';
 /**
  * Паспорт студента, где вместо студента присутствует только его studentId.
  */
-@ObjectType()
-export default class StudentPassportWithoutStudentEntity extends OmitType(
+@ObjectType({ description: 'Паспорт студента, где вместо студента присутствует только его studentId.' })
+export default class StudentPassportWithoutStudentResult extends OmitType(
   StudentPassportEntity,
   ['student'],
   ObjectType,

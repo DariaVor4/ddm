@@ -174,7 +174,7 @@ export type GMutation = {
   /** Создание сотрудника */
   createEmployee: GEmployeeEntity;
   /** Удаление сотрудника */
-  deleteEmployee: GEmployeeEntity;
+  deleteEmployee: Scalars['Boolean'];
   /** Подтверждение электронной почты кодом. Возвращает true, если почта успешно подтверждена. */
   emailConfirmByCode: Scalars['Boolean'];
   /** Вход по почте и паролю, возвращает токен доступа и время его истечения */
@@ -185,16 +185,20 @@ export type GMutation = {
   registration: Scalars['Boolean'];
   /** Отправка кода подтверждения почты. Устанавливает RegistrationToken в cookies. Возвращает время до которого необходимо завершить регистрацию. */
   sendConfirmationCode: Scalars['DateTime'];
+  /** Удаление уведомления о прибытии студента */
+  studentArrivalNoticeDelete: Scalars['Boolean'];
+  /** Перезапись уведомления о прибытии студента */
+  studentArrivalNoticeUpsert: Scalars['Boolean'];
   /** Создание/регистрация студента. */
   studentCreate: GStudentEntity;
   /** Удаление паспорта студента. Студент не может удалить свой паспорт. */
-  studentPassportDelete: GStudentPassportWithoutStudentEntity;
+  studentPassportDelete: Scalars['Boolean'];
   /** Перезапись паспорта студента. */
-  studentPassportUpsert: GStudentPassportWithoutStudentEntity;
+  studentPassportUpsert: Scalars['Boolean'];
   /** Обновление студента. */
   studentUpdate: GStudentEntity;
-  /** Обновление сотрудника */
-  updateEmployee: GEmployeeEntity;
+  /** Перезапись сотрудника */
+  updateEmployee: Scalars['Boolean'];
 };
 
 
@@ -204,7 +208,7 @@ export type GMutationCreateEmployeeArgs = {
 
 
 export type GMutationDeleteEmployeeArgs = {
-  id: Scalars['UUID'];
+  employeeId: Scalars['UUID'];
 };
 
 
@@ -227,6 +231,17 @@ export type GMutationRegistrationArgs = {
 
 export type GMutationSendConfirmationCodeArgs = {
   email: Scalars['EmailAddress'];
+};
+
+
+export type GMutationStudentArrivalNoticeDeleteArgs = {
+  studentId: Scalars['UUID'];
+};
+
+
+export type GMutationStudentArrivalNoticeUpsertArgs = {
+  data: GStudentArrivalNoticeUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -338,14 +353,16 @@ export type GNotificationToUserEntityMinAggregate = {
 export type GQuery = {
   /** Проверка почты на корректность и доступность */
   emailAvailability: GEmailAvailabilityResponse;
-  /** Выборка сотрудника по id */
-  getEmployeeById: GEmployeeEntity;
+  /** Получение сотрудника по id */
+  employee: GEmployeeEntity;
   /** Выборка всех сотрудников */
-  getEmployees: Array<GEmployeeEntity>;
+  employees: Array<GEmployeeEntity>;
   /** Получение студента по id. */
   student: GStudentEntity;
+  /** Получение уведомления о прибытии студента */
+  studentArrivalNotice?: Maybe<GStudentArrivalNoticeWithoutStudentResult>;
   /** Получить паспорт студента. */
-  studentPassport?: Maybe<GStudentPassportWithoutStudentEntity>;
+  studentPassport?: Maybe<GStudentPassportWithoutStudentResult>;
   /** Получение списка студентов. */
   students: Array<GStudentEntity>;
   /** Получить текущего пользователя */
@@ -358,8 +375,18 @@ export type GQueryEmailAvailabilityArgs = {
 };
 
 
+export type GQueryEmployeeArgs = {
+  employeeId: Scalars['UUID'];
+};
+
+
 export type GQueryStudentArgs = {
   id: Scalars['UUID'];
+};
+
+
+export type GQueryStudentArrivalNoticeArgs = {
+  studentId?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -425,6 +452,35 @@ export type GStudentArrivalNoticeEntityMinAggregate = {
   profession?: Maybe<Scalars['String']>;
   receivingSide?: Maybe<Scalars['String']>;
   studentId?: Maybe<Scalars['UUID']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+/** Входные данные для создания/обновления уведомления о прибытии студента */
+export type GStudentArrivalNoticeUpsertInput = {
+  address?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['DateTime']>;
+  expires?: InputMaybe<Scalars['DateTime']>;
+  invitingSide?: InputMaybe<Scalars['String']>;
+  profession?: InputMaybe<Scalars['String']>;
+  receivingSide?: InputMaybe<Scalars['String']>;
+};
+
+export type GStudentArrivalNoticeWithoutStudentResult = {
+  /** Адрес регистрации */
+  address?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  /** Дата регистрации */
+  date?: Maybe<Scalars['DateTime']>;
+  /** Дата окончания регистрации */
+  expires?: Maybe<Scalars['DateTime']>;
+  id: Scalars['UUID'];
+  /** Приглашающая сторона */
+  invitingSide?: Maybe<Scalars['String']>;
+  /** Профессия */
+  profession?: Maybe<Scalars['String']>;
+  /** Принимающая сторона */
+  receivingSide?: Maybe<Scalars['String']>;
+  studentId: Scalars['UUID'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -722,6 +778,7 @@ export type GStudentPassportEntityMinAggregate = {
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
+/** Входные данные для создания/обновления паспорта студента */
 export type GStudentPassportUpsertInput = {
   birthDate?: InputMaybe<Scalars['DateTime']>;
   birthPlace?: InputMaybe<Scalars['String']>;
@@ -737,7 +794,7 @@ export type GStudentPassportUpsertInput = {
   series?: InputMaybe<Scalars['String']>;
 };
 
-export type GStudentPassportWithoutStudentEntity = {
+export type GStudentPassportWithoutStudentResult = {
   /** Дата рождения */
   birthDate?: Maybe<Scalars['DateTime']>;
   /** Место рождения */
@@ -1080,6 +1137,28 @@ export type GRegistrationMutationVariables = Exact<{
 
 export type GRegistrationMutation = { registration: boolean };
 
+export type GStudentArrivalNoticeQueryVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GStudentArrivalNoticeQuery = { studentArrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null };
+
+export type GStudentArrivalNoticeDeleteMutationVariables = Exact<{
+  studentId: Scalars['UUID'];
+}>;
+
+
+export type GStudentArrivalNoticeDeleteMutation = { studentArrivalNoticeDelete: boolean };
+
+export type GStudentArrivalNoticeUpsertMutationVariables = Exact<{
+  data: GStudentArrivalNoticeUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GStudentArrivalNoticeUpsertMutation = { studentArrivalNoticeUpsert: boolean };
+
 export type GStudentPassportQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']>;
 }>;
@@ -1092,7 +1171,7 @@ export type GStudentPassportDeleteMutationVariables = Exact<{
 }>;
 
 
-export type GStudentPassportDeleteMutation = { studentPassportDelete: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } };
+export type GStudentPassportDeleteMutation = { studentPassportDelete: boolean };
 
 export type GStudentPassportUpsertMutationVariables = Exact<{
   data: GStudentPassportUpsertInput;
@@ -1100,7 +1179,7 @@ export type GStudentPassportUpsertMutationVariables = Exact<{
 }>;
 
 
-export type GStudentPassportUpsertMutation = { studentPassportUpsert: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } };
+export type GStudentPassportUpsertMutation = { studentPassportUpsert: boolean };
 
 
 export const LoginByPasswordDocument = gql`
@@ -1463,6 +1542,116 @@ export function useRegistrationMutation(baseOptions?: Apollo.MutationHookOptions
 export type RegistrationMutationHookResult = ReturnType<typeof useRegistrationMutation>;
 export type RegistrationMutationResult = Apollo.MutationResult<GRegistrationMutation>;
 export type RegistrationMutationOptions = Apollo.BaseMutationOptions<GRegistrationMutation, GRegistrationMutationVariables>;
+export const StudentArrivalNoticeDocument = gql`
+    query StudentArrivalNotice($studentId: UUID) {
+  studentArrivalNotice(studentId: $studentId) {
+    id
+    studentId
+    profession
+    address
+    date
+    expires
+    invitingSide
+    receivingSide
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useStudentArrivalNoticeQuery__
+ *
+ * To run a query within a React component, call `useStudentArrivalNoticeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentArrivalNoticeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentArrivalNoticeQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentArrivalNoticeQuery(baseOptions?: Apollo.QueryHookOptions<GStudentArrivalNoticeQuery, GStudentArrivalNoticeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentArrivalNoticeQuery, GStudentArrivalNoticeQueryVariables>(StudentArrivalNoticeDocument, options);
+      }
+export function useStudentArrivalNoticeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentArrivalNoticeQuery, GStudentArrivalNoticeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentArrivalNoticeQuery, GStudentArrivalNoticeQueryVariables>(StudentArrivalNoticeDocument, options);
+        }
+export type StudentArrivalNoticeQueryHookResult = ReturnType<typeof useStudentArrivalNoticeQuery>;
+export type StudentArrivalNoticeLazyQueryHookResult = ReturnType<typeof useStudentArrivalNoticeLazyQuery>;
+export type StudentArrivalNoticeQueryResult = Apollo.QueryResult<GStudentArrivalNoticeQuery, GStudentArrivalNoticeQueryVariables>;
+export function refetchStudentArrivalNoticeQuery(variables?: GStudentArrivalNoticeQueryVariables) {
+      return { query: StudentArrivalNoticeDocument, variables: variables }
+    }
+export const StudentArrivalNoticeDeleteDocument = gql`
+    mutation StudentArrivalNoticeDelete($studentId: UUID!) {
+  studentArrivalNoticeDelete(studentId: $studentId)
+}
+    `;
+export type GStudentArrivalNoticeDeleteMutationFn = Apollo.MutationFunction<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>;
+
+/**
+ * __useStudentArrivalNoticeDeleteMutation__
+ *
+ * To run a mutation, you first call `useStudentArrivalNoticeDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentArrivalNoticeDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentArrivalNoticeDeleteMutation, { data, loading, error }] = useStudentArrivalNoticeDeleteMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentArrivalNoticeDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>(StudentArrivalNoticeDeleteDocument, options);
+      }
+export type StudentArrivalNoticeDeleteMutationHookResult = ReturnType<typeof useStudentArrivalNoticeDeleteMutation>;
+export type StudentArrivalNoticeDeleteMutationResult = Apollo.MutationResult<GStudentArrivalNoticeDeleteMutation>;
+export type StudentArrivalNoticeDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>;
+export const StudentArrivalNoticeUpsertDocument = gql`
+    mutation StudentArrivalNoticeUpsert($data: StudentArrivalNoticeUpsertInput!, $studentId: UUID) {
+  studentArrivalNoticeUpsert(data: $data, studentId: $studentId)
+}
+    `;
+export type GStudentArrivalNoticeUpsertMutationFn = Apollo.MutationFunction<GStudentArrivalNoticeUpsertMutation, GStudentArrivalNoticeUpsertMutationVariables>;
+
+/**
+ * __useStudentArrivalNoticeUpsertMutation__
+ *
+ * To run a mutation, you first call `useStudentArrivalNoticeUpsertMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentArrivalNoticeUpsertMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentArrivalNoticeUpsertMutation, { data, loading, error }] = useStudentArrivalNoticeUpsertMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentArrivalNoticeUpsertMutation(baseOptions?: Apollo.MutationHookOptions<GStudentArrivalNoticeUpsertMutation, GStudentArrivalNoticeUpsertMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentArrivalNoticeUpsertMutation, GStudentArrivalNoticeUpsertMutationVariables>(StudentArrivalNoticeUpsertDocument, options);
+      }
+export type StudentArrivalNoticeUpsertMutationHookResult = ReturnType<typeof useStudentArrivalNoticeUpsertMutation>;
+export type StudentArrivalNoticeUpsertMutationResult = Apollo.MutationResult<GStudentArrivalNoticeUpsertMutation>;
+export type StudentArrivalNoticeUpsertMutationOptions = Apollo.BaseMutationOptions<GStudentArrivalNoticeUpsertMutation, GStudentArrivalNoticeUpsertMutationVariables>;
 export const StudentPassportDocument = gql`
     query StudentPassport($studentId: UUID) {
   studentPassport(studentId: $studentId) {
@@ -1518,24 +1707,7 @@ export function refetchStudentPassportQuery(variables?: GStudentPassportQueryVar
     }
 export const StudentPassportDeleteDocument = gql`
     mutation StudentPassportDelete($studentId: UUID!) {
-  studentPassportDelete(studentId: $studentId) {
-    id
-    studentId
-    lastName
-    firstName
-    patronymic
-    birthDate
-    birthPlace
-    gender
-    citizenship
-    series
-    number
-    issueDate
-    issuedBy
-    expirationDate
-    createdAt
-    updatedAt
-  }
+  studentPassportDelete(studentId: $studentId)
 }
     `;
 export type GStudentPassportDeleteMutationFn = Apollo.MutationFunction<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>;
@@ -1566,24 +1738,7 @@ export type StudentPassportDeleteMutationResult = Apollo.MutationResult<GStudent
 export type StudentPassportDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>;
 export const StudentPassportUpsertDocument = gql`
     mutation StudentPassportUpsert($data: StudentPassportUpsertInput!, $studentId: UUID) {
-  studentPassportUpsert(data: $data, studentId: $studentId) {
-    id
-    studentId
-    lastName
-    firstName
-    patronymic
-    birthDate
-    birthPlace
-    gender
-    citizenship
-    series
-    number
-    issueDate
-    issuedBy
-    expirationDate
-    createdAt
-    updatedAt
-  }
+  studentPassportUpsert(data: $data, studentId: $studentId)
 }
     `;
 export type GStudentPassportUpsertMutationFn = Apollo.MutationFunction<GStudentPassportUpsertMutation, GStudentPassportUpsertMutationVariables>;

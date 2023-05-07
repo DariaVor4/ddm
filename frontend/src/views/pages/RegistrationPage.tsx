@@ -25,7 +25,6 @@ const RegistrationPage: FC = () => {
   const navigate = useNavigate();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const dialog = useEmailConfirmationDialog(state => strictPick(state, ['isEmailConfirmed', 'reset', 'open']));
-  // TODO: сброс подтверждения при изменении поля почты
   const [checkEmailAvailability] = useEmailAvailabilityLazyQuery();
   const [register] = useRegistrationMutation();
   const formik = useFormik<RegisterFormValue>({

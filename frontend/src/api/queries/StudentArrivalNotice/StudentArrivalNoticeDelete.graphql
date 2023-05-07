@@ -1,0 +1,3 @@
+mutation StudentArrivalNoticeDelete($studentId: UUID!) {
+    studentArrivalNoticeDelete(studentId: $studentId)
+}

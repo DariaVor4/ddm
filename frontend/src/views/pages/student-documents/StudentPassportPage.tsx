@@ -17,7 +17,7 @@ import {
   refetchUserCurrentQuery,
   useStudentPassportQuery,
   useStudentPassportUpsertMutation,
-} from '../../../api/generated';
+} from '../../../api/generated.ts';
 import FormikTextField from '../../../components/forms/FormikTextField.tsx';
 import { TMuiColor } from '../../../styles/mui/theme.ts';
 

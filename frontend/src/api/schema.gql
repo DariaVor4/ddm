@@ -173,7 +173,7 @@ type Mutation {
   createEmployee(input: EmployeeCreateInput!): EmployeeEntity!
 
   """Удаление сотрудника"""
-  deleteEmployee(id: UUID!): EmployeeEntity!
+  deleteEmployee(employeeId: UUID!): Boolean!
 
   """
   Подтверждение электронной почты кодом. Возвращает true, если почта успешно подтверждена.
@@ -194,6 +194,20 @@ type Mutation {
   """
   sendConfirmationCode(email: EmailAddress!): DateTime!
 
+  """Удаление уведомления о прибытии студента"""
+  studentArrivalNoticeDelete(
+    """ID Студента"""
+    studentId: UUID!
+  ): Boolean!
+
+  """Перезапись уведомления о прибытии студента"""
+  studentArrivalNoticeUpsert(
+    data: StudentArrivalNoticeUpsertInput!
+
+    """ID Студента"""
+    studentId: UUID
+  ): Boolean!
+
   """Создание/регистрация студента."""
   studentCreate(input: StudentCreateInput!): StudentEntity!
 
@@ -201,7 +215,7 @@ type Mutation {
   studentPassportDelete(
     """ID Студента"""
     studentId: UUID!
-  ): StudentPassportWithoutStudentEntity!
+  ): Boolean!
 
   """Перезапись паспорта студента."""
   studentPassportUpsert(
@@ -210,13 +224,13 @@ type Mutation {
 
     """ID Студента"""
     studentId: UUID
-  ): StudentPassportWithoutStudentEntity!
+  ): Boolean!
 
   """Обновление студента."""
   studentUpdate(input: StudentUpdateInput!): StudentEntity!
 
-  """Обновление сотрудника"""
-  updateEmployee(input: EmployeeUpdateInput!): EmployeeEntity!
+  """Перезапись сотрудника"""
+  updateEmployee(input: EmployeeUpdateInput!): Boolean!
 }
 
 """Уведомление"""
@@ -307,20 +321,26 @@ type Query {
   """Проверка почты на корректность и доступность"""
   emailAvailability(email: String!): EmailAvailabilityResponse!
 
-  """Выборка сотрудника по id"""
-  getEmployeeById: EmployeeEntity!
+  """Получение сотрудника по id"""
+  employee(employeeId: UUID!): EmployeeEntity!
 
   """Выборка всех сотрудников"""
-  getEmployees: [EmployeeEntity!]!
+  employees: [EmployeeEntity!]!
 
   """Получение студента по id."""
   student(id: UUID!): StudentEntity!
+
+  """Получение уведомления о прибытии студента"""
+  studentArrivalNotice(
+    """ID Студента"""
+    studentId: UUID
+  ): StudentArrivalNoticeWithoutStudentResult
 
   """Получить паспорт студента."""
   studentPassport(
     """ID Студента"""
     studentId: UUID
-  ): StudentPassportWithoutStudentEntity
+  ): StudentPassportWithoutStudentResult
 
   """Получение списка студентов."""
   students: [StudentEntity!]!
@@ -392,6 +412,40 @@ type StudentArrivalNoticeEntityMinAggregate {
   profession: String
   receivingSide: String
   studentId: UUID
+  updatedAt: DateTime
+}
+
+"""Входные данные для создания/обновления уведомления о прибытии студента"""
+input StudentArrivalNoticeUpsertInput {
+  address: String
+  date: DateTime
+  expires: DateTime
+  invitingSide: String
+  profession: String
+  receivingSide: String
+}
+
+type StudentArrivalNoticeWithoutStudentResult {
+  """Адрес регистрации"""
+  address: String
+  createdAt: DateTime!
+
+  """Дата регистрации"""
+  date: DateTime
+
+  """Дата окончания регистрации"""
+  expires: DateTime
+  id: UUID!
+
+  """Приглашающая сторона"""
+  invitingSide: String
+
+  """Профессия"""
+  profession: String
+
+  """Принимающая сторона"""
+  receivingSide: String
+  studentId: UUID!
   updatedAt: DateTime
 }
 
@@ -720,6 +774,7 @@ type StudentPassportEntityMinAggregate {
   updatedAt: DateTime
 }
 
+"""Входные данные для создания/обновления паспорта студента"""
 input StudentPassportUpsertInput {
   birthDate: DateTime
   birthPlace: String
@@ -735,7 +790,7 @@ input StudentPassportUpsertInput {
   series: String
 }
 
-type StudentPassportWithoutStudentEntity {
+type StudentPassportWithoutStudentResult {
   """Дата рождения"""
   birthDate: DateTime
 
