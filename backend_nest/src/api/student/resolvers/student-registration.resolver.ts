@@ -11,7 +11,7 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import UserRoleEnum from '../../auth/interfaces/user-role.enum';
 import StudentCreateInput from '../inputs/student-create.input';
 import { CookiesPick } from '../../auth/decorators/cookies-pick.decorator';
-import { CookieKeys } from '../../auth/types/cookie-keys';
+import { CookieKeysEnum } from '../../auth/enums/cookie-keys.enum';
 
 @Resolver('student-registration')
 export class StudentRegistrationResolver {
@@ -34,7 +34,7 @@ export class StudentRegistrationResolver {
   @Roles(UserRoleEnum.Any)
   async registration(
     @Args('input') input: StudentCreateInput,
-    @CookiesPick(CookieKeys.RegistrationTokenKey) registrationToken: string,
+    @CookiesPick(CookieKeysEnum.RegistrationTokenKey) registrationToken: string,
   ): Promise<boolean> {
     assert(uuid.validate(registrationToken), new NotAcceptableException('Необходимо подтвердить почтовый адрес.'));
     const confirmationEmail = await this.prisma.confirmationEmailEntity.findFirstOrThrow({
@@ -46,8 +46,8 @@ export class StudentRegistrationResolver {
       subject: 'Регистрация',
       name: compact([input.lastName, input.firstName, input.patronymic]).join(' ') || undefined,
       message: 'Вы успешно зарегистрированы в Визовом Центре ВолгГТУ!',
-    }).catch(() => {
-      this.logger.error('Не удалось отправить письмо о завершении регистрации');
+    }).catch((error) => {
+      this.logger.error(`Не удалось отправить письмо о завершении регистрации: ${error.message}`);
     });
     return true;
   }

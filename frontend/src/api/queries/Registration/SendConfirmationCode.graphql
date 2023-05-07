@@ -1,0 +1,3 @@
+mutation SendConfirmationCode($email: EmailAddress!) {
+    sendConfirmationCode(email: $email)
+}

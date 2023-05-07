@@ -1,0 +1,20 @@
+mutation StudentPassportUpsert($data: StudentPassportUpsertInput!, $studentId: UUID) {
+    studentPassportUpsert(data: $data, studentId: $studentId) {
+        id
+        studentId
+        lastName
+        firstName
+        patronymic
+        birthDate
+        birthPlace
+        gender
+        citizenship
+        series
+        number
+        issueDate
+        issuedBy
+        expirationDate
+        createdAt
+        updatedAt
+    }
+}

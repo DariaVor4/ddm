@@ -1,21 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
-import { ToastContainer } from 'react-toastify';
-import App from './App';
-import client from './api/apollo-client';
+import { CssBaseline } from '@mui/material';
+import dayjs from 'dayjs';
+import AppRoutes from './views/routes/AppRoutes.tsx';
+import client from './api/apollo-client.tsx';
+import AppThemeProvider from './styles/mui/AppThemeProvider.tsx';
 
-import 'react-toastify/dist/ReactToastify.css';
 import './styles/global.scss';
-import 'rsuite/styles/index.less';
+import 'dayjs/locale/ru';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+dayjs.locale('ru');
+
+/* ReactDOM. */createRoot(document.getElementById('root') as HTMLElement).render(
+  </* React. */StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <App />
+        {/* <StyledEngineProvider injectFirst> */}
+        <AppThemeProvider>
+          <CssBaseline enableColorScheme />
+          <AppRoutes />
+        </AppThemeProvider>
+        {/* </StyledEngineProvider> */}
       </BrowserRouter>
     </ApolloProvider>
-  </React.StrictMode>,
+  </StrictMode>,
 );

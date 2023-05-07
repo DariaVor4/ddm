@@ -9,6 +9,7 @@ import { TUser } from '@prisma-types';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { ISessionContext } from '../decorators/current-session.decorator';
 
 // Order of methods calls:
 // 1. Guard.canActivate
@@ -37,17 +38,18 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
   /**
    * Method automatically callable after all guard and strategy validations
    */
-  handleRequest(strategyErr?: Error, payload?: TUser | false, jwtErr?: Error): any {
+  handleRequest(strategyErr?: Error, payload?: ISessionContext | false, jwtErr?: Error): any {
     const isNoError = !strategyErr && !jwtErr && payload;
-    if (!isNoError && runtimeMode.isDebug) {
-      const errors = {
-        strategyErr: strategyErr?.message,
-        jwtErr: jwtErr?.message,
-        payload,
-      };
-      this.logger.debug(`Ошибка валидации JWT: ${JSON.stringify(errors, null, 2)}`);
-      assert(isNoError, new UnauthorizedException(JSON.stringify(errors)));
-    }
+    // For debug:
+    // if (!isNoError && runtimeMode.isDebug) {
+    //   const errors = {
+    //     strategyErr: strategyErr?.message,
+    //     jwtErr: jwtErr?.message,
+    //     payload,
+    //   };
+    //   this.logger.debug(`Ошибка валидации JWT: ${JSON.stringify(errors, null, 2)}`);
+    //   assert(isNoError, new UnauthorizedException(JSON.stringify(errors)));
+    // }
     assert(isNoError, new UnauthorizedException());
     return payload;
   }
@@ -60,6 +62,6 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    return isPublic || super.canActivate(context) as boolean;
+    return isPublic || (super.canActivate(context) as boolean);
   }
 }

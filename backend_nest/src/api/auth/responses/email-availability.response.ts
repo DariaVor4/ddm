@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { EmailAvailabilityVerdictEnum } from '../types/email-verdict.enum';
+import { EmailAvailabilityVerdictEnum } from '../enums/email-verdict.enum';
 
 @ObjectType()
 export default class EmailAvailabilityResponse {

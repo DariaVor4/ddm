@@ -4,8 +4,9 @@ import {
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { _throw, assert, isRoleAdminOrEmployee } from '@common';
 import * as uuid from 'uuid';
-import { Prisma } from '@prisma-client';
-import { StudentEntity } from '@prisma-graphql/student-entity';
+import { Prisma } from '@prisma/client';
+import { StudentEntity } from '@prisma-nestjs-graphql';
+import { UUID } from '@common/scalars';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { StudentService } from '../student.service';
 import { Roles } from '../../auth/decorators/roles.decorator';
@@ -20,10 +21,7 @@ import { CurrentSession, ISessionContext } from '../../auth/decorators/current-s
  */
 @Resolver('student')
 export class StudentResolver {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly studentService: StudentService,
-  ) {}
+  constructor(private readonly prisma: PrismaService, private readonly studentService: StudentService) {}
 
   /**
    * Получение списка студентов.
@@ -32,10 +30,8 @@ export class StudentResolver {
     description: 'Получение списка студентов.',
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
-  async students(
-    @PrismaSelector() select: Prisma.StudentEntitySelect,
-  ): Promise<StudentEntity[]> {
-    return await this.prisma.studentEntity.findMany({ select }) as StudentEntity[];
+  async students(@PrismaSelector() select: Prisma.StudentEntitySelect): Promise<Partial<StudentEntity>[]> {
+    return this.prisma.studentEntity.findMany({ select });
   }
 
   /**
@@ -46,12 +42,12 @@ export class StudentResolver {
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
   async student(
-    @Args('id') id: string,
+    @Args('id', { type: UUID }) id: string,
     @PrismaSelector() select: Prisma.StudentEntitySelect,
-  ): Promise<StudentEntity> {
+  ): Promise<Partial<StudentEntity>> {
     assert(uuid.validate(id), new NotFoundException('Некорректный id'));
-    return await this.prisma.studentEntity.findFirstOrThrow({ where: { id }, select })
-      .catch(_throw(new NotFoundException('Студент не найден'))) as StudentEntity;
+    return this.prisma.studentEntity.findFirstOrThrow({ where: { id }, select })
+      .catch(_throw(new NotFoundException('Студент не найден')));
   }
 
   /**
@@ -64,7 +60,7 @@ export class StudentResolver {
   async studentCreate(
     @Args('input') input: StudentCreateInput,
     @PrismaSelector() select: Prisma.StudentEntitySelect,
-  ): Promise<StudentEntity> {
+  ): Promise<Partial<StudentEntity>> {
     return this.studentService.studentCreate(input, select);
   }
 
@@ -79,7 +75,7 @@ export class StudentResolver {
     @Args('input') input: StudentUpdateInput,
     @CurrentSession() session: ISessionContext,
     @PrismaSelector() select: Prisma.StudentEntitySelect,
-  ): Promise<StudentEntity> {
+  ): Promise<Partial<StudentEntity>> {
     if (!isRoleAdminOrEmployee(session.roles)) {
       if (session.userId !== input.id) {
         throw new ForbiddenException('Вы не можете обновить данные другого студента');

@@ -1,0 +1,6 @@
+query EmailAvailability($email: String!) {
+    emailAvailability(email: $email) {
+        verdict
+        message
+    }
+}

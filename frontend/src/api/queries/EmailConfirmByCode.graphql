@@ -1,3 +1,0 @@
-mutation EmailConfirmByCode($email: String!, $code: String!) {
-  emailConfirmByCode(email: $email, code: $code)
-}

@@ -1,6 +1,6 @@
 import { InputType, IntersectionType, PickType } from '@nestjs/graphql';
-import { EmployeeEntity } from '@prisma-graphql/employee-entity';
-import { UserEntity } from '@prisma-graphql/user-entity';
+import { EmployeeEntity } from '@prisma-nestjs-graphql';
+import { UserEntity } from '@prisma-nestjs-graphql';
 
 @InputType()
 export default class EmployeeCreateInput extends IntersectionType(

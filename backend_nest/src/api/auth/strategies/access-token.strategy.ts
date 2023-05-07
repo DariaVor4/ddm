@@ -8,7 +8,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { ConfigService } from '../../../config/config.service';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { CookieKeys } from '../types/cookie-keys';
+import { CookieKeysEnum } from '../enums/cookie-keys.enum';
 import { IAccessTokenPayload } from '../interfaces/access-token-payload.interface';
 import { ISessionContext } from '../decorators/current-session.decorator';
 
@@ -49,15 +49,19 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     }).catch(_throw(new UnauthorizedException('User not found or was not authorized')));
     // Check RefreshToken
     const accessToken: string | undefined = req.headers.authorization?.split(' ')[1];
-    const refreshToken: string | undefined = req.cookies[CookieKeys.RefreshTokenKey];
+    const refreshToken: string | undefined = req.cookies[CookieKeysEnum.RefreshTokenKey];
     assert(accessToken, new UnauthorizedException('AccessToken not found'));
     assert(refreshToken, new UnauthorizedException('RefreshToken not found'));
-    assert(await this.jwtService.verifyAsync(refreshToken, {
+    if (!await this.jwtService.verifyAsync(refreshToken, {
       secret: this.configService.config.refreshTokenSecret + accessToken,
       ignoreExpiration: false,
-    }), new UnauthorizedException('Invalid RefreshToken'));
+    })) {
+      throw new UnauthorizedException('Invalid RefreshToken');
+    }
     // Check User.tokenHash
-    assert(accessToken && user.tokenHash && await bcrypt.compare(accessToken, user.tokenHash), new UnauthorizedException('Invalid access token'));
+    if (!accessToken || !user.tokenHash || !(await bcrypt.compare(accessToken, user.tokenHash))) {
+      throw new UnauthorizedException('Invalid access token');
+    }
     // Update user.lastActivity
     await this.prisma.userEntity.update({
       where: { id: payload.userId },

@@ -7,16 +7,7 @@ import { StudentRegistrationResolver } from './resolvers/student-registration.re
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [
-    AuthModule,
-    EmailModule,
-    StudentModule,
-    UserModule,
-  ],
-  providers: [
-    StudentService,
-    StudentResolver,
-    StudentRegistrationResolver,
-  ],
+  imports: [AuthModule, EmailModule, StudentModule, UserModule],
+  providers: [StudentService, StudentResolver, StudentRegistrationResolver],
 })
 export class StudentModule {}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "sourceMaps": true,
+  "module": {
+    "type": "commonjs"
+  },
+  "jsc": {
+    "target": "es2017",
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "keepClassNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@common/*": [
+        "./src/common/*"
+      ],
+      "@common": [
+        "./src/common"
+      ],
+      "@prisma-client": [
+        "/node_modules/@prisma/client"
+      ],
+      "@prisma-nestjs-graphql/*": [
+        "./src/generated/prisma-nestjs-graphql/*"
+      ],
+      "@prisma-nestjs-graphql": [
+        "./src/generated/prisma-nestjs-graphql"
+      ],
+      "@prisma-types": [
+        "./src/prisma/types"
+      ]
+    }
+  },
+  "minify": false
+}

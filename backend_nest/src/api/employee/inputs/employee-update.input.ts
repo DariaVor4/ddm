@@ -1,7 +1,7 @@
 import {
   InputType, IntersectionType, PartialType, PickType,
 } from '@nestjs/graphql';
-import { EmployeeEntity } from '@prisma-graphql/employee-entity';
+import { EmployeeEntity } from '@prisma-nestjs-graphql';
 import EmployeeCreateInput from './employee-create.input';
 
 @InputType()

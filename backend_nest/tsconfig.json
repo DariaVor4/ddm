@@ -29,18 +29,24 @@
       "@common": [
         "./src/common"
       ],
-      "@prisma-client": [
-        "./prisma/client"
-      ],
-      "@prisma-graphql/*": [
+//      "@prisma-client": [
+//        "./prisma/client",
+//        "./node_modules/@prisma/client"
+//        "@prisma/client/*"
+//      ],
+      "@prisma-nestjs-graphql/*": [
         "./src/generated/prisma-nestjs-graphql/*"
+      ],
+      "@prisma-nestjs-graphql": [
+        "./src/generated/prisma-nestjs-graphql"
       ],
       "@prisma-types": [
         "./src/prisma/types"
-      ],
-      "@prisma/client": [
-        "./node_modules/@prisma/client"
       ]
     }
+  },
+  "ts-node": {
+    // Do not forget to `npm i -D tsconfig-paths`
+    "require": ["tsconfig-paths/register"]
   }
 }

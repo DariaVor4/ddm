@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import dotenv from 'dotenv';
 import * as process from 'process';
 import type { ReadonlyDeep } from 'type-fest';
+import path from 'path';
 
 /**
  * Interface for typing the application startup configuration.
@@ -49,7 +50,7 @@ export class ConfigService {
    * Performs initialization for use of the getConfig() method.
    */
   constructor() {
-    dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+    dotenv.config({ path: path.join(process.cwd(), `.env.${process.env.NODE_ENV}`) });
 
     this.appConfig = {
       nodeEnv: process.env.NODE_ENV,

@@ -7,11 +7,11 @@ export default {
     './src/api/schema.gql': {
       plugins: ['schema-ast'],
     },
-    // './src/api/schema.json': {
-    //   plugins: ['introspection'],
-    //   config: {
-    //     minify: true,
-    //   }
-    // }
+    './src/api/schema.json': {
+      plugins: ['introspection'],
+      config: {
+        minify: true,
+      }
+    }
   }
 } satisfies CodegenConfig;

@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TUser } from '@prisma-types';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import { Response } from 'express';
-import { runtimeMode } from '@common';
-import * as util from 'util';
+import { CookieOptions, Request, Response } from 'express';
+import { _throw, ifDebug, runtimeMode } from '@common';
+import { isString } from 'lodash';
+import ms from 'ms';
 import { ConfigService } from '../../config/config.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { IAccessTokenPayload, IAccessTokenPayloadCreate } from './interfaces/access-token-payload.interface';
+import { CookieKeysEnum } from './enums/cookie-keys.enum';
+import TokenResponse from './responses/token.response';
 
 /**
  * Service implementing authorization,
@@ -17,6 +20,8 @@ import { IAccessTokenPayload, IAccessTokenPayloadCreate } from './interfaces/acc
  */
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly userService: UserService,
@@ -50,6 +55,7 @@ export class AuthService {
     });
     return {
       accessToken,
+      accessTokenExpires: new Date((this.jwtService.decode(accessToken) as IAccessTokenPayload).exp * 1000),
       refreshToken,
     };
   }
@@ -61,11 +67,28 @@ export class AuthService {
         if (err) {
           return reject(err);
         }
-        return resolve(
-          num.toString().slice(0, length).padStart(length, '0'),
-        );
+        return resolve(num.toString().slice(0, length).padStart(length, '0'));
       });
     });
+  }
+
+  async performLogout(res: Response, userId?: string) {
+    this.logger.debug(`performLogout userId: ${userId}`);
+    this.putTextIntoCookies({
+      res,
+      key: CookieKeysEnum.RefreshTokenKey,
+      text: 'null',
+      expires: new Date(),
+      options: {
+        maxAge: 1000,
+      },
+    });
+    if (userId) {
+      await this.prisma.userEntity.update({
+        where: { id: userId },
+        data: { tokenHash: null },
+      });
+    }
   }
 
   async passwordHash(password: string): Promise<string> {
@@ -77,14 +100,78 @@ export class AuthService {
   }
 
   public putTextIntoCookies({
-    res, key, text, expires,
-  }: { res: Response, key:string, text: string, expires: Date }) {
+    res, key, text, expires, options,
+  }: { res: Response; key: string; text: string; expires: Date, options?: CookieOptions }) {
     res.cookie(key, text, {
       path: '/',
       httpOnly: true,
       sameSite: runtimeMode.isProd ? 'strict' : 'none',
       secure: !runtimeMode.isTest,
       expires,
+      ...options,
     });
+  }
+
+  /**
+   * Обновление пары токенов для авторизованного пользователя.
+   * @param req - Express Request
+   * @param res - Express Response
+   * @returns Обновлённая пара токенов
+   * @throws {UnauthorizedException}
+   */
+  public async refreshTokens({ req, res }: { req: Request, res: Response }): Promise<TokenResponse> {
+    try {
+      const oldRefreshToken = req.cookies[CookieKeysEnum.RefreshTokenKey];
+      if (!isString(oldRefreshToken)) {
+        throw new UnauthorizedException(ifDebug(`Некорректный refreshToken: ${oldRefreshToken}`) || 'UNAUTHORIZED');
+      }
+      const oldAccessToken = req.headers.authorization?.replace('Bearer ', '');
+      if (!isString(oldAccessToken)) {
+        throw new UnauthorizedException(ifDebug(`Некорректный accessToken: ${oldAccessToken}`) || 'UNAUTHORIZED');
+      }
+      // Проверка токенов, декодирование accessToken
+      const [payload] = await Promise.all([
+        this.jwtService.verifyAsync<IAccessTokenPayload>(oldAccessToken, {
+          secret: this.configService.config.accessTokenSecret,
+          ignoreExpiration: true,
+        }).catch(_throw(new UnauthorizedException(ifDebug('accessToken не прошёл проверку') || 'UNAUTHORIZED'))),
+        this.jwtService.verifyAsync(oldRefreshToken, {
+          secret: this.configService.config.refreshTokenSecret + oldAccessToken,
+          ignoreExpiration: false,
+        }).catch(_throw(new UnauthorizedException(ifDebug('refreshToken не прошёл проверку') || 'UNAUTHORIZED'))),
+      ]);
+      // Поиск пользователя
+      const user = await this.prisma.userEntity.findFirstOrThrow({
+        where: {
+          id: payload.userId,
+          tokenHash: { not: null },
+        },
+        select: {
+          id: true,
+          updatedAt: true,
+          tokenHash: true,
+        },
+      }).catch(_throw(new UnauthorizedException(ifDebug('Не найден ранее авторизованный пользователь') || 'UNAUTHORIZED')));
+      if (!oldAccessToken || !user.tokenHash || !(await bcrypt.compare(oldAccessToken, user.tokenHash))) {
+        throw new UnauthorizedException(ifDebug('accessToken не совпадает с хэшем в БД') || 'UNAUTHORIZED');
+      }
+      // Сгенерировать новые токены (поместив хэш accessToken в пользователя в методе generateTokens)
+      const { accessToken, refreshToken, accessTokenExpires } = await this.generateTokens(user);
+      // Поместить refreshToken в cookies
+      this.putTextIntoCookies({
+        res,
+        key: CookieKeysEnum.RefreshTokenKey,
+        text: refreshToken,
+        expires: new Date(Date.now() + ms(this.configService.config.refreshTokenExpires)),
+      });
+      // Вернуть accessToken
+      return {
+        accessToken,
+        accessTokenExpires,
+      };
+    } catch (e) {
+      await this.performLogout(res);
+      throw e;
+    }
   }
 }

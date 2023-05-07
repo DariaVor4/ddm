@@ -30,7 +30,8 @@ import { EmailService } from './email.service';
         },
         template: {
           dir: path.join(__dirname, 'templates'),
-          adapter: new PugAdapter({ // or new HandlebarsAdapter() or new EjsAdapter()
+          adapter: new PugAdapter({
+            // or new HandlebarsAdapter() or new EjsAdapter()
             inlineCssEnabled: true,
           }),
           options: {

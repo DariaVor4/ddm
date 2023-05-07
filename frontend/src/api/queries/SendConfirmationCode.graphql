@@ -1,3 +1,0 @@
-mutation SendConfirmationCode($email: String!) {
-  sendConfirmationCode(email: $email)
-}

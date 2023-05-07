@@ -7,18 +7,16 @@ import { ISentMessageInfo } from './sent-message-info.interface';
  */
 @Injectable()
 export class EmailService {
-  constructor(
-    private mailerService: MailerService,
-  ) {}
+  constructor(private mailerService: MailerService) {}
 
   // private readonly basicAttachments = [{
   //   filename: 'atr-logo.png',
   //   path: join(__dirname, 'assets', 'atr-logo.png'),
   //   cid: 'atr-logo',
   // }, {
-  //   filename: 'softra-logo.png',
-  //   path: join(__dirname, 'assets', 'softra-logo.png'),
-  //   cid: 'softra-logo',
+  //   filename: 'company-logo.png',
+  //   path: join(__dirname, 'assets', 'company-logo.png'),
+  //   cid: 'company-logo',
   // }];
 
   /**
@@ -26,12 +24,12 @@ export class EmailService {
    */
   async sendSimpleText(
     { email, subject, ...context }: { email: string, subject: string, name?: string, message: string },
-  ) {
-    return await this.mailerService.sendMail({
+  ): Promise<ISentMessageInfo> {
+    return this.mailerService.sendMail({
       to: email,
       subject,
       template: 'simpleText',
       context,
-    }) as ISentMessageInfo;
+    });
   }
 }

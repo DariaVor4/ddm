@@ -7,17 +7,15 @@ import { IAccessTokenPayloadCreate } from '../interfaces/access-token-payload.in
 import { TCookies } from './cookies-pick.decorator';
 
 /**
- * Decorator injects current UserEntity.
+ * Декоратор для получения контекста текущего авторизованного пользователя.
  *
- * Specifically, the decorator retrieves the object
- *    returned by the AccessTokenStrategy.validate.
+ * Не будет работать, если не прошла проверка токенов доступа и обновления!
  */
 export const CurrentSession = createParamDecorator(
   (key: keyof ISessionContext | undefined, context: ExecutionContext) => {
-    const user = (GqlExecutionContext
-      .create(context)
-      // .getContext() as Request).user as ISessionContext | undefined;
-      .getContext().req as Request).user as ISessionContext | undefined;
+    const user = (
+      GqlExecutionContext.create(context).getContext().req as Request
+    ).user as ISessionContext | undefined;
     assert(user, new InternalServerErrorException('User context not found'));
     return key ? user[key] : user;
   },

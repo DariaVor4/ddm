@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { AccessTokenStrategy } from './strategies/access-token.strategy';
 import AuthResolver from './resolvers/auth.resolver';
 import { RegistrationResolver } from './resolvers/registration.resolver';
+import { AuthController } from './auth.controller';
 
 /**
  * Module for authorization
@@ -37,5 +38,6 @@ import { RegistrationResolver } from './resolvers/registration.resolver';
     RegistrationResolver,
   ],
   exports: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule {}

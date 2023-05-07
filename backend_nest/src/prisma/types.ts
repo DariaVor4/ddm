@@ -12,7 +12,7 @@ import {
   StudentVisaEntity,
   StudentVisaRequestEntity,
   UserEntity,
-} from '@prisma-client';
+} from '@prisma/client';
 
 export type TUser = UserEntity;
 export type TConfirmationEmail = ConfirmationEmailEntity;

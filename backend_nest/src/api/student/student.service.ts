@@ -1,11 +1,9 @@
 import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { assert } from '@common';
 import { pick } from 'lodash';
-import { Prisma } from '@prisma-client';
+import { Prisma } from '@prisma/client';
 import * as uuid from 'uuid';
-import { UserEntity } from '@prisma-graphql/user-entity';
-import { StudentEntity } from '@prisma-graphql/student-entity';
-import { StudentPassportEntity } from '@prisma-graphql/student-passport-entity';
+import { UserEntity, StudentEntity, StudentPassportEntity } from '@prisma-nestjs-graphql';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import StudentCreateInput from './inputs/student-create.input';
@@ -27,16 +25,16 @@ export class StudentService {
    * Создание/регистрация студента.
    * С проверкой почты на уникальность.
    */
-  async studentCreate(input: StudentCreateInput, select?: Prisma.StudentEntitySelect): Promise<StudentEntity> {
-    // if (!await this.userService.isEmailFree(input.email)) {
-    //   throw new NotAcceptableException('Пользователь с таким email уже существует');
-    // }
+  async studentCreate(input: StudentCreateInput, select?: Prisma.StudentEntitySelect): Promise<Partial<StudentEntity>> {
+    if (!await this.userService.isEmailFree(input.email)) {
+      throw new NotAcceptableException('Пользователь с таким email уже существует');
+    }
     const [userProperties, studentProperties, passportProperties] = [
       pick(input, ['email'] satisfies (keyof UserEntity & keyof StudentCreateInput)[]),
       pick(input, ['phone', 'faculty', 'group', 'course', 'curator'] satisfies (keyof StudentEntity & keyof StudentCreateInput)[]),
       pick(input, ['lastName', 'firstName', 'patronymic'] satisfies (keyof StudentPassportEntity & keyof StudentCreateInput)[]),
     ];
-    return await this.prisma.studentEntity.create({
+    return this.prisma.studentEntity.create({
       data: {
         ...studentProperties,
         passport: { create: passportProperties },
@@ -48,16 +46,16 @@ export class StudentService {
         },
       },
       select,
-    }) as StudentEntity;
+    });
   }
 
   /**
    * Обновление студента.
    * С проверкой почты на уникальность.
    */
-  async updateStudent(input: StudentUpdateInput, select?: Prisma.StudentEntitySelect): Promise<StudentEntity> {
+  async updateStudent(input: StudentUpdateInput, select?: Prisma.StudentEntitySelect): Promise<Partial<StudentEntity>> {
     assert(uuid.validate(input.id), new NotAcceptableException('Неверный формат id'));
-    if (!await this.prisma.userEntity.count({ where: { id: input.id, NOT: { student: null } } })) {
+    if (!(await this.prisma.userEntity.count({ where: { id: input.id, NOT: { student: null } } }))) {
       throw new NotFoundException('Студент не найден');
     }
     if (input.email && !await this.userService.isEmailFree(input.email, { exceptUserId: input.id })) {
@@ -68,7 +66,7 @@ export class StudentService {
       pick(input, ['phone', 'faculty', 'group', 'course', 'curator'] satisfies (keyof StudentEntity & keyof StudentUpdateInput)[]),
       pick(input, ['lastName', 'firstName', 'patronymic'] satisfies (keyof StudentPassportEntity & keyof StudentUpdateInput)[]),
     ];
-    return await this.prisma.studentEntity.update({
+    return this.prisma.studentEntity.update({
       where: { id: input.id },
       data: {
         ...studentProperties,
@@ -81,6 +79,6 @@ export class StudentService {
         },
       },
       select,
-    }) as StudentEntity;
+    });
   }
 }

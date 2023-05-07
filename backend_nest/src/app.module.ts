@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLUUID, GraphQLEmailAddress } from 'graphql-scalars';
 import { AuthModule } from './api/auth/auth.module';
 import { JwtGuard } from './api/auth/guards/jwt.guard';
 import { RolesGuard } from './api/auth/guards/roles.guard';
@@ -11,16 +12,24 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './api/user/user.module';
 import { EmployeeModule } from './api/employee/employee.module';
 import { StudentModule } from './api/student/student.module';
+import { StudentPassportModule } from './api/student-passport/student-passport.module';
 
 @Module({
   imports: [
     ConfigModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      installSubscriptionHandlers: true,
       playground: true,
       context: ({ req, res }: any) => ({ req, res }),
       autoSchemaFile: './dist/schema.gql',
+      resolvers: {
+        UUID: GraphQLUUID,
+        EmailAddress: GraphQLEmailAddress,
+      },
+      // subscriptions
+      // subscriptions: {
+      //   'graphql-ws': true,
+      // },
     }),
     AuthModule,
     PrismaModule,
@@ -28,6 +37,7 @@ import { StudentModule } from './api/student/student.module';
     EmailModule,
     StudentModule,
     EmployeeModule,
+    StudentPassportModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },

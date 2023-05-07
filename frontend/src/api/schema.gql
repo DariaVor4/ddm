@@ -1,7 +1,68 @@
+type ConfirmationEmailEntityCountAggregate {
+  _all: Int!
+  code: Int!
+  createdAt: Int!
+  email: Int!
+  id: Int!
+  isConfirmed: Int!
+  updatedAt: Int!
+}
+
+type ConfirmationEmailEntityMaxAggregate {
+  code: String
+  createdAt: DateTime
+  email: EmailAddress
+  id: UUID
+  isConfirmed: Boolean
+  updatedAt: DateTime
+}
+
+type ConfirmationEmailEntityMinAggregate {
+  code: String
+  createdAt: DateTime
+  email: EmailAddress
+  id: UUID
+  isConfirmed: Boolean
+  updatedAt: DateTime
+}
+
+type ConfirmationPhoneEntityCountAggregate {
+  _all: Int!
+  code: Int!
+  createdAt: Int!
+  id: Int!
+  isConfirmed: Int!
+  phone: Int!
+  updatedAt: Int!
+}
+
+type ConfirmationPhoneEntityMaxAggregate {
+  code: String
+  createdAt: DateTime
+  id: UUID
+  isConfirmed: Boolean
+  phone: String
+  updatedAt: DateTime
+}
+
+type ConfirmationPhoneEntityMinAggregate {
+  code: String
+  createdAt: DateTime
+  id: UUID
+  isConfirmed: Boolean
+  phone: String
+  updatedAt: DateTime
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress
 
 type EmailAvailabilityResponse {
   message: String!
@@ -17,7 +78,7 @@ enum EmailAvailabilityVerdictEnum {
 
 input EmployeeCreateInput {
   """Электронная почта (должна быть подтверждена)"""
-  email: String!
+  email: EmailAddress!
 
   """Имя"""
   firstName: String
@@ -38,7 +99,7 @@ type EmployeeEntity {
 
   """Имя"""
   firstName: String
-  id: ID!
+  id: UUID!
 
   """Является ли админом?"""
   isAdmin: Boolean!
@@ -66,7 +127,7 @@ type EmployeeEntityCountAggregate {
 type EmployeeEntityMaxAggregate {
   createdAt: DateTime
   firstName: String
-  id: String
+  id: UUID
   isAdmin: Boolean
   lastName: String
   patronymic: String
@@ -76,7 +137,7 @@ type EmployeeEntityMaxAggregate {
 type EmployeeEntityMinAggregate {
   createdAt: DateTime
   firstName: String
-  id: String
+  id: UUID
   isAdmin: Boolean
   lastName: String
   patronymic: String
@@ -85,11 +146,11 @@ type EmployeeEntityMinAggregate {
 
 input EmployeeUpdateInput {
   """Электронная почта (должна быть подтверждена)"""
-  email: String
+  email: EmailAddress
 
   """Имя"""
   firstName: String
-  id: ID!
+  id: UUID!
 
   """Является ли админом?"""
   isAdmin: Boolean = false
@@ -112,20 +173,18 @@ type Mutation {
   createEmployee(input: EmployeeCreateInput!): EmployeeEntity!
 
   """Удаление сотрудника"""
-  deleteEmployee(id: String!): EmployeeEntity!
+  deleteEmployee(id: UUID!): EmployeeEntity!
 
   """
   Подтверждение электронной почты кодом. Возвращает true, если почта успешно подтверждена.
   """
-  emailConfirmByCode(code: String!, email: String!): Boolean!
+  emailConfirmByCode(code: String!, email: EmailAddress!): Boolean!
 
-  """Вход по почте и паролю, возвращает accessToken"""
-  loginByPassword(email: String!, password: String!): String!
+  """Вход по почте и паролю, возвращает токен доступа и время его истечения"""
+  loginByPassword(email: EmailAddress!, password: String!): TokenResponse!
 
-  """
-  Обновление пары токенов для авторизованного пользователя, возвращает новый accessToken
-  """
-  refreshTokens: String!
+  """Обновление пары токенов для авторизованного пользователя"""
+  refreshTokens: TokenResponse!
 
   """Регистрация студента. Сначала необходимо подтвердить почту."""
   registration(input: StudentCreateInput!): Boolean!
@@ -133,10 +192,25 @@ type Mutation {
   """
   Отправка кода подтверждения почты. Устанавливает RegistrationToken в cookies. Возвращает время до которого необходимо завершить регистрацию.
   """
-  sendConfirmationCode(email: String!): DateTime!
+  sendConfirmationCode(email: EmailAddress!): DateTime!
 
   """Создание/регистрация студента."""
   studentCreate(input: StudentCreateInput!): StudentEntity!
+
+  """Удаление паспорта студента. Студент не может удалить свой паспорт."""
+  studentPassportDelete(
+    """ID Студента"""
+    studentId: UUID!
+  ): StudentPassportWithoutStudentEntity!
+
+  """Перезапись паспорта студента."""
+  studentPassportUpsert(
+    """Данные для перезаписи"""
+    data: StudentPassportUpsertInput!
+
+    """ID Студента"""
+    studentId: UUID
+  ): StudentPassportWithoutStudentEntity!
 
   """Обновление студента."""
   studentUpdate(input: StudentUpdateInput!): StudentEntity!
@@ -152,7 +226,7 @@ type NotificationEntity {
   """Содержимое"""
   content: String!
   createdAt: DateTime!
-  id: ID!
+  id: UUID!
 
   """Заголовок"""
   title: String!
@@ -166,6 +240,31 @@ type NotificationEntityCount {
   users: Int!
 }
 
+type NotificationEntityCountAggregate {
+  _all: Int!
+  content: Int!
+  createdAt: Int!
+  id: Int!
+  title: Int!
+  updatedAt: Int!
+}
+
+type NotificationEntityMaxAggregate {
+  content: String
+  createdAt: DateTime
+  id: UUID
+  title: String
+  updatedAt: DateTime
+}
+
+type NotificationEntityMinAggregate {
+  content: String
+  createdAt: DateTime
+  id: UUID
+  title: String
+  updatedAt: DateTime
+}
+
 """Уведомления для пользователей"""
 type NotificationToUserEntity {
   createdAt: DateTime!
@@ -173,10 +272,35 @@ type NotificationToUserEntity {
   """Прочитано ли уведомление?"""
   isRead: Boolean!
   notification: NotificationEntity!
-  notificationId: String!
+  notificationId: UUID!
   updatedAt: DateTime
   user: UserEntity!
-  userId: String!
+  userId: UUID!
+}
+
+type NotificationToUserEntityCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  isRead: Int!
+  notificationId: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+type NotificationToUserEntityMaxAggregate {
+  createdAt: DateTime
+  isRead: Boolean
+  notificationId: UUID
+  updatedAt: DateTime
+  userId: UUID
+}
+
+type NotificationToUserEntityMinAggregate {
+  createdAt: DateTime
+  isRead: Boolean
+  notificationId: UUID
+  updatedAt: DateTime
+  userId: UUID
 }
 
 type Query {
@@ -190,7 +314,13 @@ type Query {
   getEmployees: [EmployeeEntity!]!
 
   """Получение студента по id."""
-  student(id: String!): StudentEntity!
+  student(id: UUID!): StudentEntity!
+
+  """Получить паспорт студента."""
+  studentPassport(
+    """ID Студента"""
+    studentId: UUID
+  ): StudentPassportWithoutStudentEntity
 
   """Получение списка студентов."""
   students: [StudentEntity!]!
@@ -210,7 +340,7 @@ type StudentArrivalNoticeEntity {
 
   """Дата окончания регистрации"""
   expires: DateTime
-  id: ID!
+  id: UUID!
 
   """Приглашающая сторона"""
   invitingSide: String
@@ -221,14 +351,54 @@ type StudentArrivalNoticeEntity {
   """Принимающая сторона"""
   receivingSide: String
   student: StudentEntity!
-  studentId: String!
+  studentId: UUID!
+  updatedAt: DateTime
+}
+
+type StudentArrivalNoticeEntityCountAggregate {
+  _all: Int!
+  address: Int!
+  createdAt: Int!
+  date: Int!
+  expires: Int!
+  id: Int!
+  invitingSide: Int!
+  profession: Int!
+  receivingSide: Int!
+  studentId: Int!
+  updatedAt: Int!
+}
+
+type StudentArrivalNoticeEntityMaxAggregate {
+  address: String
+  createdAt: DateTime
+  date: DateTime
+  expires: DateTime
+  id: UUID
+  invitingSide: String
+  profession: String
+  receivingSide: String
+  studentId: UUID
+  updatedAt: DateTime
+}
+
+type StudentArrivalNoticeEntityMinAggregate {
+  address: String
+  createdAt: DateTime
+  date: DateTime
+  expires: DateTime
+  id: UUID
+  invitingSide: String
+  profession: String
+  receivingSide: String
+  studentId: UUID
   updatedAt: DateTime
 }
 
 """Близкие родственники студента"""
 type StudentCloseRelativeEntity {
   """Постоянное место жительства"""
-  addressContinuosResidence: String
+  addressContinuousResidence: String
 
   """Дата рождения"""
   birthDate: DateTime
@@ -239,7 +409,7 @@ type StudentCloseRelativeEntity {
 
   """Имя"""
   firstName: String
-  id: ID!
+  id: UUID!
 
   """Фамилия"""
   lastName: String
@@ -247,35 +417,60 @@ type StudentCloseRelativeEntity {
   """Отчество"""
   patronymic: String
   student: StudentEntity!
-  studentId: String!
+  studentId: UUID!
+  updatedAt: DateTime
+}
+
+type StudentCloseRelativeEntityCountAggregate {
+  _all: Int!
+  addressContinuousResidence: Int!
+  birthDate: Int!
+  citizenship: Int!
+  createdAt: Int!
+  firstName: Int!
+  id: Int!
+  lastName: Int!
+  patronymic: Int!
+  studentId: Int!
+  updatedAt: Int!
+}
+
+type StudentCloseRelativeEntityMaxAggregate {
+  addressContinuousResidence: String
+  birthDate: DateTime
+  citizenship: String
+  createdAt: DateTime
+  firstName: String
+  id: UUID
+  lastName: String
+  patronymic: String
+  studentId: UUID
+  updatedAt: DateTime
+}
+
+type StudentCloseRelativeEntityMinAggregate {
+  addressContinuousResidence: String
+  birthDate: DateTime
+  citizenship: String
+  createdAt: DateTime
+  firstName: String
+  id: UUID
+  lastName: String
+  patronymic: String
+  studentId: UUID
   updatedAt: DateTime
 }
 
 input StudentCreateInput {
-  """Курс"""
   course: Int
-
-  """Куратор"""
   curator: String
-  email: String!
-
-  """Факультет"""
+  email: EmailAddress!
   faculty: String
-
-  """Имя"""
   firstName: String
-
-  """Группа"""
   group: String
-
-  """Фамилия"""
   lastName: String
   password: String!
-
-  """Отчество"""
   patronymic: String
-
-  """Телефон"""
   phone: String
 }
 
@@ -301,7 +496,7 @@ type StudentEntity {
 
   """Группа"""
   group: String
-  id: ID!
+  id: UUID!
 
   """Миграционная карта"""
   migrationCard: StudentMigrationCardEntity
@@ -348,7 +543,7 @@ type StudentEntityMaxAggregate {
   curator: String
   faculty: String
   group: String
-  id: String
+  id: UUID
   phone: String
   updatedAt: DateTime
 }
@@ -359,7 +554,7 @@ type StudentEntityMinAggregate {
   curator: String
   faculty: String
   group: String
-  id: String
+  id: UUID
   phone: String
   updatedAt: DateTime
 }
@@ -374,7 +569,7 @@ type StudentMigrationCardEntity {
 
   """Дата истечения"""
   expirationDate: DateTime
-  id: ID!
+  id: UUID!
 
   """Дата выдачи"""
   issueDate: DateTime
@@ -385,7 +580,41 @@ type StudentMigrationCardEntity {
   """Серия"""
   series: String
   student: StudentEntity!
-  studentId: String!
+  studentId: UUID!
+  updatedAt: DateTime
+}
+
+type StudentMigrationCardEntityCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  expirationDate: Int!
+  id: Int!
+  issueDate: Int!
+  number: Int!
+  series: Int!
+  studentId: Int!
+  updatedAt: Int!
+}
+
+type StudentMigrationCardEntityMaxAggregate {
+  createdAt: DateTime
+  expirationDate: DateTime
+  id: UUID
+  issueDate: DateTime
+  number: String
+  series: String
+  studentId: UUID
+  updatedAt: DateTime
+}
+
+type StudentMigrationCardEntityMinAggregate {
+  createdAt: DateTime
+  expirationDate: DateTime
+  id: UUID
+  issueDate: DateTime
+  number: String
+  series: String
+  studentId: UUID
   updatedAt: DateTime
 }
 
@@ -409,7 +638,7 @@ type StudentPassportEntity {
 
   """Пол"""
   gender: GenderEnum
-  id: ID!
+  id: UUID!
 
   """Дата выдачи"""
   issueDate: DateTime
@@ -429,7 +658,7 @@ type StudentPassportEntity {
   """Серия"""
   series: String
   student: StudentEntity!
-  studentId: String!
+  studentId: UUID!
   updatedAt: DateTime
 }
 
@@ -461,14 +690,14 @@ type StudentPassportEntityMaxAggregate {
   expirationDate: DateTime
   firstName: String
   gender: GenderEnum
-  id: String
+  id: UUID
   issueDate: DateTime
   issuedBy: String
   lastName: String
   number: String
   patronymic: String
   series: String
-  studentId: String
+  studentId: UUID
   updatedAt: DateTime
 }
 
@@ -480,45 +709,87 @@ type StudentPassportEntityMinAggregate {
   expirationDate: DateTime
   firstName: String
   gender: GenderEnum
-  id: String
+  id: UUID
   issueDate: DateTime
   issuedBy: String
   lastName: String
   number: String
   patronymic: String
   series: String
-  studentId: String
+  studentId: UUID
   updatedAt: DateTime
 }
 
-input StudentUpdateInput {
-  """Курс"""
-  course: Int
+input StudentPassportUpsertInput {
+  birthDate: DateTime
+  birthPlace: String
+  citizenship: String
+  expirationDate: DateTime
+  firstName: String
+  gender: GenderEnum
+  issueDate: DateTime
+  issuedBy: String
+  lastName: String
+  number: String
+  patronymic: String
+  series: String
+}
 
-  """Куратор"""
-  curator: String
-  email: String
+type StudentPassportWithoutStudentEntity {
+  """Дата рождения"""
+  birthDate: DateTime
 
-  """Факультет"""
-  faculty: String
+  """Место рождения"""
+  birthPlace: String
+
+  """Гражданство"""
+  citizenship: String
+  createdAt: DateTime!
+
+  """Дата истечения"""
+  expirationDate: DateTime
 
   """Имя"""
   firstName: String
 
-  """Группа"""
-  group: String
+  """Пол"""
+  gender: GenderEnum
+  id: UUID!
 
-  """Идентификатор пользователя"""
-  id: ID!
+  """Дата выдачи"""
+  issueDate: DateTime
+
+  """Кем выдан"""
+  issuedBy: String
 
   """Фамилия"""
   lastName: String
-  password: String
+
+  """Номер"""
+  number: String
 
   """Отчество"""
   patronymic: String
 
-  """Телефон"""
+  """Серия"""
+  series: String
+  studentId: UUID!
+  updatedAt: DateTime
+}
+
+input StudentUpdateInput {
+  course: Int
+  curator: String
+  email: EmailAddress
+  faculty: String
+  firstName: String
+  group: String
+
+  """Идентификатор пользователя"""
+  id: UUID!
+  lastName: String
+  password: String
+  patronymic: String
   phone: String
 }
 
@@ -543,7 +814,44 @@ type StudentVisaEntity {
   """Номер"""
   number: String
   student: StudentEntity!
-  studentId: String!
+  studentId: UUID!
+  updatedAt: DateTime
+}
+
+type StudentVisaEntityCountAggregate {
+  _all: Int!
+  blankSeries: Int!
+  createdAt: Int!
+  expirationDate: Int!
+  id: Int!
+  invitationNumber: Int!
+  issueDate: Int!
+  number: Int!
+  studentId: Int!
+  updatedAt: Int!
+}
+
+type StudentVisaEntityMaxAggregate {
+  blankSeries: String
+  createdAt: DateTime
+  expirationDate: DateTime
+  id: String
+  invitationNumber: String
+  issueDate: DateTime
+  number: String
+  studentId: UUID
+  updatedAt: DateTime
+}
+
+type StudentVisaEntityMinAggregate {
+  blankSeries: String
+  createdAt: DateTime
+  expirationDate: DateTime
+  id: String
+  invitationNumber: String
+  issueDate: DateTime
+  number: String
+  studentId: UUID
   updatedAt: DateTime
 }
 
@@ -567,7 +875,7 @@ type StudentVisaRequestEntity {
 
   """Маршрут предполагаемого пребывания"""
   estimatedRouteOfStay: String
-  id: ID!
+  id: UUID!
 
   """Кратность визы"""
   multiplicity: VisaMultiplicityEnum
@@ -587,9 +895,81 @@ type StudentVisaRequestEntity {
   """Статус визовой анкеты"""
   status: VisaRequestStatusEnum!
   student: StudentEntity!
-  studentId: String!
+  studentId: UUID!
   updatedAt: DateTime
 }
+
+type StudentVisaRequestEntityCountAggregate {
+  _all: Int!
+  addressInCountryOfContinuousResidence: Int!
+  addressOfMigrationRegistration: Int!
+  attachedDocuments: Int!
+  category: Int!
+  createdAt: Int!
+  employeeComment: Int!
+  estimatedRouteOfStay: Int!
+  id: Int!
+  multiplicity: Int!
+  placeOfWorkOrStudyAndEmploymentPosition: Int!
+  reason: Int!
+  registrationNumber: Int!
+  russianFederationRelatives: Int!
+  status: Int!
+  studentId: Int!
+  updatedAt: Int!
+}
+
+type StudentVisaRequestEntityMaxAggregate {
+  addressInCountryOfContinuousResidence: String
+  addressOfMigrationRegistration: String
+  attachedDocuments: String
+  category: VisaCategoryEnum
+  createdAt: DateTime
+  employeeComment: String
+  estimatedRouteOfStay: String
+  id: UUID
+  multiplicity: VisaMultiplicityEnum
+  placeOfWorkOrStudyAndEmploymentPosition: String
+  reason: String
+  registrationNumber: String
+  russianFederationRelatives: String
+  status: VisaRequestStatusEnum
+  studentId: UUID
+  updatedAt: DateTime
+}
+
+type StudentVisaRequestEntityMinAggregate {
+  addressInCountryOfContinuousResidence: String
+  addressOfMigrationRegistration: String
+  attachedDocuments: String
+  category: VisaCategoryEnum
+  createdAt: DateTime
+  employeeComment: String
+  estimatedRouteOfStay: String
+  id: UUID
+  multiplicity: VisaMultiplicityEnum
+  placeOfWorkOrStudyAndEmploymentPosition: String
+  reason: String
+  registrationNumber: String
+  russianFederationRelatives: String
+  status: VisaRequestStatusEnum
+  studentId: UUID
+  updatedAt: DateTime
+}
+
+"""Ответ на запрос токена"""
+type TokenResponse {
+  """Токен доступа"""
+  accessToken: String!
+
+  """Время истечения токена"""
+  accessTokenExpires: DateTime!
+}
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUID
 
 type UserCurrentResponse {
   """Дата истечения токена доступа"""
@@ -608,13 +988,13 @@ type UserEntity {
   createdAt: DateTime!
 
   """Электронная почта (должна быть подтверждена)"""
-  email: String!
+  email: EmailAddress!
 
   """Если пользователь - сотрудник"""
   employee: EmployeeEntity
 
   """Идентификатор пользователя"""
-  id: ID!
+  id: UUID!
 
   """Последняя активность"""
   lastActivity: DateTime
@@ -642,16 +1022,16 @@ type UserEntityCountAggregate {
 
 type UserEntityMaxAggregate {
   createdAt: DateTime
-  email: String
-  id: String
+  email: EmailAddress
+  id: UUID
   lastActivity: DateTime
   updatedAt: DateTime
 }
 
 type UserEntityMinAggregate {
   createdAt: DateTime
-  email: String
-  id: String
+  email: EmailAddress
+  id: UUID
   lastActivity: DateTime
   updatedAt: DateTime
 }

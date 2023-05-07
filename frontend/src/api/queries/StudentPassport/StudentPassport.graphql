@@ -1,0 +1,20 @@
+query StudentPassport($studentId: UUID) {
+    studentPassport(studentId: $studentId) {
+        id
+        studentId
+        lastName
+        firstName
+        patronymic
+        birthDate
+        birthPlace
+        gender
+        citizenship
+        series
+        number
+        issueDate
+        issuedBy
+        expirationDate
+        createdAt
+        updatedAt
+    }
+}

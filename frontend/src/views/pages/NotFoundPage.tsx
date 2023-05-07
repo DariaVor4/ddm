@@ -1,23 +1,24 @@
-import { Icon } from '@rsuite/icons';
 import { TbError404 } from 'react-icons/all';
-import { Button } from 'rsuite';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { FC } from 'react';
 
-function NotFoundPage() {
+const NotFoundPage: FC = () => {
   const navigate = useNavigate();
   return (
     <div className='flex flex-col justify-center items-center grow text-xl my-10 text-center gap-10 leading-8'>
-      <Icon as={TbError404} pulse className='w-64 h-64' />
+      <TbError404 size={200} className='animate-rotate' />
       Вы добрались до края света.
       <br />
       Дальше живут драконы.
       <br />
       Возвращайтесь.
       <br />
-      <Button onClick={() => navigate(-1)} appearance='subtle'>
+      <Button onClick={() => navigate(-1)}>
         Вернуться
       </Button>
     </div>
   );
-}
+};
+
 export default NotFoundPage;

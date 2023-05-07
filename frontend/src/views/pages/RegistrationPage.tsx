@@ -1,240 +1,267 @@
+import { FC, useState } from 'react';
 import {
-  Button, FlexboxGrid, Form, Schema, Stack, Panel,
-} from 'rsuite';
-import React, { FC, useState } from 'react';
-import { toast } from 'react-toastify';
+  Button, IconButton, InputAdornment, Paper, Stack, TextField, Tooltip, Typography,
+} from '@mui/material';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+// import { useNavigate } from 'react-router-dom';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import { useNavigate } from 'react-router-dom';
 import {
-  GMutationRegistrationArgs,
-  useEmailConfirmByCodeMutation,
-  useRegistrationMutation,
-  useSendConfirmationCodeMutation,
+  GEmailAvailabilityVerdictEnum, GStudentCreateInput, useEmailAvailabilityLazyQuery, useRegistrationMutation,
 } from '../../api/generated';
+import { loginDialogOpenFn } from '../../components/Dialogs/LoginDialog';
+import EmailConfirmationDialog, { useEmailConfirmationDialog } from '../../components/Dialogs/EmailConfirmationDialog';
+import AppRoutesEnum from '../routes.enum';
+import strictPick from '../../core/strict-lodash/strict-pick.ts';
+import strictOmit from '../../core/strict-lodash/strict-omit.ts';
 
-const { StringType, NumberType } = Schema.Types;
-
-interface IFormValue {
-  firstName: string;
-  lastName: string;
-  patronymic?: string;
-  email: string;
-  phone: string;
-  curator: string;
-  faculty: string;
-  course: string;
-  group: string;
-  password: string;
-  verifyPassword: string;
-  verifyCodeField?: number;
+interface RegisterFormValue extends GStudentCreateInput {
+  passwordRepeat: string;
 }
 
-const model = Schema.Model<IFormValue>({
-  firstName: StringType().isRequired('Укажите имя'),
-  lastName: StringType().isRequired('Укажите фамилию'),
-  phone: StringType()
-    .minLength(11, 'Максимальная длина телефона - 11 символов')
-    .containsNumber('Телефон состоит из цифр')
-    .isRequired('Укажите телефон'),
-  curator: StringType().isRequired('Укажите куратора'),
-  faculty: StringType().isRequired('Укажите факультет'),
-  course: NumberType()
-    .isRequired('Укажите курс')
-    .min(1, 'Курс может быть от 1 до 7')
-    .max(7, 'Курс может быть от 1 до 7'),
-  group: StringType().isRequired('Укажите группу'),
-  email: StringType()
-    .isEmail('Укажите валидный email')
-    .isRequired('Укажите email'),
-  password: StringType()
-    .addRule((value, data) => !data.verifyPassword || value === data.verifyPassword, 'Пароли не совпадают')
-    .isRequired('Укажите пароль')
-    .minLength(8, 'Минимальная длина пароля - 8 символов'),
-  verifyPassword: StringType()
-    .addRule((value, data) => value === data.password, 'Пароли не совпадают')
-    .isRequired('Подтвердите пароль'),
-  verifyCodeField: StringType()
-    .containsNumber('Код состоит из цифр')
-    .minLength(6, 'Длина кода - 6 символов')
-    .maxLength(6, 'Длина кода - 6 символов'),
-});
-
-// todo сделать проверку на существование почты в бд
-// todo сделать отметку, что почта подтверждена (мб disable ....)
 const RegistrationPage: FC = () => {
-  const [formValue, setFormValue] = useState<IFormValue | Record<string, any>>({
-    firstName: '',
-    lastName: '',
-    patronymic: '',
-    email: '',
-    phone: '',
-    curator: '',
-    faculty: '',
-    course: '',
-    group: '',
-    password: '',
-    verifyPassword: '',
-    verifyCodeField: '',
-  });
-  const [formError, setFormError] = React.useState({});
-  const [isVerifiedCodeSent, setIsVerifiedCodeSent] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const [sendEmail] = useSendConfirmationCodeMutation();
-  const [confirmEmail] = useEmailConfirmByCodeMutation();
-  const [registerUser] = useRegistrationMutation();
-  const [verifyCodeDurationDate, setVerifyCodeDurationDate] = useState<Date>();
   const navigate = useNavigate();
-  const verifyEmail = async () => {
-    const { verifyCodeField, email } = formValue;
-
-    await confirmEmail({ variables: { email, code: verifyCodeField } })
-      .then(() => {
-        toast.success('Почта успешно подтверждена');
-        setIsVerified(true);
-      })
-      .catch(() => {
-        toast.error('Неправильный код подтверждения');
-        setIsVerified(false);
-      });
-  };
-
-  const sendEmailVerifyCode = async () => {
-    const duration = await sendEmail({ variables: { email: formValue.email } })
-      .then(r => r.data?.sendConfirmationCode)
-      .catch(e => {
-        // toast.error(e.message);
-        setFormError({ ...formError, email: e.message });
-      });
-    if (duration) {
-      setVerifyCodeDurationDate(new Date(duration));
-      setIsVerifiedCodeSent(true);
-      console.log(verifyCodeDurationDate);
-    }
-  };
-
-  const formatData = (formValue: IFormValue | Record<string, any>): GMutationRegistrationArgs => ({
-    input: {
-      firstName: formValue.firstName,
-      lastName: formValue.lastName,
-      patronymic: formValue.patronymic,
-      email: formValue.email,
-      phone: formValue.phone,
-      curator: formValue.curator,
-      faculty: formValue.faculty,
-      course: +formValue.course,
-      group: formValue.group,
-      password: formValue.password,
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const dialog = useEmailConfirmationDialog(state => strictPick(state, ['isEmailConfirmed', 'reset', 'open']));
+  // TODO: сброс подтверждения при изменении поля почты
+  const [checkEmailAvailability] = useEmailAvailabilityLazyQuery();
+  const [register] = useRegistrationMutation();
+  const formik = useFormik<RegisterFormValue>({
+    initialValues: {
+      lastName: '',
+      firstName: '',
+      patronymic: '',
+      email: '',
+      password: '',
+      passwordRepeat: '',
+      faculty: null,
+      course: null,
+      group: null,
+      curator: null,
+      phone: null,
     },
+    onSubmit: async values => {
+      const { data } = await register({ variables: { input: strictOmit(values, ['passwordRepeat']) } });
+      if (data?.registration) {
+        navigate(AppRoutesEnum.Home);
+        loginDialogOpenFn();
+        dialog.reset();
+      } else {
+        alert('Произошла ошибка');
+      }
+    },
+    validationSchema: yup.object({
+      lastName: yup.string().required('Фамилия обязательна'),
+      firstName: yup.string().required('Имя обязательно'),
+      patronymic: yup.string().optional(),
+      email: yup.string().email('Неверный формат почты').required('Почта обязательна').test('email-availability', async (value, ctx) => {
+        const { data } = await checkEmailAvailability({ variables: { email: value } });
+        switch (data?.emailAvailability.verdict) {
+          case GEmailAvailabilityVerdictEnum.Ok:
+            return true;
+          case GEmailAvailabilityVerdictEnum.Incorrect:
+            return ctx.createError({ message: 'Неверный формат почты' });
+          case GEmailAvailabilityVerdictEnum.Occupied:
+            return ctx.createError({ message: 'Почта уже занята' });
+          default:
+            return ctx.createError({ message: 'Неизвестная ошибка' });
+        }
+      }),
+      password: yup.string().min(8, 'Пароль должен быть длиннее 8 символов').required('Пароль обязателен'),
+      passwordRepeat: yup.string().oneOf([yup.ref('password')], 'Пароли должны совпадать').required('Повтор пароля обязателен'),
+      faculty: yup.string().required('Факультет обязателен'),
+      course: yup.number().required('Курс обязателен').typeError('Курс должен быть числом'),
+      group: yup.string().required('Группа обязательна'),
+      curator: yup.string().required('Куратор обязателен'),
+    }),
   });
-
-  const handlerRegister = async () => {
-    const errorsLength = Object.keys(formError).length;
-
-    if (isVerified && !errorsLength) {
-      const data = formatData(formValue);
-      await registerUser({ variables: data })
-        .then(res => {
-          if (res.data?.registration) {
-            console.log(res.data?.registration);
-            toast.success('Пользователь успешно зарегистрирован');
-            navigate('/login');
-          } else {
-            toast.error('Ошибка регистрации');
-          }
-        })
-        .catch(e => {
-          console.log(e);
-          toast.error(e.message);
-        });
-    } else {
-      console.log('user registration error');
-    }
-  };
 
   return (
-    <FlexboxGrid justify='center'>
-      <FlexboxGrid.Item>
-        <Panel header={<h3 style={{ textAlign: 'center' }}>Регистрация</h3>} bordered>
-          <Form
-            model={model}
-            onCheck={setFormError}
-            formValue={formValue}
-            formError={formError}
-            onSubmit={handlerRegister}
-            onChange={fv => setFormValue(fv)}
-          >
-            <Form.Group controlId='firstName'>
-              <Form.ControlLabel>Имя</Form.ControlLabel>
-              <Form.Control name='firstName' />
-            </Form.Group>
-            <Form.Group controlId='lastName'>
-              <Form.ControlLabel>Фамилия</Form.ControlLabel>
-              <Form.Control name='lastName' />
-            </Form.Group>
-            <Form.Group controlId='patronymic'>
-              <Form.ControlLabel>Отчество</Form.ControlLabel>
-              <Form.Control name='patronymic' />
-            </Form.Group>
-            <Form.Group controlId='email'>
-              <Form.ControlLabel>email</Form.ControlLabel>
-              <Stack spacing='1rem'>
-                <Form.Control name='email' type='email' />
-                <Button
-                  onClick={sendEmailVerifyCode}
-                >
-                  {isVerifiedCodeSent ? 'Отправить ещё раз' : 'Отправить код'}
-                </Button>
-              </Stack>
-            </Form.Group>
-            {isVerifiedCodeSent
-              && (
-                <Form.Group>
-                  <Form.ControlLabel>Код подтверждения</Form.ControlLabel>
-                  <Stack spacing='1rem'>
-                    <Form.Control name='verifyCodeField' />
-                    <Button onClick={verifyEmail}>Подтвердить</Button>
-                  </Stack>
-                </Form.Group>
-              )}
-            <Form.Group controlId='phone'>
-              <Form.ControlLabel>Телефон</Form.ControlLabel>
-              <Form.Control name='phone' type='tel' />
-            </Form.Group>
-            <Form.Group controlId='curator'>
-              <Form.ControlLabel>Куратор</Form.ControlLabel>
-              <Form.Control name='curator' />
-            </Form.Group>
-            {/* todo enum */}
-            <Form.Group controlId='faculty'>
-              <Form.ControlLabel>Факультет</Form.ControlLabel>
-              <Form.Control name='faculty' />
-            </Form.Group>
-            <Form.Group controlId='course'>
-              <Form.ControlLabel>Курс</Form.ControlLabel>
-              <Form.Control name='course' />
-            </Form.Group>
-            <Form.Group controlId='group'>
-              <Form.ControlLabel>Группа</Form.ControlLabel>
-              <Form.Control name='group' />
-            </Form.Group>
-            <Form.Group controlId='password'>
-              <Form.ControlLabel>Пароль</Form.ControlLabel>
-              <Form.Control name='password' type='password' />
-            </Form.Group>
-            <Form.Group controlId='verifyPassword'>
-              <Form.ControlLabel>Подтверждение пароля</Form.ControlLabel>
-              <Form.Control name='verifyPassword' type='password' />
-            </Form.Group>
-            <Button
-              appearance='primary'
-              type='submit'
-              disabled={!isVerified}
-            >
-              Зарегистрироваться
-            </Button>
-          </Form>
-        </Panel>
-      </FlexboxGrid.Item>
-    </FlexboxGrid>
+    <>
+      <Paper className='px-10 py-4 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
+        <Typography className='text-center'>Регистрация студента</Typography>
+        <TextField
+          name='lastName'
+          size='small'
+          required
+          value={formik.values.lastName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.lastName && formik.errors.lastName}
+          label='Фамилия'
+          variant='outlined'
+        />
+        <TextField
+          required
+          size='small'
+          name='firstName'
+          value={formik.values.firstName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.firstName && formik.errors.firstName}
+          label='Имя'
+          variant='outlined'
+        />
+        <TextField
+          name='patronymic'
+          size='small'
+          value={formik.values.patronymic}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.patronymic && Boolean(formik.errors.patronymic)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.patronymic && formik.errors.patronymic}
+          label='Отчество'
+          variant='outlined'
+        />
+        <TextField
+          required
+          size='small'
+          name='email'
+          value={formik.values.email}
+          onChange={e => {
+            dialog.reset();
+            formik.handleChange(e);
+          }}
+          onBlur={formik.handleBlur}
+          error={formik.touched.email && (!!formik.errors.email || !dialog.isEmailConfirmed)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.email && (formik.errors.email || (!dialog.isEmailConfirmed && 'Подтвердите почту'))}
+          label='Почта'
+          variant='outlined'
+          InputProps={{
+            endAdornment: formik.touched.email && !formik.errors.email && formik.values.email && (
+            <InputAdornment position='end'>
+              {dialog.isEmailConfirmed
+                ? <Tooltip title='Почта подтверждена ✅'><VerifiedIcon color='success' /></Tooltip>
+                : <Button size='small' variant='outlined' onClick={() => dialog.open(formik.values.email)}>Подтвердить</Button>}
+            </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          required
+          size='small'
+          name='password'
+          type={isShowPassword ? 'text' : 'password'}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.password && formik.errors.password}
+          label='Пароль'
+          variant='outlined'
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end' onClick={() => setIsShowPassword(!isShowPassword)}>
+                <IconButton>
+                  {isShowPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          required
+          size='small'
+          name='passwordRepeat'
+          type={isShowPassword ? 'text' : 'password'}
+          value={formik.values.passwordRepeat}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.passwordRepeat && Boolean(formik.errors.passwordRepeat)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.passwordRepeat && formik.errors.passwordRepeat}
+          label='Повторите пароль'
+          variant='outlined'
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end' onClick={() => setIsShowPassword(!isShowPassword)}>
+                <IconButton>
+                  {isShowPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          required
+          size='small'
+          name='faculty'
+          value={formik.values.faculty}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.faculty && Boolean(formik.errors.faculty)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.faculty && formik.errors.faculty}
+          label='Факультет'
+          variant='outlined'
+        />
+        <TextField
+          required
+          size='small'
+          name='course'
+          type='number'
+          value={formik.values.course}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.course && Boolean(formik.errors.course)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.course && formik.errors.course}
+          label='Курс'
+          variant='outlined'
+        />
+        <TextField
+          required
+          size='small'
+          name='group'
+          value={formik.values.group}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.group && Boolean(formik.errors.group)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.group && formik.errors.group}
+          label='Группа'
+          variant='outlined'
+        />
+        <TextField
+          required
+          size='small'
+          name='curator'
+          value={formik.values.curator}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.curator && Boolean(formik.errors.curator)}
+          disabled={formik.isSubmitting}
+          helperText={formik.touched.curator && formik.errors.curator}
+          label='Куратор'
+          variant='outlined'
+        />
+        <Stack direction='row' justifyContent='flex-end' gap={2}>
+          <Tooltip title='Уже зарегистрированы?'>
+            <Button variant='text' onClick={loginDialogOpenFn}>Вход</Button>
+          </Tooltip>
+          <Tooltip title='Сначала необходимо заполнить форму и подтвердить почту'>
+            <span>
+              <Button
+                disabled={formik.isSubmitting || !formik.isValid || !formik.dirty || !dialog.isEmailConfirmed}
+                onClick={formik.submitForm}
+              >
+                Зарегистрироваться
+              </Button>
+            </span>
+          </Tooltip>
+        </Stack>
+      </Paper>
+      <EmailConfirmationDialog />
+    </>
   );
 };
 

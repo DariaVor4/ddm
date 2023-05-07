@@ -1,4 +1,8 @@
 module.exports = {
+  env: {
+    browser: true,
+    es2020: true
+  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
@@ -18,10 +22,11 @@ module.exports = {
   ],
   plugins: [
     '@typescript-eslint',
+    'react-refresh',
   ],
   root: true,
   rules: {
-    'max-len': [ 'error', { code: 200 } ],
+    'max-len': ['error', {code: 200}],
     'react/function-component-definition': ['off'],
     'react/jsx-no-useless-fragment': ['off'],
     'react/react-in-jsx-scope': ['off'],
@@ -35,8 +40,11 @@ module.exports = {
     'linebreak-style': 'off',
     'jsx-a11y/no-access-key': 'off',
     'no-nested-ternary': 'off',
-    '@typescript-eslint/no-shadow': 'off',
     // 'semi': 'off',
     // '@typescript-eslint/semi': ['error', 'never'],
+    "import/extensions": "off",
+    'react/jsx-props-no-spreading': 'off',
+    'no-void': 'off',
+    'react/prop-types': 'off',
   },
 }

@@ -1,6 +1,6 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { UserEntity } from '@prisma-graphql/user-entity';
-import { Prisma } from '@prisma-client';
+import { UserEntity } from '@prisma-nestjs-graphql';
+import { Prisma } from '@prisma/client';
 import { NotFoundException } from '@nestjs/common';
 import { _throw } from '@common';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -12,12 +12,14 @@ import UserCurrentResponse from './responses/user-current.response';
 
 @Resolver('user')
 export class UserResolver {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   /**
    * Получить текущего пользователя.
+   * @param ctx Контекст текущей сессии пользователя.
+   * @param select Запрошенные поля через GraphQL.
+   * @returns Текущий авторизованный пользователь.
+   * @throws {NotFoundException} Если пользователь не найден (а вдруг?).
    */
   @Query(() => UserCurrentResponse, {
     description: 'Получить текущего пользователя',

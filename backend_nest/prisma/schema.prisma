@@ -1,17 +1,21 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "client"
+  // output          = "client"
   previewFeatures = ["postgresqlExtensions"]
 }
 
 generator nestgraphql {
-  provider             = "node node_modules/prisma-nestjs-graphql"
+  provider              = "node node_modules/prisma-nestjs-graphql"
   // provider = "prisma-nestjs-graphql"
-  output               = "../src/generated/prisma-nestjs-graphql"
-  reExport             = All
-  combineScalarFilters = true
-  // emitSingle           = true
-  purgeOutput          = true
+  output                = "../src/generated/prisma-nestjs-graphql"
+  reExport              = All
+  combineScalarFilters  = true
+  emitSingle            = true
+  purgeOutput           = true
+  fields_Scalars_from   = "graphql-scalars"
+  fields_Scalars_input  = true
+  fields_Scalars_output = true
+  // graphqlScalars_Uuid_specifier = "graphql-scalars"
 }
 
 datasource db {
@@ -22,8 +26,10 @@ datasource db {
 
 /// Подтверждение почтового адреса
 model ConfirmationEmailEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
 
+  /// @FieldType('Scalars.GraphQLEmailAddress')
   email       String
   code        String
   isConfirmed Boolean @default(false) @map("is_confirmed")
@@ -39,6 +45,7 @@ model ConfirmationEmailEntity {
 
 /// Подтверждение номера телефона
 model ConfirmationPhoneEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
 
   phone       String
@@ -57,8 +64,10 @@ model ConfirmationPhoneEntity {
 /// Пользователь
 model UserEntity {
   /// Идентификатор пользователя
+  /// @FieldType('Scalars.GraphQLUUID')
   id            String                     @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// Электронная почта (должна быть подтверждена)
+  /// @FieldType('Scalars.GraphQLEmailAddress')
   email         String                     @unique
   /// Bcrypt хэш пароля
   /// @HideField({ input: false, output: true })
@@ -87,6 +96,7 @@ model UserEntity {
 /// Сотрудник
 model EmployeeEntity {
   user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  /// @FieldType('Scalars.GraphQLUUID')
   id   String     @id() @unique @map("id_user") @db.Uuid
 
   /// Фамилия
@@ -109,6 +119,7 @@ model EmployeeEntity {
 
 /// Уведомление
 model NotificationEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id      String                     @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// Заголовок
   title   String
@@ -129,9 +140,11 @@ model NotificationEntity {
 /// Уведомления для пользователей
 model NotificationToUserEntity {
   notification   NotificationEntity @relation(fields: [notificationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  /// @FieldType('Scalars.GraphQLUUID')
   notificationId String             @map("id_notification") @db.Uuid
 
   user   UserEntity @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  /// @FieldType('Scalars.GraphQLUUID')
   userId String     @map("id_user") @db.Uuid
 
   /// Прочитано ли уведомление?
@@ -150,6 +163,7 @@ model NotificationToUserEntity {
 /// Студент
 model StudentEntity {
   user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  /// @FieldType('Scalars.GraphQLUUID')
   id   String     @id() @unique @map("id_user") @db.Uuid
 
   /// Уведомление о прибытии
@@ -189,22 +203,24 @@ model StudentEntity {
 
 /// Близкие родственники студента
 model StudentCloseRelativeEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @map("id_student") @db.Uuid
 
   /// Фамилия
-  lastName                  String?   @map("last_name")
+  lastName                   String?   @map("last_name")
   /// Имя
-  firstName                 String?   @map("first_name")
+  firstName                  String?   @map("first_name")
   /// Отчество
-  patronymic                String?
+  patronymic                 String?
   /// Дата рождения
-  birthDate                 DateTime? @map("birth_date")
+  birthDate                  DateTime? @map("birth_date")
   /// Гражданство
-  citizenship               String?
+  citizenship                String?
   /// Постоянное место жительства
-  addressContinuosResidence String?   @map("address_continuos_residence")
+  addressContinuousResidence String?   @map("address_continuos_residence")
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
@@ -217,8 +233,10 @@ model StudentCloseRelativeEntity {
 
 /// Уведомление о прибытии студента
 model StudentArrivalNoticeEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   student   StudentEntity @relation(fields: [studentId], references: [id])
+  /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
 
   /// Профессия
@@ -245,8 +263,10 @@ model StudentArrivalNoticeEntity {
 
 /// Миграционная карта студента
 model StudentMigrationCardEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   student   StudentEntity @relation(fields: [studentId], references: [id])
+  /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
 
   /// Серия
@@ -270,8 +290,10 @@ model StudentMigrationCardEntity {
 /// Виза студента
 model StudentVisaEntity {
   /// Идентификатор визы
+  /// @FieldType('String')
   id        String        @id()
   student   StudentEntity @relation(fields: [studentId], references: [id])
+  /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
 
   /// Серия бланка
@@ -302,8 +324,10 @@ enum GenderEnum {
 
 /// Паспорт студента
 model StudentPassportEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   student   StudentEntity @relation(fields: [studentId], references: [id])
+  /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
 
   /// Фамилия
@@ -388,8 +412,10 @@ enum VisaRequestStatusEnum {
 
 /// Визовая анкета студента
 model StudentVisaRequestEntity {
+  /// @FieldType('Scalars.GraphQLUUID')
   id              String                @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   student         StudentEntity         @relation(fields: [studentId], references: [id])
+  /// @FieldType('Scalars.GraphQLUUID')
   studentId       String                @db.Uuid
   /// Статус визовой анкеты
   status          VisaRequestStatusEnum @default(Pending)

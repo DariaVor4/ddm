@@ -1,23 +1,25 @@
 import {
   Args, Context, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
+import dayjs from 'dayjs';
 import {
-  InternalServerErrorException, Logger, NotAcceptableException, Req, Res,
+  BadRequestException, InternalServerErrorException, Logger, NotAcceptableException,
 } from '@nestjs/common';
 import ms from 'ms';
 import { Request, Response } from 'express';
 import { assert } from '@common';
 import * as uuid from 'uuid';
+import { EmailAddress } from '@common/scalars';
 import { PublicEndpoint } from '../decorators/public.decorator';
 import { Roles } from '../decorators/roles.decorator';
 import UserRoleEnum from '../interfaces/user-role.enum';
-import { CookieKeys } from '../types/cookie-keys';
+import { CookieKeysEnum } from '../enums/cookie-keys.enum';
 import { CookiesPick } from '../decorators/cookies-pick.decorator';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { ConfigService } from '../../../config/config.service';
 import { EmailService } from '../../../email/email.service';
 import EmailAvailabilityResponse from '../responses/email-availability.response';
-import { EmailAvailabilityVerdictEnum } from '../types/email-verdict.enum';
+import { EmailAvailabilityVerdictEnum } from '../enums/email-verdict.enum';
 import { AuthService } from '../auth.service';
 import { UserService } from '../../user/user.service';
 
@@ -57,7 +59,7 @@ export class RegistrationResolver {
       case false:
         return {
           verdict: EmailAvailabilityVerdictEnum.Occupied,
-          message: 'Почта занята',
+          message: 'Почта уже используется',
         };
       case null:
         return {
@@ -80,29 +82,44 @@ export class RegistrationResolver {
   @PublicEndpoint()
   @Roles(UserRoleEnum.Any)
   async sendConfirmationCode(
-    @Args('email') email: string,
+    @Args('email', { type: EmailAddress }) email: string,
     @Context('res') res: Response,
+    @CookiesPick(CookieKeysEnum.RegistrationTokenKey) registrationToken: string,
   ): Promise<Date> {
     // Проверка почты на корректность и доступность
     const emailVerdict = await this.emailAvailability(email);
-    assert(emailVerdict.verdict === EmailAvailabilityVerdictEnum.Ok, new NotAcceptableException(emailVerdict.message));
+    assert(emailVerdict.verdict === EmailAvailabilityVerdictEnum.Ok, new BadRequestException(emailVerdict.message));
+    await this.prisma.confirmationEmailEntity.findFirst({
+      where: {
+        OR: [{ id: registrationToken }, { email }],
+        createdAt: { gte: new Date(Date.now() - ms('1m')) },
+      },
+    }).then((entity) => {
+      // throw new BadRequestException(`Отправить код повторно можно не раньше чем через ${Math.ceil((ms('1m') + entity.createdAt.getTime() - Date.now()) / 1000)} секунд`);
+      assert(
+        !entity,
+        new BadRequestException(`Отправить код повторно можно не раньше чем ${dayjs(entity!.createdAt).add(1, 'minute').fromNow()}`),
+      );
+    });
     // Сгенерировать код
     const code = await this.authService.generateSingleUseCode();
     const registrationTimeOut = Date.now() + ms(this.configService.config.emailConfirmationCodeExpires);
-    // Сохранение изменений в БД
+    // Запись кода подтверждения в БД, отправка письма с кодом подтверждения, установка RegistrationToken в cookies
     await this.prisma.$transaction(async (prisma) => {
-      // Запись кода подтверждения в базу данных
-      // + Отправка письма с кодом подтверждения
       const [confirmationEmail, emailResult] = await Promise.all([
+        // Запись кода подтверждения в БД
         prisma.confirmationEmailEntity.create({ data: { email, code } }),
-        this.emailService.sendSimpleText({
-          email,
-          subject: 'Подтверждение электронной почты',
-          message: `Код подтверждения вашей электронной почты: ${code}`,
-        }).catch((error) => {
-          this.logger.error(error);
-          throw new InternalServerErrorException('К сожалению, не удалось отправить код подтверждения');
-        }),
+        // Отправка письма с кодом подтверждения
+        this.emailService
+          .sendSimpleText({
+            email,
+            subject: 'Подтверждение электронной почты',
+            message: `Код подтверждения вашей электронной почты: ${code}`,
+          })
+          .catch((error) => {
+            this.logger.error(error);
+            throw new InternalServerErrorException('К сожалению, не удалось отправить код подтверждения');
+          }),
       ]);
       assert(
         emailResult.accepted.includes(email),
@@ -111,7 +128,7 @@ export class RegistrationResolver {
       // Поместить RegistrationToken в cookies
       this.authService.putTextIntoCookies({
         res,
-        key: CookieKeys.RegistrationTokenKey,
+        key: CookieKeysEnum.RegistrationTokenKey,
         text: confirmationEmail.id,
         expires: new Date(registrationTimeOut),
       });
@@ -130,25 +147,15 @@ export class RegistrationResolver {
   @PublicEndpoint()
   @Roles(UserRoleEnum.Any)
   async emailConfirmByCode(
-    @Args('email') email: string,
+    @Args('email', { type: EmailAddress }) email: string,
     @Args('code') code: string,
     @Context('req') req: Request,
-    @CookiesPick(CookieKeys.RegistrationTokenKey) registrationToken: string,
+    @CookiesPick(CookieKeysEnum.RegistrationTokenKey) registrationToken: string,
   ): Promise<boolean> {
-    this.logger.debug(`RegistrationTokenKey: ${req.cookies.RegistrationToken}`);
-    this.logger.debug(`emailConfirmByCode: ${email} ${code} ${registrationToken}`);
-    assert(
-      uuid.validate(registrationToken),
-      new NotAcceptableException('Код подтверждения истёк или вы его не запрашивали.'),
-    );
-    const confirmationEmail = await this.prisma.confirmationEmailEntity.findUnique({
-      where: { id: registrationToken },
-    });
-    assert(
-      confirmationEmail?.isConfirmed === false,
-      new NotAcceptableException('Заявка на подтверждение почты не найдена'),
-    );
-    assert(confirmationEmail.email === email, new NotAcceptableException('Почтовые адреса не совпадают'));
+    assert(uuid.validate(registrationToken), new BadRequestException('Код подтверждения истёк или вы его не запрашивали.'));
+    const confirmationEmail = await this.prisma.confirmationEmailEntity.findUnique({ where: { id: registrationToken } });
+    assert(confirmationEmail?.isConfirmed === false, new BadRequestException('Заявка на подтверждение почты не найдена'));
+    assert(confirmationEmail.email === email, new BadRequestException('Почтовые адреса не совпадают'));
     assert(confirmationEmail.code === code, new NotAcceptableException('Неверный код подтверждения'));
     await this.prisma.confirmationEmailEntity.update({
       where: { id: registrationToken },

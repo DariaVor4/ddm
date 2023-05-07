@@ -1,8 +1,7 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { pick } from 'lodash';
-import { EmployeeEntity } from '@prisma-graphql/employee-entity';
-import { UserEntity } from '@prisma-graphql/user-entity';
-import { Prisma } from '@prisma-client';
+import { EmployeeEntity, UserEntity } from '@prisma-nestjs-graphql';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import EmployeeCreateInput from './inputs/employee-create.input';
@@ -23,7 +22,7 @@ export class EmployeeService {
   /**
    * Создание сотрудника.
    */
-  async createEmployee(input: EmployeeCreateInput, select?: Prisma.EmployeeEntitySelect):Promise<EmployeeEntity> {
+  async createEmployee(input: EmployeeCreateInput, select?: Prisma.EmployeeEntitySelect): Promise<EmployeeEntity> {
     if (!await this.userService.isEmailFree(input.email)) {
       throw new NotAcceptableException('Пользователь с таким email уже существует');
     }

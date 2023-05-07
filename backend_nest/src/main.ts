@@ -4,6 +4,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { runtimeMode } from '@common';
 import { AppModule } from './app.module';
+import './common/dayjs-configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

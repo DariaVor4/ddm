@@ -1,8 +1,9 @@
 # compiled output
 /dist
+/tsconfig.build.tsbuildinfo
 /node_modules
 /prisma/client
-/src/generated
+#/src/generated
 /package-lock.json
 /pnpm-lock.yaml
 /yarn.lock
