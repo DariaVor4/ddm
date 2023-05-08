@@ -14,7 +14,7 @@ import { loginDialogOpenFn } from '../../Dialogs/LoginDialog.tsx';
 import AppRoutesEnum from '../../../views/routes.enum.ts';
 
 const HeaderButtons: FC = () => {
-  const { data: { userCurrent: current } = {} } = useUserCurrentQuery();
+  const { data: { current } = {} } = useUserCurrentQuery();
   const { isDarkTheme, toggleTheme } = useMainStore();
   const role = getRole(current?.roles);
   const isMenuOpen = useReactiveVar(isUserMenuOpenVar);

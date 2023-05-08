@@ -1,0 +1,22 @@
+query StudentArrivalNotice($studentId: UUID) {
+    studentArrivalNotice(studentId: $studentId) {
+        id
+        studentId
+        profession
+        address
+        date
+        expires
+        invitingSide
+        receivingSide
+        createdAt
+        updatedAt
+    }
+}
+
+mutation StudentArrivalNoticeUpsert($data: StudentArrivalNoticeUpsertInput!, $studentId: UUID) {
+    isSuccess: studentArrivalNoticeUpsert(data: $data, studentId: $studentId)
+}
+
+mutation StudentArrivalNoticeDelete($studentId: UUID!) {
+    isDeleted: studentArrivalNoticeDelete(studentId: $studentId)
+}

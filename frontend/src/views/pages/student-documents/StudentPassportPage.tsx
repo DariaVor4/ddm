@@ -93,7 +93,7 @@ const StudentPassportPage: FC = () => {
       },
     }), {
       pending: 'Сохранение данных...',
-      success: 'Данные сохранены',
+      success: { render: ({ data: data1 }) => (data1?.data?.isSuccess ? 'Данные успешно сохранены' : 'Данные не были сохранены') },
       error: { render: ({ data: err }) => `Ошибка сохранения данных: ${err}` },
     }),
   });

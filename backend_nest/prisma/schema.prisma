@@ -15,7 +15,6 @@ generator nestgraphql {
   fields_Scalars_from   = "graphql-scalars"
   fields_Scalars_input  = true
   fields_Scalars_output = true
-  // graphqlScalars_Uuid_specifier = "graphql-scalars"
 }
 
 datasource db {

@@ -1,5 +1,5 @@
 query UserCurrent {
-    userCurrent {
+    current: userCurrent {
         roles
         accessTokenExpires
         user {

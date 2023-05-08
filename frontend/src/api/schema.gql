@@ -208,6 +208,18 @@ type Mutation {
     studentId: UUID
   ): Boolean!
 
+  """Удалить близкого родственника студента."""
+  studentCloseRelativeDelete(
+    """ID Родственников"""
+    closeRelativeIds: [UUID!]!
+  ): Int!
+
+  """Перезапись близкого родственника студента."""
+  studentCloseRelativeUpsert(
+    """Данные для перезаписи"""
+    data: StudentCloseRelativeUpsertInput!
+  ): Boolean!
+
   """Создание/регистрация студента."""
   studentCreate(input: StudentCreateInput!): StudentEntity!
 
@@ -336,6 +348,18 @@ type Query {
     studentId: UUID
   ): StudentArrivalNoticeWithoutStudentResult
 
+  """Получить близкого родственника студента."""
+  studentCloseRelative(
+    """ID Близкого родственника"""
+    closeRelativeId: UUID!
+  ): StudentCloseRelativeWithoutStudentResult!
+
+  """Получить близких родственников студента."""
+  studentCloseRelatives(
+    """ID Студента"""
+    studentId: UUID
+  ): [StudentCloseRelativeWithoutStudentResult!]!
+
   """Получить паспорт студента."""
   studentPassport(
     """ID Студента"""
@@ -425,6 +449,7 @@ input StudentArrivalNoticeUpsertInput {
   receivingSide: String
 }
 
+"""Уведомление о прибытии студента без возможности выбора самого студента"""
 type StudentArrivalNoticeWithoutStudentResult {
   """Адрес регистрации"""
   address: String
@@ -512,6 +537,42 @@ type StudentCloseRelativeEntityMinAggregate {
   lastName: String
   patronymic: String
   studentId: UUID
+  updatedAt: DateTime
+}
+
+input StudentCloseRelativeUpsertInput {
+  addressContinuousResidence: String
+  birthDate: DateTime
+  citizenship: String
+  firstName: String
+  id: UUID
+  lastName: String
+  patronymic: String
+  studentId: UUID
+}
+
+"""Близкий родственник студента без возможности выбора самого студента"""
+type StudentCloseRelativeWithoutStudentResult {
+  """Постоянное место жительства"""
+  addressContinuousResidence: String
+
+  """Дата рождения"""
+  birthDate: DateTime
+
+  """Гражданство"""
+  citizenship: String
+  createdAt: DateTime!
+
+  """Имя"""
+  firstName: String
+  id: UUID!
+
+  """Фамилия"""
+  lastName: String
+
+  """Отчество"""
+  patronymic: String
+  studentId: UUID!
   updatedAt: DateTime
 }
 
@@ -790,6 +851,9 @@ input StudentPassportUpsertInput {
   series: String
 }
 
+"""
+Паспорт студента, где вместо студента присутствует только его studentId.
+"""
 type StudentPassportWithoutStudentResult {
   """Дата рождения"""
   birthDate: DateTime

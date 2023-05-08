@@ -23,7 +23,7 @@ export const isUserMenuOpenVar = makeVar(false);
 export const userMenuToggleFn = () => isUserMenuOpenVar(!isUserMenuOpenVar());
 
 const UserMenu: FC = () => {
-  const { data: { userCurrent: current } = {} } = useUserCurrentQuery();
+  const { data: { current } = {} } = useUserCurrentQuery();
   const role = getRole(current?.roles);
   const isMenuOpen = useReactiveVar(isUserMenuOpenVar);
   const navigate = useNavigate();

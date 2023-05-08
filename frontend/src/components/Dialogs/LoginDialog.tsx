@@ -1,16 +1,19 @@
-import { FC, KeyboardEventHandler, useState } from 'react';
+import { FC, useState } from 'react';
 import {
-  Alert, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, InputAdornment, TextField, Typography,
+  Alert, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, InputAdornment, Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useFormik } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { makeVar, useReactiveVar } from '@apollo/client';
 import AppRoutesEnum from '../../views/routes.enum';
 import { GLoginByPasswordMutationVariables, useLoginByPasswordMutation } from '../../api/generated';
 import { authHelper } from '../../api/apollo-client.tsx';
+import onEnterDown from '../../core/onEnterDown.ts';
+import FormikTextField from '../forms/FormikTextField.tsx';
+import AppDialog from './AppDialog.tsx';
 
 const isLoginDialogOpenVar = makeVar(false);
 export const loginDialogOpenFn = () => isLoginDialogOpenVar(true);
@@ -24,7 +27,7 @@ const LoginDialog: FC = () => {
   const [loginByPassword] = useLoginByPasswordMutation({
     onCompleted: async data => {
       loginDialogCloseFn();
-      await authHelper.login(data.loginByPassword);
+      await authHelper.login(data.response);
     },
     onError: error => {
       if ((error.graphQLErrors.at(0)?.extensions as any)?.originalError?.statusCode === 401) {
@@ -44,57 +47,29 @@ const LoginDialog: FC = () => {
       password: yup.string().required('Пароль обязателен'),
     }),
   });
-  const submitByEnter: KeyboardEventHandler<HTMLDivElement> = async keyEvent => {
-    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
-      await formik.submitForm();
-    }
-  };
 
   return (
-    <Dialog TransitionComponent={Grow} transitionDuration={500} fullWidth maxWidth='xs' open={isOpen} onClose={loginDialogCloseFn}>
-      <DialogTitle className='flex items-center'>
-        <Typography className='grow inline' variant='h6' component='span'>Вход в систему</Typography>
-        <IconButton onClick={loginDialogCloseFn}>
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent className='flex flex-col !py-10' dividers onKeyDown={submitByEnter}>
-        <TextField
-          size='small'
-          variant='outlined'
-          label='Почта'
-          name='email'
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          disabled={formik.isSubmitting}
-          type='email'
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <TextField
-          className='!mt-6'
-          size='small'
-          variant='outlined'
-          label='Пароль'
-          name='password'
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          disabled={formik.isSubmitting}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end' onClick={() => setShowPassword(!showPassword)}>
-                <IconButton>
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+    <AppDialog title='Вход в систему' open={isOpen} onClose={loginDialogCloseFn}>
+      <DialogContent className='flex flex-col !py-10' dividers onKeyDown={onEnterDown(formik.submitForm)}>
+        <FormikProvider value={formik}>
+          <FormikTextField name='email' label='Почта' required />
+          <FormikTextField
+            className='!mt-4'
+            name='password'
+            label='Пароль'
+            required
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end' onClick={() => setShowPassword(!showPassword)}>
+                  <IconButton>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </FormikProvider>
         <Collapse in={!!authResultMessage}>
           <Alert className='mt-6' variant='filled' severity='error'>{authResultMessage}</Alert>
         </Collapse>
@@ -104,6 +79,7 @@ const LoginDialog: FC = () => {
           size='small'
           onClick={loginDialogCloseFn}
           component={Link}
+          variant='text'
           to={AppRoutesEnum.Register}
         >
           Регистрация
@@ -111,14 +87,13 @@ const LoginDialog: FC = () => {
         <Button
           autoFocus
           size='small'
-          variant='contained'
           onClick={formik.submitForm}
           disabled={!!authResultMessage || formik.isSubmitting || !formik.isValid || !formik.dirty}
         >
           Войти
         </Button>
       </DialogActions>
-    </Dialog>
+    </AppDialog>
   );
 };
 

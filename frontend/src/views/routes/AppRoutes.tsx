@@ -13,9 +13,10 @@ import NotFoundPage from '../pages/NotFoundPage.tsx';
 import globalNavigateVar from '../../store/global-navigate.ts';
 import { isConnectionLostVar } from '../../api/apollo-client.tsx';
 import NoConnectionPage from '../pages/NoConnectionPage.tsx';
+import { ConfirmActionDialog } from '../../core/hooks/useConfirmAction.tsx';
 
 const AppRoutes: FC = () => {
-  const { data: { userCurrent: user } = {}, loading } = useUserCurrentQuery();
+  const { data: { current: user } = {}, loading } = useUserCurrentQuery();
   const isConnectionLost = useReactiveVar(isConnectionLostVar);
   const navigate = useNavigate();
 
@@ -40,6 +41,7 @@ const AppRoutes: FC = () => {
           <Route path={AppRoutesEnum.Any} element={<NotFoundPage />} />
         </Route>
       </Routes>
+      <ConfirmActionDialog />
     </>
   );
 };

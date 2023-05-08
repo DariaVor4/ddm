@@ -1,3 +1,0 @@
-mutation StudentPassportDelete($studentId: UUID!) {
-    studentPassportDelete(studentId: $studentId)
-}

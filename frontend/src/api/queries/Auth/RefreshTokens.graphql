@@ -1,6 +1,6 @@
-mutation RefreshTokens {
-    refreshTokens {
-        accessToken
-        accessTokenExpires
-    }
-}
+#mutation RefreshTokens {
+#    response: refreshTokens {
+#        accessToken
+#        accessTokenExpires
+#    }
+#}

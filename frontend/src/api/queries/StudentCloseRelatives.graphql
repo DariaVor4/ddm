@@ -1,0 +1,38 @@
+query StudentCloseRelatives($studentId: UUID) {
+    studentCloseRelatives(studentId: $studentId) {
+        id
+        studentId
+        lastName
+        firstName
+        patronymic
+        birthDate
+        citizenship
+        addressContinuousResidence
+        createdAt
+        updatedAt
+    }
+}
+
+query StudentCloseRelative($closeRelativeId: UUID!) {
+    studentCloseRelative(closeRelativeId: $closeRelativeId) {
+        id
+        studentId
+        lastName
+        firstName
+        patronymic
+        birthDate
+        citizenship
+        addressContinuousResidence
+        createdAt
+        updatedAt
+    }
+}
+
+mutation StudentCloseRelativeUpsert($data: StudentCloseRelativeUpsertInput!) {
+    isSuccess: studentCloseRelativeUpsert(data: $data)
+}
+
+
+mutation StudentCloseRelativeDelete($closeRelativeIds: [UUID!]!) {
+    deletedCount: studentCloseRelativeDelete(closeRelativeIds: $closeRelativeIds)
+}

@@ -13,8 +13,8 @@ import 'dayjs/locale/ru';
 
 dayjs.locale('ru');
 
-/* ReactDOM. */createRoot(document.getElementById('root') as HTMLElement).render(
-  </* React. */StrictMode>
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>
         {/* <StyledEngineProvider injectFirst> */}

@@ -1,7 +1,6 @@
 import { FC, forwardRef, memo } from 'react';
 import { useField, useFormikContext } from 'formik';
 import { TextField, TextFieldProps } from '@mui/material';
-import dayjs from 'dayjs';
 
 type TFormikTextFieldProps = TextFieldProps & {
   name: string;
@@ -21,7 +20,6 @@ const FormikTextField: FC<TFormikTextFieldProps> = memo(forwardRef(({
     <TextField
       {...field}
       ref={ref}
-      // value={props.type === 'date' ? dayjs(value).format('YYYY-MM-DD') : value}
       error={meta.touched && !!meta.error}
       helperText={(meta.touched && meta.error) || helpText}
       disabled={isSubmitting}

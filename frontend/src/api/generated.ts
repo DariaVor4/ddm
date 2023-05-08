@@ -189,6 +189,10 @@ export type GMutation = {
   studentArrivalNoticeDelete: Scalars['Boolean'];
   /** Перезапись уведомления о прибытии студента */
   studentArrivalNoticeUpsert: Scalars['Boolean'];
+  /** Удалить близкого родственника студента. */
+  studentCloseRelativeDelete: Scalars['Int'];
+  /** Перезапись близкого родственника студента. */
+  studentCloseRelativeUpsert: Scalars['Boolean'];
   /** Создание/регистрация студента. */
   studentCreate: GStudentEntity;
   /** Удаление паспорта студента. Студент не может удалить свой паспорт. */
@@ -242,6 +246,16 @@ export type GMutationStudentArrivalNoticeDeleteArgs = {
 export type GMutationStudentArrivalNoticeUpsertArgs = {
   data: GStudentArrivalNoticeUpsertInput;
   studentId?: InputMaybe<Scalars['UUID']>;
+};
+
+
+export type GMutationStudentCloseRelativeDeleteArgs = {
+  closeRelativeIds: Array<Scalars['UUID']>;
+};
+
+
+export type GMutationStudentCloseRelativeUpsertArgs = {
+  data: GStudentCloseRelativeUpsertInput;
 };
 
 
@@ -361,6 +375,10 @@ export type GQuery = {
   student: GStudentEntity;
   /** Получение уведомления о прибытии студента */
   studentArrivalNotice?: Maybe<GStudentArrivalNoticeWithoutStudentResult>;
+  /** Получить близкого родственника студента. */
+  studentCloseRelative: GStudentCloseRelativeWithoutStudentResult;
+  /** Получить близких родственников студента. */
+  studentCloseRelatives: Array<GStudentCloseRelativeWithoutStudentResult>;
   /** Получить паспорт студента. */
   studentPassport?: Maybe<GStudentPassportWithoutStudentResult>;
   /** Получение списка студентов. */
@@ -386,6 +404,16 @@ export type GQueryStudentArgs = {
 
 
 export type GQueryStudentArrivalNoticeArgs = {
+  studentId?: InputMaybe<Scalars['UUID']>;
+};
+
+
+export type GQueryStudentCloseRelativeArgs = {
+  closeRelativeId: Scalars['UUID'];
+};
+
+
+export type GQueryStudentCloseRelativesArgs = {
   studentId?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -465,6 +493,7 @@ export type GStudentArrivalNoticeUpsertInput = {
   receivingSide?: InputMaybe<Scalars['String']>;
 };
 
+/** Уведомление о прибытии студента без возможности выбора самого студента */
 export type GStudentArrivalNoticeWithoutStudentResult = {
   /** Адрес регистрации */
   address?: Maybe<Scalars['String']>;
@@ -542,6 +571,37 @@ export type GStudentCloseRelativeEntityMinAggregate = {
   lastName?: Maybe<Scalars['String']>;
   patronymic?: Maybe<Scalars['String']>;
   studentId?: Maybe<Scalars['UUID']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type GStudentCloseRelativeUpsertInput = {
+  addressContinuousResidence?: InputMaybe<Scalars['String']>;
+  birthDate?: InputMaybe<Scalars['DateTime']>;
+  citizenship?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  patronymic?: InputMaybe<Scalars['String']>;
+  studentId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** Близкий родственник студента без возможности выбора самого студента */
+export type GStudentCloseRelativeWithoutStudentResult = {
+  /** Постоянное место жительства */
+  addressContinuousResidence?: Maybe<Scalars['String']>;
+  /** Дата рождения */
+  birthDate?: Maybe<Scalars['DateTime']>;
+  /** Гражданство */
+  citizenship?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  /** Имя */
+  firstName?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** Фамилия */
+  lastName?: Maybe<Scalars['String']>;
+  /** Отчество */
+  patronymic?: Maybe<Scalars['String']>;
+  studentId: Scalars['UUID'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -794,6 +854,7 @@ export type GStudentPassportUpsertInput = {
   series?: InputMaybe<Scalars['String']>;
 };
 
+/** Паспорт студента, где вместо студента присутствует только его studentId. */
 export type GStudentPassportWithoutStudentResult = {
   /** Дата рождения */
   birthDate?: Maybe<Scalars['DateTime']>;
@@ -1096,17 +1157,12 @@ export type GLoginByPasswordMutationVariables = Exact<{
 }>;
 
 
-export type GLoginByPasswordMutation = { loginByPassword: { accessToken: string, accessTokenExpires: Dayjs } };
-
-export type GRefreshTokensMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GRefreshTokensMutation = { refreshTokens: { accessToken: string, accessTokenExpires: Dayjs } };
+export type GLoginByPasswordMutation = { response: { accessToken: string, accessTokenExpires: Dayjs } };
 
 export type GUserCurrentQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GUserCurrentQuery = { userCurrent: { roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt?: Dayjs | null } }> | null } } };
+export type GUserCurrentQuery = { current: { roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt?: Dayjs | null } }> | null } } };
 
 export type GEmailAvailabilityQueryVariables = Exact<{
   email: Scalars['String'];
@@ -1144,20 +1200,48 @@ export type GStudentArrivalNoticeQueryVariables = Exact<{
 
 export type GStudentArrivalNoticeQuery = { studentArrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null };
 
-export type GStudentArrivalNoticeDeleteMutationVariables = Exact<{
-  studentId: Scalars['UUID'];
-}>;
-
-
-export type GStudentArrivalNoticeDeleteMutation = { studentArrivalNoticeDelete: boolean };
-
 export type GStudentArrivalNoticeUpsertMutationVariables = Exact<{
   data: GStudentArrivalNoticeUpsertInput;
   studentId?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
-export type GStudentArrivalNoticeUpsertMutation = { studentArrivalNoticeUpsert: boolean };
+export type GStudentArrivalNoticeUpsertMutation = { isSuccess: boolean };
+
+export type GStudentArrivalNoticeDeleteMutationVariables = Exact<{
+  studentId: Scalars['UUID'];
+}>;
+
+
+export type GStudentArrivalNoticeDeleteMutation = { isDeleted: boolean };
+
+export type GStudentCloseRelativesQueryVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GStudentCloseRelativesQuery = { studentCloseRelatives: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> };
+
+export type GStudentCloseRelativeQueryVariables = Exact<{
+  closeRelativeId: Scalars['UUID'];
+}>;
+
+
+export type GStudentCloseRelativeQuery = { studentCloseRelative: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } };
+
+export type GStudentCloseRelativeUpsertMutationVariables = Exact<{
+  data: GStudentCloseRelativeUpsertInput;
+}>;
+
+
+export type GStudentCloseRelativeUpsertMutation = { isSuccess: boolean };
+
+export type GStudentCloseRelativeDeleteMutationVariables = Exact<{
+  closeRelativeIds: Array<Scalars['UUID']> | Scalars['UUID'];
+}>;
+
+
+export type GStudentCloseRelativeDeleteMutation = { deletedCount: number };
 
 export type GStudentPassportQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']>;
@@ -1166,25 +1250,25 @@ export type GStudentPassportQueryVariables = Exact<{
 
 export type GStudentPassportQuery = { studentPassport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null };
 
-export type GStudentPassportDeleteMutationVariables = Exact<{
-  studentId: Scalars['UUID'];
-}>;
-
-
-export type GStudentPassportDeleteMutation = { studentPassportDelete: boolean };
-
 export type GStudentPassportUpsertMutationVariables = Exact<{
   data: GStudentPassportUpsertInput;
   studentId?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
-export type GStudentPassportUpsertMutation = { studentPassportUpsert: boolean };
+export type GStudentPassportUpsertMutation = { isSuccess: boolean };
+
+export type GStudentPassportDeleteMutationVariables = Exact<{
+  studentId: Scalars['UUID'];
+}>;
+
+
+export type GStudentPassportDeleteMutation = { isDeleted: boolean };
 
 
 export const LoginByPasswordDocument = gql`
     mutation LoginByPassword($email: EmailAddress!, $password: String!) {
-  loginByPassword(email: $email, password: $password) {
+  response: loginByPassword(email: $email, password: $password) {
     accessToken
     accessTokenExpires
   }
@@ -1217,42 +1301,9 @@ export function useLoginByPasswordMutation(baseOptions?: Apollo.MutationHookOpti
 export type LoginByPasswordMutationHookResult = ReturnType<typeof useLoginByPasswordMutation>;
 export type LoginByPasswordMutationResult = Apollo.MutationResult<GLoginByPasswordMutation>;
 export type LoginByPasswordMutationOptions = Apollo.BaseMutationOptions<GLoginByPasswordMutation, GLoginByPasswordMutationVariables>;
-export const RefreshTokensDocument = gql`
-    mutation RefreshTokens {
-  refreshTokens {
-    accessToken
-    accessTokenExpires
-  }
-}
-    `;
-export type GRefreshTokensMutationFn = Apollo.MutationFunction<GRefreshTokensMutation, GRefreshTokensMutationVariables>;
-
-/**
- * __useRefreshTokensMutation__
- *
- * To run a mutation, you first call `useRefreshTokensMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRefreshTokensMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [refreshTokensMutation, { data, loading, error }] = useRefreshTokensMutation({
- *   variables: {
- *   },
- * });
- */
-export function useRefreshTokensMutation(baseOptions?: Apollo.MutationHookOptions<GRefreshTokensMutation, GRefreshTokensMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GRefreshTokensMutation, GRefreshTokensMutationVariables>(RefreshTokensDocument, options);
-      }
-export type RefreshTokensMutationHookResult = ReturnType<typeof useRefreshTokensMutation>;
-export type RefreshTokensMutationResult = Apollo.MutationResult<GRefreshTokensMutation>;
-export type RefreshTokensMutationOptions = Apollo.BaseMutationOptions<GRefreshTokensMutation, GRefreshTokensMutationVariables>;
 export const UserCurrentDocument = gql`
     query UserCurrent {
-  userCurrent {
+  current: userCurrent {
     roles
     accessTokenExpires
     user {
@@ -1589,40 +1640,9 @@ export type StudentArrivalNoticeQueryResult = Apollo.QueryResult<GStudentArrival
 export function refetchStudentArrivalNoticeQuery(variables?: GStudentArrivalNoticeQueryVariables) {
       return { query: StudentArrivalNoticeDocument, variables: variables }
     }
-export const StudentArrivalNoticeDeleteDocument = gql`
-    mutation StudentArrivalNoticeDelete($studentId: UUID!) {
-  studentArrivalNoticeDelete(studentId: $studentId)
-}
-    `;
-export type GStudentArrivalNoticeDeleteMutationFn = Apollo.MutationFunction<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>;
-
-/**
- * __useStudentArrivalNoticeDeleteMutation__
- *
- * To run a mutation, you first call `useStudentArrivalNoticeDeleteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useStudentArrivalNoticeDeleteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [studentArrivalNoticeDeleteMutation, { data, loading, error }] = useStudentArrivalNoticeDeleteMutation({
- *   variables: {
- *      studentId: // value for 'studentId'
- *   },
- * });
- */
-export function useStudentArrivalNoticeDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>(StudentArrivalNoticeDeleteDocument, options);
-      }
-export type StudentArrivalNoticeDeleteMutationHookResult = ReturnType<typeof useStudentArrivalNoticeDeleteMutation>;
-export type StudentArrivalNoticeDeleteMutationResult = Apollo.MutationResult<GStudentArrivalNoticeDeleteMutation>;
-export type StudentArrivalNoticeDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>;
 export const StudentArrivalNoticeUpsertDocument = gql`
     mutation StudentArrivalNoticeUpsert($data: StudentArrivalNoticeUpsertInput!, $studentId: UUID) {
-  studentArrivalNoticeUpsert(data: $data, studentId: $studentId)
+  isSuccess: studentArrivalNoticeUpsert(data: $data, studentId: $studentId)
 }
     `;
 export type GStudentArrivalNoticeUpsertMutationFn = Apollo.MutationFunction<GStudentArrivalNoticeUpsertMutation, GStudentArrivalNoticeUpsertMutationVariables>;
@@ -1652,6 +1672,193 @@ export function useStudentArrivalNoticeUpsertMutation(baseOptions?: Apollo.Mutat
 export type StudentArrivalNoticeUpsertMutationHookResult = ReturnType<typeof useStudentArrivalNoticeUpsertMutation>;
 export type StudentArrivalNoticeUpsertMutationResult = Apollo.MutationResult<GStudentArrivalNoticeUpsertMutation>;
 export type StudentArrivalNoticeUpsertMutationOptions = Apollo.BaseMutationOptions<GStudentArrivalNoticeUpsertMutation, GStudentArrivalNoticeUpsertMutationVariables>;
+export const StudentArrivalNoticeDeleteDocument = gql`
+    mutation StudentArrivalNoticeDelete($studentId: UUID!) {
+  isDeleted: studentArrivalNoticeDelete(studentId: $studentId)
+}
+    `;
+export type GStudentArrivalNoticeDeleteMutationFn = Apollo.MutationFunction<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>;
+
+/**
+ * __useStudentArrivalNoticeDeleteMutation__
+ *
+ * To run a mutation, you first call `useStudentArrivalNoticeDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentArrivalNoticeDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentArrivalNoticeDeleteMutation, { data, loading, error }] = useStudentArrivalNoticeDeleteMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentArrivalNoticeDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>(StudentArrivalNoticeDeleteDocument, options);
+      }
+export type StudentArrivalNoticeDeleteMutationHookResult = ReturnType<typeof useStudentArrivalNoticeDeleteMutation>;
+export type StudentArrivalNoticeDeleteMutationResult = Apollo.MutationResult<GStudentArrivalNoticeDeleteMutation>;
+export type StudentArrivalNoticeDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentArrivalNoticeDeleteMutation, GStudentArrivalNoticeDeleteMutationVariables>;
+export const StudentCloseRelativesDocument = gql`
+    query StudentCloseRelatives($studentId: UUID) {
+  studentCloseRelatives(studentId: $studentId) {
+    id
+    studentId
+    lastName
+    firstName
+    patronymic
+    birthDate
+    citizenship
+    addressContinuousResidence
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useStudentCloseRelativesQuery__
+ *
+ * To run a query within a React component, call `useStudentCloseRelativesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentCloseRelativesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentCloseRelativesQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentCloseRelativesQuery(baseOptions?: Apollo.QueryHookOptions<GStudentCloseRelativesQuery, GStudentCloseRelativesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentCloseRelativesQuery, GStudentCloseRelativesQueryVariables>(StudentCloseRelativesDocument, options);
+      }
+export function useStudentCloseRelativesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentCloseRelativesQuery, GStudentCloseRelativesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentCloseRelativesQuery, GStudentCloseRelativesQueryVariables>(StudentCloseRelativesDocument, options);
+        }
+export type StudentCloseRelativesQueryHookResult = ReturnType<typeof useStudentCloseRelativesQuery>;
+export type StudentCloseRelativesLazyQueryHookResult = ReturnType<typeof useStudentCloseRelativesLazyQuery>;
+export type StudentCloseRelativesQueryResult = Apollo.QueryResult<GStudentCloseRelativesQuery, GStudentCloseRelativesQueryVariables>;
+export function refetchStudentCloseRelativesQuery(variables?: GStudentCloseRelativesQueryVariables) {
+      return { query: StudentCloseRelativesDocument, variables: variables }
+    }
+export const StudentCloseRelativeDocument = gql`
+    query StudentCloseRelative($closeRelativeId: UUID!) {
+  studentCloseRelative(closeRelativeId: $closeRelativeId) {
+    id
+    studentId
+    lastName
+    firstName
+    patronymic
+    birthDate
+    citizenship
+    addressContinuousResidence
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useStudentCloseRelativeQuery__
+ *
+ * To run a query within a React component, call `useStudentCloseRelativeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentCloseRelativeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentCloseRelativeQuery({
+ *   variables: {
+ *      closeRelativeId: // value for 'closeRelativeId'
+ *   },
+ * });
+ */
+export function useStudentCloseRelativeQuery(baseOptions: Apollo.QueryHookOptions<GStudentCloseRelativeQuery, GStudentCloseRelativeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentCloseRelativeQuery, GStudentCloseRelativeQueryVariables>(StudentCloseRelativeDocument, options);
+      }
+export function useStudentCloseRelativeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentCloseRelativeQuery, GStudentCloseRelativeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentCloseRelativeQuery, GStudentCloseRelativeQueryVariables>(StudentCloseRelativeDocument, options);
+        }
+export type StudentCloseRelativeQueryHookResult = ReturnType<typeof useStudentCloseRelativeQuery>;
+export type StudentCloseRelativeLazyQueryHookResult = ReturnType<typeof useStudentCloseRelativeLazyQuery>;
+export type StudentCloseRelativeQueryResult = Apollo.QueryResult<GStudentCloseRelativeQuery, GStudentCloseRelativeQueryVariables>;
+export function refetchStudentCloseRelativeQuery(variables: GStudentCloseRelativeQueryVariables) {
+      return { query: StudentCloseRelativeDocument, variables: variables }
+    }
+export const StudentCloseRelativeUpsertDocument = gql`
+    mutation StudentCloseRelativeUpsert($data: StudentCloseRelativeUpsertInput!) {
+  isSuccess: studentCloseRelativeUpsert(data: $data)
+}
+    `;
+export type GStudentCloseRelativeUpsertMutationFn = Apollo.MutationFunction<GStudentCloseRelativeUpsertMutation, GStudentCloseRelativeUpsertMutationVariables>;
+
+/**
+ * __useStudentCloseRelativeUpsertMutation__
+ *
+ * To run a mutation, you first call `useStudentCloseRelativeUpsertMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentCloseRelativeUpsertMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentCloseRelativeUpsertMutation, { data, loading, error }] = useStudentCloseRelativeUpsertMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useStudentCloseRelativeUpsertMutation(baseOptions?: Apollo.MutationHookOptions<GStudentCloseRelativeUpsertMutation, GStudentCloseRelativeUpsertMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentCloseRelativeUpsertMutation, GStudentCloseRelativeUpsertMutationVariables>(StudentCloseRelativeUpsertDocument, options);
+      }
+export type StudentCloseRelativeUpsertMutationHookResult = ReturnType<typeof useStudentCloseRelativeUpsertMutation>;
+export type StudentCloseRelativeUpsertMutationResult = Apollo.MutationResult<GStudentCloseRelativeUpsertMutation>;
+export type StudentCloseRelativeUpsertMutationOptions = Apollo.BaseMutationOptions<GStudentCloseRelativeUpsertMutation, GStudentCloseRelativeUpsertMutationVariables>;
+export const StudentCloseRelativeDeleteDocument = gql`
+    mutation StudentCloseRelativeDelete($closeRelativeIds: [UUID!]!) {
+  deletedCount: studentCloseRelativeDelete(closeRelativeIds: $closeRelativeIds)
+}
+    `;
+export type GStudentCloseRelativeDeleteMutationFn = Apollo.MutationFunction<GStudentCloseRelativeDeleteMutation, GStudentCloseRelativeDeleteMutationVariables>;
+
+/**
+ * __useStudentCloseRelativeDeleteMutation__
+ *
+ * To run a mutation, you first call `useStudentCloseRelativeDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentCloseRelativeDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentCloseRelativeDeleteMutation, { data, loading, error }] = useStudentCloseRelativeDeleteMutation({
+ *   variables: {
+ *      closeRelativeIds: // value for 'closeRelativeIds'
+ *   },
+ * });
+ */
+export function useStudentCloseRelativeDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentCloseRelativeDeleteMutation, GStudentCloseRelativeDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentCloseRelativeDeleteMutation, GStudentCloseRelativeDeleteMutationVariables>(StudentCloseRelativeDeleteDocument, options);
+      }
+export type StudentCloseRelativeDeleteMutationHookResult = ReturnType<typeof useStudentCloseRelativeDeleteMutation>;
+export type StudentCloseRelativeDeleteMutationResult = Apollo.MutationResult<GStudentCloseRelativeDeleteMutation>;
+export type StudentCloseRelativeDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentCloseRelativeDeleteMutation, GStudentCloseRelativeDeleteMutationVariables>;
 export const StudentPassportDocument = gql`
     query StudentPassport($studentId: UUID) {
   studentPassport(studentId: $studentId) {
@@ -1705,40 +1912,9 @@ export type StudentPassportQueryResult = Apollo.QueryResult<GStudentPassportQuer
 export function refetchStudentPassportQuery(variables?: GStudentPassportQueryVariables) {
       return { query: StudentPassportDocument, variables: variables }
     }
-export const StudentPassportDeleteDocument = gql`
-    mutation StudentPassportDelete($studentId: UUID!) {
-  studentPassportDelete(studentId: $studentId)
-}
-    `;
-export type GStudentPassportDeleteMutationFn = Apollo.MutationFunction<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>;
-
-/**
- * __useStudentPassportDeleteMutation__
- *
- * To run a mutation, you first call `useStudentPassportDeleteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useStudentPassportDeleteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [studentPassportDeleteMutation, { data, loading, error }] = useStudentPassportDeleteMutation({
- *   variables: {
- *      studentId: // value for 'studentId'
- *   },
- * });
- */
-export function useStudentPassportDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>(StudentPassportDeleteDocument, options);
-      }
-export type StudentPassportDeleteMutationHookResult = ReturnType<typeof useStudentPassportDeleteMutation>;
-export type StudentPassportDeleteMutationResult = Apollo.MutationResult<GStudentPassportDeleteMutation>;
-export type StudentPassportDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>;
 export const StudentPassportUpsertDocument = gql`
     mutation StudentPassportUpsert($data: StudentPassportUpsertInput!, $studentId: UUID) {
-  studentPassportUpsert(data: $data, studentId: $studentId)
+  isSuccess: studentPassportUpsert(data: $data, studentId: $studentId)
 }
     `;
 export type GStudentPassportUpsertMutationFn = Apollo.MutationFunction<GStudentPassportUpsertMutation, GStudentPassportUpsertMutationVariables>;
@@ -1768,3 +1944,34 @@ export function useStudentPassportUpsertMutation(baseOptions?: Apollo.MutationHo
 export type StudentPassportUpsertMutationHookResult = ReturnType<typeof useStudentPassportUpsertMutation>;
 export type StudentPassportUpsertMutationResult = Apollo.MutationResult<GStudentPassportUpsertMutation>;
 export type StudentPassportUpsertMutationOptions = Apollo.BaseMutationOptions<GStudentPassportUpsertMutation, GStudentPassportUpsertMutationVariables>;
+export const StudentPassportDeleteDocument = gql`
+    mutation StudentPassportDelete($studentId: UUID!) {
+  isDeleted: studentPassportDelete(studentId: $studentId)
+}
+    `;
+export type GStudentPassportDeleteMutationFn = Apollo.MutationFunction<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>;
+
+/**
+ * __useStudentPassportDeleteMutation__
+ *
+ * To run a mutation, you first call `useStudentPassportDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentPassportDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentPassportDeleteMutation, { data, loading, error }] = useStudentPassportDeleteMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentPassportDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>(StudentPassportDeleteDocument, options);
+      }
+export type StudentPassportDeleteMutationHookResult = ReturnType<typeof useStudentPassportDeleteMutation>;
+export type StudentPassportDeleteMutationResult = Apollo.MutationResult<GStudentPassportDeleteMutation>;
+export type StudentPassportDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>;

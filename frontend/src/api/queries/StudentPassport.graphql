@@ -18,3 +18,11 @@ query StudentPassport($studentId: UUID) {
         updatedAt
     }
 }
+
+mutation StudentPassportUpsert($data: StudentPassportUpsertInput!, $studentId: UUID) {
+    isSuccess: studentPassportUpsert(data: $data, studentId: $studentId)
+}
+
+mutation StudentPassportDelete($studentId: UUID!) {
+    isDeleted: studentPassportDelete(studentId: $studentId)
+}

@@ -21,6 +21,11 @@ const sameThemeProperties: ThemeOptions = {
         variant: 'contained',
       },
     },
+    MuiTable: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
   },
 };
 

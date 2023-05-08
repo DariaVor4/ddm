@@ -1,3 +1,0 @@
-mutation StudentPassportUpsert($data: StudentPassportUpsertInput!, $studentId: UUID) {
-    studentPassportUpsert(data: $data, studentId: $studentId)
-}
