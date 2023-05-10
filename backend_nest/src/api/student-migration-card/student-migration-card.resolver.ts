@@ -7,110 +7,110 @@ import { _throw, ifDebug, isRoleStudent } from '@common';
 import {
   BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
-import StudentArrivalNoticeWithoutStudentResult from './results/student-arrival-notice-without-student.result';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
 import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
-import { PrismaService } from '../../prisma/prisma.service';
-import StudentArrivalNoticeUpsertInput from './inputs/student-arrival-notice-upsert.input';
+import StudentMigrationCardWithoutStudentResponse from './results/student-migration-card-without-student.response';
+import StudentMigrationCardUpsertInput from './inputs/student-migration-card-upsert.input';
 
 /**
- * Резолвер для работы с уведомлениями о прибытии студентов.
+ * Резолвер для работы с миграционными картами студентов.
  */
-@Resolver('student-arrival-notice')
-export class StudentArrivalNoticeResolver {
+@Resolver('student-migration-card')
+export class StudentMigrationCardResolver {
   constructor(private readonly prisma: PrismaService) {}
 
   /**
-   * Получение уведомления о прибытии студента.
+   * Получение миграционной карты студента.
    * @param select Поля, запрошенные через GraphQL.
    * @param session Текущая сессия.
-   * @param studentId UUID Студента, если нужно уведомление о прибытии не принадлежащее текущему аккаунту.
-   * @returns Уведомление о прибытии студента
+   * @param studentId UUID Студента, если нужна миграционная карта не принадлежащая текущему аккаунту.
+   * @returns Миграционная карта студента
    * @throws {BadRequestException} Если запрос был вызван без studentId и текущий тип аккаунта не студент.
-   * @throws {ForbiddenException} Студенты не могут читать чужие уведомления о прибытии.
+   * @throws {ForbiddenException} Студенты не могут читать чужие миграционные карты.
    * @throws {NotFoundException} Если студент не найден.
    */
-  @Query(() => StudentArrivalNoticeWithoutStudentResult, {
-    description: 'Получение уведомления о прибытии студента',
+  @Query(() => StudentMigrationCardWithoutStudentResponse, {
+    description: 'Получение миграционной карты студента',
     nullable: true,
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
-  async studentArrivalNotice(
-    @PrismaSelector() select: Prisma.StudentArrivalNoticeEntitySelect,
+  async studentMigrationCard(
+    @PrismaSelector() select: Prisma.StudentMigrationCardEntitySelect,
     @CurrentSession() session: ISessionContext,
     @Args('studentId', { nullable: true, description: 'ID Студента', type: UUID }) studentId?: string,
-  ): Promise<Partial<StudentArrivalNoticeWithoutStudentResult> | null> {
+  ): Promise<Partial<StudentMigrationCardWithoutStudentResponse> | null> {
     if (!studentId && !isRoleStudent(session.roles)) {
-      throw new BadRequestException('Тип аккаунта не позволяет получить уведомление о прибытии без studentId');
+      throw new BadRequestException('Тип аккаунта не позволяет получить миграционную карту без studentId');
     }
     if (studentId && isRoleStudent(session.roles) && studentId !== session.userId) {
-      throw new ForbiddenException(ifDebug('Студенты не могут читать чужие уведомления о прибытии'));
+      throw new ForbiddenException(ifDebug('Студенты не могут читать чужие миграционные карты'));
     }
     if (studentId && (await this.prisma.studentEntity.count({ where: { id: studentId } })) === 0) {
       throw new NotFoundException('Студент не найден');
     }
-    return this.prisma.studentArrivalNoticeEntity.findUnique({
+    return this.prisma.studentMigrationCardEntity.findUnique({
       where: { studentId: studentId || session.userId },
       select,
     });
   }
 
   /**
-   * Перезапись уведомления о прибытии студента.
+   * Перезапись миграционной карты студента.
    * @param session Текущая сессия.
-   * @param studentId UUID Студента, если нужно уведомление о прибытии не принадлежащее текущему аккаунту.
+   * @param studentId UUID Студента, если нужна миграционная карта не принадлежащая текущему аккаунту.
    * @param data Данные для перезаписи.
    * @returns Успешность перезаписи.
    * @throws {BadRequestException} Если запрос был вызван без studentId и текущий тип аккаунта не студент.
-   * @throws {ForbiddenException} Студенты не могут перезаписывать чужие уведомления о прибытии.
+   * @throws {ForbiddenException} Студенты не могут перезаписывать чужие миграционные карты.
    * @throws {NotFoundException} Если студент не найден.
    * @throws {InternalServerErrorException} Если произошла ошибка при перезаписи.
    */
   @Mutation(() => Boolean, {
-    description: 'Перезапись уведомления о прибытии студента',
+    description: 'Перезапись миграционной карты студента',
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
-  async studentArrivalNoticeUpsert(
+  async studentMigrationCardUpsert(
     @CurrentSession() session: ISessionContext,
-    @Args('data') data: StudentArrivalNoticeUpsertInput,
+    @Args('data') data: StudentMigrationCardUpsertInput,
     @Args('studentId', { nullable: true, description: 'ID Студента', type: UUID }) studentId?: string,
   ): Promise<boolean> {
     if (studentId && isRoleStudent(session.roles) && studentId !== session.userId) {
-      throw new ForbiddenException(ifDebug('Только сотрудники могут перезаписывать уведомления о прибытии других студентов'));
+      throw new ForbiddenException(ifDebug('Только сотрудники могут перезаписывать миграционные карты других студентов'));
     }
     if (!studentId && !isRoleStudent(session.roles)) {
-      throw new BadRequestException('Тип аккаунта не позволяет перезаписать уведомление о прибытии без studentId');
+      throw new BadRequestException('Тип аккаунта не позволяет перезаписать миграционную карту без studentId');
     }
     const currentOrOtherStudentId = studentId || session.userId;
     if (await this.prisma.studentEntity.count({ where: { id: currentOrOtherStudentId } }) === 0) {
       throw new NotFoundException('Студент не найден');
     }
-    return !!await this.prisma.studentArrivalNoticeEntity.upsert({
+    return !!await this.prisma.studentMigrationCardEntity.upsert({
       where: { studentId: currentOrOtherStudentId },
       create: {
         ...data,
         student: { connect: { id: currentOrOtherStudentId } },
       },
       update: data,
-    }).catch(_throw((e) => new InternalServerErrorException(`Ошибка при перезаписи уведомления о прибытии студента: ${e.message}`)));
+    }).catch(_throw((e) => new InternalServerErrorException(`Ошибка при перезаписи миграционной карты студента: ${e.message}`)));
   }
 
   /**
-   * Удаление уведомления о прибытии студента.
-   * @param studentId UUID Студента, если нужно уведомление о прибытии не принадлежащее текущему аккаунту.
+   * Удаление миграционной карты студента.
+   * @param studentId UUID Студента, если нужна миграционная карта не принадлежащая текущему аккаунту.
    * @returns Успешность удаления.
    * @throws {InternalServerErrorException} Если произошла ошибка при удалении.
    */
   @Mutation(() => Boolean, {
-    description: 'Удаление уведомления о прибытии студента',
+    description: 'Удаление миграционной карты студента',
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
-  async studentArrivalNoticeDelete(
+  async studentMigrationCardDelete(
     @Args('studentId', { description: 'ID Студента', type: UUID }) studentId: string,
   ): Promise<boolean> {
-    return !!await this.prisma.studentArrivalNoticeEntity.delete({ where: { studentId } })
-      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении уведомления о прибытии: ${e.message}`)));
+    return !!await this.prisma.studentMigrationCardEntity.delete({ where: { studentId } })
+      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении миграционной карты: ${e.message}`)));
   }
 }
