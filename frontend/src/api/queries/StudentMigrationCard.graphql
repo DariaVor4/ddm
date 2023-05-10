@@ -1,0 +1,18 @@
+query StudentMigrationCard($studentId: UUID) {
+  studentMigrationCard(studentId: $studentId) {
+    id
+    studentId
+    series
+    number
+    issueDate
+    expirationDate
+  }
+}
+
+mutation StudentMigrationCardDelete($studentId: UUID!) {
+  studentMigrationCardDelete(studentId: $studentId)
+}
+
+mutation StudentMigrationCardUpsert($data: StudentMigrationCardUpsertInput!, $studentId: UUID) {
+  studentMigrationCardUpsert(data: $data, studentId: $studentId)
+}

@@ -223,6 +223,20 @@ type Mutation {
   """Создание/регистрация студента."""
   studentCreate(input: StudentCreateInput!): StudentEntity!
 
+  """Удаление миграционной карты студента"""
+  studentMigrationCardDelete(
+    """ID Студента"""
+    studentId: UUID!
+  ): Boolean!
+
+  """Перезапись миграционной карты студента"""
+  studentMigrationCardUpsert(
+    data: StudentMigrationCardUpsertInput!
+
+    """ID Студента"""
+    studentId: UUID
+  ): Boolean!
+
   """Удаление паспорта студента. Студент не может удалить свой паспорт."""
   studentPassportDelete(
     """ID Студента"""
@@ -359,6 +373,12 @@ type Query {
     """ID Студента"""
     studentId: UUID
   ): [StudentCloseRelativeWithoutStudentResult!]!
+
+  """Получение миграционной карты студента"""
+  studentMigrationCard(
+    """ID Студента"""
+    studentId: UUID
+  ): StudentMigrationCardWithoutStudentResponse
 
   """Получить паспорт студента."""
   studentPassport(
@@ -730,6 +750,34 @@ type StudentMigrationCardEntityMinAggregate {
   number: String
   series: String
   studentId: UUID
+  updatedAt: DateTime
+}
+
+"""Входные данные для создания/обновления миграционной карты студента"""
+input StudentMigrationCardUpsertInput {
+  expirationDate: DateTime
+  issueDate: DateTime
+  number: String
+  series: String
+}
+
+"""Миграционная карта студента без возможности выбора самого студента"""
+type StudentMigrationCardWithoutStudentResponse {
+  createdAt: DateTime!
+
+  """Дата истечения"""
+  expirationDate: DateTime
+  id: UUID!
+
+  """Дата выдачи"""
+  issueDate: DateTime
+
+  """Номер"""
+  number: String
+
+  """Серия"""
+  series: String
+  studentId: UUID!
   updatedAt: DateTime
 }
 

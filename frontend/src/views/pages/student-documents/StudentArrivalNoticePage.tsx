@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import {
   Button, Paper, Stack, Typography,
 } from '@mui/material';
@@ -21,6 +21,7 @@ type StudentArrivalNoticePageParams = {
   studentId?: string;
 };
 
+// todo какая валидация..?
 const formSchema = yup.object({
   profession: yup.string().trim().required('Обязательное поле'),
   address: yup.string().trim().required('Обязательное поле'),
@@ -62,10 +63,6 @@ const StudentArrivalNoticePage: FC = () => {
       error: { render: ({ data: err }) => `Ошибка сохранения данных: ${err}` },
     }),
   });
-
-  useEffect(() => {
-    console.log('formik.values', formik.values);
-  }, [formik.values]);
 
   return (
     <>

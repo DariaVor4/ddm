@@ -195,6 +195,10 @@ export type GMutation = {
   studentCloseRelativeUpsert: Scalars['Boolean'];
   /** Создание/регистрация студента. */
   studentCreate: GStudentEntity;
+  /** Удаление миграционной карты студента */
+  studentMigrationCardDelete: Scalars['Boolean'];
+  /** Перезапись миграционной карты студента */
+  studentMigrationCardUpsert: Scalars['Boolean'];
   /** Удаление паспорта студента. Студент не может удалить свой паспорт. */
   studentPassportDelete: Scalars['Boolean'];
   /** Перезапись паспорта студента. */
@@ -261,6 +265,17 @@ export type GMutationStudentCloseRelativeUpsertArgs = {
 
 export type GMutationStudentCreateArgs = {
   input: GStudentCreateInput;
+};
+
+
+export type GMutationStudentMigrationCardDeleteArgs = {
+  studentId: Scalars['UUID'];
+};
+
+
+export type GMutationStudentMigrationCardUpsertArgs = {
+  data: GStudentMigrationCardUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -379,6 +394,8 @@ export type GQuery = {
   studentCloseRelative: GStudentCloseRelativeWithoutStudentResult;
   /** Получить близких родственников студента. */
   studentCloseRelatives: Array<GStudentCloseRelativeWithoutStudentResult>;
+  /** Получение миграционной карты студента */
+  studentMigrationCard?: Maybe<GStudentMigrationCardWithoutStudentResponse>;
   /** Получить паспорт студента. */
   studentPassport?: Maybe<GStudentPassportWithoutStudentResult>;
   /** Получение списка студентов. */
@@ -414,6 +431,11 @@ export type GQueryStudentCloseRelativeArgs = {
 
 
 export type GQueryStudentCloseRelativesArgs = {
+  studentId?: InputMaybe<Scalars['UUID']>;
+};
+
+
+export type GQueryStudentMigrationCardArgs = {
   studentId?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -744,6 +766,30 @@ export type GStudentMigrationCardEntityMinAggregate = {
   number?: Maybe<Scalars['String']>;
   series?: Maybe<Scalars['String']>;
   studentId?: Maybe<Scalars['UUID']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+/** Входные данные для создания/обновления миграционной карты студента */
+export type GStudentMigrationCardUpsertInput = {
+  expirationDate?: InputMaybe<Scalars['DateTime']>;
+  issueDate?: InputMaybe<Scalars['DateTime']>;
+  number?: InputMaybe<Scalars['String']>;
+  series?: InputMaybe<Scalars['String']>;
+};
+
+/** Миграционная карта студента без возможности выбора самого студента */
+export type GStudentMigrationCardWithoutStudentResponse = {
+  createdAt: Scalars['DateTime'];
+  /** Дата истечения */
+  expirationDate?: Maybe<Scalars['DateTime']>;
+  id: Scalars['UUID'];
+  /** Дата выдачи */
+  issueDate?: Maybe<Scalars['DateTime']>;
+  /** Номер */
+  number?: Maybe<Scalars['String']>;
+  /** Серия */
+  series?: Maybe<Scalars['String']>;
+  studentId: Scalars['UUID'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -1242,6 +1288,28 @@ export type GStudentCloseRelativeDeleteMutationVariables = Exact<{
 
 
 export type GStudentCloseRelativeDeleteMutation = { deletedCount: number };
+
+export type GStudentMigrationCardQueryVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GStudentMigrationCardQuery = { studentMigrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null } | null };
+
+export type GStudentMigrationCardDeleteMutationVariables = Exact<{
+  studentId: Scalars['UUID'];
+}>;
+
+
+export type GStudentMigrationCardDeleteMutation = { studentMigrationCardDelete: boolean };
+
+export type GStudentMigrationCardUpsertMutationVariables = Exact<{
+  data: GStudentMigrationCardUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GStudentMigrationCardUpsertMutation = { studentMigrationCardUpsert: boolean };
 
 export type GStudentPassportQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']>;
@@ -1859,6 +1927,112 @@ export function useStudentCloseRelativeDeleteMutation(baseOptions?: Apollo.Mutat
 export type StudentCloseRelativeDeleteMutationHookResult = ReturnType<typeof useStudentCloseRelativeDeleteMutation>;
 export type StudentCloseRelativeDeleteMutationResult = Apollo.MutationResult<GStudentCloseRelativeDeleteMutation>;
 export type StudentCloseRelativeDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentCloseRelativeDeleteMutation, GStudentCloseRelativeDeleteMutationVariables>;
+export const StudentMigrationCardDocument = gql`
+    query StudentMigrationCard($studentId: UUID) {
+  studentMigrationCard(studentId: $studentId) {
+    id
+    studentId
+    series
+    number
+    issueDate
+    expirationDate
+  }
+}
+    `;
+
+/**
+ * __useStudentMigrationCardQuery__
+ *
+ * To run a query within a React component, call `useStudentMigrationCardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentMigrationCardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentMigrationCardQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentMigrationCardQuery(baseOptions?: Apollo.QueryHookOptions<GStudentMigrationCardQuery, GStudentMigrationCardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentMigrationCardQuery, GStudentMigrationCardQueryVariables>(StudentMigrationCardDocument, options);
+      }
+export function useStudentMigrationCardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentMigrationCardQuery, GStudentMigrationCardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentMigrationCardQuery, GStudentMigrationCardQueryVariables>(StudentMigrationCardDocument, options);
+        }
+export type StudentMigrationCardQueryHookResult = ReturnType<typeof useStudentMigrationCardQuery>;
+export type StudentMigrationCardLazyQueryHookResult = ReturnType<typeof useStudentMigrationCardLazyQuery>;
+export type StudentMigrationCardQueryResult = Apollo.QueryResult<GStudentMigrationCardQuery, GStudentMigrationCardQueryVariables>;
+export function refetchStudentMigrationCardQuery(variables?: GStudentMigrationCardQueryVariables) {
+      return { query: StudentMigrationCardDocument, variables: variables }
+    }
+export const StudentMigrationCardDeleteDocument = gql`
+    mutation StudentMigrationCardDelete($studentId: UUID!) {
+  studentMigrationCardDelete(studentId: $studentId)
+}
+    `;
+export type GStudentMigrationCardDeleteMutationFn = Apollo.MutationFunction<GStudentMigrationCardDeleteMutation, GStudentMigrationCardDeleteMutationVariables>;
+
+/**
+ * __useStudentMigrationCardDeleteMutation__
+ *
+ * To run a mutation, you first call `useStudentMigrationCardDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentMigrationCardDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentMigrationCardDeleteMutation, { data, loading, error }] = useStudentMigrationCardDeleteMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentMigrationCardDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentMigrationCardDeleteMutation, GStudentMigrationCardDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentMigrationCardDeleteMutation, GStudentMigrationCardDeleteMutationVariables>(StudentMigrationCardDeleteDocument, options);
+      }
+export type StudentMigrationCardDeleteMutationHookResult = ReturnType<typeof useStudentMigrationCardDeleteMutation>;
+export type StudentMigrationCardDeleteMutationResult = Apollo.MutationResult<GStudentMigrationCardDeleteMutation>;
+export type StudentMigrationCardDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentMigrationCardDeleteMutation, GStudentMigrationCardDeleteMutationVariables>;
+export const StudentMigrationCardUpsertDocument = gql`
+    mutation StudentMigrationCardUpsert($data: StudentMigrationCardUpsertInput!, $studentId: UUID) {
+  studentMigrationCardUpsert(data: $data, studentId: $studentId)
+}
+    `;
+export type GStudentMigrationCardUpsertMutationFn = Apollo.MutationFunction<GStudentMigrationCardUpsertMutation, GStudentMigrationCardUpsertMutationVariables>;
+
+/**
+ * __useStudentMigrationCardUpsertMutation__
+ *
+ * To run a mutation, you first call `useStudentMigrationCardUpsertMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentMigrationCardUpsertMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentMigrationCardUpsertMutation, { data, loading, error }] = useStudentMigrationCardUpsertMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentMigrationCardUpsertMutation(baseOptions?: Apollo.MutationHookOptions<GStudentMigrationCardUpsertMutation, GStudentMigrationCardUpsertMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentMigrationCardUpsertMutation, GStudentMigrationCardUpsertMutationVariables>(StudentMigrationCardUpsertDocument, options);
+      }
+export type StudentMigrationCardUpsertMutationHookResult = ReturnType<typeof useStudentMigrationCardUpsertMutation>;
+export type StudentMigrationCardUpsertMutationResult = Apollo.MutationResult<GStudentMigrationCardUpsertMutation>;
+export type StudentMigrationCardUpsertMutationOptions = Apollo.BaseMutationOptions<GStudentMigrationCardUpsertMutation, GStudentMigrationCardUpsertMutationVariables>;
 export const StudentPassportDocument = gql`
     query StudentPassport($studentId: UUID) {
   studentPassport(studentId: $studentId) {
