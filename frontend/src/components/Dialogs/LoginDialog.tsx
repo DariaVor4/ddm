@@ -1,8 +1,7 @@
 import { FC, useState } from 'react';
 import {
-  Alert, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, InputAdornment, Typography,
+  Alert, Button, Collapse, DialogActions, DialogContent, IconButton, InputAdornment, TextField,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormikProvider, useFormik } from 'formik';

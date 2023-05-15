@@ -4,12 +4,17 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { OptionsType, zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 // import { useNavigate } from 'react-router-dom';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { useNavigate } from 'react-router-dom';
 import {
-  GEmailAvailabilityVerdictEnum, GStudentCreateInput, useEmailAvailabilityLazyQuery, useRegistrationMutation,
+  GEmailAvailabilityVerdictEnum,
+  GStudentCreateInput,
+  useEmailAvailabilityLazyQuery,
+  useRegistrationMutation,
 } from '../../api/generated';
 import { loginDialogOpenFn } from '../../components/Dialogs/LoginDialog';
 import EmailConfirmationDialog, { useEmailConfirmationDialog } from '../../components/Dialogs/EmailConfirmationDialog';
@@ -20,6 +25,19 @@ import strictOmit from '../../core/strict-lodash/strict-omit.ts';
 interface RegisterFormValue extends GStudentCreateInput {
   passwordRepeat: string;
 }
+
+const checkPasswordSecurity = async (password: string) => {
+  const options: OptionsType | undefined = {
+    dictionary: {
+      ...zxcvbnCommonPackage.dictionary,
+    },
+    graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  };
+  zxcvbnOptions.setOptions(options);
+
+  const { score } = zxcvbn(password);
+  return score >= 3;
+};
 
 const RegistrationPage: FC = () => {
   const navigate = useNavigate();
@@ -68,7 +86,13 @@ const RegistrationPage: FC = () => {
             return ctx.createError({ message: 'Неизвестная ошибка' });
         }
       }),
-      password: yup.string().min(8, 'Пароль должен быть длиннее 8 символов').required('Пароль обязателен'),
+      password: yup.string().min(8, 'Пароль должен быть длиннее 8 символов').required('Пароль обязателен').test('password-estimator', async (value, ctx) => {
+        const isSecure = await checkPasswordSecurity(value);
+        if (!isSecure) {
+          return ctx.createError({ message: 'Пароль слишком простой' });
+        }
+        return true;
+      }),
       passwordRepeat: yup.string().oneOf([yup.ref('password')], 'Пароли должны совпадать').required('Повтор пароля обязателен'),
       faculty: yup.string().required('Факультет обязателен'),
       course: yup.number().required('Курс обязателен').typeError('Курс должен быть числом'),
@@ -136,11 +160,19 @@ const RegistrationPage: FC = () => {
           variant='outlined'
           InputProps={{
             endAdornment: formik.touched.email && !formik.errors.email && formik.values.email && (
-            <InputAdornment position='end'>
-              {dialog.isEmailConfirmed
-                ? <Tooltip title='Почта подтверждена ✅'><VerifiedIcon color='success' /></Tooltip>
-                : <Button size='small' variant='outlined' onClick={() => dialog.open(formik.values.email)}>Подтвердить</Button>}
-            </InputAdornment>
+              <InputAdornment position='end'>
+                {dialog.isEmailConfirmed
+                  ? <Tooltip title='Почта подтверждена ✅'><VerifiedIcon color='success' /></Tooltip>
+                  : (
+                    <Button
+                      size='small'
+                      variant='outlined'
+                      onClick={() => dialog.open(formik.values.email)}
+                    >
+                      Подтвердить
+                    </Button>
+                  )}
+              </InputAdornment>
             ),
           }}
         />
