@@ -205,6 +205,10 @@ export type GMutation = {
   studentPassportUpsert: Scalars['Boolean'];
   /** Обновление студента. */
   studentUpdate: GStudentEntity;
+  /** Удаление визы студента */
+  studentVisaDelete: Scalars['Boolean'];
+  /** Перезапись визы студента */
+  studentVisaUpsert: Scalars['Boolean'];
   /** Перезапись сотрудника */
   updateEmployee: Scalars['Boolean'];
 };
@@ -292,6 +296,17 @@ export type GMutationStudentPassportUpsertArgs = {
 
 export type GMutationStudentUpdateArgs = {
   input: GStudentUpdateInput;
+};
+
+
+export type GMutationStudentVisaDeleteArgs = {
+  studentId: Scalars['UUID'];
+};
+
+
+export type GMutationStudentVisaUpsertArgs = {
+  data: GStudentVisaUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -398,6 +413,8 @@ export type GQuery = {
   studentMigrationCard?: Maybe<GStudentMigrationCardWithoutStudentResponse>;
   /** Получить паспорт студента. */
   studentPassport?: Maybe<GStudentPassportWithoutStudentResult>;
+  /** Получение визы студента */
+  studentVisa?: Maybe<GStudentVisaWithoutStudentResponse>;
   /** Получение списка студентов. */
   students: Array<GStudentEntity>;
   /** Получить текущего пользователя */
@@ -441,6 +458,11 @@ export type GQueryStudentMigrationCardArgs = {
 
 
 export type GQueryStudentPassportArgs = {
+  studentId?: InputMaybe<Scalars['UUID']>;
+};
+
+
+export type GQueryStudentVisaArgs = {
   studentId?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -1095,6 +1117,35 @@ export type GStudentVisaRequestEntityMinAggregate = {
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
+/** Входные данные для создания/обновления визы студента */
+export type GStudentVisaUpsertInput = {
+  blankSeries?: InputMaybe<Scalars['String']>;
+  expirationDate?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  invitationNumber?: InputMaybe<Scalars['String']>;
+  issueDate?: InputMaybe<Scalars['DateTime']>;
+  number?: InputMaybe<Scalars['String']>;
+};
+
+/** Виза студента без возможности выбора самого студента */
+export type GStudentVisaWithoutStudentResponse = {
+  /** Серия бланка */
+  blankSeries?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  /** Дата истечения */
+  expirationDate?: Maybe<Scalars['DateTime']>;
+  /** Идентификатор визы */
+  id: Scalars['ID'];
+  /** Номер приглашения */
+  invitationNumber?: Maybe<Scalars['String']>;
+  /** Дата выдачи */
+  issueDate?: Maybe<Scalars['DateTime']>;
+  /** Номер */
+  number?: Maybe<Scalars['String']>;
+  studentId: Scalars['UUID'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
 /** Ответ на запрос токена */
 export type GTokenResponse = {
   /** Токен доступа */
@@ -1332,6 +1383,28 @@ export type GStudentPassportDeleteMutationVariables = Exact<{
 
 
 export type GStudentPassportDeleteMutation = { isDeleted: boolean };
+
+export type GStudentVisaQueryVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GStudentVisaQuery = { studentVisa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null } | null };
+
+export type GStudentVisaDeleteMutationVariables = Exact<{
+  studentId: Scalars['UUID'];
+}>;
+
+
+export type GStudentVisaDeleteMutation = { studentVisaDelete: boolean };
+
+export type GStudentVisaUpsertMutationVariables = Exact<{
+  data: GStudentVisaUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GStudentVisaUpsertMutation = { studentVisaUpsert: boolean };
 
 
 export const LoginByPasswordDocument = gql`
@@ -2149,3 +2222,110 @@ export function useStudentPassportDeleteMutation(baseOptions?: Apollo.MutationHo
 export type StudentPassportDeleteMutationHookResult = ReturnType<typeof useStudentPassportDeleteMutation>;
 export type StudentPassportDeleteMutationResult = Apollo.MutationResult<GStudentPassportDeleteMutation>;
 export type StudentPassportDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentPassportDeleteMutation, GStudentPassportDeleteMutationVariables>;
+export const StudentVisaDocument = gql`
+    query StudentVisa($studentId: UUID) {
+  studentVisa(studentId: $studentId) {
+    id
+    studentId
+    blankSeries
+    number
+    issueDate
+    expirationDate
+    invitationNumber
+  }
+}
+    `;
+
+/**
+ * __useStudentVisaQuery__
+ *
+ * To run a query within a React component, call `useStudentVisaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentVisaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentVisaQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentVisaQuery(baseOptions?: Apollo.QueryHookOptions<GStudentVisaQuery, GStudentVisaQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentVisaQuery, GStudentVisaQueryVariables>(StudentVisaDocument, options);
+      }
+export function useStudentVisaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentVisaQuery, GStudentVisaQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentVisaQuery, GStudentVisaQueryVariables>(StudentVisaDocument, options);
+        }
+export type StudentVisaQueryHookResult = ReturnType<typeof useStudentVisaQuery>;
+export type StudentVisaLazyQueryHookResult = ReturnType<typeof useStudentVisaLazyQuery>;
+export type StudentVisaQueryResult = Apollo.QueryResult<GStudentVisaQuery, GStudentVisaQueryVariables>;
+export function refetchStudentVisaQuery(variables?: GStudentVisaQueryVariables) {
+      return { query: StudentVisaDocument, variables: variables }
+    }
+export const StudentVisaDeleteDocument = gql`
+    mutation StudentVisaDelete($studentId: UUID!) {
+  studentVisaDelete(studentId: $studentId)
+}
+    `;
+export type GStudentVisaDeleteMutationFn = Apollo.MutationFunction<GStudentVisaDeleteMutation, GStudentVisaDeleteMutationVariables>;
+
+/**
+ * __useStudentVisaDeleteMutation__
+ *
+ * To run a mutation, you first call `useStudentVisaDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentVisaDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentVisaDeleteMutation, { data, loading, error }] = useStudentVisaDeleteMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentVisaDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GStudentVisaDeleteMutation, GStudentVisaDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentVisaDeleteMutation, GStudentVisaDeleteMutationVariables>(StudentVisaDeleteDocument, options);
+      }
+export type StudentVisaDeleteMutationHookResult = ReturnType<typeof useStudentVisaDeleteMutation>;
+export type StudentVisaDeleteMutationResult = Apollo.MutationResult<GStudentVisaDeleteMutation>;
+export type StudentVisaDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentVisaDeleteMutation, GStudentVisaDeleteMutationVariables>;
+export const StudentVisaUpsertDocument = gql`
+    mutation StudentVisaUpsert($data: StudentVisaUpsertInput!, $studentId: UUID) {
+  studentVisaUpsert(data: $data, studentId: $studentId)
+}
+    `;
+export type GStudentVisaUpsertMutationFn = Apollo.MutationFunction<GStudentVisaUpsertMutation, GStudentVisaUpsertMutationVariables>;
+
+/**
+ * __useStudentVisaUpsertMutation__
+ *
+ * To run a mutation, you first call `useStudentVisaUpsertMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentVisaUpsertMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentVisaUpsertMutation, { data, loading, error }] = useStudentVisaUpsertMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentVisaUpsertMutation(baseOptions?: Apollo.MutationHookOptions<GStudentVisaUpsertMutation, GStudentVisaUpsertMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentVisaUpsertMutation, GStudentVisaUpsertMutationVariables>(StudentVisaUpsertDocument, options);
+      }
+export type StudentVisaUpsertMutationHookResult = ReturnType<typeof useStudentVisaUpsertMutation>;
+export type StudentVisaUpsertMutationResult = Apollo.MutationResult<GStudentVisaUpsertMutation>;
+export type StudentVisaUpsertMutationOptions = Apollo.BaseMutationOptions<GStudentVisaUpsertMutation, GStudentVisaUpsertMutationVariables>;

@@ -255,6 +255,20 @@ type Mutation {
   """Обновление студента."""
   studentUpdate(input: StudentUpdateInput!): StudentEntity!
 
+  """Удаление визы студента"""
+  studentVisaDelete(
+    """ID Студента"""
+    studentId: UUID!
+  ): Boolean!
+
+  """Перезапись визы студента"""
+  studentVisaUpsert(
+    data: StudentVisaUpsertInput!
+
+    """ID Студента"""
+    studentId: UUID
+  ): Boolean!
+
   """Перезапись сотрудника"""
   updateEmployee(input: EmployeeUpdateInput!): Boolean!
 }
@@ -385,6 +399,12 @@ type Query {
     """ID Студента"""
     studentId: UUID
   ): StudentPassportWithoutStudentResult
+
+  """Получение визы студента"""
+  studentVisa(
+    """ID Студента"""
+    studentId: UUID
+  ): StudentVisaWithoutStudentResponse
 
   """Получение списка студентов."""
   students: [StudentEntity!]!
@@ -1121,6 +1141,40 @@ type StudentVisaRequestEntityMinAggregate {
   russianFederationRelatives: String
   status: VisaRequestStatusEnum
   studentId: UUID
+  updatedAt: DateTime
+}
+
+"""Входные данные для создания/обновления визы студента"""
+input StudentVisaUpsertInput {
+  blankSeries: String
+  expirationDate: DateTime
+  id: String!
+  invitationNumber: String
+  issueDate: DateTime
+  number: String
+}
+
+"""Виза студента без возможности выбора самого студента"""
+type StudentVisaWithoutStudentResponse {
+  """Серия бланка"""
+  blankSeries: String
+  createdAt: DateTime!
+
+  """Дата истечения"""
+  expirationDate: DateTime
+
+  """Идентификатор визы"""
+  id: ID!
+
+  """Номер приглашения"""
+  invitationNumber: String
+
+  """Дата выдачи"""
+  issueDate: DateTime
+
+  """Номер"""
+  number: String
+  studentId: UUID!
   updatedAt: DateTime
 }
 

@@ -3,6 +3,7 @@ import StudentPassportPage from '../../pages/student-documents/StudentPassportPa
 import StudentArrivalNoticePage from '../../pages/student-documents/StudentArrivalNoticePage.tsx';
 import StudentCloseRelativesPage from '../../pages/student-documents/StudentCloseRelativesPage.tsx';
 import StudentMigrationCardPage from '../../pages/student-documents/StudentMigrationCardPage.tsx';
+import StudentVisaPage from '../../pages/student-documents/StudentVisaPage.tsx';
 
 const StudentRoutes: JSX.Element = (
   <>
@@ -13,8 +14,8 @@ const StudentRoutes: JSX.Element = (
     <Route path='account' element={<h1>Account Settings</h1>} />
     <Route path='documents'>
       <Route path='passport' element={<StudentPassportPage />} />
-      <Route path='visa' element={<h1>Visa Settings</h1>} />
-      <Route path='migration-card' element={<StudentMigrationCardPage/>} />
+      <Route path='visa' element={<StudentVisaPage />} />
+      <Route path='migration-card' element={<StudentMigrationCardPage />} />
       <Route path='arrival-notice' element={<StudentArrivalNoticePage />} />
       <Route path='close-relatives' element={<StudentCloseRelativesPage />} />
     </Route>

@@ -1,0 +1,19 @@
+query StudentVisa($studentId: UUID) {
+  studentVisa(studentId: $studentId) {
+    id
+    studentId
+    blankSeries
+    number
+    issueDate
+    expirationDate
+    invitationNumber
+  }
+}
+
+mutation StudentVisaDelete($studentId: UUID!) {
+  studentVisaDelete(studentId: $studentId)
+}
+
+mutation StudentVisaUpsert($data: StudentVisaUpsertInput!, $studentId: UUID) {
+  studentVisaUpsert(data: $data, studentId: $studentId)
+}
