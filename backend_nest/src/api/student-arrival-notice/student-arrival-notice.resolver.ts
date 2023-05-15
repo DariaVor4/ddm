@@ -14,13 +14,17 @@ import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorato
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
 import { PrismaService } from '../../prisma/prisma.service';
 import StudentArrivalNoticeUpsertInput from './inputs/student-arrival-notice-upsert.input';
+import { StudentDocumentsService } from '../student/student-documents.service';
 
 /**
  * Резолвер для работы с уведомлениями о прибытии студентов.
  */
 @Resolver('student-arrival-notice')
 export class StudentArrivalNoticeResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly studentDocumentsService: StudentDocumentsService,
+  ) {}
 
   /**
    * Получение уведомления о прибытии студента.
@@ -42,15 +46,8 @@ export class StudentArrivalNoticeResolver {
     @CurrentSession() session: ISessionContext,
     @Args('studentId', { nullable: true, description: 'ID Студента', type: UUID }) studentId?: string,
   ): Promise<Partial<StudentArrivalNoticeWithoutStudentResult> | null> {
-    if (!studentId && !isRoleStudent(session.roles)) {
-      throw new BadRequestException('Тип аккаунта не позволяет получить уведомление о прибытии без studentId');
-    }
-    if (studentId && isRoleStudent(session.roles) && studentId !== session.userId) {
-      throw new ForbiddenException(ifDebug('Студенты не могут читать чужие уведомления о прибытии'));
-    }
-    if (studentId && (await this.prisma.studentEntity.count({ where: { id: studentId } })) === 0) {
-      throw new NotFoundException('Студент не найден');
-    }
+    const otherOrCurrentStudentId = studentId || session.userId;
+    await this.studentDocumentsService.assertPermissions(otherOrCurrentStudentId, session);
     return this.prisma.studentArrivalNoticeEntity.findUnique({
       where: { studentId: studentId || session.userId },
       select,
@@ -77,21 +74,13 @@ export class StudentArrivalNoticeResolver {
     @Args('data') data: StudentArrivalNoticeUpsertInput,
     @Args('studentId', { nullable: true, description: 'ID Студента', type: UUID }) studentId?: string,
   ): Promise<boolean> {
-    if (studentId && isRoleStudent(session.roles) && studentId !== session.userId) {
-      throw new ForbiddenException(ifDebug('Только сотрудники могут перезаписывать уведомления о прибытии других студентов'));
-    }
-    if (!studentId && !isRoleStudent(session.roles)) {
-      throw new BadRequestException('Тип аккаунта не позволяет перезаписать уведомление о прибытии без studentId');
-    }
-    const currentOrOtherStudentId = studentId || session.userId;
-    if (await this.prisma.studentEntity.count({ where: { id: currentOrOtherStudentId } }) === 0) {
-      throw new NotFoundException('Студент не найден');
-    }
+    const otherOrCurrentStudentId = studentId || session.userId;
+    await this.studentDocumentsService.assertPermissions(otherOrCurrentStudentId, session);
     return !!await this.prisma.studentArrivalNoticeEntity.upsert({
-      where: { studentId: currentOrOtherStudentId },
+      where: { studentId: otherOrCurrentStudentId },
       create: {
         ...data,
-        student: { connect: { id: currentOrOtherStudentId } },
+        student: { connect: { id: otherOrCurrentStudentId } },
       },
       update: data,
     }).catch(_throw((e) => new InternalServerErrorException(`Ошибка при перезаписи уведомления о прибытии студента: ${e.message}`)));

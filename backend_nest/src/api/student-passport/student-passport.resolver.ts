@@ -15,13 +15,17 @@ import { CurrentSession, ISessionContext } from '../auth/decorators/current-sess
 import StudentPassportUpsertInput from './inputs/student-passport-upsert.input';
 import StudentPassportWithoutStudentResult from './results/student-passport-without-student.result';
 import StudentPassportEntitySelect = Prisma.StudentPassportEntitySelect;
+import { StudentDocumentsService } from '../student/student-documents.service';
 
 /**
  * Резолвер для работы с паспортами студентов.
  */
 @Resolver('student-passport')
 export class StudentPassportResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly studentDocumentsService: StudentDocumentsService,
+  ) {}
 
   /**
    * Получить паспорт студента.
@@ -43,17 +47,10 @@ export class StudentPassportResolver {
     @CurrentSession() session: ISessionContext,
     @Args('studentId', { nullable: true, description: 'ID Студента', type: UUID }) studentId?: string,
   ): Promise<Partial<StudentPassportWithoutStudentResult> | null> {
-    if (!studentId && !isRoleStudent(session.roles)) {
-      throw new BadRequestException('Тип аккаунта не позволяет получить паспорт без studentId');
-    }
-    if (studentId && isRoleStudent(session.roles) && studentId !== session.userId) {
-      throw new ForbiddenException(ifDebug('Студенты не могут читать чужие паспорта'));
-    }
-    if (studentId && (await this.prisma.studentEntity.count({ where: { id: studentId } })) === 0) {
-      throw new NotFoundException('Студент не найден');
-    }
+    const otherOrCurrentStudentId = studentId || session.userId;
+    await this.studentDocumentsService.assertPermissions(otherOrCurrentStudentId, session);
     return this.prisma.studentPassportEntity.findFirst({
-      where: { studentId: studentId || session.userId },
+      where: { studentId: otherOrCurrentStudentId },
       select,
     });
   }
@@ -79,16 +76,8 @@ export class StudentPassportResolver {
     @Args('data', { description: 'Данные для перезаписи' }) data: StudentPassportUpsertInput,
     @Args('studentId', { nullable: true, description: 'ID Студента', type: UUID }) studentId?: string,
   ): Promise<boolean> {
-    if (studentId && isRoleStudent(session.roles) && studentId !== session.userId) {
-      throw new ForbiddenException(ifDebug('Только сотрудники могут перезаписывать паспорта других студентов'));
-    }
-    if (!studentId && !isRoleStudent(session.roles)) {
-      throw new BadRequestException('Тип аккаунта не позволяет перезаписать паспорт без studentId');
-    }
     const otherOrCurrentStudentId = studentId || session.userId;
-    if ((await this.prisma.studentEntity.count({ where: { id: otherOrCurrentStudentId } })) === 0) {
-      throw new NotFoundException('Студент не найден');
-    }
+    await this.studentDocumentsService.assertPermissions(otherOrCurrentStudentId, session);
     return !!await this.prisma.studentPassportEntity.upsert({
       where: { studentId: otherOrCurrentStudentId },
       create: {

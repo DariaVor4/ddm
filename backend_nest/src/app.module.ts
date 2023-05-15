@@ -16,6 +16,7 @@ import { StudentPassportModule } from './api/student-passport/student-passport.m
 import { StudentArrivalNoticeModule } from './api/student-arrival-notice/student-arrival-notice.module';
 import { StudentCloseRelativeModule } from './api/student-close-relative/student-close-relative.module';
 import { StudentMigrationCardModule } from './api/student-migration-card/student-migration-card.module';
+import { StudentVisaModule } from './api/student-visa/student-visa.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { StudentMigrationCardModule } from './api/student-migration-card/student
     StudentArrivalNoticeModule,
     StudentCloseRelativeModule,
     StudentMigrationCardModule,
+    StudentVisaModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },

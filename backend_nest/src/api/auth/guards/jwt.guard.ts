@@ -5,8 +5,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { AuthGuard } from '@nestjs/passport';
-import { TUser } from '@prisma-types';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { Request } from 'express';
 
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { ISessionContext } from '../decorators/current-session.decorator';
@@ -41,15 +41,15 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
   handleRequest(strategyErr?: Error, payload?: ISessionContext | false, jwtErr?: Error): any {
     const isNoError = !strategyErr && !jwtErr && payload;
     // For debug:
-    // if (!isNoError && runtimeMode.isDebug) {
-    //   const errors = {
-    //     strategyErr: strategyErr?.message,
-    //     jwtErr: jwtErr?.message,
-    //     payload,
-    //   };
-    //   this.logger.debug(`Ошибка валидации JWT: ${JSON.stringify(errors, null, 2)}`);
-    //   assert(isNoError, new UnauthorizedException(JSON.stringify(errors)));
-    // }
+    if (!isNoError && runtimeMode.isDebug) {
+      const errors = {
+        strategyErr: strategyErr?.message,
+        jwtErr: jwtErr?.message,
+        payload,
+      };
+      this.logger.debug(`Ошибка валидации JWT: ${JSON.stringify(errors, null, 2)}`);
+      assert(isNoError, new UnauthorizedException(JSON.stringify(errors)));
+    }
     assert(isNoError, new UnauthorizedException());
     return payload;
   }

@@ -1,4 +1,4 @@
-import { assert, _throw } from '@common';
+import {assert, _throw, runtimeMode} from '@common';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
@@ -52,15 +52,15 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     const refreshToken: string | undefined = req.cookies[CookieKeysEnum.RefreshTokenKey];
     assert(accessToken, new UnauthorizedException('AccessToken not found'));
     assert(refreshToken, new UnauthorizedException('RefreshToken not found'));
-    if (!await this.jwtService.verifyAsync(refreshToken, {
+    if (!runtimeMode.isDebug && !await this.jwtService.verifyAsync(refreshToken, {
       secret: this.configService.config.refreshTokenSecret + accessToken,
       ignoreExpiration: false,
-    })) {
+    }).catch(() => false)) {
       throw new UnauthorizedException('Invalid RefreshToken');
     }
     // Check User.tokenHash
     if (!accessToken || !user.tokenHash || !(await bcrypt.compare(accessToken, user.tokenHash))) {
-      throw new UnauthorizedException('Invalid access token');
+      throw new UnauthorizedException('Invalid AccessToken');
     }
     // Update user.lastActivity
     await this.prisma.userEntity.update({
