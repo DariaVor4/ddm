@@ -1,25 +1,25 @@
 import { FC, useState } from 'react';
 import {
-  Alert, Button, Collapse, DialogActions, DialogContent, IconButton, InputAdornment, TextField,
+  Alert, Button, Collapse, DialogActions, DialogContent, IconButton, InputAdornment,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { makeVar, useReactiveVar } from '@apollo/client';
-import AppRoutesEnum from '../../views/routes.enum';
+import { AppRoutesEnum } from '../../views/app-routes.enum.ts';
 import { GLoginByPasswordMutationVariables, useLoginByPasswordMutation } from '../../api/generated';
 import { authHelper } from '../../api/apollo-client.tsx';
-import onEnterDown from '../../core/onEnterDown.ts';
-import FormikTextField from '../forms/FormikTextField.tsx';
-import AppDialog from './AppDialog.tsx';
+import { onEnterDown } from '../../core/onEnterDown.ts';
+import { FormikTextField } from '../forms/FormikTextField.tsx';
+import { AppDialog } from './AppDialog.tsx';
 
 const isLoginDialogOpenVar = makeVar(false);
 export const loginDialogOpenFn = () => isLoginDialogOpenVar(true);
 const loginDialogCloseFn = () => isLoginDialogOpenVar(false);
 const authResultMessageVar = makeVar<string | null>(null);
 
-const LoginDialog: FC = () => {
+export const LoginDialog: FC = () => {
   const isOpen = useReactiveVar(isLoginDialogOpenVar);
   const [showPassword, setShowPassword] = useState(false);
   const authResultMessage = useReactiveVar(authResultMessageVar);
@@ -79,7 +79,7 @@ const LoginDialog: FC = () => {
           onClick={loginDialogCloseFn}
           component={Link}
           variant='text'
-          to={AppRoutesEnum.Register}
+          to={AppRoutesEnum.RegisterRoute}
         >
           Регистрация
         </Button>
@@ -95,5 +95,3 @@ const LoginDialog: FC = () => {
     </AppDialog>
   );
 };
-
-export default LoginDialog;

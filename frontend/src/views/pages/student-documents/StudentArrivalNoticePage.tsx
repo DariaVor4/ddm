@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import {
   GStudentArrivalNoticeUpsertInput, InputMaybe, refetchStudentArrivalNoticeQuery, useStudentArrivalNoticeQuery, useStudentArrivalNoticeUpsertMutation,
 } from '../../../api/generated.ts';
-import FormikTextField from '../../../components/forms/FormikTextField.tsx';
+import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 
 type IFormValue = Omit<GStudentArrivalNoticeUpsertInput, 'date' | 'expires'> & {
   date?: InputMaybe<string>;
@@ -31,7 +31,7 @@ const formSchema = yup.object({
   receivingSide: yup.string().trim().required('Обязательное поле'),
 });
 
-const StudentArrivalNoticePage: FC = () => {
+export const StudentArrivalNoticePage: FC = () => {
   const { studentId } = useParams<StudentArrivalNoticePageParams>();
   const [saveDocument] = useStudentArrivalNoticeUpsertMutation({
     refetchQueries: [refetchStudentArrivalNoticeQuery({ studentId })],
@@ -69,6 +69,7 @@ const StudentArrivalNoticePage: FC = () => {
       <FormikProvider value={formik}>
         <Paper className='flex flex-col gap-4 px-10 py-4 mx-auto max-w-lg'>
           <Typography variant='h4' className='text-center mb-4'>Уведомление о прибытии</Typography>
+          {/* TODO убрать профессию и обе пр. стороны в интерфейсе студента */}
           <FormikTextField name='profession' label='Профессия' required />
           <FormikTextField name='address' label='Адрес регистрации' required />
           <FormikTextField name='date' label='Дата регистрации' type='date' required />
@@ -84,5 +85,3 @@ const StudentArrivalNoticePage: FC = () => {
     </>
   );
 };
-
-export default StudentArrivalNoticePage;

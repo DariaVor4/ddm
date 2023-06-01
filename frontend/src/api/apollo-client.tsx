@@ -13,10 +13,11 @@ import { toast } from 'react-toastify';
 import { Id } from 'react-toastify/dist/types';
 import { LocalStorageKeys } from './local-storage-keys';
 import { GTokenResponse } from './generated';
-import AppRoutesEnum from '../views/routes.enum';
-import globalNavigateVar from '../store/global-navigate.ts';
+import { AppRoutesEnum } from '../views/app-routes.enum.ts';
+import { globalNavigateVar } from '../store/global-navigate.ts';
 import * as introspectionResult from './schema.json';
-import refreshTokens from './refresh-tokens.ts';
+import { refreshTokens } from './refresh-tokens.ts';
+import { typePolicies } from './type-policies.ts';
 
 /**
  * Auth helper for handle login and logout.
@@ -27,15 +28,15 @@ export const authHelper = {
     localStorage.setItem(LocalStorageKeys.AccessTokenKey, data.accessToken);
     localStorage.setItem(LocalStorageKeys.AccessTokenExpiresKey, data.accessTokenExpires.toISOString());
     if (isTokenUndefinedBefore) {
-      globalNavigateVar()(AppRoutesEnum.Home);
+      globalNavigateVar()(AppRoutesEnum.HomeRoute);
       await client.resetStore().catch(() => undefined);
     }
   },
   logout: async () => {
-    console.log('logging out...');
+    // console.debug('logging out...');
     localStorage.removeItem(LocalStorageKeys.AccessTokenKey);
     localStorage.removeItem(LocalStorageKeys.AccessTokenExpiresKey);
-    globalNavigateVar()(AppRoutesEnum.Home);
+    globalNavigateVar()(AppRoutesEnum.HomeRoute);
     await client.resetStore().catch(() => 123);
   },
 };
@@ -61,7 +62,7 @@ const authOnlineLink = new ApolloLink((operation, forward) => {
 });
 
 // const authLink = setContext(async (_, prevContext) => {
-//   console.log('authLink');
+//   console.debug('authLink');
 //   const token = localStorage.getItem(LocalStorageKeys.AccessTokenKey);
 //   return merge(prevContext, {
 //     headers: { authorization: token ? `Bearer ${token}` : undefined },
@@ -100,7 +101,7 @@ const errorLink = onError(({
     }
   }
   if (isTokenExpired) {
-    console.debug('REFRESH_TOKEN');
+    // console.debug('REFRESH_TOKEN');
     return fromPromise<string>(refreshPromise ??= refreshTokens()
       .then(async data => {
         if (!data.accessToken) throw new Error('New accessToken not found in response');
@@ -149,9 +150,9 @@ const httpLink = createHttpLink({
 /**
  * Main GraphQL Apollo Client.
  */
-const client = new ApolloClient({
+export const client = new ApolloClient({
   link: ApolloLink.from([errorLink, scalarsLink, authOnlineLink, httpLink]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({ typePolicies }),
   defaultOptions: {
     query: {
       notifyOnNetworkStatusChange: true,
@@ -168,5 +169,3 @@ const client = new ApolloClient({
   connectToDevTools: import.meta.env.MODE === 'development',
   queryDeduplication: true,
 });
-
-export default client;

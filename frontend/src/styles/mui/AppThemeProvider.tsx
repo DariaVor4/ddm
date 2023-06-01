@@ -2,12 +2,12 @@ import { FC, PropsWithChildren } from 'react';
 import { ThemeProvider } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
-import useMainStore from '../../store/theme-store';
+import { useMainStore } from '../../store/theme-store';
 import { themeDark, themeLight } from './theme';
 
 injectStyle();
 
-const AppThemeProvider: FC<PropsWithChildren> = ({ children }) => {
+export const AppThemeProvider: FC<PropsWithChildren> = ({ children }) => {
   const { isDarkTheme } = useMainStore();
 
   return (
@@ -20,5 +20,3 @@ const AppThemeProvider: FC<PropsWithChildren> = ({ children }) => {
     </ThemeProvider>
   );
 };
-
-export default AppThemeProvider;

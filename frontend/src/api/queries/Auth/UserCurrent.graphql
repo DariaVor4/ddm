@@ -8,6 +8,9 @@ query UserCurrent {
             lastActivity
             createdAt
             updatedAt
+            role @client
+            initials @client
+            fullName @client
             employee {
                 id
                 lastName

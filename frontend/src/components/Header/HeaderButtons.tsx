@@ -4,16 +4,15 @@ import { useReactiveVar } from '@apollo/client';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import { Link } from 'react-router-dom';
-import UserRoleIcon from '../../UserRoleIcon.tsx';
-import getUserInitials from '../../../core/get-user-initials.ts';
-import { GUserCurrentResponse, GUserRoleEnum, useUserCurrentQuery } from '../../../api/generated.ts';
-import { getRole } from '../../../core/roles-checker.ts';
-import { isUserMenuOpenVar, userMenuToggleFn } from './UserMenu.tsx';
-import useMainStore from '../../../store/theme-store.ts';
-import { loginDialogOpenFn } from '../../Dialogs/LoginDialog.tsx';
-import AppRoutesEnum from '../../../views/routes.enum.ts';
+import { UserRoleIcon } from '../UserRoleIcon.tsx';
+import { GUserRoleEnum, useUserCurrentQuery } from '../../api/generated.ts';
+import { getRole } from '../../core/roles-checker.ts';
+import { useMainStore } from '../../store/theme-store.ts';
+import { loginDialogOpenFn } from '../Dialogs/LoginDialog.tsx';
+import { AppRoutesEnum } from '../../views/app-routes.enum.ts';
+import { isUserMenuOpenVar, userMenuToggleFn } from './UserMenu/user-menu-store.ts';
 
-const HeaderButtons: FC = () => {
+export const HeaderButtons: FC = () => {
   const { data: { current } = {} } = useUserCurrentQuery();
   const { isDarkTheme, toggleTheme } = useMainStore();
   const role = getRole(current?.roles);
@@ -35,7 +34,7 @@ const HeaderButtons: FC = () => {
             startIcon={<UserRoleIcon userRole={role} />}
             onClick={userMenuToggleFn}
           >
-            {getUserInitials(current as GUserCurrentResponse)}
+            {current?.user.initials || 'Пользователь'}
           </Button>
         ) : (
           <>
@@ -51,7 +50,7 @@ const HeaderButtons: FC = () => {
               variant='text'
               size='medium'
               component={Link}
-              to={AppRoutesEnum.Register}
+              to={AppRoutesEnum.RegisterRoute}
               color='inherit'
             >
               Регистрация
@@ -62,5 +61,3 @@ const HeaderButtons: FC = () => {
     </>
   );
 };
-
-export default HeaderButtons;

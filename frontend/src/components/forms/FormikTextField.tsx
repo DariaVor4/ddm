@@ -10,7 +10,7 @@ type TFormikTextFieldProps = TextFieldProps & {
 
 const titlePullUp = { shrink: true };
 
-const FormikTextField: FC<TFormikTextFieldProps> = memo(forwardRef(({
+export const FormikTextField: FC<TFormikTextFieldProps> = memo(forwardRef(({
   name, helpText, shrink, ...props
 }, ref) => {
   const [field, meta] = useField(name);
@@ -20,13 +20,11 @@ const FormikTextField: FC<TFormikTextFieldProps> = memo(forwardRef(({
     <TextField
       {...field}
       ref={ref}
+      disabled={isSubmitting}
       error={meta.touched && !!meta.error}
       helperText={(meta.touched && meta.error) || helpText}
-      disabled={isSubmitting}
       InputLabelProps={props.type === 'date' || shrink ? titlePullUp : undefined}
       {...props}
     />
   );
 }));
-
-export default FormikTextField;

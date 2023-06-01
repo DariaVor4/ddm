@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useSwitcher = (initialState = false) => {
+export const useSwitcher = (initialState = false) => {
   const [state, setState] = useState(initialState);
   return {
     state,
@@ -9,5 +9,3 @@ const useSwitcher = (initialState = false) => {
     disable: () => setState(false),
   };
 };
-
-export default useSwitcher;

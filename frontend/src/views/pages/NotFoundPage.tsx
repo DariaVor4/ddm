@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { FC } from 'react';
 
-const NotFoundPage: FC = () => {
+export const NotFoundPage: FC = () => {
   const navigate = useNavigate();
   return (
     <div className='flex flex-col justify-center items-center grow text-xl my-10 text-center gap-10 leading-8'>
@@ -20,5 +20,3 @@ const NotFoundPage: FC = () => {
     </div>
   );
 };
-
-export default NotFoundPage;

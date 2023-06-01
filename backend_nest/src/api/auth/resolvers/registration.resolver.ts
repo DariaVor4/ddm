@@ -98,7 +98,7 @@ export class RegistrationResolver {
       // throw new BadRequestException(`Отправить код повторно можно не раньше чем через ${Math.ceil((ms('1m') + entity.createdAt.getTime() - Date.now()) / 1000)} секунд`);
       assert(
         !entity,
-        new BadRequestException(`Отправить код повторно можно не раньше чем ${dayjs(entity!.createdAt).add(1, 'minute').fromNow()}`),
+        new BadRequestException(`Отправить код повторно можно не раньше чем ${dayjs(entity?.createdAt).add(1, 'minute').fromNow()}`),
       );
     });
     // Сгенерировать код

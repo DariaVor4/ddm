@@ -8,15 +8,15 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { refetchStudentCloseRelativesQuery, useStudentCloseRelativeDeleteMutation, useStudentCloseRelativesQuery } from '../../../api/generated.ts';
-import CloseRelativeDialog, { useCloseRelativeDialog } from '../../../components/Dialogs/CloseRelativeDialog.tsx';
-import strictPick from '../../../core/strict-lodash/strict-pick.ts';
-import useConfirmAction from '../../../core/hooks/useConfirmAction.tsx';
+import { CloseRelativeDialog, useCloseRelativeDialog } from '../../../components/Dialogs/CloseRelativeDialog.tsx';
+import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
+import { useConfirmAction } from '../../../core/hooks/useConfirmAction.tsx';
 
 type StudentCloseRelativesParams = {
   studentId?: string;
 };
 
-const StudentCloseRelativesPage: FC = () => {
+export const StudentCloseRelativesPage: FC = () => {
   const dialog = useCloseRelativeDialog(state => strictPick(state, ['edit', 'create']));
   const { studentId } = useParams<StudentCloseRelativesParams>();
   const { data: { studentCloseRelatives: relatives } = {} } = useStudentCloseRelativesQuery({ variables: { studentId } });
@@ -106,5 +106,3 @@ const StudentCloseRelativesPage: FC = () => {
     </>
   );
 };
-
-export default StudentCloseRelativesPage;

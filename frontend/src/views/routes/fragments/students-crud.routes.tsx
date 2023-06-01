@@ -1,15 +1,21 @@
 import { Route } from 'react-router-dom';
+import { StudentsPage } from '../../pages/employee-pages/StudentsPage.tsx';
+import { StudentPassportPage } from '../../pages/student-documents/StudentPassportPage.tsx';
+import { StudentMigrationCardPage } from '../../pages/student-documents/StudentMigrationCardPage.tsx';
+import { StudentVisaPage } from '../../pages/student-documents/StudentVisaPage.tsx';
+import { StudentArrivalNoticePage } from '../../pages/student-documents/StudentArrivalNoticePage.tsx';
+import { StudentCloseRelativesPage } from '../../pages/student-documents/StudentCloseRelativesPage.tsx';
+import { StudentCreatePage } from '../../pages/employee-pages/StudentCreatePage.tsx';
 
-const StudentsCrudRoutes = (
-  <Route path='students' element={<h1>Students List</h1>}>
-    <Route path=':studentId' element={<h1>Student page</h1>}>
-      <Route path='passport' element={<h1>Student passport</h1>} />
-      <Route path='visa' element={<h1>Student visa</h1>} />
-      <Route path='migration-card' element={<h1>Student migration card</h1>} />
-      <Route path='arrival-notice' element={<h1>Student arrival notice</h1>} />
-      <Route path='close-relatives' element={<h1>Student close relatives</h1>} />
-    </Route>
-  </Route>
+export const StudentsCrudRoutes = (
+  <>
+    <Route element={<StudentsPage />} path='students' />
+    <Route element={<StudentCreatePage />} path='students/create' />
+    <Route element={<h1>User student page</h1>} path='students/:studentId' />
+    <Route element={<StudentPassportPage />} path='students/:studentId/passport' />
+    <Route element={<StudentVisaPage />} path='students/:studentId/visa' />
+    <Route element={<StudentMigrationCardPage />} path='students/:studentId/migration-card' />
+    <Route element={<StudentArrivalNoticePage />} path='students/:studentId/arrival-notice' />
+    <Route element={<StudentCloseRelativesPage />} path='students/:studentId/close-relatives' />
+  </>
 );
-
-export default StudentsCrudRoutes;

@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom';
-import StudentsCrudRoutes from '../fragments/students-crud.routes.tsx';
+import { StudentsCrudRoutes } from '../fragments/students-crud.routes.tsx';
 
-const EmployeeRoutes: JSX.Element = (
+export const EmployeeRoutes: JSX.Element = (
   <>
     <Route path='settings' element={<h1>Settings</h1>}>
       <Route path='authentication' element={<h1>Authentication Settings</h1>} />
@@ -12,5 +12,3 @@ const EmployeeRoutes: JSX.Element = (
     </Route>
   </>
 );
-
-export default EmployeeRoutes;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { isNil } from 'lodash';
 
-const useLocalStorage = <T>(
+export const useLocalStorage = <T>(
   keyName: string,
   defaultValue: T,
 ): [T, (newValue: T) => void] => {
@@ -34,5 +34,3 @@ const useLocalStorage = <T>(
 
   return [storedValue, setValue];
 };
-
-export default useLocalStorage;

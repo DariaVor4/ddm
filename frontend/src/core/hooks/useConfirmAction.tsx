@@ -3,8 +3,8 @@ import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { cloneDeep } from 'lodash';
 import { Button, DialogActions, DialogContent } from '@mui/material';
-import AppDialog from '../../components/Dialogs/AppDialog.tsx';
-import onEnterDown from '../onEnterDown.ts';
+import { AppDialog } from '../../components/Dialogs/AppDialog.tsx';
+import { onEnterDown } from '../onEnterDown.ts';
 
 type TParams = {
   title?: string;
@@ -46,9 +46,7 @@ export const ConfirmActionDialog: FC = () => {
   );
 };
 
-const useConfirmAction = (params1?: TParams) => {
+export const useConfirmAction = (params1?: TParams) => {
   const dialog = useConfirmActionDialog();
   return (params2?: Partial<TParams>) => dialog.open({ ...params1, ...params2 } as TParams);
 };
-
-export default useConfirmAction;

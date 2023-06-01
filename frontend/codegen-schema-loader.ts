@@ -5,7 +5,7 @@ export default {
   overwrite: true,
   generates: {
     './src/api/schema.gql': {
-      plugins: ['schema-ast'],
+      plugins: ['schema-ast', 'codegen-extend'],
     },
     './src/api/schema.json': {
       plugins: ['introspection'],

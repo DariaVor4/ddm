@@ -11,7 +11,7 @@ interface IRoleIconProps extends SvgIconProps {
   userRole: GUserRoleEnum[] | GUserRoleEnum | undefined;
 }
 
-const UserRoleIcon: FC<IRoleIconProps> = ({ userRole, ...props }) => {
+export const UserRoleIcon: FC<IRoleIconProps> = ({ userRole, ...props }) => {
   switch (getRole(userRole)) {
     case GUserRoleEnum.Student:
       return <SchoolIcon {...props} />;
@@ -23,5 +23,3 @@ const UserRoleIcon: FC<IRoleIconProps> = ({ userRole, ...props }) => {
       return <NoAccountsIcon {...props} />;
   }
 };
-
-export default UserRoleIcon;

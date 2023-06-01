@@ -4,9 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { CssBaseline } from '@mui/material';
 import dayjs from 'dayjs';
-import AppRoutes from './views/routes/AppRoutes.tsx';
-import client from './api/apollo-client.tsx';
-import AppThemeProvider from './styles/mui/AppThemeProvider.tsx';
+import { AppRoutes } from './views/routes/AppRoutes.tsx';
+import { client } from './api/apollo-client.tsx';
+import { AppThemeProvider } from './styles/mui/AppThemeProvider.tsx';
 
 import './styles/global.scss';
 import 'dayjs/locale/ru';

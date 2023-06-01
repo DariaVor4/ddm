@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
-import FormikTextField from '../../../components/forms/FormikTextField.tsx';
+import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import {
   GStudentMigrationCardUpsertInput,
   InputMaybe,
@@ -25,14 +25,22 @@ type StudentMigrationCardPageParams = {
   studentId?: string;
 };
 
-//todo какая валидация..?
 const formSchema = yup.object({
-  series: yup.number().required('Обязательное поле').typeError('Введите число'),
-  number: yup.number().required('Обязательное поле').typeError('Введите число'),
+  series: yup.number()
+    .min(1000, 'Неправильный номер')
+    .max(9999, 'Неправильный номер')
+    .required('Обязательное поле')
+    .typeError('Введите число'),
+  number: yup.number()
+    .min(1000, 'Неправильный номер')
+    .max(99999999, 'Неправильный номер')
+    .required('Обязательное поле')
+    .typeError('Введите число'),
   issueDate: yup.date().required('Обязательное поле').min(new Date(1970, 0, 1), 'Неправильная дата').max(new Date(), 'Неправильная дата'),
   expirationDate: yup.date().min(new Date(), 'Неправильная дата').required('Обязательное поле'),
 });
-const StudentMigrationCardPage: FC = () => {
+
+export const StudentMigrationCardPage: FC = () => {
   const { studentId } = useParams<StudentMigrationCardPageParams>();
 
   const [saveDocument] = useStudentMigrationCardUpsertMutation({
@@ -87,5 +95,3 @@ const StudentMigrationCardPage: FC = () => {
     </>
   );
 };
-
-export default StudentMigrationCardPage;

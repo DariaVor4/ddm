@@ -6,7 +6,7 @@ import { Button, DialogActions, DialogContent } from '@mui/material';
 import { FormikProvider, useFormik } from 'formik';
 import dayjs from 'dayjs';
 import * as yup from 'yup';
-import AppDialog from './AppDialog.tsx';
+import { AppDialog } from './AppDialog.tsx';
 import {
   GStudentCloseRelativeUpsertInput,
   InputMaybe,
@@ -15,8 +15,8 @@ import {
   useStudentCloseRelativeQuery,
   useStudentCloseRelativeUpsertMutation,
 } from '../../api/generated.ts';
-import FormikTextField from '../forms/FormikTextField.tsx';
-import onEnterDown from '../../core/onEnterDown.ts';
+import { FormikTextField } from '../forms/FormikTextField.tsx';
+import { onEnterDown } from '../../core/onEnterDown.ts';
 
 const initialState = {
   isOpen: false as boolean,
@@ -28,7 +28,7 @@ interface IFormValues extends Omit<GStudentCloseRelativeUpsertInput, 'birthDate'
   birthDate?: InputMaybe<string>;
 }
 
-export const useCloseRelativeDialog = create(combine(cloneDeep(initialState), (setState, getState) => ({
+export const useCloseRelativeDialog = create(combine(cloneDeep(initialState), setState => ({
   create: (studentId?: string) => setState({
     ...cloneDeep(initialState),
     studentId,
@@ -42,7 +42,7 @@ export const useCloseRelativeDialog = create(combine(cloneDeep(initialState), (s
   close: () => setState({ isOpen: false }),
 })));
 
-const CloseRelativeDialog: FC = () => {
+export const CloseRelativeDialog: FC = () => {
   const dialog = useCloseRelativeDialog();
 
   const { data: { studentCloseRelative } = {} } = useStudentCloseRelativeQuery({
@@ -92,6 +92,7 @@ const CloseRelativeDialog: FC = () => {
     if (!dialog.isOpen) {
       formik.resetForm();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dialog.isOpen]);
 
   return (
@@ -123,5 +124,3 @@ const CloseRelativeDialog: FC = () => {
     </AppDialog>
   );
 };
-
-export default CloseRelativeDialog;

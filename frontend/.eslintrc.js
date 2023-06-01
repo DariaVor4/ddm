@@ -11,6 +11,7 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.js',
     'codegen.ts',
+    'codegen-extend.js',
     'codegen-schema-loader.ts',
   ],
   extends: [
@@ -35,6 +36,21 @@ module.exports = {
     'react/jsx-key': 'error',
     'import/no-absolute-path': 'off',
     'jsx-quotes': ['error', 'prefer-single'],
+    'react/jsx-sort-props': ['warn', {
+      callbacksLast: true,
+      shorthandLast: true,
+      multiline: 'last',
+      ignoreCase: true,
+      noSortAlphabetically: false,
+      reservedFirst: true
+    }],
+    'react/jsx-max-props-per-line': ['warn', {
+      maximum: {
+        single: 3,
+        multi: 1
+      }
+    }],
+    'react/jsx-first-prop-new-line': ['warn', 'multiline'],
     // Отключение предупреждений о Unix или Windows окончаниях строк, т.к. их автоматически исправляет github
     // https://eslint.org/docs/latest/rules/linebreak-style
     'linebreak-style': 'off',
@@ -46,5 +62,11 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'no-void': 'off',
     'react/prop-types': 'off',
+    '@typescript-eslint/no-non-null-asserted-optional-chain': ['warn'],
+    // Deny default exports
+    'import/prefer-default-export': 'off',
+    'import/no-default-export': 'error',
+    'import/no-anonymous-default-export': 'error',
+    'no-restricted-exports': ['error', {"restrictDefaultExports": {"direct": true}}]
   },
 }

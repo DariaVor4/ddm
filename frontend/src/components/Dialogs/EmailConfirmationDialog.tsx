@@ -34,7 +34,7 @@ export const useEmailConfirmationDialog = create(combine(cloneDeep(initialState)
   setOnResetDialogFn: (resetDialog: () => void) => setState({ resetDialog }),
 })));
 
-const EmailConfirmationDialog: FC = () => {
+export const EmailConfirmationDialog: FC = () => {
   const dialog = useEmailConfirmationDialog();
   const [confirmCode, confirmMutation] = useEmailConfirmByCodeMutation({
     variables: { email: dialog.email, code: dialog.code },
@@ -105,5 +105,3 @@ const EmailConfirmationDialog: FC = () => {
     </Dialog>
   );
 };
-
-export default EmailConfirmationDialog;

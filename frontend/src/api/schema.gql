@@ -1,3 +1,5 @@
+directive @client on FIELD
+
 type ConfirmationEmailEntityCountAggregate {
   _all: Int!
   code: Int!
@@ -111,6 +113,12 @@ type EmployeeEntity {
   patronymic: String
   updatedAt: DateTime
   user: UserEntity!
+
+  """Инициалы"""
+  initials: String!
+
+  """Полное имя"""
+  fullName: String!
 }
 
 type EmployeeEntityCountAggregate {
@@ -268,6 +276,9 @@ type Mutation {
     """ID Студента"""
     studentId: UUID
   ): Boolean!
+
+  """Удаление студентов."""
+  studentsDelete(ids: [UUID!]!): [Int!]!
 
   """Перезапись сотрудника"""
   updateEmployee(input: EmployeeUpdateInput!): Boolean!
@@ -669,6 +680,12 @@ type StudentEntity {
 
   """Визовые анкеты"""
   visaRequests: [StudentVisaRequestEntity!]
+
+  """Инициалы"""
+  initials: String!
+
+  """Полное имя"""
+  fullName: String!
 }
 
 type StudentEntityAvgAggregate {
@@ -1226,6 +1243,21 @@ type UserEntity {
   """Если пользователь - студент"""
   student: StudentEntity
   updatedAt: DateTime
+
+  """
+  Инициалы. Использовать только если в запросе присутствует паспорт студента или поля сотрудника
+  """
+  initials: String!
+
+  """
+  Полное имя. Использовать только если в запросе присутствует паспорт студента или поля сотрудника
+  """
+  fullName: String!
+
+  """
+  Роль. Использовать только если в запросе присутствует student или employee.isAdmin
+  """
+  role: UserRoleEnum!
 }
 
 type UserEntityCount {

@@ -1,5 +1,5 @@
 import {
-  Args, Mutation, Query, Resolver,
+  Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { _throw, assert, isRoleAdminOrEmployee } from '@common';
@@ -7,6 +7,7 @@ import * as uuid from 'uuid';
 import { Prisma } from '@prisma/client';
 import { StudentEntity } from '@prisma-nestjs-graphql';
 import { UUID } from '@common/scalars';
+import { GraphQLUUID } from 'graphql-scalars';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { StudentService } from '../student.service';
 import { Roles } from '../../auth/decorators/roles.decorator';
@@ -85,5 +86,44 @@ export class StudentResolver {
       }
     }
     return this.studentService.updateStudent(input, select);
+  }
+
+  /**
+   * Удаление студентов.
+   */
+  @Mutation(() => [Int], {
+    description: 'Удаление студентов.',
+  })
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
+  async studentsDelete(
+    @Args('ids', { type: () => [GraphQLUUID] }) ids: string[],
+  ): Promise<number> {
+    return this.prisma.$transaction(async (transaction) => {
+      // Удаление визовых анкет
+      await transaction.studentVisaRequestEntity.deleteMany({
+        where: { studentId: { in: ids } },
+      });
+      // Удаление документов
+      await transaction.studentArrivalNoticeEntity.deleteMany({
+        where: { studentId: { in: ids } },
+      });
+      await transaction.studentMigrationCardEntity.deleteMany({
+        where: { studentId: { in: ids } },
+      });
+      await transaction.studentVisaEntity.deleteMany({
+        where: { studentId: { in: ids } },
+      });
+      await transaction.studentPassportEntity.deleteMany({
+        where: { studentId: { in: ids } },
+      });
+      // Удаление студентов и их аккаунтов
+      const { count } = await transaction.studentEntity.deleteMany({
+        where: { id: { in: ids } },
+      });
+      await transaction.userEntity.deleteMany({
+        where: { id: { in: ids } },
+      });
+      return count;
+    });
   }
 }

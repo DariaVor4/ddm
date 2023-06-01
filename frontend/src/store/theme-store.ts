@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { LocalStorageKeys } from '../api/local-storage-keys';
 
-const useMainStore = create(combine({
+export const useMainStore = create(combine({
   isDarkTheme: localStorage.getItem(LocalStorageKeys.ThemeKey) === 'true' ?? false,
 }, setState => ({
   toggleTheme: () => setState(prev => {
@@ -10,5 +10,3 @@ const useMainStore = create(combine({
     return ({ isDarkTheme: !prev.isDarkTheme });
   }),
 })));
-
-export default useMainStore;

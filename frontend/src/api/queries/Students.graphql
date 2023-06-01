@@ -1,0 +1,66 @@
+query Students {
+    students {
+        initials @client
+        fullName @client
+        id
+        phone
+        curator
+        faculty
+        course
+        group
+        createdAt
+        updatedAt
+        user {
+            id
+            email
+            lastActivity
+            createdAt
+            updatedAt
+        }
+        arrivalNotice {
+            id
+            createdAt
+            updatedAt
+        }
+        migrationCard {
+            id
+            createdAt
+            updatedAt
+        }
+        visa {
+            id
+            createdAt
+            updatedAt
+        }
+        passport {
+            id
+            lastName
+            firstName
+            patronymic
+            birthDate
+            birthPlace
+            gender
+            citizenship
+            createdAt
+            updatedAt
+        }
+        closeRelatives {
+            id
+            createdAt
+            updatedAt
+        }
+        visaRequests {
+            id
+            createdAt
+            updatedAt
+        }
+        _count {
+            closeRelatives
+            visaRequests
+        }
+    }
+}
+
+mutation StudentsDelete($ids: [UUID!]!) {
+    deletedCount: studentsDelete(ids: $ids)
+}

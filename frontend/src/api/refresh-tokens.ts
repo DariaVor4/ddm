@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { GTokenResponse } from './generated.ts';
 import { LocalStorageKeys } from './local-storage-keys.ts';
 
@@ -6,7 +7,7 @@ const { origin } = new URL(import.meta.env.VITE_API_ENDPOINT);
 /**
  * Обновление пары токенов через RestAPI запрос.
  */
-async function refreshTokens(): Promise<GTokenResponse> {
+export async function refreshTokens(): Promise<GTokenResponse> {
   const token = localStorage.getItem(LocalStorageKeys.AccessTokenKey);
   // if (!token) {
   //   throw new Error('Вы не были авторизованы');
@@ -20,11 +21,10 @@ async function refreshTokens(): Promise<GTokenResponse> {
     if (res.ok) {
       return {
         accessToken: response.accessToken,
-        accessTokenExpires: new Date(response.accessTokenExpires),
+        accessTokenExpires: dayjs(response.accessTokenExpires),
       };
     }
+    console.log(res);
     throw new Error('Ошибка в ответе сервера на обновление токена доступа');
   });
 }
-
-export default refreshTokens;

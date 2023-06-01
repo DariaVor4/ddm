@@ -3,8 +3,8 @@ import {
   Button, FormControl, FormControlLabel, FormHelperText, FormLabel, Paper, Radio, RadioGroup, Stack, Typography,
 } from '@mui/material';
 import * as yup from 'yup';
-import { keys } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { compact, keys } from 'lodash';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormikProvider, useFormik } from 'formik';
 import ms from 'ms';
 import dayjs from 'dayjs';
@@ -13,12 +13,12 @@ import {
   GGenderEnum,
   GStudentPassportUpsertInput,
   InputMaybe,
-  refetchStudentPassportQuery,
+  refetchStudentPassportQuery, refetchStudentsQuery,
   refetchUserCurrentQuery,
   useStudentPassportQuery,
   useStudentPassportUpsertMutation,
 } from '../../../api/generated.ts';
-import FormikTextField from '../../../components/forms/FormikTextField.tsx';
+import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import { TMuiColor } from '../../../styles/mui/theme.ts';
 
 type IFormValue = Omit<GStudentPassportUpsertInput, 'birthDate' | 'issueDate' | 'expirationDate'> & {
@@ -31,6 +31,10 @@ type StudentPassportPageParams = {
   studentId?: string;
 };
 
+// TODO: валидация должна быть не только для РФ паспортов
+// Серия паспорта не обязательна
+// Кол-во цифр в номере может быть разным
+
 const formSchema = yup.object({
   lastName: yup.string().trim().required('Обязательное поле'),
   firstName: yup.string().trim().required('Обязательное поле'),
@@ -41,13 +45,10 @@ const formSchema = yup.object({
     .max(new Date(Date.now() - ms('16y')), 'Слишком поздняя дата')
     .required('Обязательное поле'),
   birthPlace: yup.string().trim().required('Обязательное поле'),
-  series: yup.string().trim()
-    .min(4, 'Слишком маленькая серия паспорта')
-    .max(4, 'Слишком большая серия паспорта')
-    .required('Обязательное поле'),
+  series: yup.string().trim(),
   number: yup.string().trim()
-    .min(6, 'Слишком маленький номер паспорта')
-    .max(6, 'Слишком большой номер паспорта')
+    .min(5, 'Слишком маленький номер паспорта')
+    .max(9, 'Слишком большой номер паспорта')
     .required('Обязательное поле'),
   issueDate: yup.date().required('Обязательное поле'),
   issuedBy: yup.string().trim().required('Обязательное поле'),
@@ -55,13 +56,20 @@ const formSchema = yup.object({
   citizenship: yup.string().trim().required('Обязательное поле'),
 });
 
-const StudentPassportPage: FC = () => {
+export const StudentPassportPage: FC = () => {
   const { studentId } = useParams<StudentPassportPageParams>();
-  const [savePassport] = useStudentPassportUpsertMutation({
-    refetchQueries: [
+  const navigate = useNavigate();
+  const [saveDocument] = useStudentPassportUpsertMutation({
+    refetchQueries: compact([
       refetchStudentPassportQuery({ studentId }),
       refetchUserCurrentQuery(),
-    ],
+      studentId && refetchStudentsQuery(),
+    ]),
+    onCompleted: () => {
+      if (studentId) {
+        navigate(-1);
+      }
+    },
   });
   const { data: originalData } = useStudentPassportQuery({ variables: { studentId }, fetchPolicy: 'network-only' });
   const formik = useFormik<IFormValue>({
@@ -81,7 +89,7 @@ const StudentPassportPage: FC = () => {
       gender: originalData?.studentPassport?.gender || null,
     },
     validationSchema: formSchema,
-    onSubmit: data => toast.promise(savePassport({
+    onSubmit: data => toast.promise(saveDocument({
       variables: {
         data: {
           ...data,
@@ -129,10 +137,11 @@ const StudentPassportPage: FC = () => {
           <FormikTextField name='number' shrink placeholder='456789 (6 цифр)' label='Номер паспорта' />
           <FormikTextField name='issueDate' label='Дата выдачи' type='date' />
           <FormikTextField name='issuedBy' label='Кем выдан' />
+          {/* TODO: сделать выпадающим списком */}
           <FormikTextField name='citizenship' label='Гражданство' />
           <FormikTextField name='expirationDate' label='Дата истечения' type='date' />
           <Stack direction='row' justifyContent='flex-end' gap={2}>
-            <Button variant='text' color='warning' onClick={() => formik.resetForm()}>Сброс</Button>
+            <Button disabled={!formik.dirty} variant='text' color='warning' onClick={() => formik.resetForm()}>Сброс</Button>
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>
@@ -140,5 +149,3 @@ const StudentPassportPage: FC = () => {
     </>
   );
 };
-
-export default StudentPassportPage;

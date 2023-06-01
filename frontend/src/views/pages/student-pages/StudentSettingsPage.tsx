@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Typography } from '@mui/material';
 
-const StudentSettingsPage: FC = () => {
+export const StudentSettingsPage: FC = () => {
   console.log('StudentSettingsPage');
 
   return (
@@ -10,5 +10,3 @@ const StudentSettingsPage: FC = () => {
     </>
   );
 };
-
-export default StudentSettingsPage;

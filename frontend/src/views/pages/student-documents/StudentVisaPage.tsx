@@ -4,16 +4,16 @@ import { FormikProvider, useFormik } from 'formik';
 import {
   Button, Paper, Stack, Typography,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import FormikTextField from '../../../components/forms/FormikTextField.tsx';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
+import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import {
   GStudentVisaUpsertInput,
   InputMaybe,
   refetchStudentVisaQuery, useStudentVisaQuery,
   useStudentVisaUpsertMutation,
 } from '../../../api/generated.ts';
-import {toast} from 'react-toastify';
-import dayjs from 'dayjs';
 
 type IFormValue = Omit<GStudentVisaUpsertInput, 'issueDate' | 'expirationDate'> & {
   issueDate?: InputMaybe<string>;
@@ -33,11 +33,17 @@ const formSchema = yup.object({
   invitationNumber: yup.string().required('Обязательное поле'),
 });
 
-const StudentVisaPage: FC = () => {
+export const StudentVisaPage: FC = () => {
   const { studentId } = useParams<StudentVisaPageParams>();
+  const navigate = useNavigate();
 
   const [saveDocument] = useStudentVisaUpsertMutation({
     refetchQueries: [refetchStudentVisaQuery({ studentId })],
+    onCompleted: () => {
+      if (studentId) {
+        navigate(-1);
+      }
+    },
   });
 
   const { data: originalData } = useStudentVisaQuery({
@@ -64,8 +70,8 @@ const StudentVisaPage: FC = () => {
           expirationDate: data.expirationDate ? dayjs(data.expirationDate) : undefined,
         },
         studentId,
-    },
-    }),{
+      },
+    }), {
       pending: 'Сохранение данных...',
       success: 'Данные сохранены',
       error: { render: ({ data: err }) => `Ошибка сохранения данных: ${err}` },
@@ -92,5 +98,3 @@ const StudentVisaPage: FC = () => {
     </>
   );
 };
-
-export default StudentVisaPage;

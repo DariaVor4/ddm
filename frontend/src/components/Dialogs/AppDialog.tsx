@@ -10,7 +10,7 @@ type AppDialogProps = DialogProps & {
   onClose?: () => void;
 };
 
-const AppDialog: FC<AppDialogProps> = ({
+export const AppDialog: FC<AppDialogProps> = ({
   title, children, onClose, ...dialogProps
 }) => (
   <Dialog TransitionComponent={Grow} transitionDuration={500} fullWidth maxWidth='xs' {...dialogProps} onClose={onClose}>
@@ -30,5 +30,3 @@ AppDialog.defaultProps = {
   title: 'Диалог',
   onClose: () => {},
 };
-
-export default AppDialog;

@@ -220,6 +220,9 @@ model StudentCloseRelativeEntity {
   citizenship                String?
   /// Постоянное место жительства
   addressContinuousResidence String?   @map("address_continuos_residence")
+  // TODO: Кем является
+  // TODO: Контактный номер телефона + почта
+  // TODO: при окончании визы можно уведомлять близких родственников
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
@@ -238,7 +241,7 @@ model StudentArrivalNoticeEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
 
-  /// Профессия
+  /// Профессия. Заполняется только сотрудниками.
   profession    String?
   /// Адрес регистрации
   address       String?   @map("registration_address")
@@ -259,6 +262,8 @@ model StudentArrivalNoticeEntity {
 
   @@map("student_arrival_notice")
 }
+
+// TODO: Для формирования документа на основе всех данных нужна будет дополнительная таблица "Остальное"... поля нужно будет делать с Гаисом
 
 /// Миграционная карта студента
 model StudentMigrationCardEntity {
@@ -305,6 +310,8 @@ model StudentVisaEntity {
   expirationDate   DateTime? @map("expiration_date")
   /// Номер приглашения
   invitationNumber String?   @map("invitation_number")
+  // TODO: "дата выдачи" и дата начала действия - две разные даты. Въезд с и по (дата истечения)
+  // TODO: Уведомление должно быть за 45 дней до истечения визы
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
@@ -342,6 +349,7 @@ model StudentPassportEntity {
   /// Пол
   gender         GenderEnum?
   /// Гражданство
+  // TODO: сделать выпадающим списком
   citizenship    String?
   /// Серия
   series         String?

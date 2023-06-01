@@ -6,7 +6,7 @@ import { isDate } from 'lodash';
  * Например, удобен для информирования об истечении времени для повторного использования:
  * <CircularProgress variant='determinate' value={progress} />
  */
-const useDateProgress = () => {
+export const useDateProgress = () => {
   const [progress, setProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
 
@@ -39,5 +39,3 @@ const useDateProgress = () => {
     killProgress,
   };
 };
-
-export default useDateProgress;
