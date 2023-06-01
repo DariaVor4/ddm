@@ -38,14 +38,32 @@ export class EmployeeService {
     if (input.email && !await this.userService.isEmailFree(input.email)) {
       throw new NotAcceptableException('Пользователь с таким email уже существует');
     }
-    if (employeeId && !await this.prisma.employeeEntity.count({ where: { id: employeeId } })) {
-      throw new NotAcceptableException('Сотрудник не найден');
-    } else if (!employeeId && (!userProperties.email || !userProperties.password)) {
+    if (employeeId) {
+      // Update
+      if (!await this.prisma.employeeEntity.count({ where: { id: employeeId } })) {
+        throw new NotAcceptableException('Сотрудник не найден');
+      }
+      return this.prisma.employeeEntity.update({
+        select,
+        where: { id: employeeId },
+        data: {
+          ...employeeProperties,
+          user: {
+            update: {
+              ...userProperties,
+              password: userProperties.password ? await this.authService.passwordHash(userProperties.password) : undefined,
+            },
+          },
+        },
+      });
+    }
+    // Create
+    if (!employeeId && (!userProperties.email || !userProperties.password)) {
       throw new NotAcceptableException('При создании сотрудника email и пароль обязательны');
     }
-    return this.prisma.employeeEntity.upsert({
-      where: { id: employeeId },
-      create: {
+    return this.prisma.employeeEntity.create({
+      select,
+      data: {
         ...employeeProperties,
         user: {
           create: {
@@ -55,16 +73,6 @@ export class EmployeeService {
           },
         },
       },
-      update: {
-        ...employeeProperties,
-        user: {
-          update: {
-            ...userProperties,
-            password: userProperties.password ? await this.authService.passwordHash(userProperties.password) : undefined,
-          },
-        },
-      },
-      select,
     });
   }
 

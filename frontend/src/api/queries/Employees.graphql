@@ -1,0 +1,39 @@
+query Employees {
+  employees {
+    id
+    lastName
+    firstName
+    patronymic
+    isAdmin
+    createdAt
+    updatedAt
+    user {
+      email
+      createdAt
+      updatedAt
+      lastActivity
+    }
+  }
+}
+
+mutation EmployeesDelete($employeeIds: [UUID!]!) {
+  employeesDelete(employeeIds: $employeeIds)
+}
+
+mutation EmployeeUpsert($input: EmployeeUpsertInput!, $employeeId: UUID) {
+  employeeUpsert(input: $input, employeeId: $employeeId) {
+    id
+    lastName
+    firstName
+    patronymic
+    isAdmin
+    createdAt
+    updatedAt
+    user {
+      email
+      createdAt
+      updatedAt
+      lastActivity
+    }
+  }
+}

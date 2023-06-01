@@ -1,34 +1,47 @@
-import { FC, useState } from 'react';
-import {
-  Button, IconButton, InputAdornment, Paper, Stack, Tooltip, Typography,
-} from '@mui/material';
-import { FormikProvider, useFormik } from 'formik';
+import React, { useState } from 'react';
 import * as yup from 'yup';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import { useNavigate } from 'react-router-dom';
+import { FormikProvider, useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import {
-  GEmailAvailabilityVerdictEnum, GStudentCreateInput, useEmailAvailabilityLazyQuery, useRegistrationMutation,
-} from '../../api/generated';
-import { loginDialogOpenFn } from '../../components/Dialogs/LoginDialog';
-import { EmailConfirmationDialog, useEmailConfirmationDialog } from '../../components/Dialogs/EmailConfirmationDialog';
-import { AppRoutesEnum } from '../app-routes.enum.ts';
-import { strictPick } from '../../core/strict-lodash/strict-pick.ts';
-import { strictOmit } from '../../core/strict-lodash/strict-omit.ts';
-import { FormikTextField } from '../../components/forms/FormikTextField.tsx';
-import { checkPassword } from '../../core/passwordChecker.ts';
+  Button,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import {
+  GEmailAvailabilityVerdictEnum,
+  GEmployeeUpsertInput,
+  useEmailAvailabilityLazyQuery,
+  useEmployeeUpsertMutation,
+} from '../../../api/generated.ts';
+import { checkPassword } from '../../../core/passwordChecker.ts';
+import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
+import {
+  EmailConfirmationDialog,
+  useEmailConfirmationDialog,
+} from '../../../components/Dialogs/EmailConfirmationDialog.tsx';
+import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
+import { strictOmit } from '../../../core/strict-lodash/strict-omit.ts';
 
-interface RegisterFormValue extends GStudentCreateInput {
+interface EmployeeCreationFormValue extends GEmployeeUpsertInput {
   passwordRepeat: string;
 }
 
-export const RegistrationPage: FC = () => {
-  const navigate = useNavigate();
+export const EmployeeCreatePage: React.FC = () => {
+  const [checkEmailAvailability] = useEmailAvailabilityLazyQuery();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const dialog = useEmailConfirmationDialog(state => strictPick(state, ['isEmailConfirmed', 'reset', 'open']));
-  const [checkEmailAvailability] = useEmailAvailabilityLazyQuery();
-  const [register] = useRegistrationMutation();
-  const formik = useFormik<RegisterFormValue>({
+  const [saveEmployee] = useEmployeeUpsertMutation();
+
+  const formik = useFormik<EmployeeCreationFormValue>({
+    enableReinitialize: true,
     initialValues: {
       lastName: '',
       firstName: '',
@@ -36,22 +49,16 @@ export const RegistrationPage: FC = () => {
       email: '',
       password: '',
       passwordRepeat: '',
-      faculty: null,
-      course: null,
-      group: null,
-      curator: null,
-      phone: null,
+      isAdmin: false,
     },
-    onSubmit: async values => {
-      const { data } = await register({ variables: { input: strictOmit(values, ['passwordRepeat']) } });
-      if (data?.registration) {
-        navigate(AppRoutesEnum.HomeRoute);
-        loginDialogOpenFn();
-        dialog.reset();
-      } else {
-        alert('Произошла ошибка');
-      }
-    },
+    onSubmit: async data => toast.promise(saveEmployee({
+      variables: {
+        input: strictOmit(data, ['passwordRepeat']),
+      },
+    }), {
+      pending: 'Сохранение...',
+      success: 'Сохранено',
+    }),
     validationSchema: yup.object({
       lastName: yup.string().required('Фамилия обязательна'),
       firstName: yup.string().required('Имя обязательно'),
@@ -71,43 +78,22 @@ export const RegistrationPage: FC = () => {
       }),
       password: yup.string().min(8, 'Пароль должен быть длиннее 8 символов').required('Пароль обязателен').test('password-estimator', async (value, ctx) => checkPassword(value, ctx)),
       passwordRepeat: yup.string().oneOf([yup.ref('password')], 'Пароли должны совпадать').required('Повтор пароля обязателен'),
-      faculty: yup.string().required('Факультет обязателен'),
-      course: yup.number().required('Курс обязателен').typeError('Курс должен быть числом'),
-      group: yup.string().required('Группа обязательна'),
-      curator: yup.string().required('Куратор обязателен'),
+      isAdmin: yup.boolean(),
     }),
   });
 
   return (
     <FormikProvider value={formik}>
       <Paper className='px-10 py-4 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
-        <Typography className='text-center'>Регистрация студента</Typography>
+        <Typography className='text-center'>Регистрация работника</Typography>
         <FormikTextField label='Фамилия' name='lastName' required />
         <FormikTextField label='Имя' name='firstName' required />
         <FormikTextField label='Отчество' name='patronymic' />
         <FormikTextField
-          error={formik.touched.email && (!!formik.errors.email || !dialog.isEmailConfirmed)}
-          helperText={formik.touched.email && (formik.errors.email || (!dialog.isEmailConfirmed && 'Подтвердите почту'))}
+          error={formik.touched.email && !!formik.errors.email}
           label='Почта'
           name='email'
           type='email'
-          InputProps={{
-            endAdornment: formik.touched.email && !formik.errors.email && formik.values.email && (
-              <InputAdornment position='end'>
-                {dialog.isEmailConfirmed
-                  ? <Tooltip title='Почта подтверждена ✅'><VerifiedIcon color='success' /></Tooltip>
-                  : (
-                    <Button
-                      size='small'
-                      variant='outlined'
-                      onClick={() => dialog.open(formik.values.email)}
-                    >
-                      Подтвердить
-                    </Button>
-                  )}
-              </InputAdornment>
-            ),
-          }}
           required
           onChange={e => {
             dialog.reset();
@@ -146,26 +132,24 @@ export const RegistrationPage: FC = () => {
           onFocus={() => setIsShowPassword(false)}
           onPaste={e => e.preventDefault()}
         />
-        <FormikTextField label='Факультет' name='faculty' required />
-        <FormikTextField
-          label='Курс'
-          name='course'
-          type='number'
-          required
-        />
-        <FormikTextField label='Группа' name='group' required />
-        <FormikTextField label='Куратор' name='curator' required />
+        <FormControl className='!flex-row items-center gap-3'>
+          <FormLabel>Администратор:</FormLabel>
+          <Checkbox
+            {/*todo я не придумал....*/}
+            checked={formik.values?.isAdmin}
+            name='isAdmin'
+            value='Администратор'
+            onChange={formik.handleChange}
+          />
+        </FormControl>
         <Stack direction='row' gap={2} justifyContent='flex-end'>
-          <Tooltip title='Уже зарегистрированы?'>
-            <Button variant='text' onClick={loginDialogOpenFn}>Вход</Button>
-          </Tooltip>
           <Tooltip title='Сначала необходимо заполнить форму и подтвердить почту'>
             <span>
               <Button
                 disabled={formik.isSubmitting || !formik.dirty}
                 onClick={formik.submitForm}
               >
-                Зарегистрироваться
+                Зарегистрировать
               </Button>
             </span>
           </Tooltip>

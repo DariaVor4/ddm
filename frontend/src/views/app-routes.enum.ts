@@ -20,6 +20,7 @@ export const AppRoutesEnum = {
   StudentCloseRelativesRoute: (id:string) => `/students/${id}/close-relatives`,
 
   EmployeesRoute: '/employees',
+  EmployeeCreate: '/employees/create',
   EmployeeRoute: (id:string) => `/employees/${id}`,
 
   NotificationsRoute: '/notifications',

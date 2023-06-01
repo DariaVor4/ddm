@@ -170,6 +170,15 @@ input EmployeeUpdateInput {
   patronymic: String
 }
 
+input EmployeeUpsertInput {
+  email: EmailAddress
+  firstName: String
+  isAdmin: Boolean
+  lastName: String
+  password: String
+  patronymic: String
+}
+
 """Пол"""
 enum GenderEnum {
   Female
@@ -180,13 +189,16 @@ type Mutation {
   """Создание сотрудника"""
   createEmployee(input: EmployeeCreateInput!): EmployeeEntity!
 
-  """Удаление сотрудника"""
-  deleteEmployee(employeeId: UUID!): Boolean!
-
   """
   Подтверждение электронной почты кодом. Возвращает true, если почта успешно подтверждена.
   """
   emailConfirmByCode(code: String!, email: EmailAddress!): Boolean!
+
+  """Перезапись сотрудника"""
+  employeeUpsert(employeeId: UUID, input: EmployeeUpsertInput!): EmployeeEntity!
+
+  """Удаление сотрудников"""
+  employeesDelete(employeeIds: [UUID!]!): Int!
 
   """Вход по почте и паролю, возвращает токен доступа и время его истечения"""
   loginByPassword(email: EmailAddress!, password: String!): TokenResponse!
@@ -440,7 +452,7 @@ type StudentArrivalNoticeEntity {
   """Приглашающая сторона"""
   invitingSide: String
 
-  """Профессия"""
+  """Профессия. Заполняется только сотрудниками."""
   profession: String
 
   """Принимающая сторона"""
@@ -516,7 +528,7 @@ type StudentArrivalNoticeWithoutStudentResult {
   """Приглашающая сторона"""
   invitingSide: String
 
-  """Профессия"""
+  """Профессия. Заполняется только сотрудниками."""
   profession: String
 
   """Принимающая сторона"""
