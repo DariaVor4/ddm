@@ -9,3 +9,7 @@ export default function _throw(error: Error | ((err: Error) => Error)) {
     throw error instanceof Error ? error : error(originalError);
   };
 }
+
+export function elseThrow(error: Error | string): never {
+  throw error instanceof Error ? error : new Error(error);
+}

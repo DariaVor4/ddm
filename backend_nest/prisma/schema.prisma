@@ -75,12 +75,16 @@ model UserEntity {
   /// @HideField({ input: true, output: true })
   tokenHash     String?                    @map("token_hash")
   /// Последняя активность
+  /// @HideField({ input: true, output: false })
   lastActivity  DateTime?                  @map("last_activity")
   /// Если пользователь - сотрудник
+  /// @HideField({ input: true, output: false })
   employee      EmployeeEntity?
   /// Если пользователь - студент
+  /// @HideField({ input: true, output: false })
   student       StudentEntity?
   /// Уведомления пользователя
+  /// @HideField({ input: true, output: false })
   notifications NotificationToUserEntity[]
 
   // Служебные поля
@@ -94,6 +98,7 @@ model UserEntity {
 
 /// Сотрудник
 model EmployeeEntity {
+  /// @HideField({ input: true, output: false })
   user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
   id   String     @id() @unique @map("id_user") @db.Uuid
@@ -142,6 +147,7 @@ model NotificationToUserEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   notificationId String             @map("id_notification") @db.Uuid
 
+  /// @HideField({ input: true, output: false })
   user   UserEntity @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
   userId String     @map("id_user") @db.Uuid
@@ -161,17 +167,22 @@ model NotificationToUserEntity {
 
 /// Студент
 model StudentEntity {
+  /// @HideField({ input: true, output: false })
   user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
   id   String     @id() @unique @map("id_user") @db.Uuid
 
   /// Уведомление о прибытии
+  /// @HideField({ input: true, output: false })
   arrivalNotice StudentArrivalNoticeEntity?
   /// Миграционная карта
+  /// @HideField({ input: true, output: false })
   migrationCard StudentMigrationCardEntity?
   /// Виза
+  /// @HideField({ input: true, output: false })
   visa          StudentVisaEntity?
   /// Паспорт
+  /// @HideField({ input: true, output: false })
   passport      StudentPassportEntity?
 
   /// Телефон
@@ -187,8 +198,10 @@ model StudentEntity {
   group   String?
 
   /// Близкие родственники
+  /// @HideField({ input: true, output: false })
   closeRelatives StudentCloseRelativeEntity[]
   /// Визовые анкеты
+  /// @HideField({ input: true, output: false })
   visaRequests   StudentVisaRequestEntity[]
 
   // Служебные поля
@@ -204,6 +217,7 @@ model StudentEntity {
 model StudentCloseRelativeEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @map("id_student") @db.Uuid
@@ -237,6 +251,7 @@ model StudentCloseRelativeEntity {
 model StudentArrivalNoticeEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
@@ -269,6 +284,7 @@ model StudentArrivalNoticeEntity {
 model StudentMigrationCardEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
@@ -296,6 +312,7 @@ model StudentVisaEntity {
   /// Идентификатор визы
   /// @FieldType('String')
   id        String        @id()
+  /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
@@ -332,6 +349,7 @@ enum GenderEnum {
 model StudentPassportEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @map("id_student") @db.Uuid
@@ -421,6 +439,7 @@ enum VisaRequestStatusEnum {
 model StudentVisaRequestEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id              String                @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  /// @HideField({ input: true, output: false })
   student         StudentEntity         @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
   studentId       String                @db.Uuid

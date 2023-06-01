@@ -14,6 +14,7 @@ import EmployeeCreateInput from './inputs/employee-create.input';
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
 import EmployeeUpdateInput from './inputs/employee-update.input';
 import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
+import { EmployeeUpsertInput } from './inputs/employee-upsert.input';
 
 /**
  * Контроллер для работы со сотрудниками.
@@ -70,6 +71,38 @@ export class EmployeeResolver {
   ): Promise<EmployeeEntity> {
     return this.employeeService.createEmployee(input)
       .catch(_throw((e) => new InternalServerErrorException(`Ошибка при создании сотрудника: ${e.message}`)));
+  }
+
+  /**
+   * Перезапись сотрудника.
+   * Если передан идентификатор сотрудника, то происходит обновление существующего сотрудника, иначе создание нового.
+   * @param input Данные для перезаписи.
+   * @param ctx Контекст текущей сессии пользователя.
+   * @param select Запрошенные поля через GraphQL.
+   * @param employeeId Идентификатор сотрудника.
+   * @return Созданный или обновленный сотрудник.
+   * @throws {ForbiddenException} Сотрудник не может обновлять профиль другого сотрудника.
+   */
+  @Mutation(() => EmployeeEntity, {
+    description: 'Перезапись сотрудника',
+  })
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
+  async employeeUpsert(
+    @Args('input') input: EmployeeUpsertInput,
+    @CurrentSession() ctx: ISessionContext,
+    @PrismaSelector() select: Prisma.EmployeeEntitySelect,
+    @Args('employeeId', { type: UUID, nullable: true }) employeeId?: string,
+  ) {
+    if (!isRoleAdmin(ctx.roles)) {
+      if (ctx.userId !== employeeId) {
+        throw new ForbiddenException('Вы не можете обновлять профиль другого сотрудника');
+      }
+      if (ctx.userEmail !== input.email) {
+        // TODO: unimplemented
+        throw new ForbiddenException('Unimplemented: Вы не можете обновлять email без его подтверждения');
+      }
+    }
+    return this.employeeService.employeeUpsert(input, employeeId, select);
   }
 
   /**

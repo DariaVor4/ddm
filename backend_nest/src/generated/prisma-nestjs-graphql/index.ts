@@ -1563,7 +1563,7 @@ export class EmployeeEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutEmployeeInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutEmployeeInput>;
 }
 
@@ -1762,7 +1762,7 @@ export class EmployeeEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => UserEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
 }
 
@@ -1989,7 +1989,7 @@ export class EmployeeEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutEmployeeNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutEmployeeNestedInput>;
 }
 
@@ -2031,7 +2031,7 @@ export class EmployeeEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => UserEntityRelationFilter, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityRelationFilter>;
 }
 
@@ -3130,7 +3130,7 @@ export class NotificationToUserEntityCreateWithoutNotificationInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutNotificationsInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutNotificationsInput>;
 }
 
@@ -3156,7 +3156,7 @@ export class NotificationToUserEntityCreateInput {
     updatedAt?: Date | string;
     @Field(() => NotificationEntityCreateNestedOneWithoutUsersInput, {nullable:false})
     notification!: InstanceType<typeof NotificationEntityCreateNestedOneWithoutUsersInput>;
-    @Field(() => UserEntityCreateNestedOneWithoutNotificationsInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutNotificationsInput>;
 }
 
@@ -3337,7 +3337,7 @@ export class NotificationToUserEntityOrderByWithRelationInput {
     updatedAt?: keyof typeof SortOrder;
     @Field(() => NotificationEntityOrderByWithRelationInput, {nullable:true})
     notification?: InstanceType<typeof NotificationEntityOrderByWithRelationInput>;
-    @Field(() => UserEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
 }
 
@@ -3733,7 +3733,7 @@ export class NotificationToUserEntityUpdateWithoutNotificationInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutNotificationsNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutNotificationsNestedInput>;
 }
 
@@ -3759,7 +3759,7 @@ export class NotificationToUserEntityUpdateInput {
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NotificationEntityUpdateOneRequiredWithoutUsersNestedInput, {nullable:true})
     notification?: InstanceType<typeof NotificationEntityUpdateOneRequiredWithoutUsersNestedInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutNotificationsNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutNotificationsNestedInput>;
 }
 
@@ -3823,7 +3823,7 @@ export class NotificationToUserEntityWhereInput {
     updatedAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => NotificationEntityRelationFilter, {nullable:true})
     notification?: InstanceType<typeof NotificationEntityRelationFilter>;
-    @Field(() => UserEntityRelationFilter, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityRelationFilter>;
 }
 
@@ -4619,7 +4619,7 @@ export class StudentArrivalNoticeEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityCreateNestedOneWithoutArrivalNoticeInput, {nullable:false})
+    @HideField()
     student!: InstanceType<typeof StudentEntityCreateNestedOneWithoutArrivalNoticeInput>;
 }
 
@@ -4872,7 +4872,7 @@ export class StudentArrivalNoticeEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => StudentEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
 
@@ -5153,7 +5153,7 @@ export class StudentArrivalNoticeEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUpdateOneRequiredWithoutArrivalNoticeNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutArrivalNoticeNestedInput>;
 }
 
@@ -5203,7 +5203,7 @@ export class StudentArrivalNoticeEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StudentEntityRelationFilter, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityRelationFilter>;
 }
 
@@ -5217,9 +5217,9 @@ export class StudentArrivalNoticeEntity {
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     studentId!: string;
     /**
-     * Профессия
+     * Профессия. Заполняется только сотрудниками.
      */
-    @Field(() => String, {nullable:true,description:'Профессия'})
+    @Field(() => String, {nullable:true,description:'Профессия. Заполняется только сотрудниками.'})
     profession!: string | null;
     /**
      * Адрес регистрации
@@ -5612,7 +5612,7 @@ export class StudentCloseRelativeEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityCreateNestedOneWithoutCloseRelativesInput, {nullable:false})
+    @HideField()
     student!: InstanceType<typeof StudentEntityCreateNestedOneWithoutCloseRelativesInput>;
 }
 
@@ -5881,7 +5881,7 @@ export class StudentCloseRelativeEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => StudentEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
 
@@ -6257,7 +6257,7 @@ export class StudentCloseRelativeEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUpdateOneRequiredWithoutCloseRelativesNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutCloseRelativesNestedInput>;
 }
 
@@ -6308,7 +6308,7 @@ export class StudentCloseRelativeEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StudentEntityRelationFilter, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityRelationFilter>;
 }
 
@@ -6813,17 +6813,17 @@ export class StudentEntityCreateWithoutArrivalNoticeInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutStudentInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -6843,17 +6843,17 @@ export class StudentEntityCreateWithoutCloseRelativesInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutStudentInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -6873,17 +6873,17 @@ export class StudentEntityCreateWithoutMigrationCardInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutStudentInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -6903,17 +6903,17 @@ export class StudentEntityCreateWithoutPassportInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutStudentInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -6933,17 +6933,17 @@ export class StudentEntityCreateWithoutUserInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -6963,17 +6963,17 @@ export class StudentEntityCreateWithoutVisaRequestsInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutStudentInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -6993,17 +6993,17 @@ export class StudentEntityCreateWithoutVisaInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutStudentInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7023,19 +7023,19 @@ export class StudentEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => UserEntityCreateNestedOneWithoutStudentInput, {nullable:false})
+    @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7264,19 +7264,19 @@ export class StudentEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => UserEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
-    @Field(() => StudentArrivalNoticeEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityOrderByWithRelationInput>;
-    @Field(() => StudentMigrationCardEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityOrderByWithRelationInput>;
-    @Field(() => StudentVisaEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityOrderByWithRelationInput>;
-    @Field(() => StudentPassportEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityOrderByWithRelationInput>;
-    @Field(() => StudentCloseRelativeEntityOrderByRelationAggregateInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityOrderByRelationAggregateInput>;
-    @Field(() => StudentVisaRequestEntityOrderByRelationAggregateInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityOrderByRelationAggregateInput>;
 }
 
@@ -7363,15 +7363,15 @@ export class StudentEntityUncheckedCreateWithoutArrivalNoticeInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7393,15 +7393,15 @@ export class StudentEntityUncheckedCreateWithoutCloseRelativesInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7423,15 +7423,15 @@ export class StudentEntityUncheckedCreateWithoutMigrationCardInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7453,15 +7453,15 @@ export class StudentEntityUncheckedCreateWithoutPassportInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7481,17 +7481,17 @@ export class StudentEntityUncheckedCreateWithoutUserInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7513,15 +7513,15 @@ export class StudentEntityUncheckedCreateWithoutVisaRequestsInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7543,15 +7543,15 @@ export class StudentEntityUncheckedCreateWithoutVisaInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7573,17 +7573,17 @@ export class StudentEntityUncheckedCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedCreateNestedOneWithoutStudentInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedCreateNestedManyWithoutStudentInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedCreateNestedManyWithoutStudentInput>;
 }
 
@@ -7648,15 +7648,15 @@ export class StudentEntityUncheckedUpdateWithoutArrivalNoticeInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -7678,15 +7678,15 @@ export class StudentEntityUncheckedUpdateWithoutCloseRelativesInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -7708,15 +7708,15 @@ export class StudentEntityUncheckedUpdateWithoutMigrationCardInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -7738,15 +7738,15 @@ export class StudentEntityUncheckedUpdateWithoutPassportInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -7766,17 +7766,17 @@ export class StudentEntityUncheckedUpdateWithoutUserInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -7798,15 +7798,15 @@ export class StudentEntityUncheckedUpdateWithoutVisaRequestsInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -7828,15 +7828,15 @@ export class StudentEntityUncheckedUpdateWithoutVisaInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -7858,17 +7858,17 @@ export class StudentEntityUncheckedUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8043,17 +8043,17 @@ export class StudentEntityUpdateWithoutArrivalNoticeInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8073,17 +8073,17 @@ export class StudentEntityUpdateWithoutCloseRelativesInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
-    @Field(() => StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8103,17 +8103,17 @@ export class StudentEntityUpdateWithoutMigrationCardInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
-    @Field(() => StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8133,17 +8133,17 @@ export class StudentEntityUpdateWithoutPassportInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
-    @Field(() => StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8163,17 +8163,17 @@ export class StudentEntityUpdateWithoutUserInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8193,17 +8193,17 @@ export class StudentEntityUpdateWithoutVisaRequestsInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
-    @Field(() => StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8223,17 +8223,17 @@ export class StudentEntityUpdateWithoutVisaInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
-    @Field(() => StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8253,19 +8253,19 @@ export class StudentEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => UserEntityUpdateOneRequiredWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
-    @Field(() => StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentVisaEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentPassportEntityUpdateOneWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityUpdateOneWithoutStudentNestedInput>;
-    @Field(() => StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityUpdateManyWithoutStudentNestedInput>;
-    @Field(() => StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityUpdateManyWithoutStudentNestedInput>;
 }
 
@@ -8369,19 +8369,19 @@ export class StudentEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => UserEntityRelationFilter, {nullable:true})
+    @HideField()
     user?: InstanceType<typeof UserEntityRelationFilter>;
-    @Field(() => StudentArrivalNoticeEntityRelationFilter, {nullable:true})
+    @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityRelationFilter>;
-    @Field(() => StudentMigrationCardEntityRelationFilter, {nullable:true})
+    @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityRelationFilter>;
-    @Field(() => StudentVisaEntityRelationFilter, {nullable:true})
+    @HideField()
     visa?: InstanceType<typeof StudentVisaEntityRelationFilter>;
-    @Field(() => StudentPassportEntityRelationFilter, {nullable:true})
+    @HideField()
     passport?: InstanceType<typeof StudentPassportEntityRelationFilter>;
-    @Field(() => StudentCloseRelativeEntityListRelationFilter, {nullable:true})
+    @HideField()
     closeRelatives?: InstanceType<typeof StudentCloseRelativeEntityListRelationFilter>;
-    @Field(() => StudentVisaRequestEntityListRelationFilter, {nullable:true})
+    @HideField()
     visaRequests?: InstanceType<typeof StudentVisaRequestEntityListRelationFilter>;
 }
 
@@ -8757,7 +8757,7 @@ export class StudentMigrationCardEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityCreateNestedOneWithoutMigrationCardInput, {nullable:false})
+    @HideField()
     student!: InstanceType<typeof StudentEntityCreateNestedOneWithoutMigrationCardInput>;
 }
 
@@ -8974,7 +8974,7 @@ export class StudentMigrationCardEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => StudentEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
 
@@ -9219,7 +9219,7 @@ export class StudentMigrationCardEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUpdateOneRequiredWithoutMigrationCardNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutMigrationCardNestedInput>;
 }
 
@@ -9265,7 +9265,7 @@ export class StudentMigrationCardEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StudentEntityRelationFilter, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityRelationFilter>;
 }
 
@@ -9702,7 +9702,7 @@ export class StudentPassportEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityCreateNestedOneWithoutPassportInput, {nullable:false})
+    @HideField()
     student!: InstanceType<typeof StudentEntityCreateNestedOneWithoutPassportInput>;
 }
 
@@ -10063,7 +10063,7 @@ export class StudentPassportEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => StudentEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
 
@@ -10452,7 +10452,7 @@ export class StudentPassportEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUpdateOneRequiredWithoutPassportNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutPassportNestedInput>;
 }
 
@@ -10514,7 +10514,7 @@ export class StudentPassportEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StudentEntityRelationFilter, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityRelationFilter>;
 }
 
@@ -10907,7 +10907,7 @@ export class StudentVisaEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityCreateNestedOneWithoutVisaInput, {nullable:false})
+    @HideField()
     student!: InstanceType<typeof StudentEntityCreateNestedOneWithoutVisaInput>;
 }
 
@@ -11142,7 +11142,7 @@ export class StudentVisaEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => StudentEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
 
@@ -11405,7 +11405,7 @@ export class StudentVisaEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUpdateOneRequiredWithoutVisaNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutVisaNestedInput>;
 }
 
@@ -11453,7 +11453,7 @@ export class StudentVisaEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StudentEntityRelationFilter, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityRelationFilter>;
 }
 
@@ -11944,7 +11944,7 @@ export class StudentVisaRequestEntityCreateInput {
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityCreateNestedOneWithoutVisaRequestsInput, {nullable:false})
+    @HideField()
     student!: InstanceType<typeof StudentEntityCreateNestedOneWithoutVisaRequestsInput>;
 }
 
@@ -12321,7 +12321,7 @@ export class StudentVisaRequestEntityOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => StudentEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
 
@@ -12829,7 +12829,7 @@ export class StudentVisaRequestEntityUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUpdateOneRequiredWithoutVisaRequestsNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutVisaRequestsNestedInput>;
 }
 
@@ -12892,7 +12892,7 @@ export class StudentVisaRequestEntityWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => StudentEntityRelationFilter, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityRelationFilter>;
 }
 
@@ -13175,7 +13175,7 @@ export class UserEntityCountAggregateInput {
     password?: true;
     @HideField()
     tokenHash?: true;
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     lastActivity?: true;
     @HideField()
     createdAt?: true;
@@ -13215,7 +13215,7 @@ export class UserEntityCountOrderByAggregateInput {
     password?: keyof typeof SortOrder;
     @HideField()
     tokenHash?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     lastActivity?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
@@ -13239,7 +13239,7 @@ export class UserEntityCreateManyInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
@@ -13326,15 +13326,15 @@ export class UserEntityCreateWithoutEmployeeInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityCreateNestedOneWithoutUserInput>;
-    @Field(() => NotificationToUserEntityCreateNestedManyWithoutUserInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutUserInput>;
 }
 
@@ -13348,15 +13348,15 @@ export class UserEntityCreateWithoutNotificationsInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => EmployeeEntityCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityCreateNestedOneWithoutUserInput>;
-    @Field(() => StudentEntityCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityCreateNestedOneWithoutUserInput>;
 }
 
@@ -13370,15 +13370,15 @@ export class UserEntityCreateWithoutStudentInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => EmployeeEntityCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityCreateNestedOneWithoutUserInput>;
-    @Field(() => NotificationToUserEntityCreateNestedManyWithoutUserInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutUserInput>;
 }
 
@@ -13392,17 +13392,17 @@ export class UserEntityCreateInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => EmployeeEntityCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityCreateNestedOneWithoutUserInput>;
-    @Field(() => StudentEntityCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityCreateNestedOneWithoutUserInput>;
-    @Field(() => NotificationToUserEntityCreateNestedManyWithoutUserInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutUserInput>;
 }
 
@@ -13463,7 +13463,7 @@ export class UserEntityMaxAggregateInput {
     password?: true;
     @HideField()
     tokenHash?: true;
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     lastActivity?: true;
     @HideField()
     createdAt?: true;
@@ -13499,7 +13499,7 @@ export class UserEntityMaxOrderByAggregateInput {
     password?: keyof typeof SortOrder;
     @HideField()
     tokenHash?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     lastActivity?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
@@ -13517,7 +13517,7 @@ export class UserEntityMinAggregateInput {
     password?: true;
     @HideField()
     tokenHash?: true;
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     lastActivity?: true;
     @HideField()
     createdAt?: true;
@@ -13553,7 +13553,7 @@ export class UserEntityMinOrderByAggregateInput {
     password?: keyof typeof SortOrder;
     @HideField()
     tokenHash?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     lastActivity?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
@@ -13571,7 +13571,7 @@ export class UserEntityOrderByWithAggregationInput {
     password?: keyof typeof SortOrder;
     @HideField()
     tokenHash?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     lastActivity?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
@@ -13595,17 +13595,17 @@ export class UserEntityOrderByWithRelationInput {
     password?: keyof typeof SortOrder;
     @HideField()
     tokenHash?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     lastActivity?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: keyof typeof SortOrder;
-    @Field(() => EmployeeEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityOrderByWithRelationInput>;
-    @Field(() => StudentEntityOrderByWithRelationInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
-    @Field(() => NotificationToUserEntityOrderByRelationAggregateInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityOrderByRelationAggregateInput>;
 }
 
@@ -13633,7 +13633,7 @@ export class UserEntityScalarWhereWithAggregatesInput {
     password?: InstanceType<typeof StringWithAggregatesFilter>;
     @HideField()
     tokenHash?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
@@ -13651,15 +13651,15 @@ export class UserEntityUncheckedCreateWithoutEmployeeInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => StudentEntityUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput>;
 }
 
@@ -13673,15 +13673,15 @@ export class UserEntityUncheckedCreateWithoutNotificationsInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => EmployeeEntityUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => StudentEntityUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedCreateNestedOneWithoutUserInput>;
 }
 
@@ -13695,15 +13695,15 @@ export class UserEntityUncheckedCreateWithoutStudentInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => EmployeeEntityUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput>;
 }
 
@@ -13717,17 +13717,17 @@ export class UserEntityUncheckedCreateInput {
     password!: string;
     @HideField()
     tokenHash?: string;
-    @Field(() => Date, {nullable:true})
+    @HideField()
     lastActivity?: Date | string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
-    @Field(() => EmployeeEntityUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => StudentEntityUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedCreateNestedOneWithoutUserInput>;
-    @Field(() => NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput>;
 }
 
@@ -13741,7 +13741,7 @@ export class UserEntityUncheckedUpdateManyInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
@@ -13759,15 +13759,15 @@ export class UserEntityUncheckedUpdateWithoutEmployeeInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
@@ -13781,15 +13781,15 @@ export class UserEntityUncheckedUpdateWithoutNotificationsInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => StudentEntityUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
 }
 
@@ -13803,15 +13803,15 @@ export class UserEntityUncheckedUpdateWithoutStudentInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
@@ -13825,17 +13825,17 @@ export class UserEntityUncheckedUpdateInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => StudentEntityUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
-    @Field(() => NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
@@ -13849,7 +13849,7 @@ export class UserEntityUpdateManyMutationInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
@@ -13924,15 +13924,15 @@ export class UserEntityUpdateWithoutEmployeeInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => StudentEntityUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
-    @Field(() => NotificationToUserEntityUpdateManyWithoutUserNestedInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutUserNestedInput>;
 }
 
@@ -13946,15 +13946,15 @@ export class UserEntityUpdateWithoutNotificationsInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => EmployeeEntityUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
-    @Field(() => StudentEntityUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
 }
 
@@ -13968,15 +13968,15 @@ export class UserEntityUpdateWithoutStudentInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => EmployeeEntityUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
-    @Field(() => NotificationToUserEntityUpdateManyWithoutUserNestedInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutUserNestedInput>;
 }
 
@@ -13990,17 +13990,17 @@ export class UserEntityUpdateInput {
     password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @HideField()
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => EmployeeEntityUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
-    @Field(() => StudentEntityUpdateOneWithoutUserNestedInput, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
-    @Field(() => NotificationToUserEntityUpdateManyWithoutUserNestedInput, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutUserNestedInput>;
 }
 
@@ -14058,17 +14058,17 @@ export class UserEntityWhereInput {
     password?: InstanceType<typeof StringFilter>;
     @HideField()
     tokenHash?: InstanceType<typeof StringFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
+    @HideField()
     lastActivity?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => EmployeeEntityRelationFilter, {nullable:true})
+    @HideField()
     employee?: InstanceType<typeof EmployeeEntityRelationFilter>;
-    @Field(() => StudentEntityRelationFilter, {nullable:true})
+    @HideField()
     student?: InstanceType<typeof StudentEntityRelationFilter>;
-    @Field(() => NotificationToUserEntityListRelationFilter, {nullable:true})
+    @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityListRelationFilter>;
 }
 
