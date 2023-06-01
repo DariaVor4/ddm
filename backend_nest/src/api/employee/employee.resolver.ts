@@ -1,11 +1,12 @@
 import {
-  Args, Mutation, Query, Resolver,
+  Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { _throw, isRoleAdmin } from '@common';
+import { _throw, assert, isRoleAdmin } from '@common';
 import { EmployeeEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
+import { GraphQLUUID } from 'graphql-scalars';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmployeeService } from './employee.service';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -129,25 +130,27 @@ export class EmployeeResolver {
   }
 
   /**
-   * Удаление сотрудника.
-   * @param employeeId Идентификатор сотрудника.
-   * @return Успешность удаления.
-   * @throws {NotFoundException} Сотрудник не найден.
-   * @throws {InternalServerErrorException} Ошибка при удалении сотрудника.
+   * Удаление сотрудников.
+   * @param employeeIds Идентификаторы сотрудников.
+   * @param ctx Контекст текущей сессии пользователя.
+   * @return Количество удаленных сотрудников.
    */
-  @Mutation(() => Boolean, {
-    description: 'Удаление сотрудника',
+  @Mutation(() => Int, {
+    description: 'Удаление сотрудников',
   })
   @Roles(UserRoleEnum.Admin)
-  async deleteEmployee(
-    @Args('employeeId', { type: UUID }) employeeId: string,
-  ): Promise<boolean> {
-    if (await this.prisma.employeeEntity.count({ where: { id: employeeId } }) === 0) {
-      throw new NotFoundException('Сотрудник не найден');
+  async employeesDelete(
+    @Args('employeeIds', { type: () => [GraphQLUUID] }) employeeIds: string[],
+    @CurrentSession() ctx: ISessionContext,
+  ): Promise<number> {
+    if (employeeIds.includes(ctx.userId)) {
+      throw new ForbiddenException('Вы не можете удалить себя');
     }
-    return this.prisma.$transaction(
-      async (prisma) => !!await prisma.employeeEntity.delete({ where: { id: employeeId } })
-        && !!await prisma.userEntity.delete({ where: { id: employeeId } }),
-    ).catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении сотрудника: ${e.message}`)));
+    return this.prisma.$transaction(async (prisma) => {
+      const { count: countEmployees } = await prisma.employeeEntity.deleteMany({ where: { id: { in: employeeIds } } });
+      const { count: countUsers } = await prisma.userEntity.deleteMany({ where: { id: { in: employeeIds } } });
+      assert(countEmployees === countUsers, new InternalServerErrorException('Ошибка при удалении сотрудников'));
+      return countUsers;
+    });
   }
 }
