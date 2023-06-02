@@ -1,4 +1,4 @@
-import {assert, _throw, runtimeMode} from '@common';
+import {assert, throwCb, runtimeMode} from '@common';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
@@ -46,7 +46,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
         tokenHash: true,
         updatedAt: true,
       },
-    }).catch(_throw(new UnauthorizedException('User not found or was not authorized')));
+    }).catch(throwCb(new UnauthorizedException('User not found or was not authorized')));
     // Check RefreshToken
     const accessToken: string | undefined = req.headers.authorization?.split(' ')[1];
     const refreshToken: string | undefined = req.cookies[CookieKeysEnum.RefreshTokenKey];

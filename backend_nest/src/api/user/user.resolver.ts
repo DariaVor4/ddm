@@ -2,7 +2,7 @@ import { Query, Resolver } from '@nestjs/graphql';
 import { UserEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
 import { NotFoundException } from '@nestjs/common';
-import { _throw } from '@common';
+import { throwCb } from '@common';
 import { Roles } from '../auth/decorators/roles.decorator';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
@@ -33,7 +33,7 @@ export class UserResolver {
       user: await this.prisma.userEntity.findUniqueOrThrow({
         where: { id: ctx.userId },
         select,
-      }).catch(_throw(new NotFoundException('Пользователь не найден'))) as UserEntity,
+      }).catch(throwCb(new NotFoundException('Пользователь не найден'))) as UserEntity,
       roles: ctx.roles,
       accessTokenExpires: ctx.accessTokenExpires,
     };

@@ -207,7 +207,7 @@ type Mutation {
   refreshTokens: TokenResponse!
 
   """Регистрация студента. Сначала необходимо подтвердить почту."""
-  registration(input: StudentCreateInput!): Boolean!
+  registration(input: StudentUpsertInput!): Boolean!
 
   """
   Отправка кода подтверждения почты. Устанавливает RegistrationToken в cookies. Возвращает время до которого необходимо завершить регистрацию.
@@ -275,6 +275,14 @@ type Mutation {
   """Обновление студента."""
   studentUpdate(input: StudentUpdateInput!): StudentEntity!
 
+  """Перезапись студента."""
+  studentUpsert(
+    input: StudentUpsertInput!
+
+    """ID студента, если не указан, то будет создан новый студент."""
+    studentId: UUID
+  ): Boolean!
+
   """Удаление визы студента"""
   studentVisaDelete(
     """ID Студента"""
@@ -290,7 +298,7 @@ type Mutation {
   ): Boolean!
 
   """Удаление студентов."""
-  studentsDelete(ids: [UUID!]!): [Int!]!
+  studentsDelete(ids: [UUID!]!): Int!
 
   """Перезапись сотрудника"""
   updateEmployee(input: EmployeeUpdateInput!): Boolean!
@@ -393,7 +401,10 @@ type Query {
   employees: [EmployeeEntity!]!
 
   """Получение студента по id."""
-  student(id: UUID!): StudentEntity!
+  student(
+    """ID студента"""
+    studentId: UUID
+  ): StudentEntity!
 
   """Получение уведомления о прибытии студента"""
   studentArrivalNotice(
@@ -695,10 +706,14 @@ type StudentEntity {
   """Визовые анкеты"""
   visaRequests: [StudentVisaRequestEntity!]
 
-  """Инициалы"""
+  """
+  Инициалы. Использовать только если в запросе присутствует паспорт студента.
+  """
   initials: String!
 
-  """Полное имя"""
+  """
+  Полное имя. Использовать только если в запросе присутствует паспорт студента.
+  """
   fullName: String!
 }
 
@@ -1011,6 +1026,19 @@ input StudentUpdateInput {
   phone: String
 }
 
+input StudentUpsertInput {
+  course: Int
+  curator: String
+  email: EmailAddress
+  faculty: String
+  firstName: String
+  group: String
+  lastName: String
+  password: String
+  patronymic: String
+  phone: String
+}
+
 """Виза студента"""
 type StudentVisaEntity {
   """Серия бланка"""
@@ -1259,17 +1287,17 @@ type UserEntity {
   updatedAt: DateTime
 
   """
-  Инициалы. Использовать только если в запросе присутствует паспорт студента или поля сотрудника
+  Инициалы. Использовать только если в запросе присутствуют поля паспорта студента или поля сотрудника.
   """
   initials: String!
 
   """
-  Полное имя. Использовать только если в запросе присутствует паспорт студента или поля сотрудника
+  Полное имя. Использовать только если в запросе присутствуют поля паспорта студента или поля сотрудника.
   """
   fullName: String!
 
   """
-  Роль. Использовать только если в запросе присутствует student или employee.isAdmin
+  Роль. Использовать только если в запросе присутствует student или employee.isAdmin.
   """
   role: UserRoleEnum!
 }

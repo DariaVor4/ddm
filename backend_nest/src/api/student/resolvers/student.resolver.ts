@@ -1,13 +1,16 @@
 import {
   Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
-import { _throw, assert, isRoleAdminOrEmployee } from '@common';
+import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+  throwCb, assert, isRoleAdminOrEmployee, isRoleStudent,
+} from '@common';
 import * as uuid from 'uuid';
 import { Prisma } from '@prisma/client';
 import { StudentEntity } from '@prisma-nestjs-graphql';
 import { UUID } from '@common/scalars';
 import { GraphQLUUID } from 'graphql-scalars';
+import { PartialDeep } from 'type-fest';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { StudentService } from '../student.service';
 import { Roles } from '../../auth/decorators/roles.decorator';
@@ -16,13 +19,17 @@ import StudentCreateInput from '../inputs/student-create.input';
 import StudentUpdateInput from '../inputs/student-update.input';
 import { PrismaSelector } from '../../../prisma/decorators/prisma-selector.decorator';
 import { CurrentSession, ISessionContext } from '../../auth/decorators/current-session.decorator';
+import StudentUpsertInput from '../inputs/student-upsert.input';
 
 /**
  * Резолвер для работы со студентами.
  */
 @Resolver('student')
 export class StudentResolver {
-  constructor(private readonly prisma: PrismaService, private readonly studentService: StudentService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly studentService: StudentService,
+  ) {}
 
   /**
    * Получение списка студентов.
@@ -41,14 +48,55 @@ export class StudentResolver {
   @Query(() => StudentEntity, {
     description: 'Получение студента по id.',
   })
-  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
   async student(
-    @Args('id', { type: UUID }) id: string,
     @PrismaSelector() select: Prisma.StudentEntitySelect,
+    @CurrentSession() ctx: ISessionContext,
+    @Args('studentId', { type: UUID, nullable: true, description: 'ID студента' }) studentId?: string,
   ): Promise<Partial<StudentEntity>> {
-    assert(uuid.validate(id), new NotFoundException('Некорректный id'));
-    return this.prisma.studentEntity.findFirstOrThrow({ where: { id }, select })
-      .catch(_throw(new NotFoundException('Студент не найден')));
+    if (isRoleStudent(ctx.roles)) {
+      if (studentId !== ctx.userId) {
+        throw new ForbiddenException('Студент может получить только свои данные');
+      }
+    } else if (!studentId) {
+      throw new BadRequestException('Ваш тип аккаунта не позволяет получить данные без указания studentId');
+    }
+
+    return this.prisma.studentEntity.findFirstOrThrow({ where: { id: studentId || ctx.userId }, select })
+      .catch(throwCb(new NotFoundException('Студент не найден')));
+  }
+
+  /**
+   * Перезапись студента.
+   * Студент может обновить только свои данные.
+   * Админ и сотрудник могут обновить любого студента.
+   * @param input Данные для обновления.
+   * @param studentId ID студента, если не указан, то будет создан новый студент.
+   * @param ctx Текущая сессия.
+   * @returns Успешность операции.
+   * @throws {ForbiddenException} Если студент пытается обновить чужие данные.
+   * @throws {ForbiddenException} Если студент пытается обновить email без подтверждения.
+   */
+  @Mutation(() => Boolean, {
+    description: 'Перезапись студента.',
+  })
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
+  async studentUpsert(
+    @CurrentSession() ctx: ISessionContext,
+    @Args('input') input: StudentUpsertInput,
+    @Args('studentId', { type: UUID, nullable: true, description: 'ID студента, если не указан, то будет создан новый студент.' }) studentId?: string,
+  ): Promise<boolean> {
+    if (!isRoleAdminOrEmployee(ctx.roles)) {
+      if (studentId && studentId !== ctx.userId) {
+        throw new ForbiddenException('Вы не можете обновить данные другого студента');
+      }
+      if (input.email && ctx.userEmail !== input.email) {
+        // TODO: unimplemented
+        throw new ForbiddenException('Unimplemented: Вы не можете обновлять email без его подтверждения');
+      }
+    }
+    await this.studentService.studentUpsert(input, null, studentId);
+    return true;
   }
 
   /**
@@ -91,7 +139,7 @@ export class StudentResolver {
   /**
    * Удаление студентов.
    */
-  @Mutation(() => [Int], {
+  @Mutation(() => Int, {
     description: 'Удаление студентов.',
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
@@ -114,6 +162,10 @@ export class StudentResolver {
         where: { studentId: { in: ids } },
       });
       await transaction.studentPassportEntity.deleteMany({
+        where: { studentId: { in: ids } },
+      });
+      // Удаление родственников
+      await transaction.studentCloseRelativeEntity.deleteMany({
         where: { studentId: { in: ids } },
       });
       // Удаление студентов и их аккаунтов

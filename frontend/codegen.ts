@@ -25,7 +25,10 @@ export default {
   },
   generates: {
     './src/api/generated.ts': {
+      // hooks: {afterOneFileWrite: ['eslint --fix']},
       plugins: [
+        {add: {content: '/* eslint-disable */'}},
+        // {add: {content: '/* eslint-disable max-len */'}},
         'typescript',
         'typescript-operations',
         'typescript-react-apollo',

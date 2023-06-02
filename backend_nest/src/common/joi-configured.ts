@@ -4,7 +4,7 @@ import ms from 'ms';
 /**
  * Configured instance of Joi.
  */
-const joi: Joi.Root = Joi.defaults((schema) => schema.options({
+export const joi: Joi.Root = Joi.defaults((schema) => schema.options({
   stripUnknown: true,
   allowUnknown: false,
   convert: true,
@@ -22,5 +22,3 @@ export const vercelMsValidator = (value: string) => {
   }
   return value;
 };
-
-export default joi;

@@ -16,7 +16,7 @@ import {
   useStudentCloseRelativeUpsertMutation,
 } from '../../api/generated.ts';
 import { FormikTextField } from '../forms/FormikTextField.tsx';
-import { onEnterDown } from '../../core/onEnterDown.ts';
+import { onEnterDown } from '../../core/on-enter-down.ts';
 
 const initialState = {
   isOpen: false as boolean,
@@ -97,26 +97,31 @@ export const CloseRelativeDialog: FC = () => {
 
   return (
     <AppDialog
-      title={`${dialog.closeRelativeId ? 'Редактирование' : 'Создание'} близкого родственника`}
       open={dialog.isOpen}
+      title={`${dialog.closeRelativeId ? 'Редактирование' : 'Создание'} близкого родственника`}
       onClose={dialog.close}
     >
-      <DialogContent dividers className='flex flex-col !py-10 gap-4' onKeyDown={onEnterDown(formik.submitForm)}>
+      <DialogContent className='flex flex-col !py-10 gap-4' dividers onKeyDown={onEnterDown(formik.submitForm)}>
         <FormikProvider value={formik}>
-          <FormikTextField name='lastName' label='Фамилия' required />
-          <FormikTextField name='firstName' label='Имя' required />
-          <FormikTextField name='patronymic' label='Отчество' />
-          <FormikTextField name='birthDate' label='Дата рождения' required type='date' />
-          <FormikTextField name='addressContinuousResidence' label='Постоянное место жительства' required />
-          <FormikTextField name='citizenship' label='Гражданство' required />
+          <FormikTextField label='Фамилия' name='lastName' required />
+          <FormikTextField label='Имя' name='firstName' required />
+          <FormikTextField label='Отчество' name='patronymic' />
+          <FormikTextField
+            label='Дата рождения'
+            name='birthDate'
+            type='date'
+            required
+          />
+          <FormikTextField label='Постоянное место жительства' name='addressContinuousResidence' required />
+          <FormikTextField label='Гражданство' name='citizenship' required />
         </FormikProvider>
       </DialogContent>
       <DialogActions>
-        <Button variant='text' color='warning' onClick={() => formik.resetForm()}>Сброс</Button>
+        <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>
         <Button variant='text' onClick={dialog.close}>Отмена</Button>
         <Button
-          onClick={formik.submitForm}
           disabled={formik.isSubmitting || !formik.dirty}
+          onClick={formik.submitForm}
         >
           Сохранить
         </Button>

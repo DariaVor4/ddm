@@ -20,13 +20,18 @@ export const UserMenu: FC = () => {
   const isMenuOpen = useReactiveVar(isUserMenuOpenVar);
 
   return (
-    <Drawer anchor='right' open={isMenuOpen && !!current} onClose={userMenuToggleFn} className='!flex !items-center'>
+    <Drawer
+      anchor='right'
+      className='!flex !items-center'
+      open={isMenuOpen && !!current}
+      onClose={userMenuToggleFn}
+    >
       <List className='!my-auto'>
         {/* Навигация зависимости от роли пользователя */}
         {UserMenuButtons[role]}
         {/* Прочее: */}
         <Divider className='!mt-4 !mb-2'>
-          <UserRoleIcon userRole={role} className='mr-2' />
+          <UserRoleIcon className='mr-2' userRole={role} />
           {current?.user.initials || 'Пользователь'}
         </Divider>
         {/* Настройки аккаунта */}

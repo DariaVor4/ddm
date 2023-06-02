@@ -32,8 +32,8 @@ type StudentPassportPageParams = {
 };
 
 // TODO: валидация должна быть не только для РФ паспортов
-// Серия паспорта не обязательна
-// Кол-во цифр в номере может быть разным
+// TODO: Серия паспорта не обязательна
+// TODO: Кол-во цифр в номере может быть разным
 
 const formSchema = yup.object({
   lastName: yup.string().trim().required('Обязательное поле'),
@@ -71,22 +71,22 @@ export const StudentPassportPage: FC = () => {
       }
     },
   });
-  const { data: originalData } = useStudentPassportQuery({ variables: { studentId }, fetchPolicy: 'network-only' });
+  const { data: { studentPassport } = {} } = useStudentPassportQuery({ variables: { studentId }, fetchPolicy: 'network-only' });
   const formik = useFormik<IFormValue>({
     enableReinitialize: true,
     initialValues: {
-      lastName: originalData?.studentPassport?.lastName || '',
-      firstName: originalData?.studentPassport?.firstName || '',
-      patronymic: originalData?.studentPassport?.patronymic || '',
-      birthDate: originalData?.studentPassport?.birthDate?.format('YYYY-MM-DD') || '',
-      birthPlace: originalData?.studentPassport?.birthPlace || '',
-      series: originalData?.studentPassport?.series || '',
-      number: originalData?.studentPassport?.number || '',
-      issueDate: originalData?.studentPassport?.issueDate?.format('YYYY-MM-DD') || '',
-      issuedBy: originalData?.studentPassport?.issuedBy || '',
-      citizenship: originalData?.studentPassport?.citizenship || '',
-      expirationDate: originalData?.studentPassport?.expirationDate?.format('YYYY-MM-DD') || '',
-      gender: originalData?.studentPassport?.gender || null,
+      lastName: studentPassport?.lastName || '',
+      firstName: studentPassport?.firstName || '',
+      patronymic: studentPassport?.patronymic || '',
+      birthDate: studentPassport?.birthDate?.format('YYYY-MM-DD') || '',
+      birthPlace: studentPassport?.birthPlace || '',
+      series: studentPassport?.series || '',
+      number: studentPassport?.number || '',
+      issueDate: studentPassport?.issueDate?.format('YYYY-MM-DD') || '',
+      issuedBy: studentPassport?.issuedBy || '',
+      citizenship: studentPassport?.citizenship || '',
+      expirationDate: studentPassport?.expirationDate?.format('YYYY-MM-DD') || '',
+      gender: studentPassport?.gender || null,
     },
     validationSchema: formSchema,
     onSubmit: data => toast.promise(saveDocument({
@@ -110,38 +110,55 @@ export const StudentPassportPage: FC = () => {
     <>
       <FormikProvider value={formik}>
         <Paper className='flex flex-col gap-4 px-10 py-4 mx-auto max-w-lg'>
-          <Typography variant='h4' className='text-center mb-4'>Паспорт</Typography>
-          <FormikTextField name='lastName' label='Фамилия' required />
-          <FormikTextField name='firstName' label='Имя' required />
-          <FormikTextField name='patronymic' label='Отчество' />
+          <Typography className='text-center mb-4' variant='h4'>Паспорт</Typography>
+          <FormikTextField label='Фамилия' name='lastName' required />
+          <FormikTextField label='Имя' name='firstName' required />
+          <FormikTextField label='Отчество' name='patronymic' />
           <FormControl className='!flex-row items-center gap-3'>
             <FormLabel>Пол:</FormLabel>
             <RadioGroup
               name='gender'
-              row
               value={formik.values.gender}
+              row
               onChange={formik.handleChange}
             >
               <Stack direction='row'>
-                <FormControlLabel value={GGenderEnum.Male} control={<Radio />} label='Мужской' />
-                <FormControlLabel value={GGenderEnum.Female} control={<Radio />} label='Женский' />
+                <FormControlLabel control={<Radio />} label='Мужской' value={GGenderEnum.Male} />
+                <FormControlLabel control={<Radio />} label='Женский' value={GGenderEnum.Female} />
               </Stack>
             </RadioGroup>
             <FormHelperText sx={{ color: 'error.main' satisfies TMuiColor }}>
               {formik.touched.gender && formik.errors.gender}
             </FormHelperText>
           </FormControl>
-          <FormikTextField name='birthDate' label='Дата рождения' type='date' />
-          <FormikTextField name='birthPlace' label='Место рождения' />
-          <FormikTextField name='series' shrink placeholder='0123 (4 цифры)' label='Серия паспорта' />
-          <FormikTextField name='number' shrink placeholder='456789 (6 цифр)' label='Номер паспорта' />
-          <FormikTextField name='issueDate' label='Дата выдачи' type='date' />
-          <FormikTextField name='issuedBy' label='Кем выдан' />
+          <FormikTextField label='Дата рождения' name='birthDate' type='date' />
+          <FormikTextField label='Место рождения' name='birthPlace' />
+          <FormikTextField
+            label='Серия паспорта'
+            name='series'
+            placeholder='0123 (4 цифры)'
+            shrink
+          />
+          <FormikTextField
+            label='Номер паспорта'
+            name='number'
+            placeholder='456789 (6 цифр)'
+            shrink
+          />
+          <FormikTextField label='Дата выдачи' name='issueDate' type='date' />
+          <FormikTextField label='Кем выдан' name='issuedBy' />
           {/* TODO: сделать выпадающим списком */}
-          <FormikTextField name='citizenship' label='Гражданство' />
-          <FormikTextField name='expirationDate' label='Дата истечения' type='date' />
-          <Stack direction='row' justifyContent='flex-end' gap={2}>
-            <Button disabled={!formik.dirty} variant='text' color='warning' onClick={() => formik.resetForm()}>Сброс</Button>
+          <FormikTextField label='Гражданство' name='citizenship' />
+          <FormikTextField label='Дата истечения' name='expirationDate' type='date' />
+          <Stack direction='row' gap={2} justifyContent='flex-end'>
+            <Button
+              color='warning'
+              disabled={!formik.dirty}
+              variant='text'
+              onClick={() => formik.resetForm()}
+            >
+              Сброс
+            </Button>
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>

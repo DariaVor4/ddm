@@ -3,8 +3,9 @@ import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { cloneDeep } from 'lodash';
 import { Button, DialogActions, DialogContent } from '@mui/material';
+import { toast } from 'react-toastify';
 import { AppDialog } from '../../components/Dialogs/AppDialog.tsx';
-import { onEnterDown } from '../onEnterDown.ts';
+import { onEnterDown } from '../on-enter-down.ts';
 
 type TParams = {
   title?: string;
@@ -16,7 +17,7 @@ const initialState = {
   isOpen: false as boolean,
   title: 'Подтверждение',
   message: 'Вы действительно хотите сделать это действие?',
-  action: (() => void null) as () => unknown,
+  action: (() => undefined) as () => unknown | Promise<unknown>,
 };
 
 const useConfirmActionDialog = create(combine(cloneDeep(initialState), (set, get) => ({
@@ -27,8 +28,10 @@ const useConfirmActionDialog = create(combine(cloneDeep(initialState), (set, get
   }),
   cancel: () => set({ isOpen: false }),
   confirm: () => {
-    get().action();
-    set({ isOpen: false });
+    if (get().action) {
+      get().action();
+      set({ isOpen: false });
+    } else toast.error('Ошибка: Ничего не произошло так как не назначено действие');
   },
 })));
 
@@ -36,11 +39,16 @@ export const ConfirmActionDialog: FC = () => {
   const dialog = useConfirmActionDialog();
 
   return (
-    <AppDialog title={dialog.title} open={dialog.isOpen} onClose={dialog.cancel} onKeyDown={onEnterDown(dialog.confirm)}>
+    <AppDialog
+      open={dialog.isOpen}
+      title={dialog.title}
+      onClose={dialog.cancel}
+      onKeyDown={onEnterDown(dialog.confirm)}
+    >
       <DialogContent dividers>{dialog.message}</DialogContent>
       <DialogActions>
         <Button color='error' onClick={dialog.cancel}>Отмена</Button>
-        <Button color='primary' onClick={dialog.confirm} autoFocus>Подтвердить</Button>
+        <Button color='primary' autoFocus onClick={dialog.confirm}>Подтвердить</Button>
       </DialogActions>
     </AppDialog>
   );

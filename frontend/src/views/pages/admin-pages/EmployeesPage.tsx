@@ -8,7 +8,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow, Typography,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -30,11 +30,18 @@ export const EmployeesPage: React.FC = () => {
   const { data: { employees = [] } = {} } = useEmployeesQuery();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [menuEmployee, setMenuStudent] = useState<GEmployeesQuery['employees'][number] | null>(null);
+  const onMenuClose = () => {
+    setMenuAnchor(null);
+    setMenuStudent(null);
+  };
   const { data: { current } = {} } = useUserCurrentQuery();
 
   const [deletedEmployees] = useEmployeesDeleteMutation({
     variables: { employeeIds: selectedIds },
-    onCompleted: () => setSelectedIds([]),
+    onCompleted: () => {
+      setSelectedIds([]);
+      onMenuClose();
+    },
     refetchQueries: [refetchEmployeesQuery()],
   });
 
@@ -52,10 +59,9 @@ export const EmployeesPage: React.FC = () => {
     setSelectedIds(prev => (prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]));
   };
 
-  const onMenuClose = () => setMenuAnchor(null);
-
   return (
     <>
+      <Typography align='center' marginBottom={2} variant='h4'>Сотрудники</Typography>
       <TableContainer className='m-auto' component={Paper}>
         <Table>
           <TableHead>

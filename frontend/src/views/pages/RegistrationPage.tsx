@@ -7,18 +7,18 @@ import * as yup from 'yup';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { useNavigate } from 'react-router-dom';
-import {
-  GEmailAvailabilityVerdictEnum, GStudentCreateInput, useEmailAvailabilityLazyQuery, useRegistrationMutation,
-} from '../../api/generated';
+import { GEmailAvailabilityVerdictEnum, GStudentUpsertInput, useRegistrationMutation } from '../../api/generated';
 import { loginDialogOpenFn } from '../../components/Dialogs/LoginDialog';
 import { EmailConfirmationDialog, useEmailConfirmationDialog } from '../../components/Dialogs/EmailConfirmationDialog';
 import { AppRoutesEnum } from '../app-routes.enum.ts';
 import { strictPick } from '../../core/strict-lodash/strict-pick.ts';
 import { strictOmit } from '../../core/strict-lodash/strict-omit.ts';
 import { FormikTextField } from '../../components/forms/FormikTextField.tsx';
-import { checkPassword } from '../../core/passwordChecker.ts';
+import { checkPassword } from '../../core/password-checker.ts';
+import { emailAvailabilityQuery } from '../../api/global-methods/check-email-availability.ts';
+import { SetNonNil } from '../../core/type-utils/set-non-nil.type.ts';
 
-interface RegisterFormValue extends GStudentCreateInput {
+interface RegisterFormValue extends SetNonNil<GStudentUpsertInput, 'email' | 'password'> {
   passwordRepeat: string;
 }
 
@@ -26,7 +26,6 @@ export const RegistrationPage: FC = () => {
   const navigate = useNavigate();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const dialog = useEmailConfirmationDialog(state => strictPick(state, ['isEmailConfirmed', 'reset', 'open']));
-  const [checkEmailAvailability] = useEmailAvailabilityLazyQuery();
   const [register] = useRegistrationMutation();
   const formik = useFormik<RegisterFormValue>({
     initialValues: {
@@ -36,15 +35,15 @@ export const RegistrationPage: FC = () => {
       email: '',
       password: '',
       passwordRepeat: '',
-      faculty: null,
+      faculty: '',
       course: null,
-      group: null,
-      curator: null,
-      phone: null,
+      group: '',
+      curator: '',
+      phone: '',
     },
     onSubmit: async values => {
       const { data } = await register({ variables: { input: strictOmit(values, ['passwordRepeat']) } });
-      if (data?.registration) {
+      if (data?.isRegistered) {
         navigate(AppRoutesEnum.HomeRoute);
         loginDialogOpenFn();
         dialog.reset();
@@ -57,7 +56,7 @@ export const RegistrationPage: FC = () => {
       firstName: yup.string().required('Имя обязательно'),
       patronymic: yup.string().optional(),
       email: yup.string().email('Неверный формат почты').required('Почта обязательна').test('email-availability', async (value, ctx) => {
-        const { data } = await checkEmailAvailability({ variables: { email: value } });
+        const { data } = await emailAvailabilityQuery({ variables: { email: value } });
         switch (data?.emailAvailability.verdict) {
           case GEmailAvailabilityVerdictEnum.Ok:
             return true;
@@ -80,6 +79,7 @@ export const RegistrationPage: FC = () => {
 
   return (
     <FormikProvider value={formik}>
+      <EmailConfirmationDialog />
       <Paper className='px-10 py-4 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
         <Typography className='text-center'>Регистрация студента</Typography>
         <FormikTextField label='Фамилия' name='lastName' required />
@@ -157,7 +157,7 @@ export const RegistrationPage: FC = () => {
         <FormikTextField label='Куратор' name='curator' required />
         <Stack direction='row' gap={2} justifyContent='flex-end'>
           <Tooltip title='Уже зарегистрированы?'>
-            <Button variant='text' onClick={loginDialogOpenFn}>Вход</Button>
+            <span><Button variant='text' onClick={loginDialogOpenFn}>Вход</Button></span>
           </Tooltip>
           <Tooltip title='Сначала необходимо заполнить форму и подтвердить почту'>
             <span>
@@ -171,7 +171,6 @@ export const RegistrationPage: FC = () => {
           </Tooltip>
         </Stack>
       </Paper>
-      <EmailConfirmationDialog />
     </FormikProvider>
   );
 };

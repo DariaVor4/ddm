@@ -13,9 +13,16 @@ type AppDialogProps = DialogProps & {
 export const AppDialog: FC<AppDialogProps> = ({
   title, children, onClose, ...dialogProps
 }) => (
-  <Dialog TransitionComponent={Grow} transitionDuration={500} fullWidth maxWidth='xs' {...dialogProps} onClose={onClose}>
+  <Dialog
+    maxWidth='xs'
+    TransitionComponent={Grow}
+    transitionDuration={500}
+    fullWidth
+    {...dialogProps}
+    onClose={onClose}
+  >
     <DialogTitle className='flex items-center gap-5'>
-      <Typography className='grow inline' variant='h6' component='span'>
+      <Typography className='grow inline' component='span' variant='h6'>
         {title}
       </Typography>
       <IconButton onClick={onClose}>

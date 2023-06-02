@@ -41,29 +41,27 @@ export const StudentCloseRelativesPage: FC = () => {
 
   return (
     <>
-      <Typography variant='h4' textAlign='center' gutterBottom>Близкие родственники</Typography>
-      <TableContainer component={Paper} className='m-auto'>
+      <Typography textAlign='center' variant='h4' gutterBottom>Близкие родственники</Typography>
+      <TableContainer className='m-auto' component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell padding='checkbox'>
                 <Checkbox
+                  checked={(relatives?.length || 0) > 0 && selectedIds.length === (relatives?.length || 0)}
                   color='primary'
                   indeterminate={selectedIds.length > 0 && selectedIds.length < (relatives?.length || 0)}
-                  checked={(relatives?.length || 0) > 0 && selectedIds.length === (relatives?.length || 0)}
                   onChange={onSelectAll}
                 />
               </TableCell>
               <TableCell>№</TableCell>
               <TableCell>ФИО</TableCell>
               <TableCell align='center' width='min-width'>
-                <IconButton size='small' onClick={() => dialog.create(studentId)}>
-                  <AddCircleIcon />
-                </IconButton>
+                {(relatives?.length || 0) < 4 && <IconButton size='small' onClick={() => dialog.create(studentId)}><AddCircleIcon /></IconButton>}
                 <IconButton
+                  disabled={selectedIds.length === 0}
                   size='small'
                   onClick={() => confirmDelete()}
-                  disabled={selectedIds.length === 0}
                 >
                   <DeleteForeverIcon />
                 </IconButton>
@@ -72,11 +70,11 @@ export const StudentCloseRelativesPage: FC = () => {
           </TableHead>
           <TableBody>
             {relatives?.map((relative, index) => (
-              <TableRow hover key={relative.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow key={relative.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
                 <TableCell padding='checkbox'>
                   <Checkbox
-                    color='primary'
                     checked={selectedIds.includes(relative.id)}
+                    color='primary'
                     onChange={() => onRowSelect(relative.id)}
                   />
                 </TableCell>
@@ -85,14 +83,14 @@ export const StudentCloseRelativesPage: FC = () => {
                   {compact([relative.lastName, relative.firstName, relative.patronymic]).join(' ') || 'Нет имени'}
                 </TableCell>
                 <TableCell align='center'>
-                  <IconButton onClick={() => dialog.edit(relative.id)} size='small'><EditIcon /></IconButton>
+                  <IconButton size='small' onClick={() => dialog.edit(relative.id)}><EditIcon /></IconButton>
                   <IconButton
+                    size='small'
                     onClick={() => confirmDelete({
                       title: 'Удаление близкого родственника',
                       message: `Вы уверены, что хотите удалить ${compact([relative.lastName, relative.firstName, relative.patronymic]).join(' ') || 'БезИмени'} из списка близких родственников?`,
                       action: () => deleteCloseRelatives({ variables: { closeRelativeIds: [relative.id] } }),
                     })}
-                    size='small'
                   >
                     <DeleteForeverIcon />
                   </IconButton>

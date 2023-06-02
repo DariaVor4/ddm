@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/ban-types */
 // Source: https://gist.github.com/foxel/afe9d8333b4704e59486d0682c4a8158
 
 // TypeScript 4.1 deep keys extraction type

@@ -10,7 +10,7 @@ import { makeVar, useReactiveVar } from '@apollo/client';
 import { AppRoutesEnum } from '../../views/app-routes.enum.ts';
 import { GLoginByPasswordMutationVariables, useLoginByPasswordMutation } from '../../api/generated';
 import { authHelper } from '../../api/apollo-client.tsx';
-import { onEnterDown } from '../../core/onEnterDown.ts';
+import { onEnterDown } from '../../core/on-enter-down.ts';
 import { FormikTextField } from '../forms/FormikTextField.tsx';
 import { AppDialog } from './AppDialog.tsx';
 
@@ -48,15 +48,14 @@ export const LoginDialog: FC = () => {
   });
 
   return (
-    <AppDialog title='Вход в систему' open={isOpen} onClose={loginDialogCloseFn}>
+    <AppDialog open={isOpen} title='Вход в систему' onClose={loginDialogCloseFn}>
       <DialogContent className='flex flex-col !py-10' dividers onKeyDown={onEnterDown(formik.submitForm)}>
         <FormikProvider value={formik}>
-          <FormikTextField name='email' label='Почта' required />
+          <FormikTextField label='Почта' name='email' required />
           <FormikTextField
             className='!mt-4'
-            name='password'
             label='Пароль'
-            required
+            name='password'
             type={showPassword ? 'text' : 'password'}
             InputProps={{
               endAdornment: (
@@ -67,27 +66,28 @@ export const LoginDialog: FC = () => {
                 </InputAdornment>
               ),
             }}
+            required
           />
         </FormikProvider>
         <Collapse in={!!authResultMessage}>
-          <Alert className='mt-6' variant='filled' severity='error'>{authResultMessage}</Alert>
+          <Alert className='mt-6' severity='error' variant='filled'>{authResultMessage}</Alert>
         </Collapse>
       </DialogContent>
       <DialogActions className='gap-2'>
         <Button
-          size='small'
-          onClick={loginDialogCloseFn}
           component={Link}
-          variant='text'
+          size='small'
           to={AppRoutesEnum.RegisterRoute}
+          variant='text'
+          onClick={loginDialogCloseFn}
         >
           Регистрация
         </Button>
         <Button
-          autoFocus
-          size='small'
-          onClick={formik.submitForm}
           disabled={!!authResultMessage || formik.isSubmitting || !formik.isValid || !formik.dirty}
+          size='small'
+          autoFocus
+          onClick={formik.submitForm}
         >
           Войти
         </Button>

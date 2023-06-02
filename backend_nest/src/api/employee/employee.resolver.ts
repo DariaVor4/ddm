@@ -2,11 +2,14 @@ import {
   Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import {_throw, assert, ifDebug, isRoleAdmin} from '@common';
+import {
+  assert, ifDebug, isRoleAdmin, throwCb,
+} from '@common';
 import { EmployeeEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
 import { GraphQLUUID } from 'graphql-scalars';
+import { PartialDeep } from 'type-fest';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmployeeService } from './employee.service';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -25,7 +28,7 @@ export class EmployeeResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly employeeService: EmployeeService,
-  ) {}
+  ) { }
 
   /**
    * Выборка всех сотрудников.
@@ -65,7 +68,7 @@ export class EmployeeResolver {
       throw new ForbiddenException(ifDebug('Только админы могут получать данные других сотрудников'));
     }
     return await this.prisma.employeeEntity.findUniqueOrThrow({ where: { id: otherOrCurrentEmployeeId }, select })
-      .catch(_throw(new NotFoundException('Сотрудник не найден'))) as EmployeeEntity;
+      .catch(throwCb(new NotFoundException('Сотрудник не найден'))) as EmployeeEntity;
   }
 
   /**
@@ -82,7 +85,7 @@ export class EmployeeResolver {
     @Args('input') input: EmployeeCreateInput,
   ): Promise<EmployeeEntity> {
     return this.employeeService.createEmployee(input)
-      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при создании сотрудника: ${e.message}`)));
+      .catch(throwCb((e) => new InternalServerErrorException(`Ошибка при создании сотрудника: ${e.message}`)));
   }
 
   /**
@@ -104,12 +107,12 @@ export class EmployeeResolver {
     @CurrentSession() ctx: ISessionContext,
     @PrismaSelector() select: Prisma.EmployeeEntitySelect,
     @Args('employeeId', { type: UUID, nullable: true }) employeeId?: string,
-  ) {
+  ): Promise<PartialDeep<EmployeeEntity>> {
     if (!isRoleAdmin(ctx.roles)) {
       if (ctx.userId !== employeeId) {
         throw new ForbiddenException('Вы не можете обновлять профиль другого сотрудника');
       }
-      if (ctx.userEmail !== input.email) {
+      if (input.email && ctx.userEmail !== input.email) {
         // TODO: unimplemented
         throw new ForbiddenException('Unimplemented: Вы не можете обновлять email без его подтверждения');
       }
@@ -137,7 +140,7 @@ export class EmployeeResolver {
       throw new ForbiddenException('Вы не можете обновлять профиль другого сотрудника');
     }
     return !!await this.employeeService.updateEmployee(input)
-      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при обновлении сотрудника: ${e.message}`)));
+      .catch(throwCb((e) => new InternalServerErrorException(`Ошибка при обновлении сотрудника: ${e.message}`)));
   }
 
   /**

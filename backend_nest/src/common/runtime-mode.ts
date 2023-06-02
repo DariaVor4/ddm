@@ -6,11 +6,9 @@ const isProd = process.env.NODE_ENV === 'production';
 /**
  * Статичные проверки на режим запуска приложения.
  */
-const runtimeMode = {
+export const runtimeMode = {
   isDev,
   isTest,
   isDebug,
   isProd,
 } as const;
-
-export default runtimeMode;

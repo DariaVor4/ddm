@@ -1,5 +1,5 @@
 import {
-  _throw, assert, ifDebug, joi,
+  throwCb, assert, ifDebug, joi,
 } from '@common';
 import {
   Args, Context, Mutation, Resolver,
@@ -44,19 +44,14 @@ export default class AuthResolver {
     @Args('email', { type: EmailAddress }) email: string,
     @Args('password') password: string,
   ): Promise<TokenResponse> {
-    const { error } = joi.string().email().validate(email);
-    assert(!error, new NotAcceptableException(ifDebug(`DEBUG: Некорректный email: ${email}`) || 'NOT_ACCEPTABLE'));
     // Поиск пользователя
-    const user = await this.prisma.userEntity
-      .findFirstOrThrow({
-        where: { email },
-      })
-      .catch(_throw(new UnauthorizedException(ifDebug('DEBUG: Пользователь не найден'))));
+    const user = await this.prisma.userEntity.findFirstOrThrow({
+      where: { email },
+    }).catch(throwCb(new UnauthorizedException(ifDebug('DEBUG: Пользователь не найден'))));
     // Проверка пароля
-    assert(
-      await this.authService.passwordCheck(password, user.password),
-      new UnauthorizedException(ifDebug('DEBUG: Неверный пароль')),
-    );
+    if (!await this.authService.passwordCheck(password, user.password)) {
+      throw new UnauthorizedException(ifDebug('DEBUG: Неверный пароль'));
+    }
     // Создание новой пары токенов, помещение хэша accessToken в запись пользователя
     const { accessToken, refreshToken, accessTokenExpires } = await this.authService.generateTokens(user);
     // Поместить refreshToken в cookies

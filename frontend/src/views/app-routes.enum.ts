@@ -13,6 +13,7 @@ export const AppRoutesEnum = {
   StudentsRoute: '/students',
   StudentCreate: '/students/create',
   StudentRoute: (id:string) => `/students/${id}`,
+  StudentPattern: '/students/:studentId',
   StudentPassportRoute: (id:string) => `/students/${id}/passport`,
   StudentVisaRoute: (id:string) => `/students/${id}/visa`,
   StudentMigrationCardRoute: (id:string) => `/students/${id}/migration-card`,

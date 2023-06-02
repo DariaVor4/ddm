@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Dayjs } from 'dayjs';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
@@ -6,80 +7,82 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: Dayjs;
+  DateTime: { input: Dayjs; output: Dayjs; }
   /** A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address. */
-  EmailAddress: string;
+  EmailAddress: { input: string; output: string; }
   /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
-  UUID: string;
+  UUID: { input: string; output: string; }
 };
 
 export type GConfirmationEmailEntityCountAggregate = {
-  _all: Scalars['Int'];
-  code: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  email: Scalars['Int'];
-  id: Scalars['Int'];
-  isConfirmed: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  code: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  email: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isConfirmed: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GConfirmationEmailEntityMaxAggregate = {
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  email?: Maybe<Scalars['EmailAddress']>;
-  id?: Maybe<Scalars['UUID']>;
-  isConfirmed?: Maybe<Scalars['Boolean']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  code?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['EmailAddress']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  isConfirmed?: Maybe<Scalars['Boolean']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GConfirmationEmailEntityMinAggregate = {
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  email?: Maybe<Scalars['EmailAddress']>;
-  id?: Maybe<Scalars['UUID']>;
-  isConfirmed?: Maybe<Scalars['Boolean']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  code?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['EmailAddress']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  isConfirmed?: Maybe<Scalars['Boolean']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GConfirmationPhoneEntityCountAggregate = {
-  _all: Scalars['Int'];
-  code: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  id: Scalars['Int'];
-  isConfirmed: Scalars['Int'];
-  phone: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  code: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isConfirmed: Scalars['Int']['output'];
+  phone: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GConfirmationPhoneEntityMaxAggregate = {
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  isConfirmed?: Maybe<Scalars['Boolean']>;
-  phone?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  code?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  isConfirmed?: Maybe<Scalars['Boolean']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GConfirmationPhoneEntityMinAggregate = {
-  code?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  isConfirmed?: Maybe<Scalars['Boolean']>;
-  phone?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  code?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  isConfirmed?: Maybe<Scalars['Boolean']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GEmailAvailabilityResponse = {
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
   verdict: GEmailAvailabilityVerdictEnum;
 };
 
@@ -92,89 +95,89 @@ export enum GEmailAvailabilityVerdictEnum {
 
 export type GEmployeeCreateInput = {
   /** Электронная почта (должна быть подтверждена) */
-  email: Scalars['EmailAddress'];
+  email: Scalars['EmailAddress']['input'];
   /** Имя */
-  firstName?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
   /** Является ли админом? */
-  isAdmin?: Scalars['Boolean'];
+  isAdmin?: Scalars['Boolean']['input'];
   /** Фамилия */
-  lastName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
   /** Отчество */
-  patronymic?: InputMaybe<Scalars['String']>;
+  patronymic?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Сотрудник */
 export type GEmployeeEntity = {
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Имя */
-  firstName?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']['output']>;
   /** Полное имя */
-  fullName: Scalars['String'];
-  id: Scalars['UUID'];
+  fullName: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   /** Инициалы */
-  initials: Scalars['String'];
+  initials: Scalars['String']['output'];
   /** Является ли админом? */
-  isAdmin: Scalars['Boolean'];
+  isAdmin: Scalars['Boolean']['output'];
   /** Фамилия */
-  lastName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']['output']>;
   /** Отчество */
-  patronymic?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
   user: GUserEntity;
 };
 
 export type GEmployeeEntityCountAggregate = {
-  _all: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  firstName: Scalars['Int'];
-  id: Scalars['Int'];
-  isAdmin: Scalars['Int'];
-  lastName: Scalars['Int'];
-  patronymic: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  firstName: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isAdmin: Scalars['Int']['output'];
+  lastName: Scalars['Int']['output'];
+  patronymic: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GEmployeeEntityMaxAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  firstName?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  isAdmin?: Maybe<Scalars['Boolean']>;
-  lastName?: Maybe<Scalars['String']>;
-  patronymic?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  isAdmin?: Maybe<Scalars['Boolean']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GEmployeeEntityMinAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  firstName?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  isAdmin?: Maybe<Scalars['Boolean']>;
-  lastName?: Maybe<Scalars['String']>;
-  patronymic?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  isAdmin?: Maybe<Scalars['Boolean']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GEmployeeUpdateInput = {
   /** Электронная почта (должна быть подтверждена) */
-  email?: InputMaybe<Scalars['EmailAddress']>;
+  email?: InputMaybe<Scalars['EmailAddress']['input']>;
   /** Имя */
-  firstName?: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['UUID']['input'];
   /** Является ли админом? */
-  isAdmin?: InputMaybe<Scalars['Boolean']>;
+  isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   /** Фамилия */
-  lastName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
   /** Отчество */
-  patronymic?: InputMaybe<Scalars['String']>;
+  patronymic?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GEmployeeUpsertInput = {
-  email?: InputMaybe<Scalars['EmailAddress']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  isAdmin?: InputMaybe<Scalars['Boolean']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
-  patronymic?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['EmailAddress']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  patronymic?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Пол */
@@ -187,47 +190,49 @@ export type GMutation = {
   /** Создание сотрудника */
   createEmployee: GEmployeeEntity;
   /** Подтверждение электронной почты кодом. Возвращает true, если почта успешно подтверждена. */
-  emailConfirmByCode: Scalars['Boolean'];
+  emailConfirmByCode: Scalars['Boolean']['output'];
   /** Перезапись сотрудника */
   employeeUpsert: GEmployeeEntity;
   /** Удаление сотрудников */
-  employeesDelete: Scalars['Int'];
+  employeesDelete: Scalars['Int']['output'];
   /** Вход по почте и паролю, возвращает токен доступа и время его истечения */
   loginByPassword: GTokenResponse;
   /** Обновление пары токенов для авторизованного пользователя */
   refreshTokens: GTokenResponse;
   /** Регистрация студента. Сначала необходимо подтвердить почту. */
-  registration: Scalars['Boolean'];
+  registration: Scalars['Boolean']['output'];
   /** Отправка кода подтверждения почты. Устанавливает RegistrationToken в cookies. Возвращает время до которого необходимо завершить регистрацию. */
-  sendConfirmationCode: Scalars['DateTime'];
+  sendConfirmationCode: Scalars['DateTime']['output'];
   /** Удаление уведомления о прибытии студента */
-  studentArrivalNoticeDelete: Scalars['Boolean'];
+  studentArrivalNoticeDelete: Scalars['Boolean']['output'];
   /** Перезапись уведомления о прибытии студента */
-  studentArrivalNoticeUpsert: Scalars['Boolean'];
+  studentArrivalNoticeUpsert: Scalars['Boolean']['output'];
   /** Удалить близкого родственника студента. */
-  studentCloseRelativeDelete: Scalars['Int'];
+  studentCloseRelativeDelete: Scalars['Int']['output'];
   /** Перезапись близкого родственника студента. */
-  studentCloseRelativeUpsert: Scalars['Boolean'];
+  studentCloseRelativeUpsert: Scalars['Boolean']['output'];
   /** Создание/регистрация студента. */
   studentCreate: GStudentEntity;
   /** Удаление миграционной карты студента */
-  studentMigrationCardDelete: Scalars['Boolean'];
+  studentMigrationCardDelete: Scalars['Boolean']['output'];
   /** Перезапись миграционной карты студента */
-  studentMigrationCardUpsert: Scalars['Boolean'];
+  studentMigrationCardUpsert: Scalars['Boolean']['output'];
   /** Удаление паспорта студента. Студент не может удалить свой паспорт. */
-  studentPassportDelete: Scalars['Boolean'];
+  studentPassportDelete: Scalars['Boolean']['output'];
   /** Перезапись паспорта студента. */
-  studentPassportUpsert: Scalars['Boolean'];
+  studentPassportUpsert: Scalars['Boolean']['output'];
   /** Обновление студента. */
   studentUpdate: GStudentEntity;
+  /** Перезапись студента. */
+  studentUpsert: Scalars['Boolean']['output'];
   /** Удаление визы студента */
-  studentVisaDelete: Scalars['Boolean'];
+  studentVisaDelete: Scalars['Boolean']['output'];
   /** Перезапись визы студента */
-  studentVisaUpsert: Scalars['Boolean'];
+  studentVisaUpsert: Scalars['Boolean']['output'];
   /** Удаление студентов. */
-  studentsDelete: Array<Scalars['Int']>;
+  studentsDelete: Scalars['Int']['output'];
   /** Перезапись сотрудника */
-  updateEmployee: Scalars['Boolean'];
+  updateEmployee: Scalars['Boolean']['output'];
 };
 
 
@@ -237,51 +242,51 @@ export type GMutationCreateEmployeeArgs = {
 
 
 export type GMutationEmailConfirmByCodeArgs = {
-  code: Scalars['String'];
-  email: Scalars['EmailAddress'];
+  code: Scalars['String']['input'];
+  email: Scalars['EmailAddress']['input'];
 };
 
 
 export type GMutationEmployeeUpsertArgs = {
-  employeeId?: InputMaybe<Scalars['UUID']>;
+  employeeId?: InputMaybe<Scalars['UUID']['input']>;
   input: GEmployeeUpsertInput;
 };
 
 
 export type GMutationEmployeesDeleteArgs = {
-  employeeIds: Array<Scalars['UUID']>;
+  employeeIds: Array<Scalars['UUID']['input']>;
 };
 
 
 export type GMutationLoginByPasswordArgs = {
-  email: Scalars['EmailAddress'];
-  password: Scalars['String'];
+  email: Scalars['EmailAddress']['input'];
+  password: Scalars['String']['input'];
 };
 
 
 export type GMutationRegistrationArgs = {
-  input: GStudentCreateInput;
+  input: GStudentUpsertInput;
 };
 
 
 export type GMutationSendConfirmationCodeArgs = {
-  email: Scalars['EmailAddress'];
+  email: Scalars['EmailAddress']['input'];
 };
 
 
 export type GMutationStudentArrivalNoticeDeleteArgs = {
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 };
 
 
 export type GMutationStudentArrivalNoticeUpsertArgs = {
   data: GStudentArrivalNoticeUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GMutationStudentCloseRelativeDeleteArgs = {
-  closeRelativeIds: Array<Scalars['UUID']>;
+  closeRelativeIds: Array<Scalars['UUID']['input']>;
 };
 
 
@@ -296,24 +301,24 @@ export type GMutationStudentCreateArgs = {
 
 
 export type GMutationStudentMigrationCardDeleteArgs = {
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 };
 
 
 export type GMutationStudentMigrationCardUpsertArgs = {
   data: GStudentMigrationCardUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GMutationStudentPassportDeleteArgs = {
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 };
 
 
 export type GMutationStudentPassportUpsertArgs = {
   data: GStudentPassportUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
@@ -322,19 +327,25 @@ export type GMutationStudentUpdateArgs = {
 };
 
 
+export type GMutationStudentUpsertArgs = {
+  input: GStudentUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
 export type GMutationStudentVisaDeleteArgs = {
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 };
 
 
 export type GMutationStudentVisaUpsertArgs = {
   data: GStudentVisaUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GMutationStudentsDeleteArgs = {
-  ids: Array<Scalars['UUID']>;
+  ids: Array<Scalars['UUID']['input']>;
 };
 
 
@@ -346,80 +357,80 @@ export type GMutationUpdateEmployeeArgs = {
 export type GNotificationEntity = {
   _count: GNotificationEntityCount;
   /** Содержимое */
-  content: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  id: Scalars['UUID'];
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
   /** Заголовок */
-  title: Scalars['String'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  title: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
   /** Получатели */
   users?: Maybe<Array<GNotificationToUserEntity>>;
 };
 
 export type GNotificationEntityCount = {
-  users: Scalars['Int'];
+  users: Scalars['Int']['output'];
 };
 
 export type GNotificationEntityCountAggregate = {
-  _all: Scalars['Int'];
-  content: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  id: Scalars['Int'];
-  title: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  content: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  title: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GNotificationEntityMaxAggregate = {
-  content?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  title?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  content?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GNotificationEntityMinAggregate = {
-  content?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  title?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  content?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Уведомления для пользователей */
 export type GNotificationToUserEntity = {
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Прочитано ли уведомление? */
-  isRead: Scalars['Boolean'];
+  isRead: Scalars['Boolean']['output'];
   notification: GNotificationEntity;
-  notificationId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  notificationId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
   user: GUserEntity;
-  userId: Scalars['UUID'];
+  userId: Scalars['UUID']['output'];
 };
 
 export type GNotificationToUserEntityCountAggregate = {
-  _all: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  isRead: Scalars['Int'];
-  notificationId: Scalars['Int'];
-  updatedAt: Scalars['Int'];
-  userId: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  isRead: Scalars['Int']['output'];
+  notificationId: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
 };
 
 export type GNotificationToUserEntityMaxAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  isRead?: Maybe<Scalars['Boolean']>;
-  notificationId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  userId?: Maybe<Scalars['UUID']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  isRead?: Maybe<Scalars['Boolean']['output']>;
+  notificationId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['UUID']['output']>;
 };
 
 export type GNotificationToUserEntityMinAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  isRead?: Maybe<Scalars['Boolean']>;
-  notificationId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  userId?: Maybe<Scalars['UUID']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  isRead?: Maybe<Scalars['Boolean']['output']>;
+  notificationId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['UUID']['output']>;
 };
 
 export type GQuery = {
@@ -451,243 +462,243 @@ export type GQuery = {
 
 
 export type GQueryEmailAvailabilityArgs = {
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 };
 
 
 export type GQueryEmployeeArgs = {
-  employeeId?: InputMaybe<Scalars['UUID']>;
+  employeeId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GQueryStudentArgs = {
-  id: Scalars['UUID'];
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GQueryStudentArrivalNoticeArgs = {
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GQueryStudentCloseRelativeArgs = {
-  closeRelativeId: Scalars['UUID'];
+  closeRelativeId: Scalars['UUID']['input'];
 };
 
 
 export type GQueryStudentCloseRelativesArgs = {
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GQueryStudentMigrationCardArgs = {
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GQueryStudentPassportArgs = {
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
 export type GQueryStudentVisaArgs = {
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 /** Уведомление о прибытии студента */
 export type GStudentArrivalNoticeEntity = {
   /** Адрес регистрации */
-  address?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  address?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Дата регистрации */
-  date?: Maybe<Scalars['DateTime']>;
+  date?: Maybe<Scalars['DateTime']['output']>;
   /** Дата окончания регистрации */
-  expires?: Maybe<Scalars['DateTime']>;
-  id: Scalars['UUID'];
+  expires?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['UUID']['output'];
   /** Приглашающая сторона */
-  invitingSide?: Maybe<Scalars['String']>;
+  invitingSide?: Maybe<Scalars['String']['output']>;
   /** Профессия. Заполняется только сотрудниками. */
-  profession?: Maybe<Scalars['String']>;
+  profession?: Maybe<Scalars['String']['output']>;
   /** Принимающая сторона */
-  receivingSide?: Maybe<Scalars['String']>;
+  receivingSide?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentArrivalNoticeEntityCountAggregate = {
-  _all: Scalars['Int'];
-  address: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  date: Scalars['Int'];
-  expires: Scalars['Int'];
-  id: Scalars['Int'];
-  invitingSide: Scalars['Int'];
-  profession: Scalars['Int'];
-  receivingSide: Scalars['Int'];
-  studentId: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  address: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  date: Scalars['Int']['output'];
+  expires: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  invitingSide: Scalars['Int']['output'];
+  profession: Scalars['Int']['output'];
+  receivingSide: Scalars['Int']['output'];
+  studentId: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GStudentArrivalNoticeEntityMaxAggregate = {
-  address?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  date?: Maybe<Scalars['DateTime']>;
-  expires?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  invitingSide?: Maybe<Scalars['String']>;
-  profession?: Maybe<Scalars['String']>;
-  receivingSide?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  address?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  date?: Maybe<Scalars['DateTime']['output']>;
+  expires?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  invitingSide?: Maybe<Scalars['String']['output']>;
+  profession?: Maybe<Scalars['String']['output']>;
+  receivingSide?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentArrivalNoticeEntityMinAggregate = {
-  address?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  date?: Maybe<Scalars['DateTime']>;
-  expires?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  invitingSide?: Maybe<Scalars['String']>;
-  profession?: Maybe<Scalars['String']>;
-  receivingSide?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  address?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  date?: Maybe<Scalars['DateTime']['output']>;
+  expires?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  invitingSide?: Maybe<Scalars['String']['output']>;
+  profession?: Maybe<Scalars['String']['output']>;
+  receivingSide?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Входные данные для создания/обновления уведомления о прибытии студента */
 export type GStudentArrivalNoticeUpsertInput = {
-  address?: InputMaybe<Scalars['String']>;
-  date?: InputMaybe<Scalars['DateTime']>;
-  expires?: InputMaybe<Scalars['DateTime']>;
-  invitingSide?: InputMaybe<Scalars['String']>;
-  profession?: InputMaybe<Scalars['String']>;
-  receivingSide?: InputMaybe<Scalars['String']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['DateTime']['input']>;
+  expires?: InputMaybe<Scalars['DateTime']['input']>;
+  invitingSide?: InputMaybe<Scalars['String']['input']>;
+  profession?: InputMaybe<Scalars['String']['input']>;
+  receivingSide?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Уведомление о прибытии студента без возможности выбора самого студента */
 export type GStudentArrivalNoticeWithoutStudentResult = {
   /** Адрес регистрации */
-  address?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  address?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Дата регистрации */
-  date?: Maybe<Scalars['DateTime']>;
+  date?: Maybe<Scalars['DateTime']['output']>;
   /** Дата окончания регистрации */
-  expires?: Maybe<Scalars['DateTime']>;
-  id: Scalars['UUID'];
+  expires?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['UUID']['output'];
   /** Приглашающая сторона */
-  invitingSide?: Maybe<Scalars['String']>;
+  invitingSide?: Maybe<Scalars['String']['output']>;
   /** Профессия. Заполняется только сотрудниками. */
-  profession?: Maybe<Scalars['String']>;
+  profession?: Maybe<Scalars['String']['output']>;
   /** Принимающая сторона */
-  receivingSide?: Maybe<Scalars['String']>;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  receivingSide?: Maybe<Scalars['String']['output']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Близкие родственники студента */
 export type GStudentCloseRelativeEntity = {
   /** Постоянное место жительства */
-  addressContinuousResidence?: Maybe<Scalars['String']>;
+  addressContinuousResidence?: Maybe<Scalars['String']['output']>;
   /** Дата рождения */
-  birthDate?: Maybe<Scalars['DateTime']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
   /** Гражданство */
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Имя */
-  firstName?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
+  firstName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
   /** Фамилия */
-  lastName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']['output']>;
   /** Отчество */
-  patronymic?: Maybe<Scalars['String']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentCloseRelativeEntityCountAggregate = {
-  _all: Scalars['Int'];
-  addressContinuousResidence: Scalars['Int'];
-  birthDate: Scalars['Int'];
-  citizenship: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  firstName: Scalars['Int'];
-  id: Scalars['Int'];
-  lastName: Scalars['Int'];
-  patronymic: Scalars['Int'];
-  studentId: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  addressContinuousResidence: Scalars['Int']['output'];
+  birthDate: Scalars['Int']['output'];
+  citizenship: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  firstName: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  lastName: Scalars['Int']['output'];
+  patronymic: Scalars['Int']['output'];
+  studentId: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GStudentCloseRelativeEntityMaxAggregate = {
-  addressContinuousResidence?: Maybe<Scalars['String']>;
-  birthDate?: Maybe<Scalars['DateTime']>;
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  firstName?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  lastName?: Maybe<Scalars['String']>;
-  patronymic?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  addressContinuousResidence?: Maybe<Scalars['String']['output']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentCloseRelativeEntityMinAggregate = {
-  addressContinuousResidence?: Maybe<Scalars['String']>;
-  birthDate?: Maybe<Scalars['DateTime']>;
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  firstName?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  lastName?: Maybe<Scalars['String']>;
-  patronymic?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  addressContinuousResidence?: Maybe<Scalars['String']['output']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentCloseRelativeUpsertInput = {
-  addressContinuousResidence?: InputMaybe<Scalars['String']>;
-  birthDate?: InputMaybe<Scalars['DateTime']>;
-  citizenship?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  patronymic?: InputMaybe<Scalars['String']>;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  addressContinuousResidence?: InputMaybe<Scalars['String']['input']>;
+  birthDate?: InputMaybe<Scalars['DateTime']['input']>;
+  citizenship?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['UUID']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  patronymic?: InputMaybe<Scalars['String']['input']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 /** Близкий родственник студента без возможности выбора самого студента */
 export type GStudentCloseRelativeWithoutStudentResult = {
   /** Постоянное место жительства */
-  addressContinuousResidence?: Maybe<Scalars['String']>;
+  addressContinuousResidence?: Maybe<Scalars['String']['output']>;
   /** Дата рождения */
-  birthDate?: Maybe<Scalars['DateTime']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
   /** Гражданство */
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Имя */
-  firstName?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
+  firstName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
   /** Фамилия */
-  lastName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']['output']>;
   /** Отчество */
-  patronymic?: Maybe<Scalars['String']>;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentCreateInput = {
-  course?: InputMaybe<Scalars['Int']>;
-  curator?: InputMaybe<Scalars['String']>;
-  email: Scalars['EmailAddress'];
-  faculty?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  group?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  password: Scalars['String'];
-  patronymic?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
+  course?: InputMaybe<Scalars['Int']['input']>;
+  curator?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['EmailAddress']['input'];
+  faculty?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  group?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  patronymic?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Студент */
@@ -698,26 +709,26 @@ export type GStudentEntity = {
   /** Близкие родственники */
   closeRelatives?: Maybe<Array<GStudentCloseRelativeEntity>>;
   /** Курс */
-  course?: Maybe<Scalars['Int']>;
-  createdAt: Scalars['DateTime'];
+  course?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Куратор */
-  curator?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']['output']>;
   /** Факультет */
-  faculty?: Maybe<Scalars['String']>;
-  /** Полное имя */
-  fullName: Scalars['String'];
+  faculty?: Maybe<Scalars['String']['output']>;
+  /** Полное имя. Использовать только если в запросе присутствует паспорт студента. */
+  fullName: Scalars['String']['output'];
   /** Группа */
-  group?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  /** Инициалы */
-  initials: Scalars['String'];
+  group?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
+  /** Инициалы. Использовать только если в запросе присутствует паспорт студента. */
+  initials: Scalars['String']['output'];
   /** Миграционная карта */
   migrationCard?: Maybe<GStudentMigrationCardEntity>;
   /** Паспорт */
   passport?: Maybe<GStudentPassportEntity>;
   /** Телефон */
-  phone?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
   user: GUserEntity;
   /** Виза */
   visa?: Maybe<GStudentVisaEntity>;
@@ -726,469 +737,482 @@ export type GStudentEntity = {
 };
 
 export type GStudentEntityAvgAggregate = {
-  course?: Maybe<Scalars['Float']>;
+  course?: Maybe<Scalars['Float']['output']>;
 };
 
 export type GStudentEntityCount = {
-  closeRelatives: Scalars['Int'];
-  visaRequests: Scalars['Int'];
+  closeRelatives: Scalars['Int']['output'];
+  visaRequests: Scalars['Int']['output'];
 };
 
 export type GStudentEntityCountAggregate = {
-  _all: Scalars['Int'];
-  course: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  curator: Scalars['Int'];
-  faculty: Scalars['Int'];
-  group: Scalars['Int'];
-  id: Scalars['Int'];
-  phone: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  course: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  curator: Scalars['Int']['output'];
+  faculty: Scalars['Int']['output'];
+  group: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  phone: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GStudentEntityMaxAggregate = {
-  course?: Maybe<Scalars['Int']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  curator?: Maybe<Scalars['String']>;
-  faculty?: Maybe<Scalars['String']>;
-  group?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  phone?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  course?: Maybe<Scalars['Int']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  curator?: Maybe<Scalars['String']['output']>;
+  faculty?: Maybe<Scalars['String']['output']>;
+  group?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentEntityMinAggregate = {
-  course?: Maybe<Scalars['Int']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  curator?: Maybe<Scalars['String']>;
-  faculty?: Maybe<Scalars['String']>;
-  group?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  phone?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  course?: Maybe<Scalars['Int']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  curator?: Maybe<Scalars['String']['output']>;
+  faculty?: Maybe<Scalars['String']['output']>;
+  group?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentEntitySumAggregate = {
-  course?: Maybe<Scalars['Int']>;
+  course?: Maybe<Scalars['Int']['output']>;
 };
 
 /** Миграционная карта студента */
 export type GStudentMigrationCardEntity = {
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Дата истечения */
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  id: Scalars['UUID'];
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['UUID']['output'];
   /** Дата выдачи */
-  issueDate?: Maybe<Scalars['DateTime']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
   /** Номер */
-  number?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['String']['output']>;
   /** Серия */
-  series?: Maybe<Scalars['String']>;
+  series?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentMigrationCardEntityCountAggregate = {
-  _all: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  expirationDate: Scalars['Int'];
-  id: Scalars['Int'];
-  issueDate: Scalars['Int'];
-  number: Scalars['Int'];
-  series: Scalars['Int'];
-  studentId: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  expirationDate: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  issueDate: Scalars['Int']['output'];
+  number: Scalars['Int']['output'];
+  series: Scalars['Int']['output'];
+  studentId: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GStudentMigrationCardEntityMaxAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  issueDate?: Maybe<Scalars['DateTime']>;
-  number?: Maybe<Scalars['String']>;
-  series?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  series?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentMigrationCardEntityMinAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['UUID']>;
-  issueDate?: Maybe<Scalars['DateTime']>;
-  number?: Maybe<Scalars['String']>;
-  series?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  series?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Входные данные для создания/обновления миграционной карты студента */
 export type GStudentMigrationCardUpsertInput = {
-  expirationDate?: InputMaybe<Scalars['DateTime']>;
-  issueDate?: InputMaybe<Scalars['DateTime']>;
-  number?: InputMaybe<Scalars['String']>;
-  series?: InputMaybe<Scalars['String']>;
+  expirationDate?: InputMaybe<Scalars['DateTime']['input']>;
+  issueDate?: InputMaybe<Scalars['DateTime']['input']>;
+  number?: InputMaybe<Scalars['String']['input']>;
+  series?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Миграционная карта студента без возможности выбора самого студента */
 export type GStudentMigrationCardWithoutStudentResponse = {
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Дата истечения */
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  id: Scalars['UUID'];
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['UUID']['output'];
   /** Дата выдачи */
-  issueDate?: Maybe<Scalars['DateTime']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
   /** Номер */
-  number?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['String']['output']>;
   /** Серия */
-  series?: Maybe<Scalars['String']>;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  series?: Maybe<Scalars['String']['output']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Паспорт студента */
 export type GStudentPassportEntity = {
   /** Дата рождения */
-  birthDate?: Maybe<Scalars['DateTime']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
   /** Место рождения */
-  birthPlace?: Maybe<Scalars['String']>;
+  birthPlace?: Maybe<Scalars['String']['output']>;
   /** Гражданство */
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Дата истечения */
-  expirationDate?: Maybe<Scalars['DateTime']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
   /** Имя */
-  firstName?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']['output']>;
   /** Пол */
   gender?: Maybe<GGenderEnum>;
-  id: Scalars['UUID'];
+  id: Scalars['UUID']['output'];
   /** Дата выдачи */
-  issueDate?: Maybe<Scalars['DateTime']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
   /** Кем выдан */
-  issuedBy?: Maybe<Scalars['String']>;
+  issuedBy?: Maybe<Scalars['String']['output']>;
   /** Фамилия */
-  lastName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']['output']>;
   /** Номер */
-  number?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['String']['output']>;
   /** Отчество */
-  patronymic?: Maybe<Scalars['String']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
   /** Серия */
-  series?: Maybe<Scalars['String']>;
+  series?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentPassportEntityCountAggregate = {
-  _all: Scalars['Int'];
-  birthDate: Scalars['Int'];
-  birthPlace: Scalars['Int'];
-  citizenship: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  expirationDate: Scalars['Int'];
-  firstName: Scalars['Int'];
-  gender: Scalars['Int'];
-  id: Scalars['Int'];
-  issueDate: Scalars['Int'];
-  issuedBy: Scalars['Int'];
-  lastName: Scalars['Int'];
-  number: Scalars['Int'];
-  patronymic: Scalars['Int'];
-  series: Scalars['Int'];
-  studentId: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  birthDate: Scalars['Int']['output'];
+  birthPlace: Scalars['Int']['output'];
+  citizenship: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  expirationDate: Scalars['Int']['output'];
+  firstName: Scalars['Int']['output'];
+  gender: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  issueDate: Scalars['Int']['output'];
+  issuedBy: Scalars['Int']['output'];
+  lastName: Scalars['Int']['output'];
+  number: Scalars['Int']['output'];
+  patronymic: Scalars['Int']['output'];
+  series: Scalars['Int']['output'];
+  studentId: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GStudentPassportEntityMaxAggregate = {
-  birthDate?: Maybe<Scalars['DateTime']>;
-  birthPlace?: Maybe<Scalars['String']>;
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  firstName?: Maybe<Scalars['String']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
+  birthPlace?: Maybe<Scalars['String']['output']>;
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<GGenderEnum>;
-  id?: Maybe<Scalars['UUID']>;
-  issueDate?: Maybe<Scalars['DateTime']>;
-  issuedBy?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  number?: Maybe<Scalars['String']>;
-  patronymic?: Maybe<Scalars['String']>;
-  series?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
+  issuedBy?: Maybe<Scalars['String']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  series?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentPassportEntityMinAggregate = {
-  birthDate?: Maybe<Scalars['DateTime']>;
-  birthPlace?: Maybe<Scalars['String']>;
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  firstName?: Maybe<Scalars['String']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
+  birthPlace?: Maybe<Scalars['String']['output']>;
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<GGenderEnum>;
-  id?: Maybe<Scalars['UUID']>;
-  issueDate?: Maybe<Scalars['DateTime']>;
-  issuedBy?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  number?: Maybe<Scalars['String']>;
-  patronymic?: Maybe<Scalars['String']>;
-  series?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
+  issuedBy?: Maybe<Scalars['String']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
+  series?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Входные данные для создания/обновления паспорта студента */
 export type GStudentPassportUpsertInput = {
-  birthDate?: InputMaybe<Scalars['DateTime']>;
-  birthPlace?: InputMaybe<Scalars['String']>;
-  citizenship?: InputMaybe<Scalars['String']>;
-  expirationDate?: InputMaybe<Scalars['DateTime']>;
-  firstName?: InputMaybe<Scalars['String']>;
+  birthDate?: InputMaybe<Scalars['DateTime']['input']>;
+  birthPlace?: InputMaybe<Scalars['String']['input']>;
+  citizenship?: InputMaybe<Scalars['String']['input']>;
+  expirationDate?: InputMaybe<Scalars['DateTime']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<GGenderEnum>;
-  issueDate?: InputMaybe<Scalars['DateTime']>;
-  issuedBy?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  number?: InputMaybe<Scalars['String']>;
-  patronymic?: InputMaybe<Scalars['String']>;
-  series?: InputMaybe<Scalars['String']>;
+  issueDate?: InputMaybe<Scalars['DateTime']['input']>;
+  issuedBy?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  number?: InputMaybe<Scalars['String']['input']>;
+  patronymic?: InputMaybe<Scalars['String']['input']>;
+  series?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Паспорт студента, где вместо студента присутствует только его studentId. */
 export type GStudentPassportWithoutStudentResult = {
   /** Дата рождения */
-  birthDate?: Maybe<Scalars['DateTime']>;
+  birthDate?: Maybe<Scalars['DateTime']['output']>;
   /** Место рождения */
-  birthPlace?: Maybe<Scalars['String']>;
+  birthPlace?: Maybe<Scalars['String']['output']>;
   /** Гражданство */
-  citizenship?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  citizenship?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Дата истечения */
-  expirationDate?: Maybe<Scalars['DateTime']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
   /** Имя */
-  firstName?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']['output']>;
   /** Пол */
   gender?: Maybe<GGenderEnum>;
-  id: Scalars['UUID'];
+  id: Scalars['UUID']['output'];
   /** Дата выдачи */
-  issueDate?: Maybe<Scalars['DateTime']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
   /** Кем выдан */
-  issuedBy?: Maybe<Scalars['String']>;
+  issuedBy?: Maybe<Scalars['String']['output']>;
   /** Фамилия */
-  lastName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']['output']>;
   /** Номер */
-  number?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['String']['output']>;
   /** Отчество */
-  patronymic?: Maybe<Scalars['String']>;
+  patronymic?: Maybe<Scalars['String']['output']>;
   /** Серия */
-  series?: Maybe<Scalars['String']>;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  series?: Maybe<Scalars['String']['output']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentUpdateInput = {
-  course?: InputMaybe<Scalars['Int']>;
-  curator?: InputMaybe<Scalars['String']>;
-  email?: InputMaybe<Scalars['EmailAddress']>;
-  faculty?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  group?: InputMaybe<Scalars['String']>;
+  course?: InputMaybe<Scalars['Int']['input']>;
+  curator?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['EmailAddress']['input']>;
+  faculty?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  group?: InputMaybe<Scalars['String']['input']>;
   /** Идентификатор пользователя */
-  id: Scalars['UUID'];
-  lastName?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
-  patronymic?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID']['input'];
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  patronymic?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GStudentUpsertInput = {
+  course?: InputMaybe<Scalars['Int']['input']>;
+  curator?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['EmailAddress']['input']>;
+  faculty?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  group?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  patronymic?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Виза студента */
 export type GStudentVisaEntity = {
   /** Серия бланка */
-  blankSeries?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  blankSeries?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Дата истечения */
-  expirationDate?: Maybe<Scalars['DateTime']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
   /** Идентификатор визы */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Номер приглашения */
-  invitationNumber?: Maybe<Scalars['String']>;
+  invitationNumber?: Maybe<Scalars['String']['output']>;
   /** Дата выдачи */
-  issueDate?: Maybe<Scalars['DateTime']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
   /** Номер */
-  number?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentVisaEntityCountAggregate = {
-  _all: Scalars['Int'];
-  blankSeries: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  expirationDate: Scalars['Int'];
-  id: Scalars['Int'];
-  invitationNumber: Scalars['Int'];
-  issueDate: Scalars['Int'];
-  number: Scalars['Int'];
-  studentId: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  blankSeries: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  expirationDate: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  invitationNumber: Scalars['Int']['output'];
+  issueDate: Scalars['Int']['output'];
+  number: Scalars['Int']['output'];
+  studentId: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GStudentVisaEntityMaxAggregate = {
-  blankSeries?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['String']>;
-  invitationNumber?: Maybe<Scalars['String']>;
-  issueDate?: Maybe<Scalars['DateTime']>;
-  number?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  blankSeries?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  invitationNumber?: Maybe<Scalars['String']['output']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentVisaEntityMinAggregate = {
-  blankSeries?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  expirationDate?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['String']>;
-  invitationNumber?: Maybe<Scalars['String']>;
-  issueDate?: Maybe<Scalars['DateTime']>;
-  number?: Maybe<Scalars['String']>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  blankSeries?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  invitationNumber?: Maybe<Scalars['String']['output']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Визовая анкета студента */
 export type GStudentVisaRequestEntity = {
   /** Адрес в стране постоянного проживания */
-  addressInCountryOfContinuousResidence?: Maybe<Scalars['String']>;
+  addressInCountryOfContinuousResidence?: Maybe<Scalars['String']['output']>;
   /** Адрес постановки на миграционный учет */
-  addressOfMigrationRegistration?: Maybe<Scalars['String']>;
+  addressOfMigrationRegistration?: Maybe<Scalars['String']['output']>;
   /** Прилагаемые документы */
-  attachedDocuments?: Maybe<Scalars['String']>;
+  attachedDocuments?: Maybe<Scalars['String']['output']>;
   /** Категория визы */
   category?: Maybe<GVisaCategoryEnum>;
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Комментарий сотрудника */
-  employeeComment?: Maybe<Scalars['String']>;
+  employeeComment?: Maybe<Scalars['String']['output']>;
   /** Маршрут предполагаемого пребывания */
-  estimatedRouteOfStay?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
+  estimatedRouteOfStay?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
   /** Кратность визы */
   multiplicity?: Maybe<GVisaMultiplicityEnum>;
   /** Место работы или учёбы, должность */
-  placeOfWorkOrStudyAndEmploymentPosition?: Maybe<Scalars['String']>;
+  placeOfWorkOrStudyAndEmploymentPosition?: Maybe<Scalars['String']['output']>;
   /** В связи с ... */
-  reason?: Maybe<Scalars['String']>;
+  reason?: Maybe<Scalars['String']['output']>;
   /** Регистрационный номер заполняемый только сотрудником */
-  registrationNumber?: Maybe<Scalars['String']>;
+  registrationNumber?: Maybe<Scalars['String']['output']>;
   /** Родственники на территории РФ */
-  russianFederationRelatives?: Maybe<Scalars['String']>;
+  russianFederationRelatives?: Maybe<Scalars['String']['output']>;
   /** Статус визовой анкеты */
   status: GVisaRequestStatusEnum;
   student: GStudentEntity;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentVisaRequestEntityCountAggregate = {
-  _all: Scalars['Int'];
-  addressInCountryOfContinuousResidence: Scalars['Int'];
-  addressOfMigrationRegistration: Scalars['Int'];
-  attachedDocuments: Scalars['Int'];
-  category: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  employeeComment: Scalars['Int'];
-  estimatedRouteOfStay: Scalars['Int'];
-  id: Scalars['Int'];
-  multiplicity: Scalars['Int'];
-  placeOfWorkOrStudyAndEmploymentPosition: Scalars['Int'];
-  reason: Scalars['Int'];
-  registrationNumber: Scalars['Int'];
-  russianFederationRelatives: Scalars['Int'];
-  status: Scalars['Int'];
-  studentId: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  addressInCountryOfContinuousResidence: Scalars['Int']['output'];
+  addressOfMigrationRegistration: Scalars['Int']['output'];
+  attachedDocuments: Scalars['Int']['output'];
+  category: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  employeeComment: Scalars['Int']['output'];
+  estimatedRouteOfStay: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  multiplicity: Scalars['Int']['output'];
+  placeOfWorkOrStudyAndEmploymentPosition: Scalars['Int']['output'];
+  reason: Scalars['Int']['output'];
+  registrationNumber: Scalars['Int']['output'];
+  russianFederationRelatives: Scalars['Int']['output'];
+  status: Scalars['Int']['output'];
+  studentId: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GStudentVisaRequestEntityMaxAggregate = {
-  addressInCountryOfContinuousResidence?: Maybe<Scalars['String']>;
-  addressOfMigrationRegistration?: Maybe<Scalars['String']>;
-  attachedDocuments?: Maybe<Scalars['String']>;
+  addressInCountryOfContinuousResidence?: Maybe<Scalars['String']['output']>;
+  addressOfMigrationRegistration?: Maybe<Scalars['String']['output']>;
+  attachedDocuments?: Maybe<Scalars['String']['output']>;
   category?: Maybe<GVisaCategoryEnum>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  employeeComment?: Maybe<Scalars['String']>;
-  estimatedRouteOfStay?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  employeeComment?: Maybe<Scalars['String']['output']>;
+  estimatedRouteOfStay?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
   multiplicity?: Maybe<GVisaMultiplicityEnum>;
-  placeOfWorkOrStudyAndEmploymentPosition?: Maybe<Scalars['String']>;
-  reason?: Maybe<Scalars['String']>;
-  registrationNumber?: Maybe<Scalars['String']>;
-  russianFederationRelatives?: Maybe<Scalars['String']>;
+  placeOfWorkOrStudyAndEmploymentPosition?: Maybe<Scalars['String']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  registrationNumber?: Maybe<Scalars['String']['output']>;
+  russianFederationRelatives?: Maybe<Scalars['String']['output']>;
   status?: Maybe<GVisaRequestStatusEnum>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GStudentVisaRequestEntityMinAggregate = {
-  addressInCountryOfContinuousResidence?: Maybe<Scalars['String']>;
-  addressOfMigrationRegistration?: Maybe<Scalars['String']>;
-  attachedDocuments?: Maybe<Scalars['String']>;
+  addressInCountryOfContinuousResidence?: Maybe<Scalars['String']['output']>;
+  addressOfMigrationRegistration?: Maybe<Scalars['String']['output']>;
+  attachedDocuments?: Maybe<Scalars['String']['output']>;
   category?: Maybe<GVisaCategoryEnum>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  employeeComment?: Maybe<Scalars['String']>;
-  estimatedRouteOfStay?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  employeeComment?: Maybe<Scalars['String']['output']>;
+  estimatedRouteOfStay?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
   multiplicity?: Maybe<GVisaMultiplicityEnum>;
-  placeOfWorkOrStudyAndEmploymentPosition?: Maybe<Scalars['String']>;
-  reason?: Maybe<Scalars['String']>;
-  registrationNumber?: Maybe<Scalars['String']>;
-  russianFederationRelatives?: Maybe<Scalars['String']>;
+  placeOfWorkOrStudyAndEmploymentPosition?: Maybe<Scalars['String']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  registrationNumber?: Maybe<Scalars['String']['output']>;
+  russianFederationRelatives?: Maybe<Scalars['String']['output']>;
   status?: Maybe<GVisaRequestStatusEnum>;
-  studentId?: Maybe<Scalars['UUID']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  studentId?: Maybe<Scalars['UUID']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Входные данные для создания/обновления визы студента */
 export type GStudentVisaUpsertInput = {
-  blankSeries?: InputMaybe<Scalars['String']>;
-  expirationDate?: InputMaybe<Scalars['DateTime']>;
-  id: Scalars['String'];
-  invitationNumber?: InputMaybe<Scalars['String']>;
-  issueDate?: InputMaybe<Scalars['DateTime']>;
-  number?: InputMaybe<Scalars['String']>;
+  blankSeries?: InputMaybe<Scalars['String']['input']>;
+  expirationDate?: InputMaybe<Scalars['DateTime']['input']>;
+  id: Scalars['String']['input'];
+  invitationNumber?: InputMaybe<Scalars['String']['input']>;
+  issueDate?: InputMaybe<Scalars['DateTime']['input']>;
+  number?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Виза студента без возможности выбора самого студента */
 export type GStudentVisaWithoutStudentResponse = {
   /** Серия бланка */
-  blankSeries?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
+  blankSeries?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
   /** Дата истечения */
-  expirationDate?: Maybe<Scalars['DateTime']>;
+  expirationDate?: Maybe<Scalars['DateTime']['output']>;
   /** Идентификатор визы */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Номер приглашения */
-  invitationNumber?: Maybe<Scalars['String']>;
+  invitationNumber?: Maybe<Scalars['String']['output']>;
   /** Дата выдачи */
-  issueDate?: Maybe<Scalars['DateTime']>;
+  issueDate?: Maybe<Scalars['DateTime']['output']>;
   /** Номер */
-  number?: Maybe<Scalars['String']>;
-  studentId: Scalars['UUID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  number?: Maybe<Scalars['String']['output']>;
+  studentId: Scalars['UUID']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Ответ на запрос токена */
 export type GTokenResponse = {
   /** Токен доступа */
-  accessToken: Scalars['String'];
+  accessToken: Scalars['String']['output'];
   /** Время истечения токена */
-  accessTokenExpires: Scalars['DateTime'];
+  accessTokenExpires: Scalars['DateTime']['output'];
 };
 
 export type GUserCurrentResponse = {
   /** Дата истечения токена доступа */
-  accessTokenExpires: Scalars['DateTime'];
+  accessTokenExpires: Scalars['DateTime']['output'];
   /** Роли текущего пользователя */
   roles: Array<GUserRoleEnum>;
   /** Текущий пользователь */
@@ -1198,55 +1222,55 @@ export type GUserCurrentResponse = {
 /** Пользователь */
 export type GUserEntity = {
   _count: GUserEntityCount;
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Электронная почта (должна быть подтверждена) */
-  email: Scalars['EmailAddress'];
+  email: Scalars['EmailAddress']['output'];
   /** Если пользователь - сотрудник */
   employee?: Maybe<GEmployeeEntity>;
-  /** Полное имя. Использовать только если в запросе присутствует паспорт студента или поля сотрудника */
-  fullName: Scalars['String'];
+  /** Полное имя. Использовать только если в запросе присутствуют поля паспорта студента или поля сотрудника. */
+  fullName: Scalars['String']['output'];
   /** Идентификатор пользователя */
-  id: Scalars['UUID'];
-  /** Инициалы. Использовать только если в запросе присутствует паспорт студента или поля сотрудника */
-  initials: Scalars['String'];
+  id: Scalars['UUID']['output'];
+  /** Инициалы. Использовать только если в запросе присутствуют поля паспорта студента или поля сотрудника. */
+  initials: Scalars['String']['output'];
   /** Последняя активность */
-  lastActivity?: Maybe<Scalars['DateTime']>;
+  lastActivity?: Maybe<Scalars['DateTime']['output']>;
   /** Уведомления пользователя */
   notifications?: Maybe<Array<GNotificationToUserEntity>>;
-  /** Роль. Использовать только если в запросе присутствует student или employee.isAdmin */
+  /** Роль. Использовать только если в запросе присутствует student или employee.isAdmin. */
   role: GUserRoleEnum;
   /** Если пользователь - студент */
   student?: Maybe<GStudentEntity>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GUserEntityCount = {
-  notifications: Scalars['Int'];
+  notifications: Scalars['Int']['output'];
 };
 
 export type GUserEntityCountAggregate = {
-  _all: Scalars['Int'];
-  createdAt: Scalars['Int'];
-  email: Scalars['Int'];
-  id: Scalars['Int'];
-  lastActivity: Scalars['Int'];
-  updatedAt: Scalars['Int'];
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  email: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  lastActivity: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
 };
 
 export type GUserEntityMaxAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  email?: Maybe<Scalars['EmailAddress']>;
-  id?: Maybe<Scalars['UUID']>;
-  lastActivity?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['EmailAddress']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  lastActivity?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type GUserEntityMinAggregate = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  email?: Maybe<Scalars['EmailAddress']>;
-  id?: Maybe<Scalars['UUID']>;
-  lastActivity?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['EmailAddress']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  lastActivity?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** Роли пользователя */
@@ -1287,8 +1311,8 @@ export enum GVisaRequestStatusEnum {
 }
 
 export type GLoginByPasswordMutationVariables = Exact<{
-  email: Scalars['EmailAddress'];
-  password: Scalars['String'];
+  email: Scalars['EmailAddress']['input'];
+  password: Scalars['String']['input'];
 }>;
 
 
@@ -1305,7 +1329,7 @@ export type GEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GEmployeesQuery = { employees: Array<{ id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } }> };
 
 export type GEmployeesDeleteMutationVariables = Exact<{
-  employeeIds: Array<Scalars['UUID']> | Scalars['UUID'];
+  employeeIds: Array<Scalars['UUID']['input']> | Scalars['UUID']['input'];
 }>;
 
 
@@ -1313,50 +1337,50 @@ export type GEmployeesDeleteMutation = { employeesDelete: number };
 
 export type GEmployeeUpsertMutationVariables = Exact<{
   input: GEmployeeUpsertInput;
-  employeeId?: InputMaybe<Scalars['UUID']>;
+  employeeId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GEmployeeUpsertMutation = { employeeUpsert: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } } };
 
 export type GEmployeeQueryVariables = Exact<{
-  employeeId?: InputMaybe<Scalars['UUID']>;
+  employeeId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GEmployeeQuery = { employee: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } } };
 
 export type GEmailAvailabilityQueryVariables = Exact<{
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 }>;
 
 
 export type GEmailAvailabilityQuery = { emailAvailability: { verdict: GEmailAvailabilityVerdictEnum, message: string } };
 
 export type GEmailConfirmByCodeMutationVariables = Exact<{
-  email: Scalars['EmailAddress'];
-  code: Scalars['String'];
+  email: Scalars['EmailAddress']['input'];
+  code: Scalars['String']['input'];
 }>;
 
 
 export type GEmailConfirmByCodeMutation = { emailConfirmByCode: boolean };
 
 export type GSendConfirmationCodeMutationVariables = Exact<{
-  email: Scalars['EmailAddress'];
+  email: Scalars['EmailAddress']['input'];
 }>;
 
 
 export type GSendConfirmationCodeMutation = { sendConfirmationCode: Dayjs };
 
 export type GRegistrationMutationVariables = Exact<{
-  input: GStudentCreateInput;
+  input: GStudentUpsertInput;
 }>;
 
 
-export type GRegistrationMutation = { registration: boolean };
+export type GRegistrationMutation = { isRegistered: boolean };
 
 export type GStudentArrivalNoticeQueryVariables = Exact<{
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
@@ -1364,28 +1388,28 @@ export type GStudentArrivalNoticeQuery = { studentArrivalNotice?: { id: string, 
 
 export type GStudentArrivalNoticeUpsertMutationVariables = Exact<{
   data: GStudentArrivalNoticeUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GStudentArrivalNoticeUpsertMutation = { isSuccess: boolean };
 
 export type GStudentArrivalNoticeDeleteMutationVariables = Exact<{
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 }>;
 
 
 export type GStudentArrivalNoticeDeleteMutation = { isDeleted: boolean };
 
 export type GStudentCloseRelativesQueryVariables = Exact<{
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GStudentCloseRelativesQuery = { studentCloseRelatives: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> };
 
 export type GStudentCloseRelativeQueryVariables = Exact<{
-  closeRelativeId: Scalars['UUID'];
+  closeRelativeId: Scalars['UUID']['input'];
 }>;
 
 
@@ -1399,21 +1423,21 @@ export type GStudentCloseRelativeUpsertMutationVariables = Exact<{
 export type GStudentCloseRelativeUpsertMutation = { isSuccess: boolean };
 
 export type GStudentCloseRelativeDeleteMutationVariables = Exact<{
-  closeRelativeIds: Array<Scalars['UUID']> | Scalars['UUID'];
+  closeRelativeIds: Array<Scalars['UUID']['input']> | Scalars['UUID']['input'];
 }>;
 
 
 export type GStudentCloseRelativeDeleteMutation = { deletedCount: number };
 
 export type GStudentMigrationCardQueryVariables = Exact<{
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GStudentMigrationCardQuery = { studentMigrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null } | null };
 
 export type GStudentMigrationCardDeleteMutationVariables = Exact<{
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 }>;
 
 
@@ -1421,14 +1445,14 @@ export type GStudentMigrationCardDeleteMutation = { studentMigrationCardDelete: 
 
 export type GStudentMigrationCardUpsertMutationVariables = Exact<{
   data: GStudentMigrationCardUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GStudentMigrationCardUpsertMutation = { studentMigrationCardUpsert: boolean };
 
 export type GStudentPassportQueryVariables = Exact<{
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
@@ -1436,28 +1460,28 @@ export type GStudentPassportQuery = { studentPassport?: { id: string, studentId:
 
 export type GStudentPassportUpsertMutationVariables = Exact<{
   data: GStudentPassportUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GStudentPassportUpsertMutation = { isSuccess: boolean };
 
 export type GStudentPassportDeleteMutationVariables = Exact<{
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 }>;
 
 
 export type GStudentPassportDeleteMutation = { isDeleted: boolean };
 
 export type GStudentVisaQueryVariables = Exact<{
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
 export type GStudentVisaQuery = { studentVisa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null } | null };
 
 export type GStudentVisaDeleteMutationVariables = Exact<{
-  studentId: Scalars['UUID'];
+  studentId: Scalars['UUID']['input'];
 }>;
 
 
@@ -1465,7 +1489,7 @@ export type GStudentVisaDeleteMutation = { studentVisaDelete: boolean };
 
 export type GStudentVisaUpsertMutationVariables = Exact<{
   data: GStudentVisaUpsertInput;
-  studentId?: InputMaybe<Scalars['UUID']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
@@ -1476,12 +1500,27 @@ export type GStudentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GStudentsQuery = { students: Array<{ initials: string, fullName: string, id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null }, arrivalNotice?: { id: string, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, migrationCard?: { id: string, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, visa?: { id: string, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, passport?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, closeRelatives?: Array<{ id: string, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, visaRequests?: Array<{ id: string, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, _count: { closeRelatives: number, visaRequests: number } }> };
 
-export type GStudentsDeleteMutationVariables = Exact<{
-  ids: Array<Scalars['UUID']> | Scalars['UUID'];
+export type GStudentQueryVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GStudentsDeleteMutation = { deletedCount: Array<number> };
+export type GStudentQuery = { student: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, initials: string, fullName: string, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null }, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null } };
+
+export type GStudentUpsertMutationVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  input: GStudentUpsertInput;
+}>;
+
+
+export type GStudentUpsertMutation = { isUpserted: boolean };
+
+export type GStudentsDeleteMutationVariables = Exact<{
+  ids: Array<Scalars['UUID']['input']> | Scalars['UUID']['input'];
+}>;
+
+
+export type GStudentsDeleteMutation = { deletedCount: number };
 
 
 export const LoginByPasswordDocument = gql`
@@ -1960,8 +1999,8 @@ export type SendConfirmationCodeMutationHookResult = ReturnType<typeof useSendCo
 export type SendConfirmationCodeMutationResult = Apollo.MutationResult<GSendConfirmationCodeMutation>;
 export type SendConfirmationCodeMutationOptions = Apollo.BaseMutationOptions<GSendConfirmationCodeMutation, GSendConfirmationCodeMutationVariables>;
 export const RegistrationDocument = gql`
-    mutation Registration($input: StudentCreateInput!) {
-  registration(input: $input)
+    mutation Registration($input: StudentUpsertInput!) {
+  isRegistered: registration(input: $input)
 }
     `;
 export type GRegistrationMutationFn = Apollo.MutationFunction<GRegistrationMutation, GRegistrationMutationVariables>;
@@ -2679,6 +2718,110 @@ export type StudentsQueryResult = Apollo.QueryResult<GStudentsQuery, GStudentsQu
 export function refetchStudentsQuery(variables?: GStudentsQueryVariables) {
       return { query: StudentsDocument, variables: variables }
     }
+export const StudentDocument = gql`
+    query Student($studentId: UUID) {
+  student(studentId: $studentId) {
+    id
+    phone
+    curator
+    faculty
+    course
+    group
+    createdAt
+    updatedAt
+    initials @client
+    fullName @client
+    user {
+      id
+      email
+      lastActivity
+      createdAt
+      updatedAt
+    }
+    passport {
+      id
+      studentId
+      lastName
+      firstName
+      patronymic
+      birthDate
+      birthPlace
+      gender
+      citizenship
+      series
+      number
+      issueDate
+      issuedBy
+      expirationDate
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useStudentQuery__
+ *
+ * To run a query within a React component, call `useStudentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useStudentQuery(baseOptions?: Apollo.QueryHookOptions<GStudentQuery, GStudentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GStudentQuery, GStudentQueryVariables>(StudentDocument, options);
+      }
+export function useStudentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GStudentQuery, GStudentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GStudentQuery, GStudentQueryVariables>(StudentDocument, options);
+        }
+export type StudentQueryHookResult = ReturnType<typeof useStudentQuery>;
+export type StudentLazyQueryHookResult = ReturnType<typeof useStudentLazyQuery>;
+export type StudentQueryResult = Apollo.QueryResult<GStudentQuery, GStudentQueryVariables>;
+export function refetchStudentQuery(variables?: GStudentQueryVariables) {
+      return { query: StudentDocument, variables: variables }
+    }
+export const StudentUpsertDocument = gql`
+    mutation StudentUpsert($studentId: UUID, $input: StudentUpsertInput!) {
+  isUpserted: studentUpsert(studentId: $studentId, input: $input)
+}
+    `;
+export type GStudentUpsertMutationFn = Apollo.MutationFunction<GStudentUpsertMutation, GStudentUpsertMutationVariables>;
+
+/**
+ * __useStudentUpsertMutation__
+ *
+ * To run a mutation, you first call `useStudentUpsertMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStudentUpsertMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [studentUpsertMutation, { data, loading, error }] = useStudentUpsertMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useStudentUpsertMutation(baseOptions?: Apollo.MutationHookOptions<GStudentUpsertMutation, GStudentUpsertMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GStudentUpsertMutation, GStudentUpsertMutationVariables>(StudentUpsertDocument, options);
+      }
+export type StudentUpsertMutationHookResult = ReturnType<typeof useStudentUpsertMutation>;
+export type StudentUpsertMutationResult = Apollo.MutationResult<GStudentUpsertMutation>;
+export type StudentUpsertMutationOptions = Apollo.BaseMutationOptions<GStudentUpsertMutation, GStudentUpsertMutationVariables>;
 export const StudentsDeleteDocument = gql`
     mutation StudentsDelete($ids: [UUID!]!) {
   deletedCount: studentsDelete(ids: $ids)

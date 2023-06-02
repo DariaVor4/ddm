@@ -1,14 +1,19 @@
-import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException, Injectable, NotAcceptableException, NotFoundException,
+} from '@nestjs/common';
 import { assert } from '@common';
-import { pick } from 'lodash';
+import { isNil, isUndefined, pick } from 'lodash';
 import { Prisma } from '@prisma/client';
 import * as uuid from 'uuid';
 import { UserEntity, StudentEntity, StudentPassportEntity } from '@prisma-nestjs-graphql';
+import { PartialDeep, SetRequired } from 'type-fest';
+import { elseThrow } from '@common/throw-utils';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import StudentCreateInput from './inputs/student-create.input';
 import StudentUpdateInput from './inputs/student-update.input';
 import { AuthService } from '../auth/auth.service';
+import StudentUpsertInput from './inputs/student-upsert.input';
 
 /**
  * Сервис для работы со студентами.
@@ -20,6 +25,63 @@ export class StudentService {
     private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
+
+  /**
+   * Перезапись студента.
+   * @param input Данные для перезаписи.
+   * @param studentId id студента, если не указан, то будет создан новый студент.
+   * @param select Данные, которые нужно вернуть.
+   * @returns Обновленный студент.
+   * @throws {NotFoundException} Если студент не найден.
+   * @throws {BadRequestException} Если при создании студента не указан email или пароль.
+   * @throws {BadRequestException} Если указан email, который уже занят.
+   */
+  async studentUpsert(
+    input: StudentUpsertInput,
+    select?: Prisma.StudentEntitySelect | null,
+    studentId?: string,
+  ): Promise<PartialDeep<StudentEntity>> {
+    const [userProperties, studentProperties, passportProperties] = [
+      pick(input, ['email', 'password'] satisfies (keyof UserEntity & keyof StudentUpsertInput)[]),
+      pick(input, ['phone', 'faculty', 'group', 'course', 'curator'] satisfies (keyof StudentEntity & keyof StudentUpsertInput)[]),
+      pick(input, ['lastName', 'firstName', 'patronymic'] satisfies (keyof StudentPassportEntity & keyof StudentUpsertInput)[]),
+    ];
+    if (userProperties.email && !await this.userService.isEmailFree(userProperties.email, { exceptUserId: studentId })) {
+      throw new BadRequestException('Пользователь с таким email уже существует');
+    }
+    if (userProperties.password) {
+      userProperties.password = await this.authService.passwordHash(userProperties.password);
+    }
+    if (studentId) {
+      // Update
+      if (!await this.prisma.userEntity.count({ where: { id: studentId } })) {
+        throw new NotFoundException('Студент не найден');
+      }
+      return this.prisma.studentEntity.update({
+        select,
+        where: { id: studentId },
+        data: {
+          ...studentProperties,
+          user: { update: userProperties },
+          passport: { upsert: { create: passportProperties, update: passportProperties } },
+        },
+      });
+    }
+    // Create
+    if (!userProperties.email || !userProperties.password) {
+      throw new BadRequestException('При создании студента email и пароль обязательны');
+    }
+    return this.prisma.studentEntity.create({
+      select,
+      data: {
+        ...studentProperties,
+        passport: { create: passportProperties },
+        user: {
+          create: { ...userProperties, email: userProperties.email, password: userProperties.password },
+        },
+      },
+    });
+  }
 
   /**
    * Создание/регистрация студента.

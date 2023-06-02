@@ -3,7 +3,7 @@ import {
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
-import { _throw, ifDebug, isRoleStudent } from '@common';
+import { throwCb, ifDebug, isRoleStudent } from '@common';
 import {
   BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
@@ -83,7 +83,7 @@ export class StudentArrivalNoticeResolver {
         student: { connect: { id: otherOrCurrentStudentId } },
       },
       update: data,
-    }).catch(_throw((e) => new InternalServerErrorException(`Ошибка при перезаписи уведомления о прибытии студента: ${e.message}`)));
+    }).catch(throwCb((e) => new InternalServerErrorException(`Ошибка при перезаписи уведомления о прибытии студента: ${e.message}`)));
   }
 
   /**
@@ -100,6 +100,6 @@ export class StudentArrivalNoticeResolver {
     @Args('studentId', { description: 'ID Студента', type: UUID }) studentId: string,
   ): Promise<boolean> {
     return !!await this.prisma.studentArrivalNoticeEntity.delete({ where: { studentId } })
-      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении уведомления о прибытии: ${e.message}`)));
+      .catch(throwCb((e) => new InternalServerErrorException(`Ошибка при удалении уведомления о прибытии: ${e.message}`)));
   }
 }

@@ -3,7 +3,7 @@ import {
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
-import { _throw, ifDebug, isRoleStudent } from '@common';
+import { throwCb, ifDebug, isRoleStudent } from '@common';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { GraphQLUUID } from 'graphql-scalars';
 import * as uuid from 'uuid';
@@ -77,7 +77,7 @@ export class StudentCloseRelativeResolver {
     const closeRelative = await this.prisma.studentCloseRelativeEntity.findUniqueOrThrow({
       where: { id: closeRelativeId },
       select: { ...select, studentId: true },
-    }).catch(_throw(new NotFoundException('Близкий родственник не найден')));
+    }).catch(throwCb(new NotFoundException('Близкий родственник не найден')));
     if (closeRelative.studentId !== session.userId && isRoleStudent(session.roles)) {
       throw new ForbiddenException(ifDebug('Студенты не могут смотреть чужих родственников'));
     }
@@ -103,7 +103,7 @@ export class StudentCloseRelativeResolver {
     const closeRelative = !data.id ? null : await this.prisma.studentCloseRelativeEntity.findUniqueOrThrow({
       where: { id: data.id },
       select: { studentId: true },
-    }).catch(_throw(new NotFoundException('Близкий родственник не найден')));
+    }).catch(throwCb(new NotFoundException('Близкий родственник не найден')));
     if (isRoleStudent(session.roles)) {
       if (closeRelative && closeRelative.studentId !== session.userId) {
         throw new ForbiddenException(ifDebug('Студенты не могут перезаписывать чужих родственников'));

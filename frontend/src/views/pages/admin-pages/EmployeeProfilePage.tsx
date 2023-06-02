@@ -21,17 +21,17 @@ import {
   useEmailAvailabilityLazyQuery, useEmployeeQuery,
   useEmployeeUpsertMutation,
 } from '../../../api/generated.ts';
-import { checkPassword } from '../../../core/passwordChecker.ts';
+import { checkPassword } from '../../../core/password-checker.ts';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import {
   EmailConfirmationDialog,
   useEmailConfirmationDialog,
 } from '../../../components/Dialogs/EmailConfirmationDialog.tsx';
 import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
-import { checkEmail } from '../../../core/emailChecker.ts';
+import { checkEmail } from '../../../core/email-checker.ts';
 import { AppRoutesEnum } from '../../app-routes.enum.ts';
 
-export const EmployeePage: React.FC = () => {
+export const EmployeeProfilePage: React.FC = () => {
   const { employeeId } = useParams<{ employeeId: string }>();
   const [checkEmailAvailability] = useEmailAvailabilityLazyQuery();
   const [isShowPassword, setIsShowPassword] = useState(false);

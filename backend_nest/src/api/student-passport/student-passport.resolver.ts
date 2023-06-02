@@ -5,7 +5,7 @@ import {
   BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { _throw, ifDebug, isRoleStudent } from '@common';
+import { throwCb, ifDebug, isRoleStudent } from '@common';
 import { UUID } from '@common/scalars';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -85,7 +85,7 @@ export class StudentPassportResolver {
         student: { connect: { id: otherOrCurrentStudentId } },
       },
       update: data,
-    }).catch(_throw((e) => new InternalServerErrorException(`Ошибка при перезаписи паспорта: ${e.message}`)));
+    }).catch(throwCb((e) => new InternalServerErrorException(`Ошибка при перезаписи паспорта: ${e.message}`)));
   }
 
   /**
@@ -102,6 +102,6 @@ export class StudentPassportResolver {
     @Args('studentId', { description: 'ID Студента', type: UUID }) studentId: string,
   ): Promise<boolean> {
     return !!await this.prisma.studentPassportEntity.delete({ where: { studentId } })
-      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении паспорта: ${e.message}`)));
+      .catch(throwCb((e) => new InternalServerErrorException(`Ошибка при удалении паспорта: ${e.message}`)));
   }
 }

@@ -12,7 +12,7 @@ import FlightLandIcon from '@mui/icons-material/FlightLand';
 import BadgeIcon from '@mui/icons-material/Badge';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import SchoolIcon from '@mui/icons-material/School';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useConfirmAction } from '../../../core/hooks/useConfirmAction.tsx';
 import {
   GStudentsQuery, refetchStudentsQuery, useStudentsDeleteMutation, useStudentsQuery,
@@ -25,9 +25,16 @@ export const StudentsPage: FC = () => {
   const { data: { students = [] } = {} } = useStudentsQuery();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [menuStudent, setMenuStudent] = useState<GStudentsQuery['students'][number] | null>(null);
+  const onMenuClose = () => {
+    setMenuAnchor(null);
+    setMenuStudent(null);
+  };
   const [deleteStudents] = useStudentsDeleteMutation({
     variables: { ids: selectedIds },
-    onCompleted: () => setSelectedIds([]),
+    onCompleted: () => {
+      setSelectedIds([]);
+      onMenuClose();
+    },
     refetchQueries: [refetchStudentsQuery()],
   });
   const confirmDelete = useConfirmAction({
@@ -41,7 +48,6 @@ export const StudentsPage: FC = () => {
   const onRowSelect = (studentId: string) => {
     setSelectedIds(prev => (prev.includes(studentId) ? prev.filter(id => id !== studentId) : [...prev, studentId]));
   };
-  const onMenuClose = () => setMenuAnchor(null);
 
   return (
     <>

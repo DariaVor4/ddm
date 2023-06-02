@@ -21,8 +21,8 @@ export const NoConnectionPage: FC = () => {
           <CloudOffIcon fontSize='large' />
           <Typography variant='h5'>Нет соединения с сервером</Typography>
           <Button
-            variant='outlined'
             disabled={loading}
+            variant='outlined'
             onClick={() => {
               setLoading(true);
               client.resetStore().finally(() => setLoading(false));

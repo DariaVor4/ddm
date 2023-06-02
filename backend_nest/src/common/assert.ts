@@ -4,7 +4,7 @@
  *    exact class that was passed to it.
  * It fixes incompatibility with tests.
  */
-export default function assert(condition: unknown, error: Error): asserts condition {
+export function assert(condition: unknown, error: Error): asserts condition {
   if (!condition) {
     throw error;
   }

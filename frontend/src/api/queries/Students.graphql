@@ -61,6 +61,50 @@ query Students {
     }
 }
 
+query Student($studentId: UUID) {
+    student(studentId: $studentId) {
+        id
+        phone
+        curator
+        faculty
+        course
+        group
+        createdAt
+        updatedAt
+        initials @client
+        fullName @client
+        user {
+            id
+            email
+            lastActivity
+            createdAt
+            updatedAt
+        }
+        passport {
+            id
+            studentId
+            lastName
+            firstName
+            patronymic
+            birthDate
+            birthPlace
+            gender
+            citizenship
+            series
+            number
+            issueDate
+            issuedBy
+            expirationDate
+            createdAt
+            updatedAt
+        }
+    }
+}
+
+mutation StudentUpsert($studentId: UUID, $input: StudentUpsertInput!) {
+    isUpserted: studentUpsert(studentId: $studentId, input: $input)
+}
+
 mutation StudentsDelete($ids: [UUID!]!) {
     deletedCount: studentsDelete(ids: $ids)
 }

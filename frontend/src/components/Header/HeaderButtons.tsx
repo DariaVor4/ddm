@@ -27,11 +27,11 @@ export const HeaderButtons: FC = () => {
       {
         role !== GUserRoleEnum.Any ? (
           <Button
-            disabled={isMenuOpen}
             color='inherit'
-            variant='text'
+            disabled={isMenuOpen}
             size='medium'
             startIcon={<UserRoleIcon userRole={role} />}
+            variant='text'
             onClick={userMenuToggleFn}
           >
             {current?.user.initials || 'Пользователь'}
@@ -39,19 +39,19 @@ export const HeaderButtons: FC = () => {
         ) : (
           <>
             <Button
-              variant='text'
-              size='medium'
-              onClick={loginDialogOpenFn}
               color='inherit'
+              size='medium'
+              variant='text'
+              onClick={loginDialogOpenFn}
             >
               Вход
             </Button>
             <Button
-              variant='text'
-              size='medium'
-              component={Link}
-              to={AppRoutesEnum.RegisterRoute}
               color='inherit'
+              component={Link}
+              size='medium'
+              to={AppRoutesEnum.RegisterRoute}
+              variant='text'
             >
               Регистрация
             </Button>

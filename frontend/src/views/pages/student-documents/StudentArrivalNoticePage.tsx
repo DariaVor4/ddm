@@ -68,16 +68,26 @@ export const StudentArrivalNoticePage: FC = () => {
     <>
       <FormikProvider value={formik}>
         <Paper className='flex flex-col gap-4 px-10 py-4 mx-auto max-w-lg'>
-          <Typography variant='h4' className='text-center mb-4'>Уведомление о прибытии</Typography>
+          <Typography className='text-center mb-4' variant='h4'>Уведомление о прибытии</Typography>
           {/* TODO убрать профессию и обе пр. стороны в интерфейсе студента */}
-          <FormikTextField name='profession' label='Профессия' required />
-          <FormikTextField name='address' label='Адрес регистрации' required />
-          <FormikTextField name='date' label='Дата регистрации' type='date' required />
-          <FormikTextField name='expires' label='Дата окончания регистрации' type='date' required />
-          <FormikTextField name='invitingSide' label='Приглашающая сторона' required />
-          <FormikTextField name='receivingSide' label='Принимающая сторона' required />
-          <Stack direction='row' justifyContent='flex-end' gap={2}>
-            <Button variant='text' color='warning' onClick={() => formik.resetForm()}>Сброс</Button>
+          <FormikTextField label='Профессия' name='profession' required />
+          <FormikTextField label='Адрес регистрации' name='address' required />
+          <FormikTextField
+            label='Дата регистрации'
+            name='date'
+            type='date'
+            required
+          />
+          <FormikTextField
+            label='Дата окончания регистрации'
+            name='expires'
+            type='date'
+            required
+          />
+          <FormikTextField label='Приглашающая сторона' name='invitingSide' required />
+          <FormikTextField label='Принимающая сторона' name='receivingSide' required />
+          <Stack direction='row' gap={2} justifyContent='flex-end'>
+            <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>

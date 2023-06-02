@@ -82,15 +82,25 @@ export const StudentVisaPage: FC = () => {
     <>
       <FormikProvider value={formik}>
         <Paper className='flex flex-col gap-4 px-10 py-4 mx-auto max-w-lg'>
-          <Typography variant='h4' className='text-center mb-4'>Виза</Typography>
-          <FormikTextField name='id' label='Идентификатор' required />
-          <FormikTextField name='blankSeries' label='Серия бланка' required />
-          <FormikTextField name='number' label='Номер визы' required />
-          <FormikTextField name='invitationNumber' label='Номер приглашения' required />
-          <FormikTextField name='issueDate' label='Дата выдачи' type='date' required />
-          <FormikTextField name='expirationDate' label='Дата истечения' type='date' required />
-          <Stack direction='row' justifyContent='flex-end' gap={2}>
-            <Button variant='text' color='warning' onClick={() => formik.resetForm()}>Сброс</Button>
+          <Typography className='text-center mb-4' variant='h4'>Виза</Typography>
+          <FormikTextField label='Идентификатор' name='id' required />
+          <FormikTextField label='Серия бланка' name='blankSeries' required />
+          <FormikTextField label='Номер визы' name='number' required />
+          <FormikTextField label='Номер приглашения' name='invitationNumber' required />
+          <FormikTextField
+            label='Дата выдачи'
+            name='issueDate'
+            type='date'
+            required
+          />
+          <FormikTextField
+            label='Дата истечения'
+            name='expirationDate'
+            type='date'
+            required
+          />
+          <Stack direction='row' gap={2} justifyContent='flex-end'>
+            <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>

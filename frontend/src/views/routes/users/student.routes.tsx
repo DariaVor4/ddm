@@ -4,20 +4,21 @@ import { StudentArrivalNoticePage } from '../../pages/student-documents/StudentA
 import { StudentCloseRelativesPage } from '../../pages/student-documents/StudentCloseRelativesPage.tsx';
 import { StudentMigrationCardPage } from '../../pages/student-documents/StudentMigrationCardPage.tsx';
 import { StudentVisaPage } from '../../pages/student-documents/StudentVisaPage.tsx';
+import { StudentProfilePage } from '../../pages/StudentProfilePage.tsx';
 
 export const StudentRoutes: JSX.Element = (
   <>
-    <Route path='account' element={<h1>Account Settings</h1>} />
-    <Route path='notifications' element={<h1>Notifications</h1>} />
-    <Route path='visa-request' element={<h1>Visa Request</h1>}>
-      <Route path='edit' element={<h1>Visa Request Edit</h1>} />
+    <Route element={<StudentProfilePage />} path='account' />
+    <Route element={<h1>Notifications</h1>} path='notifications' />
+    <Route element={<h1>Visa Request</h1>} path='visa-request'>
+      <Route element={<h1>Visa Request Edit</h1>} path='edit' />
     </Route>
     <Route path='documents'>
-      <Route path='passport' element={<StudentPassportPage />} />
-      <Route path='visa' element={<StudentVisaPage />} />
-      <Route path='migration-card' element={<StudentMigrationCardPage />} />
-      <Route path='arrival-notice' element={<StudentArrivalNoticePage />} />
-      <Route path='close-relatives' element={<StudentCloseRelativesPage />} />
+      <Route element={<StudentPassportPage />} path='passport' />
+      <Route element={<StudentVisaPage />} path='visa' />
+      <Route element={<StudentMigrationCardPage />} path='migration-card' />
+      <Route element={<StudentArrivalNoticePage />} path='arrival-notice' />
+      <Route element={<StudentCloseRelativesPage />} path='close-relatives' />
     </Route>
   </>
 );

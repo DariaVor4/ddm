@@ -62,42 +62,49 @@ export const EmailConfirmationDialog: FC = () => {
   }, [dialog.isOpen]);
 
   return (
-    <Dialog TransitionComponent={Grow} transitionDuration={500} open={dialog.isOpen} fullWidth maxWidth='xs' onClose={dialog.close}>
+    <Dialog
+      maxWidth='xs'
+      open={dialog.isOpen}
+      TransitionComponent={Grow}
+      transitionDuration={500}
+      fullWidth
+      onClose={dialog.close}
+    >
       <DialogTitle className='flex items-center'>
-        <Typography className='grow inline' variant='h6' component='span'>Подтверждение почты</Typography>
+        <Typography className='grow inline' component='span' variant='h6'>Подтверждение почты</Typography>
         <IconButton onClick={dialog.close}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers className='flex flex-col'>
+      <DialogContent className='flex flex-col' dividers>
         <Collapse in={!!dialog.status}>
-          <Alert className='mb-6' variant='filled' severity={typeof dialog.status === 'string' ? 'info' : 'error'}>
+          <Alert className='mb-6' severity={typeof dialog.status === 'string' ? 'info' : 'error'} variant='filled'>
             {typeof dialog.status === 'string' ? dialog.status : dialog.status?.message}
           </Alert>
         </Collapse>
         <TextField
+          disabled={!sendMutation.called}
+          helperText='Код подтверждения, отправленный на почту'
+          label='Код подтверждения'
+          placeholder='123456'
           value={dialog.code}
           onChange={e => dialog.setCode(e.currentTarget.value)}
-          disabled={!sendMutation.called}
-          label='Код подтверждения'
-          helperText='Код подтверждения, отправленный на почту'
-          placeholder='123456'
         />
       </DialogContent>
       <DialogActions className='flex'>
         <Button
-          disabled={sendMutation.loading}
-          onClick={() => sendConfirmCode()}
           className='grow'
           color='warning'
+          disabled={sendMutation.loading}
+          onClick={() => sendConfirmCode()}
         >
           {sendMutation.called ? 'Отправить код повторно' : 'Отправить код'}
         </Button>
         <Button
-          onClick={() => confirmCode()}
-          disabled={dialog.code.length < 6 || !sendMutation.called || sendMutation.loading || confirmMutation.loading}
           className='grow'
+          disabled={dialog.code.length < 6 || !sendMutation.called || sendMutation.loading || confirmMutation.loading}
           variant='contained'
+          onClick={() => confirmCode()}
         >
           Подтвердить
         </Button>

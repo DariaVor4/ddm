@@ -1,6 +1,6 @@
 import { createTheme, ThemeOptions } from '@mui/material';
 import type { ConditionalPickDeep } from 'type-fest';
-import type { DeepKeys } from '../../core/deep_keys.type.ts';
+import type { DeepKeys } from '../../core/type-utils/deep_keys.type.ts';
 
 const sameThemeProperties: ThemeOptions = {
   components: {

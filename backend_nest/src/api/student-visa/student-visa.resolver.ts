@@ -3,7 +3,7 @@ import {
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
-import { _throw } from '@common';
+import { throwCb } from '@common';
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StudentDocumentsService } from '../student/student-documents.service';
@@ -81,7 +81,7 @@ export class StudentVisaResolver {
         student: { connect: { id: otherOrCurrentStudentId } },
       },
       update: data,
-    }).catch(_throw((e) => new InternalServerErrorException(`Ошибка при перезаписи визы студента: ${e.message}`)));
+    }).catch(throwCb((e) => new InternalServerErrorException(`Ошибка при перезаписи визы студента: ${e.message}`)));
   }
 
   /**
@@ -101,6 +101,6 @@ export class StudentVisaResolver {
       throw new NotFoundException('Студент не найден');
     }
     return !!await this.prisma.studentVisaEntity.delete({ where: { studentId } })
-      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении визы: ${e.message}`)));
+      .catch(throwCb((e) => new InternalServerErrorException(`Ошибка при удалении визы: ${e.message}`)));
   }
 }

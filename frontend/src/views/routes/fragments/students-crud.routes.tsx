@@ -5,13 +5,15 @@ import { StudentMigrationCardPage } from '../../pages/student-documents/StudentM
 import { StudentVisaPage } from '../../pages/student-documents/StudentVisaPage.tsx';
 import { StudentArrivalNoticePage } from '../../pages/student-documents/StudentArrivalNoticePage.tsx';
 import { StudentCloseRelativesPage } from '../../pages/student-documents/StudentCloseRelativesPage.tsx';
-import { StudentCreatePage } from '../../pages/employee-pages/StudentCreatePage.tsx';
+import { StudentProfilePage } from '../../pages/StudentProfilePage.tsx';
 
 export const StudentsCrudRoutes = (
   <>
+    {/* Students CRUD */}
     <Route element={<StudentsPage />} path='students' />
-    <Route element={<StudentCreatePage />} path='students/create' />
-    <Route element={<h1>User student page</h1>} path='students/:studentId' />
+    <Route element={<StudentProfilePage />} path='students/create' />
+    <Route element={<StudentProfilePage />} path='students/:studentId' />
+    {/* Documents */}
     <Route element={<StudentPassportPage />} path='students/:studentId/passport' />
     <Route element={<StudentVisaPage />} path='students/:studentId/visa' />
     <Route element={<StudentMigrationCardPage />} path='students/:studentId/migration-card' />

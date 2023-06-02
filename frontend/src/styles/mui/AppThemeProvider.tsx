@@ -13,8 +13,8 @@ export const AppThemeProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
       <ToastContainer
-        theme={isDarkTheme ? 'dark' : 'colored'}
         position='bottom-left'
+        theme={isDarkTheme ? 'dark' : 'colored'}
       />
       {children}
     </ThemeProvider>

@@ -4,7 +4,7 @@ import { TUser } from '@prisma-types';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { CookieOptions, Request, Response } from 'express';
-import { _throw, ifDebug, runtimeMode } from '@common';
+import { throwCb, ifDebug, runtimeMode } from '@common';
 import { isString } from 'lodash';
 import ms from 'ms';
 import { ConfigService } from '../../config/config.service';
@@ -134,11 +134,11 @@ export class AuthService {
         this.jwtService.verifyAsync<IAccessTokenPayload>(oldAccessToken, {
           secret: this.configService.config.accessTokenSecret,
           ignoreExpiration: true,
-        }).catch(_throw(new UnauthorizedException(ifDebug('accessToken не прошёл проверку') || 'UNAUTHORIZED'))),
+        }).catch(throwCb(new UnauthorizedException(ifDebug('accessToken не прошёл проверку') || 'UNAUTHORIZED'))),
         this.jwtService.verifyAsync(oldRefreshToken, {
           secret: this.configService.config.refreshTokenSecret + oldAccessToken,
           ignoreExpiration: false,
-        }).catch(_throw(new UnauthorizedException(ifDebug('refreshToken не прошёл проверку') || 'UNAUTHORIZED'))),
+        }).catch(throwCb(new UnauthorizedException(ifDebug('refreshToken не прошёл проверку') || 'UNAUTHORIZED'))),
       ]);
       // Поиск пользователя
       const user = await this.prisma.userEntity.findFirstOrThrow({
@@ -151,7 +151,7 @@ export class AuthService {
           updatedAt: true,
           tokenHash: true,
         },
-      }).catch(_throw(new UnauthorizedException(ifDebug('Не найден ранее авторизованный пользователь') || 'UNAUTHORIZED')));
+      }).catch(throwCb(new UnauthorizedException(ifDebug('Не найден ранее авторизованный пользователь') || 'UNAUTHORIZED')));
       if (!oldAccessToken || !user.tokenHash || !(await bcrypt.compare(oldAccessToken, user.tokenHash))) {
         throw new UnauthorizedException(ifDebug('accessToken не совпадает с хэшем в БД') || 'UNAUTHORIZED');
       }

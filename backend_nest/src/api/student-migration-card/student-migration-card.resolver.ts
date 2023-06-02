@@ -3,7 +3,7 @@ import {
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
-import { _throw } from '@common';
+import { throwCb } from '@common';
 import {
   BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
@@ -83,7 +83,7 @@ export class StudentMigrationCardResolver {
         student: { connect: { id: otherOrCurrentStudentId } },
       },
       update: data,
-    }).catch(_throw((e) => new InternalServerErrorException(`Ошибка при перезаписи миграционной карты студента: ${e.message}`)));
+    }).catch(throwCb((e) => new InternalServerErrorException(`Ошибка при перезаписи миграционной карты студента: ${e.message}`)));
   }
 
   /**
@@ -103,6 +103,6 @@ export class StudentMigrationCardResolver {
       throw new NotFoundException('Студент не найден');
     }
     return !!await this.prisma.studentMigrationCardEntity.delete({ where: { studentId } })
-      .catch(_throw((e) => new InternalServerErrorException(`Ошибка при удалении миграционной карты: ${e.message}`)));
+      .catch(throwCb((e) => new InternalServerErrorException(`Ошибка при удалении миграционной карты: ${e.message}`)));
   }
 }
