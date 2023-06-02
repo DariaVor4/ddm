@@ -2,7 +2,7 @@ import {
   Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { _throw, assert, isRoleAdmin } from '@common';
+import {_throw, assert, ifDebug, isRoleAdmin} from '@common';
 import { EmployeeEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
@@ -41,19 +41,30 @@ export class EmployeeResolver {
   }
 
   /**
-   * Получение сотрудника по id.
-   * @param employeeId Идентификатор сотрудника.
+   * Получение сотрудника.
+   * Если не передан идентификатор сотрудника, то возвращает текущего.
+   * Только админ может получить других сотрудников.
    * @param select Запрошенные поля через GraphQL.
+   * @param ctx Контекст текущей сессии пользователя.
+   * @param employeeId Идентификатор сотрудника.
+   * @return Сотрудник.
+   * @throws {ForbiddenException} Только админы могут получать данные других сотрудников.
+   * @throws {NotFoundException} Сотрудник не найден.
    */
   @Query(() => EmployeeEntity, {
-    description: 'Получение сотрудника по id',
+    description: 'Получение сотрудника. Если не передан идентификатор сотрудника, то возвращает текущего. Только админ может получить других сотрудников.',
   })
-  @Roles(UserRoleEnum.Admin)
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee)
   async employee(
-    @Args('employeeId', { type: UUID }) employeeId: string,
     @PrismaSelector() select: Prisma.EmployeeEntitySelect,
+    @CurrentSession() ctx: ISessionContext,
+    @Args('employeeId', { type: UUID, nullable: true }) employeeId?: string,
   ): Promise<EmployeeEntity> {
-    return await this.prisma.employeeEntity.findUniqueOrThrow({ where: { id: employeeId }, select })
+    const otherOrCurrentEmployeeId = employeeId || ctx.userId;
+    if (!isRoleAdmin(ctx.roles) && otherOrCurrentEmployeeId !== ctx.userId) {
+      throw new ForbiddenException(ifDebug('Только админы могут получать данные других сотрудников'));
+    }
+    return await this.prisma.employeeEntity.findUniqueOrThrow({ where: { id: otherOrCurrentEmployeeId }, select })
       .catch(_throw(new NotFoundException('Сотрудник не найден'))) as EmployeeEntity;
   }
 

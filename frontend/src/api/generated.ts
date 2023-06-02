@@ -425,7 +425,7 @@ export type GNotificationToUserEntityMinAggregate = {
 export type GQuery = {
   /** Проверка почты на корректность и доступность */
   emailAvailability: GEmailAvailabilityResponse;
-  /** Получение сотрудника по id */
+  /** Получение сотрудника. Если не передан идентификатор сотрудника, то возвращает текущего. Только админ может получить других сотрудников. */
   employee: GEmployeeEntity;
   /** Выборка всех сотрудников */
   employees: Array<GEmployeeEntity>;
@@ -456,7 +456,7 @@ export type GQueryEmailAvailabilityArgs = {
 
 
 export type GQueryEmployeeArgs = {
-  employeeId: Scalars['UUID'];
+  employeeId?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -1319,6 +1319,13 @@ export type GEmployeeUpsertMutationVariables = Exact<{
 
 export type GEmployeeUpsertMutation = { employeeUpsert: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } } };
 
+export type GEmployeeQueryVariables = Exact<{
+  employeeId?: InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type GEmployeeQuery = { employee: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } } };
+
 export type GEmailAvailabilityQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -1800,6 +1807,56 @@ export function useEmployeeUpsertMutation(baseOptions?: Apollo.MutationHookOptio
 export type EmployeeUpsertMutationHookResult = ReturnType<typeof useEmployeeUpsertMutation>;
 export type EmployeeUpsertMutationResult = Apollo.MutationResult<GEmployeeUpsertMutation>;
 export type EmployeeUpsertMutationOptions = Apollo.BaseMutationOptions<GEmployeeUpsertMutation, GEmployeeUpsertMutationVariables>;
+export const EmployeeDocument = gql`
+    query Employee($employeeId: UUID) {
+  employee(employeeId: $employeeId) {
+    id
+    lastName
+    firstName
+    patronymic
+    isAdmin
+    createdAt
+    updatedAt
+    user {
+      email
+      createdAt
+      updatedAt
+      lastActivity
+    }
+  }
+}
+    `;
+
+/**
+ * __useEmployeeQuery__
+ *
+ * To run a query within a React component, call `useEmployeeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEmployeeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEmployeeQuery({
+ *   variables: {
+ *      employeeId: // value for 'employeeId'
+ *   },
+ * });
+ */
+export function useEmployeeQuery(baseOptions?: Apollo.QueryHookOptions<GEmployeeQuery, GEmployeeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GEmployeeQuery, GEmployeeQueryVariables>(EmployeeDocument, options);
+      }
+export function useEmployeeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GEmployeeQuery, GEmployeeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GEmployeeQuery, GEmployeeQueryVariables>(EmployeeDocument, options);
+        }
+export type EmployeeQueryHookResult = ReturnType<typeof useEmployeeQuery>;
+export type EmployeeLazyQueryHookResult = ReturnType<typeof useEmployeeLazyQuery>;
+export type EmployeeQueryResult = Apollo.QueryResult<GEmployeeQuery, GEmployeeQueryVariables>;
+export function refetchEmployeeQuery(variables?: GEmployeeQueryVariables) {
+      return { query: EmployeeDocument, variables: variables }
+    }
 export const EmailAvailabilityDocument = gql`
     query EmailAvailability($email: String!) {
   emailAvailability(email: $email) {

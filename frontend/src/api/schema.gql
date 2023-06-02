@@ -384,8 +384,10 @@ type Query {
   """Проверка почты на корректность и доступность"""
   emailAvailability(email: String!): EmailAvailabilityResponse!
 
-  """Получение сотрудника по id"""
-  employee(employeeId: UUID!): EmployeeEntity!
+  """
+  Получение сотрудника. Если не передан идентификатор сотрудника, то возвращает текущего. Только админ может получить других сотрудников.
+  """
+  employee(employeeId: UUID): EmployeeEntity!
 
   """Выборка всех сотрудников"""
   employees: [EmployeeEntity!]!

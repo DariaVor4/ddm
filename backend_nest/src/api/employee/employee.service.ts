@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable, NotAcceptableException} from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { pick } from 'lodash';
 import { EmployeeEntity, UserEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
@@ -9,8 +9,6 @@ import EmployeeCreateInput from './inputs/employee-create.input';
 import EmployeeUpdateInput from './inputs/employee-update.input';
 import { AuthService } from '../auth/auth.service';
 import { EmployeeUpsertInput } from './inputs/employee-upsert.input';
-import {_throw} from "@common";
-import {elseThrow} from "@common/_throw";
 
 /**
  * Сервис для работы с сотрудниками.
@@ -35,8 +33,11 @@ export class EmployeeService {
       pick(input, ['email', 'password'] satisfies (keyof UserEntity & keyof EmployeeUpsertInput)[]),
       pick(input, ['lastName', 'firstName', 'patronymic', 'isAdmin'] satisfies (keyof EmployeeEntity & keyof EmployeeUpsertInput)[]),
     ];
-    if (input.email && !await this.userService.isEmailFree(input.email)) {
+    if (userProperties.email && !await this.userService.isEmailFree(userProperties.email, { exceptUserId: employeeId })) {
       throw new NotAcceptableException('Пользователь с таким email уже существует');
+    }
+    if (userProperties.password) {
+      userProperties.password = await this.authService.passwordHash(userProperties.password);
     }
     if (employeeId) {
       // Update
@@ -48,17 +49,12 @@ export class EmployeeService {
         where: { id: employeeId },
         data: {
           ...employeeProperties,
-          user: {
-            update: {
-              ...userProperties,
-              password: userProperties.password ? await this.authService.passwordHash(userProperties.password) : undefined,
-            },
-          },
+          user: { update: userProperties },
         },
       });
     }
     // Create
-    if (!employeeId && (!userProperties.email || !userProperties.password)) {
+    if (!userProperties.email || !userProperties.password) {
       throw new NotAcceptableException('При создании сотрудника email и пароль обязательны');
     }
     return this.prisma.employeeEntity.create({
@@ -68,8 +64,8 @@ export class EmployeeService {
         user: {
           create: {
             ...userProperties,
-            email: userProperties.email || elseThrow(new BadRequestException('Email обязателен при создании сотрудника')),
-            password: await this.authService.passwordHash(userProperties.password || elseThrow(new BadRequestException('Пароль обязателен при создании сотрудника'))),
+            email: userProperties.email,
+            password: userProperties.password,
           },
         },
       },

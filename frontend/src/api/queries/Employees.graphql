@@ -37,3 +37,21 @@ mutation EmployeeUpsert($input: EmployeeUpsertInput!, $employeeId: UUID) {
     }
   }
 }
+
+query Employee($employeeId: UUID) {
+  employee(employeeId: $employeeId) {
+    id
+    lastName
+    firstName
+    patronymic
+    isAdmin
+    createdAt
+    updatedAt
+    user {
+      email
+      createdAt
+      updatedAt
+      lastActivity
+    }
+  }
+}
