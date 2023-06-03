@@ -4,6 +4,16 @@ import type { DeepKeys } from '../../core/type-utils/deep_keys.type.ts';
 
 const sameThemeProperties: ThemeOptions = {
   components: {
+    MuiInputLabel: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
     MuiTextField: {
       defaultProps: {
         variant: 'outlined',

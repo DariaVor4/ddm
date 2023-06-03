@@ -109,8 +109,11 @@ export class EmployeeResolver {
     @Args('employeeId', { type: UUID, nullable: true }) employeeId?: string,
   ): Promise<PartialDeep<EmployeeEntity>> {
     if (!isRoleAdmin(ctx.roles)) {
+      if (input.isAdmin) {
+        throw new ForbiddenException(ifDebug('Вы не можете сделать себя администратором'));
+      }
       if (ctx.userId !== employeeId) {
-        throw new ForbiddenException('Вы не можете обновлять профиль другого сотрудника');
+        throw new ForbiddenException(ifDebug('Вы не можете обновлять профиль другого сотрудника'));
       }
       if (input.email && ctx.userEmail !== input.email) {
         // TODO: unimplemented

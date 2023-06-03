@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import {
   Button, IconButton, InputAdornment, Paper, Stack, Tooltip, Typography,
 } from '@mui/material';
-import { FormikProvider, useFormik, yupToFormErrors } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -55,7 +55,7 @@ const validationSchema = yup.object<TValidationSchemaCtx>({
   password: yup.string().when(['$pageMode'], ([pageMode], schema, { value: value1 }) => ([PageModeEnum.Register, PageModeEnum.Create].includes(pageMode) || value1
     ? schema.min(8, 'Пароль должен быть не менее 8 символов').test('password-estimator', async (value, ctx) => checkPassword(value || '', ctx))
     : schema.optional())),
-  passwordRepeat: yup.string().when(['$pageMode'], ([pageMode], schema) => ([PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode)
+  passwordRepeat: yup.string().when(['$pageMode', 'password'], ([pageMode, password], schema) => ([PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode) && password
     ? schema.oneOf([yup.ref('password')], 'Пароли должны совпадать').required('Повтор пароля обязателен')
     : schema.strip())),
   faculty: yup.string().required('Факультет обязателен'),
@@ -67,16 +67,19 @@ const validationSchema = yup.object<TValidationSchemaCtx>({
   curator: yup.string().required('Куратор обязателен'),
 });
 
-// TODO: Сделать обработку ошибки если редактируемый студент не найден
+// TODO ERROR: Сделать обработку ошибки если редактируемый студент не найден
+// TODO ERROR: Обработать ошибку при редактировании профиля самим студентом
 export const StudentProfilePage: FC = () => {
   // React Router
   const navigate = useNavigate();
   const { studentId } = useParams<{ studentId?: string }>();
 
-  // Get page mode
+  // Page mode
   const { data: { current } = {}, loading: isUserCurrentLoading } = useUserCurrentQuery();
-  const pageMode = useMatch(AppRoutesEnum.RegisterRoute) ? PageModeEnum.Register
-    : current?.user.id === studentId ? PageModeEnum.SelfUpdate
+  const isRegisterRoute = useMatch(AppRoutesEnum.RegisterRoute);
+  const isStudentProfileRoute = useMatch(AppRoutesEnum.AccountSettingsRoute);
+  const pageMode = isRegisterRoute ? PageModeEnum.Register
+    : isStudentProfileRoute ? PageModeEnum.SelfUpdate
       : studentId ? PageModeEnum.Update
         : PageModeEnum.Create;
   const targetId = pageMode === PageModeEnum.Update ? studentId
@@ -90,17 +93,14 @@ export const StudentProfilePage: FC = () => {
     : pageMode === PageModeEnum.Create ? 'Создать студента'
       : /* pageMode === PageMode.Update || pageMode === PageMode.SelfUpdate */ 'Сохранить изменения';
 
-  // Other
-  const [isShowPassword, setIsShowPassword] = useState(pageMode === PageModeEnum.Create);
-
-  // For create
+  // For register
   const emailConfirmationDialog = useEmailConfirmationDialog(state => strictPick(state, ['isEmailConfirmed', 'reset', 'open', 'confirm']));
   useEffect(() => {
     if (pageMode !== PageModeEnum.Register && !emailConfirmationDialog.isEmailConfirmed) emailConfirmationDialog.confirm();
   }, [emailConfirmationDialog, pageMode]);
   const [register] = useRegistrationMutation();
 
-  // For update
+  // For update | create
   const [upsert] = useStudentUpsertMutation({
     refetchQueries: compact([
       refetchStudentsQuery(),
@@ -111,6 +111,9 @@ export const StudentProfilePage: FC = () => {
     variables: { studentId },
     skip: [PageModeEnum.Register, PageModeEnum.Create].includes(pageMode),
   });
+
+  // Other
+  const [isShowPassword, setIsShowPassword] = useState(pageMode === PageModeEnum.Create);
 
   // Main
   const formik = useFormik<StudentUpsertPageForm>({
@@ -188,16 +191,8 @@ export const StudentProfilePage: FC = () => {
             endAdornment: formik.touched.email && !formik.errors.email && formik.values.email && (
               <InputAdornment position='end'>
                 {emailConfirmationDialog.isEmailConfirmed
-                  ? pageMode === PageModeEnum.Register && <Tooltip title='Почта подтверждена ✅'><VerifiedIcon color='success' /></Tooltip>
-                  : (
-                    <Button
-                      size='small'
-                      variant='outlined'
-                      onClick={() => emailConfirmationDialog.open(formik.values.email)}
-                    >
-                      Подтвердить
-                    </Button>
-                  )}
+                  ? [PageModeEnum.Register, PageModeEnum.SelfUpdate] && <Tooltip title='Почта подтверждена ✅'><VerifiedIcon color='success' /></Tooltip>
+                  : <Button size='small' variant='outlined' onClick={() => emailConfirmationDialog.open(formik.values.email!)}>Подтвердить</Button>}
               </InputAdornment>
             ),
           }}
@@ -213,20 +208,18 @@ export const StudentProfilePage: FC = () => {
           type={isShowPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
-              <InputAdornment position='end' onClick={() => setIsShowPassword(!isShowPassword)}>
-                <IconButton>
-                  {isShowPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
+              <InputAdornment position='end' onClick={() => setIsShowPassword(value => !value)}>
+                <IconButton>{isShowPassword ? <VisibilityOff /> : <Visibility />}</IconButton>
               </InputAdornment>
             ),
           }}
           required
         />
         <FormikTextField
+          isVisible={[PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode)}
           label='Повторите пароль'
           name='passwordRepeat'
           type={isShowPassword ? 'text' : 'password'}
-          visible={[PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode)}
           InputProps={{
             endAdornment: (
               <InputAdornment position='end' onClick={() => setIsShowPassword(!isShowPassword)}>
@@ -237,8 +230,8 @@ export const StudentProfilePage: FC = () => {
             ),
           }}
           required
-          onFocus={() => pageMode === PageModeEnum.Register && setIsShowPassword(false)}
-          onPaste={e => pageMode === PageModeEnum.Register && e.preventDefault()}
+          onFocus={() => [PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode) && setIsShowPassword(false)}
+          onPaste={e => [PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode) && e.preventDefault()}
         />
         <FormikTextField label='Факультет' name='faculty' required />
         <FormikTextField

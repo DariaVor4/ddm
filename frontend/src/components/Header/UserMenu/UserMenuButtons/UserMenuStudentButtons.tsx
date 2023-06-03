@@ -14,7 +14,7 @@ import { navigateFromMenu } from '../user-menu-store.ts';
 export const UserMenuStudentButtons: FC = () => (
   <>
     <ListItem disablePadding>
-      <ListItemButton>
+      <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.VisaRequestRoute)}>
         <ListItemIcon><PortraitIcon /></ListItemIcon>
         <ListItemText primary='Визовая анкета' />
       </ListItemButton>

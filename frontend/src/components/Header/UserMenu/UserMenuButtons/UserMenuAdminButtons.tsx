@@ -6,7 +6,6 @@ import {
 import SchoolIcon from '@mui/icons-material/School';
 import BadgeIcon from '@mui/icons-material/Badge';
 import PortraitIcon from '@mui/icons-material/Portrait';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { navigateFromMenu } from '../user-menu-store.ts';
 import { AppRoutesEnum } from '../../../../views/app-routes.enum.ts';
@@ -26,12 +25,6 @@ export const UserMenuAdminButtons: FC = () => (
       </ListItemButton>
     </ListItem>
     <Divider className='!mt-4 !mb-2'>Пользователи</Divider>
-    <ListItem disablePadding>
-      <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.AdminsRoute)}>
-        <ListItemIcon><AdminPanelSettingsIcon /></ListItemIcon>
-        <ListItemText primary='Администраторы' />
-      </ListItemButton>
-    </ListItem>
     <ListItem disablePadding>
       <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.EmployeesRoute)}>
         <ListItemIcon><BadgeIcon /></ListItemIcon>

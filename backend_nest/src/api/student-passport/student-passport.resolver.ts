@@ -4,8 +4,7 @@ import {
 import {
   BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { throwCb, ifDebug, isRoleStudent } from '@common';
+import { throwCb } from '@common';
 import { UUID } from '@common/scalars';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -14,8 +13,8 @@ import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorato
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
 import StudentPassportUpsertInput from './inputs/student-passport-upsert.input';
 import StudentPassportWithoutStudentResult from './results/student-passport-without-student.result';
-import StudentPassportEntitySelect = Prisma.StudentPassportEntitySelect;
 import { StudentDocumentsService } from '../student/student-documents.service';
+import { Prisma } from '@prisma/client';
 
 /**
  * Резолвер для работы с паспортами студентов.
@@ -43,7 +42,7 @@ export class StudentPassportResolver {
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
   async studentPassport(
-    @PrismaSelector() select: StudentPassportEntitySelect,
+    @PrismaSelector() select: Prisma.StudentPassportEntitySelect,
     @CurrentSession() session: ISessionContext,
     @Args('studentId', { nullable: true, description: 'ID Студента', type: UUID }) studentId?: string,
   ): Promise<Partial<StudentPassportWithoutStudentResult> | null> {

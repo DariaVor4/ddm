@@ -66,7 +66,7 @@ export const StudentsPage: FC = () => {
               <TableCell>№</TableCell>
               <TableCell>ФИО</TableCell>
               <TableCell align='right' width='min-width'>
-                <IconButton size='small' onClick={() => navigate(AppRoutesEnum.StudentCreate)}>
+                <IconButton size='small' onClick={() => navigate(AppRoutesEnum.StudentCreateRoute)}>
                   <AddCircleIcon />
                 </IconButton>
                 <IconButton

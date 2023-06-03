@@ -6,18 +6,19 @@ import { StudentVisaPage } from '../../pages/student-documents/StudentVisaPage.t
 import { StudentArrivalNoticePage } from '../../pages/student-documents/StudentArrivalNoticePage.tsx';
 import { StudentCloseRelativesPage } from '../../pages/student-documents/StudentCloseRelativesPage.tsx';
 import { StudentProfilePage } from '../../pages/StudentProfilePage.tsx';
+import { AppRoutesEnum } from '../../app-routes.enum.ts';
 
 export const StudentsCrudRoutes = (
   <>
     {/* Students CRUD */}
-    <Route element={<StudentsPage />} path='students' />
-    <Route element={<StudentProfilePage />} path='students/create' />
-    <Route element={<StudentProfilePage />} path='students/:studentId' />
+    <Route element={<StudentsPage />} path={AppRoutesEnum.StudentsRoute} />
+    <Route element={<StudentProfilePage />} path={AppRoutesEnum.StudentCreateRoute} />
+    <Route element={<StudentProfilePage />} path={AppRoutesEnum.StudentProfilePattern} />
     {/* Documents */}
-    <Route element={<StudentPassportPage />} path='students/:studentId/passport' />
-    <Route element={<StudentVisaPage />} path='students/:studentId/visa' />
-    <Route element={<StudentMigrationCardPage />} path='students/:studentId/migration-card' />
-    <Route element={<StudentArrivalNoticePage />} path='students/:studentId/arrival-notice' />
-    <Route element={<StudentCloseRelativesPage />} path='students/:studentId/close-relatives' />
+    <Route element={<StudentPassportPage />} path={AppRoutesEnum.StudentPassportPattern} />
+    <Route element={<StudentVisaPage />} path={AppRoutesEnum.StudentVisaPattern} />
+    <Route element={<StudentMigrationCardPage />} path={AppRoutesEnum.StudentMigrationCardPattern} />
+    <Route element={<StudentArrivalNoticePage />} path={AppRoutesEnum.StudentArrivalNoticePattern} />
+    <Route element={<StudentCloseRelativesPage />} path={AppRoutesEnum.StudentCloseRelativesPattern} />
   </>
 );
