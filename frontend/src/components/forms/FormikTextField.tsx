@@ -6,19 +6,19 @@ type TFormikTextFieldProps = TextFieldProps & {
   name: string;
   helpText?: string;
   shrink?: boolean;
-  visible?: boolean | string;
-  hidden?: boolean;
+  isVisible?: boolean;
+  isHidden?: boolean;
 };
 
 const titlePullUp = { shrink: true };
 
 export const FormikTextField: FC<TFormikTextFieldProps> = memo(forwardRef(({
-  name, helpText, shrink, ...props
+  name, helpText, shrink, isVisible, isHidden, ...props
 }, ref) => {
   const [field, meta] = useField(name);
   const { isSubmitting } = useFormikContext();
 
-  if (props.visible === false || props.hidden === true) return null;
+  if (isVisible === false || isHidden === true) return null;
 
   return (
     <TextField

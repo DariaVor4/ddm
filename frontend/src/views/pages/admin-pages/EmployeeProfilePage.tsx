@@ -16,6 +16,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useMatch, useNavigate, useParams } from 'react-router-dom';
 import { compact, omitBy } from 'lodash';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   GEmailAvailabilityVerdictEnum,
   GEmployeeUpsertInput, refetchEmployeeQuery, refetchEmployeesQuery,
@@ -86,8 +87,8 @@ export const EmployeeProfilePage: React.FC = () => {
   // For create and update
   const [saveEmployee] = useEmployeeUpsertMutation({
     refetchQueries: compact([
-      refetchEmployeesQuery(),
-      isCreate && refetchEmployeeQuery({ employeeId }),
+      pageMode !== PageModeEnum.SelfUpdate && refetchEmployeesQuery(),
+      pageMode !== PageModeEnum.Create && refetchEmployeeQuery({ employeeId }),
     ]),
   });
 
@@ -121,7 +122,7 @@ export const EmployeeProfilePage: React.FC = () => {
         pending: 'Сохранение...',
         success: 'Сохранено',
       });
-      if (isSuccess) {
+      if (isSuccess && pageMode !== PageModeEnum.SelfUpdate) {
         navigate(AppRoutesEnum.EmployeesRoute);
       }
     },
@@ -135,10 +136,18 @@ export const EmployeeProfilePage: React.FC = () => {
 
   return (
     <FormikProvider value={formik}>
-      <Paper className='px-10 py-4 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
-        <Typography className='text-center'>
-          {pageTitle}
-        </Typography>
+      <Stack
+        alignItems='center'
+        direction='row'
+        display='flex'
+        gap={2}
+        justifyContent='center'
+        marginBottom={1}
+      >
+        <IconButton onClick={() => navigate(-1)}><ArrowBackIcon /></IconButton>
+        <Typography align='center' fontWeight='500' variant='h5'>{pageTitle}</Typography>
+      </Stack>
+      <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
         <FormikTextField label='Фамилия' name='lastName' required />
         <FormikTextField label='Имя' name='firstName' required />
         <FormikTextField label='Отчество' name='patronymic' />
