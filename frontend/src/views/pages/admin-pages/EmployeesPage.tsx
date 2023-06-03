@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Checkbox, Divider,
   IconButton, ListItemIcon, ListItemText, Menu, MenuItem,
@@ -27,14 +27,17 @@ import { useConfirmAction } from '../../../core/hooks/useConfirmAction.tsx';
 export const EmployeesPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const { data: { employees = [] } = {} } = useEmployeesQuery();
+  const { data: { employees: employeesOriginal = [] } = {} } = useEmployeesQuery();
+  const { data: { current } = {} } = useUserCurrentQuery();
+
+  const employees = useMemo(() => employeesOriginal.filter(e => e.id !== current?.user.id), [employeesOriginal, current]);
+
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [menuEmployee, setMenuStudent] = useState<GEmployeesQuery['employees'][number] | null>(null);
   const onMenuClose = () => {
     setMenuAnchor(null);
     setMenuStudent(null);
   };
-  const { data: { current } = {} } = useUserCurrentQuery();
 
   const [deletedEmployees] = useEmployeesDeleteMutation({
     variables: { employeeIds: selectedIds },
@@ -52,7 +55,8 @@ export const EmployeesPage: React.FC = () => {
   });
 
   const onSelectAll = () => {
-    setSelectedIds(prev => (prev.length === (employees.length || 0) ? [] : employees.map(({ id }) => id) || []));
+    setSelectedIds(prev => (prev.length === (employees.length || 0) ? [] : employees
+      .map(({ id }) => id) || []));
   };
 
   const onRowSelect = (id: string) => {

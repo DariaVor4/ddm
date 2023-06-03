@@ -6,7 +6,7 @@ type TFormikTextFieldProps = TextFieldProps & {
   name: string;
   helpText?: string;
   shrink?: boolean;
-  visible?: boolean;
+  visible?: boolean | string;
   hidden?: boolean;
 };
 
