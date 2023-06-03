@@ -200,6 +200,9 @@ type Mutation {
   """Удаление сотрудников"""
   employeesDelete(employeeIds: [UUID!]!): Int!
 
+  """Экспорт документов"""
+  exportDocuments(studentId: UUID, visaRequestId: UUID): String!
+
   """Вход по почте и паролю, возвращает токен доступа и время его истечения"""
   loginByPassword(email: EmailAddress!, password: String!): TokenResponse!
 
@@ -302,6 +305,12 @@ type Mutation {
 
   """Перезапись сотрудника"""
   updateEmployee(input: EmployeeUpdateInput!): Boolean!
+
+  """Удаление визовых анкет"""
+  visaRequestDelete(studentId: UUID, visaRequestId: UUID): StudentVisaRequestEntity!
+
+  """Перезапись визовой анкеты"""
+  visaRequestUpsert(input: StudentVisaRequestUpsertInput!, studentId: UUID, visaRequestId: UUID): StudentVisaRequestEntity!
 }
 
 """Уведомление"""
@@ -447,6 +456,12 @@ type Query {
 
   """Получить текущего пользователя"""
   userCurrent: UserCurrentResponse!
+
+  """Получение последней визовой анкеты"""
+  visaRequest(studentId: UUID, visaRequestId: UUID): StudentVisaRequestEntity
+
+  """Получение визовых анкет всех или одного студента."""
+  visaRequests(studentId: UUID): [StudentVisaRequestEntity!]!
 }
 
 """Уведомление о прибытии студента"""
@@ -1201,6 +1216,21 @@ type StudentVisaRequestEntityMinAggregate {
   status: VisaRequestStatusEnum
   studentId: UUID
   updatedAt: DateTime
+}
+
+input StudentVisaRequestUpsertInput {
+  addressInCountryOfContinuousResidence: String
+  addressOfMigrationRegistration: String
+  attachedDocuments: String
+  category: VisaCategoryEnum
+  employeeComment: String
+  estimatedRouteOfStay: String
+  multiplicity: VisaMultiplicityEnum
+  placeOfWorkOrStudyAndEmploymentPosition: String
+  reason: String
+  registrationNumber: String
+  russianFederationRelatives: String
+  status: VisaRequestStatusEnum
 }
 
 """Входные данные для создания/обновления визы студента"""

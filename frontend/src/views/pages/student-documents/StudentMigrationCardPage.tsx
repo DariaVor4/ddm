@@ -10,11 +10,7 @@ import { toast } from 'react-toastify';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import {
-  GStudentMigrationCardUpsertInput,
-  InputMaybe,
-  refetchStudentMigrationCardQuery,
-  useStudentMigrationCardQuery,
-  useStudentMigrationCardUpsertMutation,
+  GStudentMigrationCardUpsertInput, InputMaybe, refetchStudentMigrationCardQuery, useStudentMigrationCardQuery, useStudentMigrationCardUpsertMutation,
 } from '../../../api/generated.ts';
 
 type IFormValue = Omit<GStudentMigrationCardUpsertInput, 'issueDate' | 'expirationDate'> & {

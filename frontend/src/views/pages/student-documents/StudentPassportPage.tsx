@@ -1,16 +1,6 @@
 import { FC } from 'react';
 import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  IconButton,
-  Paper,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
+  Button, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Paper, Radio, RadioGroup, Stack, Typography,
 } from '@mui/material';
 import * as yup from 'yup';
 import { compact, keys } from 'lodash';
@@ -24,13 +14,14 @@ import {
   GGenderEnum,
   GStudentPassportUpsertInput,
   InputMaybe,
-  refetchStudentPassportQuery, refetchStudentsQuery,
+  refetchStudentPassportQuery,
+  refetchStudentsQuery,
   refetchUserCurrentQuery,
   useStudentPassportQuery,
   useStudentPassportUpsertMutation,
 } from '../../../api/generated.ts';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
-import { TMuiColor } from '../../../styles/mui/theme.ts';
+import { TMuiColor } from '../../../styles/theme/mui-theme.ts';
 
 type IFormValue = Omit<GStudentPassportUpsertInput, 'birthDate' | 'issueDate' | 'expirationDate'> & {
   birthDate?: InputMaybe<string>;

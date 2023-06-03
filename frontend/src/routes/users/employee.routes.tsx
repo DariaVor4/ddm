@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 import { StudentsCrudRoutes } from '../fragments/students-crud.routes.tsx';
-import { EmployeeProfilePage } from '../../pages/admin-pages/EmployeeProfilePage.tsx';
+import { EmployeeProfilePage } from '../../views/pages/profiles/EmployeeProfilePage.tsx';
 
 export const EmployeeRoutes: JSX.Element = (
   <>

@@ -3,15 +3,7 @@ import * as yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import {
-  Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  IconButton,
-  InputAdornment,
-  Paper,
-  Stack,
-  Typography,
+  Button, Checkbox, FormControl, FormLabel, IconButton, InputAdornment, Paper, Stack, Typography,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useMatch, useNavigate, useParams } from 'react-router-dom';
@@ -19,18 +11,18 @@ import { compact, omitBy } from 'lodash';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   GEmailAvailabilityVerdictEnum,
-  GEmployeeUpsertInput, refetchEmployeeQuery, refetchEmployeesQuery,
+  GEmployeeUpsertInput,
+  refetchEmployeeQuery,
+  refetchEmployeesQuery,
   useEmployeeQuery,
-  useEmployeeUpsertMutation, useUserCurrentQuery,
+  useEmployeeUpsertMutation,
+  useUserCurrentQuery,
 } from '../../../api/generated.ts';
 import { checkPassword } from '../../../core/password-checker.ts';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
-import {
-  EmailConfirmationDialog,
-  useEmailConfirmationDialog,
-} from '../../../components/Dialogs/EmailConfirmationDialog.tsx';
+import { EmailConfirmationDialog, useEmailConfirmationDialog } from '../../../components/Dialogs/EmailConfirmationDialog.tsx';
 import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
-import { AppRoutesEnum } from '../../app-routes.enum.ts';
+import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 import { emailAvailabilityQuery } from '../../../api/global-methods/check-email-availability.ts';
 import { yupFormikValidate } from '../../../core/yup-formik-validate.ts';
 

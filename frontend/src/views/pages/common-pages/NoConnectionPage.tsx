@@ -4,8 +4,8 @@ import {
 } from '@mui/material';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
 import { useReactiveVar } from '@apollo/client';
-import { TMuiColor } from '../../styles/mui/theme.ts';
-import { client, isConnectionLostVar } from '../../api/apollo-client.tsx';
+import { TMuiColor } from '../../../styles/theme/mui-theme.ts';
+import { client, isConnectionLostVar } from '../../../api/apollo-client.tsx';
 
 export const NoConnectionPage: FC = () => {
   const [loading, setLoading] = useState(false);

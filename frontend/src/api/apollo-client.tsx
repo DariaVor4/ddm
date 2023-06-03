@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import { Id } from 'react-toastify/dist/types';
 import { LocalStorageKeys } from './local-storage-keys';
 import { GTokenResponse } from './generated';
-import { AppRoutesEnum } from '../views/app-routes.enum.ts';
+import { AppRoutesEnum } from '../routes/app-routes.enum.ts';
 import { globalNavigateVar } from '../store/global-navigate.ts';
 import * as introspectionResult from './schema.json';
 import { refreshTokens } from './refresh-tokens.ts';

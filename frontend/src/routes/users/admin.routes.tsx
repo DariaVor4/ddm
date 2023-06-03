@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom';
 import { StudentsCrudRoutes } from '../fragments/students-crud.routes.tsx';
-import { EmployeesPage } from '../../pages/admin-pages/EmployeesPage.tsx';
-import { EmployeeProfilePage } from '../../pages/admin-pages/EmployeeProfilePage.tsx';
+import { EmployeesPage } from '../../views/pages/user-lists/EmployeesPage.tsx';
+import { EmployeeProfilePage } from '../../views/pages/profiles/EmployeeProfilePage.tsx';
 
 // TODO: у админа должна быть возможность рассылать уведомления одному/нескольким
 

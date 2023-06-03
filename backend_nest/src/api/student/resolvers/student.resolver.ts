@@ -3,7 +3,7 @@ import {
 } from '@nestjs/graphql';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import {
-  throwCb, assert, isRoleAdminOrEmployee, isRoleStudent,
+  throwCb, assert, isRoleAdminOrEmployee, isRoleStudent, ifDebug,
 } from '@common';
 import * as uuid from 'uuid';
 import { Prisma } from '@prisma/client';
@@ -55,8 +55,8 @@ export class StudentResolver {
     @Args('studentId', { type: UUID, nullable: true, description: 'ID студента' }) studentId?: string,
   ): Promise<Partial<StudentEntity>> {
     if (isRoleStudent(ctx.roles)) {
-      if (studentId !== ctx.userId) {
-        throw new ForbiddenException('Студент может получить только свои данные');
+      if (studentId && studentId !== ctx.userId) {
+        throw new ForbiddenException(ifDebug('Студент может получить только свои данные'));
       }
     } else if (!studentId) {
       throw new BadRequestException('Ваш тип аккаунта не позволяет получить данные без указания studentId');

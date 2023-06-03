@@ -1,4 +1,4 @@
-import { useLocation, Location } from 'react-router-dom';
+import { Location, useLocation } from 'react-router-dom';
 
 /**
  * Типизированный хук useLocation из react-router-dom.

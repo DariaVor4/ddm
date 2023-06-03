@@ -17,7 +17,7 @@ import { useConfirmAction } from '../../../core/hooks/useConfirmAction.tsx';
 import {
   GStudentsQuery, refetchStudentsQuery, useStudentsDeleteMutation, useStudentsQuery,
 } from '../../../api/generated.ts';
-import { AppRoutesEnum } from '../../app-routes.enum.ts';
+import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 
 export const StudentsPage: FC = () => {
   const navigate = useNavigate();

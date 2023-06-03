@@ -1,16 +1,8 @@
 import { FC, forwardRef } from 'react';
 import { useField, useFormikContext } from 'formik';
-import type {
-  FormControlProps as TFormControlProps,
-  FormHelperTextProps as TFormHelperTextProps,
-  InputLabelProps as TInputLabelProps,
-} from '@mui/material';
+import type { FormControlProps as TFormControlProps, FormHelperTextProps as TFormHelperTextProps, InputLabelProps as TInputLabelProps } from '@mui/material';
 import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  Select,
-  SelectProps,
+  FormControl, FormHelperText, InputLabel, Select, SelectProps,
 } from '@mui/material';
 import type { SetRequired } from 'type-fest';
 

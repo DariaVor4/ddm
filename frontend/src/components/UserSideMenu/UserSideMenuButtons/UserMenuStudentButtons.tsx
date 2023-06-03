@@ -7,9 +7,9 @@ import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import BadgeIcon from '@mui/icons-material/Badge';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
-import { AppRoutesEnum } from '../../../../views/app-routes.enum.ts';
+import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 
-import { navigateFromMenu } from '../user-menu-store.ts';
+import { navigateFromMenu } from '../user-side-menu-store.ts';
 
 export const UserMenuStudentButtons: FC = () => (
   <>

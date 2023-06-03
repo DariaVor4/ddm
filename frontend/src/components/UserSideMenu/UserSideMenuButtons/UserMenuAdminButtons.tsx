@@ -1,14 +1,13 @@
 import { FC } from 'react';
 import {
-  Divider,
-  ListItem, ListItemButton, ListItemIcon, ListItemText,
+  Divider, ListItem, ListItemButton, ListItemIcon, ListItemText,
 } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import BadgeIcon from '@mui/icons-material/Badge';
 import PortraitIcon from '@mui/icons-material/Portrait';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { navigateFromMenu } from '../user-menu-store.ts';
-import { AppRoutesEnum } from '../../../../views/app-routes.enum.ts';
+import { navigateFromMenu } from '../user-side-menu-store.ts';
+import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 
 export const UserMenuAdminButtons: FC = () => (
   <>

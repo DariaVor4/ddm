@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import {
-  Typography, Box, Button, Grid,
+  Box, Button, Grid, Typography,
 } from '@mui/material';
-import { useUserCurrentQuery } from '../../api/generated.ts';
-import image from '../../assets/HomePageImage.svg';
-import { loginDialogOpenFn } from '../../components/Dialogs/LoginDialog.tsx';
-import { userMenuToggleFn } from '../../components/Header/UserMenu/user-menu-store.ts';
+import { useUserCurrentQuery } from '../../../api/generated.ts';
+import image from '../../../assets/HomePageImage.svg';
+import { loginDialogOpenFn } from '../../../components/Dialogs/LoginDialog.tsx';
+import { userMenuToggleFn } from '../../../components/UserSideMenu/user-side-menu-store.ts';
 
 export const HomePage: FC = () => {
   const { data: { current } = {} } = useUserCurrentQuery();

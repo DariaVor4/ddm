@@ -7,7 +7,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { makeVar, useReactiveVar } from '@apollo/client';
-import { AppRoutesEnum } from '../../views/app-routes.enum.ts';
+import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
 import { GLoginByPasswordMutationVariables, useLoginByPasswordMutation } from '../../api/generated';
 import { authHelper } from '../../api/apollo-client.tsx';
 import { onEnterDown } from '../../core/on-enter-down.ts';

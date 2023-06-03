@@ -195,6 +195,8 @@ export type GMutation = {
   employeeUpsert: GEmployeeEntity;
   /** Удаление сотрудников */
   employeesDelete: Scalars['Int']['output'];
+  /** Экспорт документов */
+  exportDocuments: Scalars['String']['output'];
   /** Вход по почте и паролю, возвращает токен доступа и время его истечения */
   loginByPassword: GTokenResponse;
   /** Обновление пары токенов для авторизованного пользователя */
@@ -233,6 +235,10 @@ export type GMutation = {
   studentsDelete: Scalars['Int']['output'];
   /** Перезапись сотрудника */
   updateEmployee: Scalars['Boolean']['output'];
+  /** Удаление визовых анкет */
+  visaRequestDelete: GStudentVisaRequestEntity;
+  /** Перезапись визовой анкеты */
+  visaRequestUpsert: GStudentVisaRequestEntity;
 };
 
 
@@ -255,6 +261,12 @@ export type GMutationEmployeeUpsertArgs = {
 
 export type GMutationEmployeesDeleteArgs = {
   employeeIds: Array<Scalars['UUID']['input']>;
+};
+
+
+export type GMutationExportDocumentsArgs = {
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
@@ -351,6 +363,19 @@ export type GMutationStudentsDeleteArgs = {
 
 export type GMutationUpdateEmployeeArgs = {
   input: GEmployeeUpdateInput;
+};
+
+
+export type GMutationVisaRequestDeleteArgs = {
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
+export type GMutationVisaRequestUpsertArgs = {
+  input: GStudentVisaRequestUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 /** Уведомление */
@@ -458,6 +483,10 @@ export type GQuery = {
   students: Array<GStudentEntity>;
   /** Получить текущего пользователя */
   userCurrent: GUserCurrentResponse;
+  /** Получение последней визовой анкеты */
+  visaRequest?: Maybe<GStudentVisaRequestEntity>;
+  /** Получение визовых анкет всех или одного студента. */
+  visaRequests: Array<GStudentVisaRequestEntity>;
 };
 
 
@@ -502,6 +531,17 @@ export type GQueryStudentPassportArgs = {
 
 
 export type GQueryStudentVisaArgs = {
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
+export type GQueryVisaRequestArgs = {
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
+export type GQueryVisaRequestsArgs = {
   studentId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -1171,6 +1211,21 @@ export type GStudentVisaRequestEntityMinAggregate = {
   status?: Maybe<GVisaRequestStatusEnum>;
   studentId?: Maybe<Scalars['UUID']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type GStudentVisaRequestUpsertInput = {
+  addressInCountryOfContinuousResidence?: InputMaybe<Scalars['String']['input']>;
+  addressOfMigrationRegistration?: InputMaybe<Scalars['String']['input']>;
+  attachedDocuments?: InputMaybe<Scalars['String']['input']>;
+  category?: InputMaybe<GVisaCategoryEnum>;
+  employeeComment?: InputMaybe<Scalars['String']['input']>;
+  estimatedRouteOfStay?: InputMaybe<Scalars['String']['input']>;
+  multiplicity?: InputMaybe<GVisaMultiplicityEnum>;
+  placeOfWorkOrStudyAndEmploymentPosition?: InputMaybe<Scalars['String']['input']>;
+  reason?: InputMaybe<Scalars['String']['input']>;
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
+  russianFederationRelatives?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<GVisaRequestStatusEnum>;
 };
 
 /** Входные данные для создания/обновления визы студента */

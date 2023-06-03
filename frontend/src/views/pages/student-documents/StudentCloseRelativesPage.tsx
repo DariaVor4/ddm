@@ -17,6 +17,8 @@ type StudentCloseRelativesParams = {
   studentId?: string;
 };
 
+// TODO: ограничить ввод родственников до 4 человек
+
 export const StudentCloseRelativesPage: FC = () => {
   const navigate = useNavigate();
   const dialog = useCloseRelativeDialog(state => strictPick(state, ['edit', 'create']));

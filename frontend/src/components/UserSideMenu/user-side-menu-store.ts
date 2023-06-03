@@ -1,5 +1,5 @@
 import { makeVar } from '@apollo/client';
-import { globalNavigateVar } from '../../../store/global-navigate.ts';
+import { globalNavigateVar } from '../../store/global-navigate.ts';
 
 export const isUserMenuOpenVar = makeVar(false);
 

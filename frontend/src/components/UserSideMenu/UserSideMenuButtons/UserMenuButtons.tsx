@@ -1,4 +1,4 @@
-import { GUserRoleEnum } from '../../../../api/generated.ts';
+import { GUserRoleEnum } from '../../../api/generated.ts';
 import { UserMenuAdminButtons } from './UserMenuAdminButtons.tsx';
 import { UserMenuStudentButtons } from './UserMenuStudentButtons.tsx';
 import { UserMenuEmployeeButtons } from './UserMenuEmployeeButtons.tsx';

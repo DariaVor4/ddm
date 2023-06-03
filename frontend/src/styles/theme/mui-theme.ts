@@ -3,6 +3,9 @@ import type { ConditionalPickDeep } from 'type-fest';
 import type { DeepKeys } from '../../core/type-utils/deep_keys.type.ts';
 
 const sameThemeProperties: ThemeOptions = {
+  palette: {
+
+  },
   components: {
     MuiInputLabel: {
       defaultProps: {
@@ -34,6 +37,11 @@ const sameThemeProperties: ThemeOptions = {
     MuiTable: {
       defaultProps: {
         size: 'small',
+      },
+    },
+    MuiToolbar: {
+      defaultProps: {
+        className: '!min-h-[0] py-1',
       },
     },
   },

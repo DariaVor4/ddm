@@ -1,12 +1,12 @@
 import { Route } from 'react-router-dom';
-import { StudentsPage } from '../../pages/employee-pages/StudentsPage.tsx';
-import { StudentPassportPage } from '../../pages/student-documents/StudentPassportPage.tsx';
-import { StudentMigrationCardPage } from '../../pages/student-documents/StudentMigrationCardPage.tsx';
-import { StudentVisaPage } from '../../pages/student-documents/StudentVisaPage.tsx';
-import { StudentArrivalNoticePage } from '../../pages/student-documents/StudentArrivalNoticePage.tsx';
-import { StudentCloseRelativesPage } from '../../pages/student-documents/StudentCloseRelativesPage.tsx';
-import { StudentProfilePage } from '../../pages/StudentProfilePage.tsx';
-import { AppRoutesEnum } from '../../app-routes.enum.ts';
+import { StudentsPage } from '../../views/pages/user-lists/StudentsPage.tsx';
+import { StudentPassportPage } from '../../views/pages/student-documents/StudentPassportPage.tsx';
+import { StudentMigrationCardPage } from '../../views/pages/student-documents/StudentMigrationCardPage.tsx';
+import { StudentVisaPage } from '../../views/pages/student-documents/StudentVisaPage.tsx';
+import { StudentArrivalNoticePage } from '../../views/pages/student-documents/StudentArrivalNoticePage.tsx';
+import { StudentCloseRelativesPage } from '../../views/pages/student-documents/StudentCloseRelativesPage.tsx';
+import { StudentProfilePage } from '../../views/pages/profiles/StudentProfilePage.tsx';
+import { AppRoutesEnum } from '../app-routes.enum.ts';
 
 export const StudentsCrudRoutes = (
   <>

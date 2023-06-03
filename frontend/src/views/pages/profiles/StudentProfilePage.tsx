@@ -19,17 +19,17 @@ import {
   useStudentQuery,
   useStudentUpsertMutation,
   useUserCurrentQuery,
-} from '../../api/generated';
-import { loginDialogOpenFn } from '../../components/Dialogs/LoginDialog';
-import { EmailConfirmationDialog, useEmailConfirmationDialog } from '../../components/Dialogs/EmailConfirmationDialog';
-import { AppRoutesEnum } from '../app-routes.enum.ts';
-import { strictPick } from '../../core/strict-lodash/strict-pick.ts';
-import { strictOmit } from '../../core/strict-lodash/strict-omit.ts';
-import { FormikTextField } from '../../components/forms/FormikTextField.tsx';
-import { checkPassword } from '../../core/password-checker.ts';
-import { emailAvailabilityQuery } from '../../api/global-methods/check-email-availability.ts';
-import { PageLoading } from '../../components/PageLoading.tsx';
-import { yupFormikValidate } from '../../core/yup-formik-validate.ts';
+} from '../../../api/generated.ts';
+import { loginDialogOpenFn } from '../../../components/Dialogs/LoginDialog.tsx';
+import { EmailConfirmationDialog, useEmailConfirmationDialog } from '../../../components/Dialogs/EmailConfirmationDialog.tsx';
+import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
+import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
+import { strictOmit } from '../../../core/strict-lodash/strict-omit.ts';
+import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
+import { checkPassword } from '../../../core/password-checker.ts';
+import { emailAvailabilityQuery } from '../../../api/global-methods/check-email-availability.ts';
+import { PageLoading } from '../../../components/PageLoading.tsx';
+import { yupFormikValidate } from '../../../core/yup-formik-validate.ts';
 
 // TODO: remove CreateInput
 type StudentUpsertPageForm = GStudentUpsertInput & {
@@ -103,8 +103,8 @@ export const StudentProfilePage: FC = () => {
   // For update | create
   const [upsert] = useStudentUpsertMutation({
     refetchQueries: compact([
-      refetchStudentsQuery(),
-      pageMode !== PageModeEnum.Create && refetchStudentQuery({ studentId }),
+      [PageModeEnum.Create, PageModeEnum.Update].includes(pageMode) && refetchStudentsQuery(),
+      [PageModeEnum.Create, PageModeEnum.SelfUpdate].includes(pageMode) && refetchStudentQuery({ studentId }),
     ]),
   });
   const { data: { student: studentOriginal } = {}, loading: isStudentOriginalLoading } = useStudentQuery({
@@ -147,7 +147,7 @@ export const StudentProfilePage: FC = () => {
       } else {
         await toast.promise(upsert({ variables: { input, studentId: targetId } }), {
           pending: 'Загрузка...',
-          success: studentId ? 'Данные обновлены!' : 'Создание успешно!',
+          success: pageMode === PageModeEnum.Create ? 'Создание успешно!' : 'Данные обновлены!',
           error: { render: ({ data: err }) => `Ошибка сохранения: ${err}` },
         });
       }

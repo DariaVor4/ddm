@@ -5,16 +5,16 @@ import {
 import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useReactiveVar } from '@apollo/client';
-import { AppRoutesEnum } from '../../../views/app-routes.enum.ts';
-import { UserRoleIcon } from '../../UserRoleIcon';
-import { useUserCurrentQuery } from '../../../api/generated';
-import { authHelper } from '../../../api/apollo-client.tsx';
-import { TMuiColor } from '../../../styles/mui/theme';
-import { getRole } from '../../../core/roles-checker';
-import { UserMenuButtons } from './UserMenuButtons/UserMenuButtons.tsx';
-import { isUserMenuOpenVar, navigateFromMenu, userMenuToggleFn } from './user-menu-store.ts';
+import { UserMenuButtons } from './UserSideMenuButtons/UserMenuButtons.tsx';
+import { isUserMenuOpenVar, navigateFromMenu, userMenuToggleFn } from './user-side-menu-store.ts';
+import { useUserCurrentQuery } from '../../api/generated.ts';
+import { getRole } from '../../core/roles-checker.ts';
+import { UserRoleIcon } from '../UserRoleIcon.tsx';
+import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
+import { authHelper } from '../../api/apollo-client.tsx';
+import type { TMuiColor } from '../../styles/theme/mui-theme.ts';
 
-export const UserMenu: FC = () => {
+export const UserSideMenu: FC = () => {
   const { data: { current } = {} } = useUserCurrentQuery();
   const role = getRole(current?.roles);
   const isMenuOpen = useReactiveVar(isUserMenuOpenVar);

@@ -1,26 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import {
-  Checkbox, Divider,
-  IconButton, ListItemIcon, ListItemText, Menu, MenuItem,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow, Typography,
+  Checkbox, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
-import { AppRoutesEnum } from '../../app-routes.enum.ts';
+import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 import {
-  GEmployeesQuery,
-  refetchEmployeesQuery,
-  useEmployeesDeleteMutation,
-  useEmployeesQuery, useUserCurrentQuery,
+  GEmployeesQuery, refetchEmployeesQuery, useEmployeesDeleteMutation, useEmployeesQuery, useUserCurrentQuery,
 } from '../../../api/generated.ts';
 import { useConfirmAction } from '../../../core/hooks/useConfirmAction.tsx';
 

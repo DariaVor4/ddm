@@ -2,8 +2,8 @@ import { FC, PropsWithChildren } from 'react';
 import { ThemeProvider } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
-import { useMainStore } from '../../store/theme-store';
-import { themeDark, themeLight } from './theme';
+import { useMainStore } from '../../store/theme-store.ts';
+import { themeDark, themeLight } from './mui-theme.ts';
 
 injectStyle();
 

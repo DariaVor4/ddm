@@ -9,8 +9,8 @@ import { GUserRoleEnum, useUserCurrentQuery } from '../../api/generated.ts';
 import { getRole } from '../../core/roles-checker.ts';
 import { useMainStore } from '../../store/theme-store.ts';
 import { loginDialogOpenFn } from '../Dialogs/LoginDialog.tsx';
-import { AppRoutesEnum } from '../../views/app-routes.enum.ts';
-import { isUserMenuOpenVar, userMenuToggleFn } from './UserMenu/user-menu-store.ts';
+import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
+import { isUserMenuOpenVar, userMenuToggleFn } from '../UserSideMenu/user-side-menu-store.ts';
 
 export const HeaderButtons: FC = () => {
   const { data: { current } = {} } = useUserCurrentQuery();

@@ -10,10 +10,7 @@ import dayjs from 'dayjs';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import {
-  GStudentVisaUpsertInput,
-  InputMaybe,
-  refetchStudentVisaQuery, useStudentVisaQuery,
-  useStudentVisaUpsertMutation,
+  GStudentVisaUpsertInput, InputMaybe, refetchStudentVisaQuery, useStudentVisaQuery, useStudentVisaUpsertMutation,
 } from '../../../api/generated.ts';
 
 type IFormValue = Omit<GStudentVisaUpsertInput, 'issueDate' | 'expirationDate'> & {
