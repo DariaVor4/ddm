@@ -1,12 +1,13 @@
 import { FC, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,
+  Checkbox, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,
 } from '@mui/material';
 import { compact } from 'lodash';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { refetchStudentCloseRelativesQuery, useStudentCloseRelativeDeleteMutation, useStudentCloseRelativesQuery } from '../../../api/generated.ts';
 import { CloseRelativeDialog, useCloseRelativeDialog } from '../../../components/Dialogs/CloseRelativeDialog.tsx';
 import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
@@ -17,6 +18,7 @@ type StudentCloseRelativesParams = {
 };
 
 export const StudentCloseRelativesPage: FC = () => {
+  const navigate = useNavigate();
   const dialog = useCloseRelativeDialog(state => strictPick(state, ['edit', 'create']));
   const { studentId } = useParams<StudentCloseRelativesParams>();
   const { data: { studentCloseRelatives: relatives } = {} } = useStudentCloseRelativesQuery({ variables: { studentId } });
@@ -41,7 +43,17 @@ export const StudentCloseRelativesPage: FC = () => {
 
   return (
     <>
-      <Typography textAlign='center' variant='h4' gutterBottom>Близкие родственники</Typography>
+      <Stack
+        alignItems='center'
+        direction='row'
+        display='flex'
+        gap={2}
+        justifyContent='center'
+        marginBottom={1}
+      >
+        <IconButton onClick={() => navigate(-1)}><ArrowBackIcon /></IconButton>
+        <Typography align='center' fontWeight='500' variant='h5'>Близкие родственники</Typography>
+      </Stack>
       <TableContainer className='m-auto' component={Paper}>
         <Table>
           <TableHead>

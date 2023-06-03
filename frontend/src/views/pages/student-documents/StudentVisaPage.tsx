@@ -2,11 +2,12 @@ import { FC } from 'react';
 import * as yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
 import {
-  Button, Paper, Stack, Typography,
+  Button, IconButton, Paper, Stack, Typography,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import {
   GStudentVisaUpsertInput,
@@ -80,9 +81,19 @@ export const StudentVisaPage: FC = () => {
 
   return (
     <>
+      <Stack
+        alignItems='center'
+        direction='row'
+        display='flex'
+        gap={2}
+        justifyContent='center'
+        marginBottom={1}
+      >
+        <IconButton onClick={() => navigate(-1)}><ArrowBackIcon /></IconButton>
+        <Typography align='center' fontWeight='500' variant='h5'>Виза</Typography>
+      </Stack>
       <FormikProvider value={formik}>
-        <Paper className='flex flex-col gap-4 px-10 py-4 mx-auto max-w-lg'>
-          <Typography className='text-center mb-4' variant='h4'>Виза</Typography>
+        <Paper className='flex flex-col gap-4 px-10 py-4 pt-10 mx-auto max-w-lg'>
           <FormikTextField label='Идентификатор' name='id' required />
           <FormikTextField label='Серия бланка' name='blankSeries' required />
           <FormikTextField label='Номер визы' name='number' required />

@@ -1,12 +1,13 @@
 import { FC } from 'react';
 import * as yup from 'yup';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormikProvider, useFormik } from 'formik';
 import {
-  Button, Paper, Stack, Typography,
+  Button, IconButton, Paper, Stack, Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import {
   GStudentMigrationCardUpsertInput,
@@ -41,6 +42,7 @@ const formSchema = yup.object({
 });
 
 export const StudentMigrationCardPage: FC = () => {
+  const navigate = useNavigate();
   const { studentId } = useParams<StudentMigrationCardPageParams>();
 
   const [saveDocument] = useStudentMigrationCardUpsertMutation({
@@ -79,9 +81,19 @@ export const StudentMigrationCardPage: FC = () => {
 
   return (
     <>
+      <Stack
+        alignItems='center'
+        direction='row'
+        display='flex'
+        gap={2}
+        justifyContent='center'
+        marginBottom={1}
+      >
+        <IconButton onClick={() => navigate(-1)}><ArrowBackIcon /></IconButton>
+        <Typography align='center' fontWeight='500' variant='h5'>Миграционная карта</Typography>
+      </Stack>
       <FormikProvider value={formik}>
-        <Paper className='flex flex-col gap-4 px-10 py-4 mx-auto max-w-lg'>
-          <Typography className='text-center mb-4' variant='h4'>Миграционная карта</Typography>
+        <Paper className='flex flex-col gap-4 px-10 py-4 pt-10 mx-auto max-w-lg'>
           <FormikTextField label='Серия' name='series' required />
           <FormikTextField label='Номер' name='number' required />
           <FormikTextField
