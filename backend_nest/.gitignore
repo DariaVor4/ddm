@@ -1,9 +1,11 @@
 # compiled output
+/files_storage
 /dist
 /tsconfig.build.tsbuildinfo
 /node_modules
 /prisma/client
-#/src/generated
+
+# package lock files
 /package-lock.json
 /pnpm-lock.yaml
 /yarn.lock

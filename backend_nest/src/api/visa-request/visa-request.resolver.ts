@@ -1,7 +1,7 @@
 import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
-import { StudentVisaRequestEntity } from '@prisma-nestjs-graphql';
+import { StudentVisaRequestEntity, VisaRequestStatusEnum } from '@prisma-nestjs-graphql';
 import { PartialDeep } from 'type-fest';
 import { UUID } from '@common/scalars';
 import { Prisma } from '@prisma/client';
@@ -14,6 +14,8 @@ import UserRoleEnum from '../auth/interfaces/user-role.enum';
 import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
 import { StudentVisaRequestUpsertInput } from './inputs/student-visa-request-upsert.input';
+import { VisaRequestWordExportService } from './services/visa-request-word-export.service';
+import { FileEntityResponse } from '../file/responses/file-entity.response';
 
 /**
  * Резолвер для работы с визовыми анкетами студентов.
@@ -23,7 +25,10 @@ export class VisaRequestResolver {
   // TODO: Как часто создаются новые визовые анкеты? Что делать, с тем что их может быть несколько?
   private readonly visaRequestAgeLimit = ms('1y');
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly visaRequestWordExportService: VisaRequestWordExportService,
+  ) {}
 
   /**
    * Получение визовых анкет всех или одного студента.
@@ -157,11 +162,12 @@ export class VisaRequestResolver {
     if (visaRequest && visaRequest.studentId !== targetStudentId) {
       throw new ForbiddenException(ifDebug('Студенты не могут перезаписывать чужие визовые анкеты'));
     }
+    const status = isUserIsStudent ? VisaRequestStatusEnum.Pending : input.status;
     if (visaRequest) {
       // Если анкета найдена, то обновляем её
       return this.prisma.studentVisaRequestEntity.update({
         where: { id: visaRequest.id },
-        data: input,
+        data: { ...input, status },
         select,
       });
     }
@@ -169,6 +175,7 @@ export class VisaRequestResolver {
     return this.prisma.studentVisaRequestEntity.create({
       data: {
         ...input,
+        status,
         student: { connect: { id: targetStudentId } },
       },
       select,
@@ -225,18 +232,42 @@ export class VisaRequestResolver {
     });
   }
 
-  @Mutation(() => String, {
+  /**
+   * Экспорт документов.
+   * @param select Поля, запрошенные через GraphQL.
+   * @param session Текущая сессия.
+   * @param studentId UUID Студента, для которого экспортируются документы.
+   * @param visaRequestId UUID Визовой анкеты, для которой экспортируются документы.
+   */
+  @Mutation(() => FileEntityResponse, {
     description: 'Экспорт документов',
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
   async exportDocuments(
-    @PrismaSelector() select: Prisma.StudentPassportEntitySelect,
+    @PrismaSelector() select: Prisma.FileEntitySelect,
     @CurrentSession() session: ISessionContext,
     @Args('studentId', { type: UUID, nullable: true }) studentId?: string,
     @Args('visaRequestId', { type: UUID, nullable: true }) visaRequestId?: string,
-  ): Promise<string> {
-    // TODO: Implement
-    console.log('exportDocuments', select, session, studentId, visaRequestId);
-    throw new Error('Unimplemented');
+  ): Promise<PartialDeep<FileEntityResponse>> {
+    const isUserIsStudent = isRoleStudent(session.roles);
+    const targetStudentId = studentId || session.userId;
+    if (isUserIsStudent && studentId && studentId !== targetStudentId) {
+      throw new ForbiddenException(ifDebug('Студенты не могут экспортировать чужие документы'));
+    }
+    if (!isUserIsStudent && !visaRequestId && targetStudentId === session.userId) {
+      throw new BadRequestException('Тип аккаунта не позволяет экспортировать документы без studentId или visaRequestId');
+    }
+    const visaRequest = await this.prisma.studentVisaRequestEntity.findFirstOrThrow({
+      where: {
+        studentId: visaRequestId ? undefined : targetStudentId,
+        id: visaRequestId,
+        createdAt: { gte: new Date(Date.now() - this.visaRequestAgeLimit) },
+      },
+      select: { id: true, studentId: true },
+    }).catch(throwCb(new NotFoundException('Визовая анкета не найдена')));
+    if (isUserIsStudent && visaRequest && visaRequest.studentId !== targetStudentId) {
+      throw new ForbiddenException(ifDebug('Студенты не могут экспортировать чужие документы'));
+    }
+    return this.visaRequestWordExportService.exportWordFile(visaRequest.id, select);
   }
 }

@@ -12,7 +12,7 @@
     "codegen:schema": "graphql-codegen --config codegen-schema-loader.ts",
     "codegen:full": "npm run codegen:schema && npm run codegen",
     "zeus:generate": "zeus ./src/api/schema.gql src/api/zeus --typescript --apollo --documentNode",
-    "zeus:schema": "dotenv -- cross-var zeus %VITE_API_ENDPOINT% --graphql ./src/api/zeus/schema.gql"
+    "zeus:schema": "dotenv -- cross-var zeus %VITE_API_GRAPHQL_ENDPOINT% --graphql ./src/api/zeus/schema.gql"
   },
   "dependencies": {
     "@apollo/client": "^3.7.15",

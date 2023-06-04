@@ -1,0 +1,17 @@
+mutation ExportDocuments($studentId: UUID, $visaRequestId: UUID) {
+  exportDocuments(studentId: $studentId, visaRequestId: $visaRequestId) {
+    id
+    userId
+    dir
+    name
+    ext
+    description
+    deletedAt
+    createdAt
+    updatedAt
+    url
+    user {
+      id
+    }
+  }
+}

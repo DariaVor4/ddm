@@ -23,6 +23,46 @@ datasource db {
   extensions = [uuidOssp(map: "uuid-ossp")]
 }
 
+enum UserRoleEnum {
+  Admin
+  Employee
+  Student
+}
+
+/// Файловое хранилище
+model FileEntity {
+  /// Имя файла внутри хранилища
+  /// @FieldType('Scalars.GraphQLUUID')
+  id     String      @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
+  /// Пользователь, создавший файл
+  /// @HideField({ input: true, output: false })
+  user   UserEntity? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  /// Пользователь, создавший файл
+  /// @FieldType('Scalars.GraphQLUUID')
+  userId String?     @db.Uuid
+
+  /// Локальная директория внутри хранилища на диске
+  dir  String? @map("file_location")
+  /// Оригинальное имя
+  name String?
+  /// Расширение
+  ext  String?
+
+  /// Описание
+  description String?
+  /// Время удаления, если файл должен самоуничтожиться
+  /// @HideField({ input: true, output: false })
+  deletedAt   DateTime? @map("deleted_at")
+
+  // Служебные поля
+  /// @HideField({ input: true, output: false })
+  createdAt DateTime  @default(now()) @map("created_at")
+  /// @HideField({ input: true, output: false })
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("file_store")
+}
+
 /// Подтверждение почтового адреса
 model ConfirmationEmailEntity {
   /// @FieldType('Scalars.GraphQLUUID')
@@ -86,6 +126,9 @@ model UserEntity {
   /// Уведомления пользователя
   /// @HideField({ input: true, output: false })
   notifications NotificationToUserEntity[]
+  /// Файлы созданные пользователем
+  /// @HideField({ input: true, output: false })
+  files         FileEntity[]
 
   // Служебные поля
   /// @HideField({ input: true, output: false })

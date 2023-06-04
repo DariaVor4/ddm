@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { GTokenResponse } from './generated.ts';
 import { LocalStorageKeys } from './local-storage-keys.ts';
 
-const { origin } = new URL(import.meta.env.VITE_API_ENDPOINT);
+const { origin } = new URL(import.meta.env.VITE_API_GRAPHQL_ENDPOINT);
 
 /**
  * Обновление пары токенов через RestAPI запрос.

@@ -22,7 +22,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [ '.eslintrc.js' ],
+  ignorePatterns: [ '.eslintrc.js', 'watch-assets.ts' ],
   rules: {
     'max-len': [ 'error', { code: 200 } ],
     

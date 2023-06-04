@@ -143,7 +143,7 @@ const scalarsLink = withScalars({
  * Connection properties for Apollo Client.
  */
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_API_ENDPOINT,
+  uri: import.meta.env.VITE_API_GRAPHQL_ENDPOINT,
   credentials: import.meta.env.MODE === 'development' ? 'include' : 'same-origin',
 });
 

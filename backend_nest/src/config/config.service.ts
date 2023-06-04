@@ -27,6 +27,8 @@ export interface IAppConfig {
 
   refreshTokenSecret: string;
   refreshTokenExpires: string;
+
+  filesStoragePath: string;
 }
 
 /**
@@ -70,6 +72,8 @@ export class ConfigService {
 
       refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
       refreshTokenExpires: process.env.REFRESH_TOKEN_EXPIRES,
+
+      filesStoragePath: process.env.FILES_STORAGE_PATH!,
     };
 
     const { error } = this.appConfigSchema().validate(this.appConfig);
@@ -96,5 +100,7 @@ export class ConfigService {
 
     refreshTokenSecret: joi.string().required(),
     refreshTokenExpires: joi.string().custom(vercelMsValidator).required(),
+
+    filesStoragePath: joi.string().optional().default(path.join(require.main!.path, 'files_storage')),
   });
 }

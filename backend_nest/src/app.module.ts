@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { GraphQLUUID, GraphQLEmailAddress } from 'graphql-scalars';
+import { GraphQLUUID, GraphQLEmailAddress, GraphQLURL } from 'graphql-scalars';
 import { AuthModule } from './api/auth/auth.module';
 import { JwtGuard } from './api/auth/guards/jwt.guard';
 import { RolesGuard } from './api/auth/guards/roles.guard';
@@ -18,7 +18,7 @@ import { StudentCloseRelativeModule } from './api/student-close-relative/student
 import { StudentMigrationCardModule } from './api/student-migration-card/student-migration-card.module';
 import { StudentVisaModule } from './api/student-visa/student-visa.module';
 import { VisaRequestModule } from './api/visa-request/visa-request.module';
-import { FilesModule } from './files/files.module';
+import { FileModule } from './api/file/file.module';
 
 @Module({
   imports: [
@@ -31,6 +31,7 @@ import { FilesModule } from './files/files.module';
       resolvers: {
         UUID: GraphQLUUID,
         EmailAddress: GraphQLEmailAddress,
+        URL: GraphQLURL,
       },
       // subscriptions
       // subscriptions: {
@@ -49,7 +50,7 @@ import { FilesModule } from './files/files.module';
     StudentMigrationCardModule,
     StudentVisaModule,
     VisaRequestModule,
-    FilesModule,
+    FileModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },

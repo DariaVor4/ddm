@@ -16,7 +16,9 @@ import {
   GVisaMultiplicityEnum,
   GVisaRequestStatusEnum,
   refetchVisaRequestQuery,
-  refetchVisaRequestsQuery, useStudentQuery,
+  refetchVisaRequestsQuery,
+  useExportDocumentsMutation,
+  useStudentQuery,
   useUserCurrentQuery,
   useVisaRequestQuery,
   useVisaRequestUpsertMutation,
@@ -24,6 +26,8 @@ import {
 import { FormikSelectField } from '../../components/forms/FormikSelectField.tsx';
 import { yupFormikValidate } from '../../core/yup-formik-validate.ts';
 import { useTypedLocation } from '../../core/react-router-dom/use-typed-location.ts';
+import { fileDownload } from '../../core/file-download.ts';
+import { strictPick } from '../../core/strict-lodash/strict-pick.ts';
 
 enum PageRoleEnum {Employee, Student}
 enum PageModeEnum {Create, Update}
@@ -41,7 +45,12 @@ const validationSchema = yup.object<TValidationSchemaCtx>({
   // TODO QUESTION: обязательное?
   attachedDocuments: yup.string().optional(),
   // TODO QUESTION: Какой формат? у сотрудника обязательное?
-  registrationNumber: yup.string().when(['pageRole'], ([pageRole], schema) => (pageRole === PageRoleEnum.Employee ? schema.required('Обязательное поле') : schema.optional())),
+  registrationNumber: yup
+    .string()
+    .when(['pageRole'], ([pageRole], schema) => (pageRole === PageRoleEnum.Employee
+      ? schema.required('Обязательное поле')
+      : schema.optional()
+    )),
   status: yup.string().oneOf(values(GVisaRequestStatusEnum)).required('Обязательное поле'),
   employeeComment: yup.string().optional(),
 });
@@ -70,6 +79,15 @@ export const VisaRequestPage: FC = () => {
   const pageMode = visaRequest ? PageModeEnum.Update : PageModeEnum.Create;
   const pageTitle = pageMode === PageModeEnum.Create ? 'Создание визовой анкеты' : 'Редактирование визовой анкеты';
   const pageActionTitle = pageMode === PageModeEnum.Create ? 'Создать' : 'Сохранить';
+
+  // Export
+  const [exportDocuments] = useExportDocumentsMutation({
+    variables: {
+      studentId,
+      visaRequestId,
+    },
+    onCompleted: ({ exportDocuments: res }) => fileDownload(res.url),
+  });
 
   const [upsert] = useVisaRequestUpsertMutation({
     refetchQueries: compact([
@@ -162,14 +180,16 @@ export const VisaRequestPage: FC = () => {
         <FormikTextField label='Место работы или учёбы, должность' name='placeOfWorkOrStudyAndEmploymentPosition' />
         <FormikTextField label='Родственники на территории РФ' name='russianFederationRelatives' />
         <FormikTextField label='Прилагаемые документы' name='attachedDocuments' />
-        {(pageRole === PageRoleEnum.Employee || visaRequest?.employeeComment) && <Divider />}
-        {(pageRole === PageRoleEnum.Employee || visaRequest?.employeeComment) && (
-          <>
+        {(pageRole === PageRoleEnum.Employee || values(strictPick(visaRequest, ['registrationNumber', 'status', 'employeeComment']))) && <Divider />}
+        <>
+          {pageRole === PageRoleEnum.Employee && (
             <FormikTextField
-              disabled={pageRole === PageRoleEnum.Student}
+              // disabled={pageRole === PageRoleEnum.Student}
               label='Регистрационный номер'
               name='registrationNumber'
             />
+          )}
+          {(pageRole === PageRoleEnum.Employee || visaRequest?.status) && (
             <FormikSelectField
               disabled={pageRole === PageRoleEnum.Student}
               label='Статус анкеты'
@@ -180,17 +200,20 @@ export const VisaRequestPage: FC = () => {
               <MenuItem value={GVisaRequestStatusEnum.Verified}>Проверена</MenuItem>
               <MenuItem value={GVisaRequestStatusEnum.Finished}>Передана в визовый отдел</MenuItem>
             </FormikSelectField>
-            <FormikTextField
-              disabled={pageRole === PageRoleEnum.Student}
-              label='Комментарий сотрудника'
-              name='employeeComment'
-              multiline
-            />
-          </>
-        )}
+          )}
+          {(pageRole === PageRoleEnum.Employee || visaRequest?.employeeComment) && (
+          <FormikTextField
+            disabled={pageRole === PageRoleEnum.Student}
+            label='Комментарий сотрудника'
+            name='employeeComment'
+            multiline
+          />
+          )}
+        </>
         <Divider />
         <Stack direction='row' gap={2} justifyContent='flex-end'>
           {(!formik.isSubmitting && formik.dirty) && <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>}
+          <Button onClick={() => exportDocuments()}>Экспорт</Button>
           <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>{pageActionTitle}</Button>
         </Stack>
       </Paper>

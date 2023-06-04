@@ -14,6 +14,10 @@
       {
         "include": "email/assets/*",
         "outDir": "dist"
+      },
+      {
+        "include": "api/visa-request/templates/*",
+        "outDir": "dist"
       }
     ]
   },

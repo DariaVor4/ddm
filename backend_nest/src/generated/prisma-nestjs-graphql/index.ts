@@ -182,6 +182,18 @@ export enum NotificationEntityScalarFieldEnum {
     updatedAt = "updatedAt"
 }
 
+export enum FileEntityScalarFieldEnum {
+    id = "id",
+    userId = "userId",
+    dir = "dir",
+    name = "name",
+    ext = "ext",
+    description = "description",
+    deletedAt = "deletedAt",
+    createdAt = "createdAt",
+    updatedAt = "updatedAt"
+}
+
 export enum EmployeeEntityScalarFieldEnum {
     id = "id",
     lastName = "lastName",
@@ -213,6 +225,7 @@ export enum ConfirmationEmailEntityScalarFieldEnum {
 registerEnumType(ConfirmationEmailEntityScalarFieldEnum, { name: 'ConfirmationEmailEntityScalarFieldEnum', description: undefined })
 registerEnumType(ConfirmationPhoneEntityScalarFieldEnum, { name: 'ConfirmationPhoneEntityScalarFieldEnum', description: undefined })
 registerEnumType(EmployeeEntityScalarFieldEnum, { name: 'EmployeeEntityScalarFieldEnum', description: undefined })
+registerEnumType(FileEntityScalarFieldEnum, { name: 'FileEntityScalarFieldEnum', description: undefined })
 registerEnumType(NotificationEntityScalarFieldEnum, { name: 'NotificationEntityScalarFieldEnum', description: undefined })
 registerEnumType(NotificationToUserEntityScalarFieldEnum, { name: 'NotificationToUserEntityScalarFieldEnum', description: undefined })
 registerEnumType(GenderEnum, { name: 'GenderEnum', description: "Пол" })
@@ -2166,6 +2179,1059 @@ export class UpsertOneEmployeeEntityArgs {
     @Field(() => EmployeeEntityUpdateInput, {nullable:false})
     @Type(() => EmployeeEntityUpdateInput)
     update!: InstanceType<typeof EmployeeEntityUpdateInput>;
+}
+
+@ObjectType()
+export class AggregateFileEntity {
+    @Field(() => FileEntityCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FileEntityCountAggregate>;
+    @Field(() => FileEntityMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FileEntityMinAggregate>;
+    @Field(() => FileEntityMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FileEntityMaxAggregate>;
+}
+
+@ArgsType()
+export class CreateManyFileEntityArgs {
+    @Field(() => [FileEntityCreateManyInput], {nullable:false})
+    @Type(() => FileEntityCreateManyInput)
+    data!: Array<FileEntityCreateManyInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@ArgsType()
+export class CreateOneFileEntityArgs {
+    @Field(() => FileEntityCreateInput, {nullable:false})
+    @Type(() => FileEntityCreateInput)
+    data!: InstanceType<typeof FileEntityCreateInput>;
+}
+
+@ArgsType()
+export class DeleteManyFileEntityArgs {
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    @Type(() => FileEntityWhereInput)
+    where?: InstanceType<typeof FileEntityWhereInput>;
+}
+
+@ArgsType()
+export class DeleteOneFileEntityArgs {
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+}
+
+@ArgsType()
+export class FileEntityAggregateArgs {
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    @Type(() => FileEntityWhereInput)
+    where?: InstanceType<typeof FileEntityWhereInput>;
+    @Field(() => [FileEntityOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileEntityOrderByWithRelationInput>;
+    @Field(() => FileEntityWhereUniqueInput, {nullable:true})
+    cursor?: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => FileEntityCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FileEntityCountAggregateInput>;
+    @Field(() => FileEntityMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FileEntityMinAggregateInput>;
+    @Field(() => FileEntityMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FileEntityMaxAggregateInput>;
+}
+
+@InputType()
+export class FileEntityCountAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    dir?: true;
+    @Field(() => Boolean, {nullable:true})
+    name?: true;
+    @Field(() => Boolean, {nullable:true})
+    ext?: true;
+    @Field(() => Boolean, {nullable:true})
+    description?: true;
+    @HideField()
+    deletedAt?: true;
+    @HideField()
+    createdAt?: true;
+    @HideField()
+    updatedAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    _all?: true;
+}
+
+@ObjectType()
+export class FileEntityCountAggregate {
+    @Field(() => Int, {nullable:false})
+    id!: number;
+    @Field(() => Int, {nullable:false})
+    userId!: number;
+    @Field(() => Int, {nullable:false})
+    dir!: number;
+    @Field(() => Int, {nullable:false})
+    name!: number;
+    @Field(() => Int, {nullable:false})
+    ext!: number;
+    @Field(() => Int, {nullable:false})
+    description!: number;
+    @Field(() => Int, {nullable:false})
+    deletedAt!: number;
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}
+
+@InputType()
+export class FileEntityCountOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    dir?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    name?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    ext?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    description?: keyof typeof SortOrder;
+    @HideField()
+    deletedAt?: keyof typeof SortOrder;
+    @HideField()
+    createdAt?: keyof typeof SortOrder;
+    @HideField()
+    updatedAt?: keyof typeof SortOrder;
+}
+
+@InputType()
+export class FileEntityCreateManyUserInputEnvelope {
+    @Field(() => [FileEntityCreateManyUserInput], {nullable:false})
+    @Type(() => FileEntityCreateManyUserInput)
+    data!: Array<FileEntityCreateManyUserInput>;
+    @Field(() => Boolean, {nullable:true})
+    skipDuplicates?: boolean;
+}
+
+@InputType()
+export class FileEntityCreateManyUserInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @HideField()
+    deletedAt?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FileEntityCreateManyInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @HideField()
+    deletedAt?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FileEntityCreateNestedManyWithoutUserInput {
+    @Field(() => [FileEntityCreateWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateWithoutUserInput)
+    create?: Array<FileEntityCreateWithoutUserInput>;
+    @Field(() => [FileEntityCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<FileEntityCreateOrConnectWithoutUserInput>;
+    @Field(() => FileEntityCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => FileEntityCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof FileEntityCreateManyUserInputEnvelope>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    connect?: Array<FileEntityWhereUniqueInput>;
+}
+
+@InputType()
+export class FileEntityCreateOrConnectWithoutUserInput {
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => FileEntityCreateWithoutUserInput, {nullable:false})
+    @Type(() => FileEntityCreateWithoutUserInput)
+    create!: InstanceType<typeof FileEntityCreateWithoutUserInput>;
+}
+
+@InputType()
+export class FileEntityCreateWithoutUserInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @HideField()
+    deletedAt?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FileEntityCreateInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @HideField()
+    deletedAt?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+    @HideField()
+    user?: InstanceType<typeof UserEntityCreateNestedOneWithoutFilesInput>;
+}
+
+@ArgsType()
+export class FileEntityGroupByArgs {
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    @Type(() => FileEntityWhereInput)
+    where?: InstanceType<typeof FileEntityWhereInput>;
+    @Field(() => [FileEntityOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<FileEntityOrderByWithAggregationInput>;
+    @Field(() => [FileEntityScalarFieldEnum], {nullable:false})
+    by!: Array<keyof typeof FileEntityScalarFieldEnum>;
+    @Field(() => FileEntityScalarWhereWithAggregatesInput, {nullable:true})
+    having?: InstanceType<typeof FileEntityScalarWhereWithAggregatesInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => FileEntityCountAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FileEntityCountAggregateInput>;
+    @Field(() => FileEntityMinAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FileEntityMinAggregateInput>;
+    @Field(() => FileEntityMaxAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FileEntityMaxAggregateInput>;
+}
+
+@ObjectType()
+export class FileEntityGroupBy {
+    @Field(() => Scalars.GraphQLUUID, {nullable:false})
+    id!: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @Field(() => Date, {nullable:true})
+    deletedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+    @Field(() => FileEntityCountAggregate, {nullable:true})
+    _count?: InstanceType<typeof FileEntityCountAggregate>;
+    @Field(() => FileEntityMinAggregate, {nullable:true})
+    _min?: InstanceType<typeof FileEntityMinAggregate>;
+    @Field(() => FileEntityMaxAggregate, {nullable:true})
+    _max?: InstanceType<typeof FileEntityMaxAggregate>;
+}
+
+@InputType()
+export class FileEntityListRelationFilter {
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    every?: InstanceType<typeof FileEntityWhereInput>;
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    some?: InstanceType<typeof FileEntityWhereInput>;
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    none?: InstanceType<typeof FileEntityWhereInput>;
+}
+
+@InputType()
+export class FileEntityMaxAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    dir?: true;
+    @Field(() => Boolean, {nullable:true})
+    name?: true;
+    @Field(() => Boolean, {nullable:true})
+    ext?: true;
+    @Field(() => Boolean, {nullable:true})
+    description?: true;
+    @HideField()
+    deletedAt?: true;
+    @HideField()
+    createdAt?: true;
+    @HideField()
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class FileEntityMaxAggregate {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @Field(() => Date, {nullable:true})
+    deletedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FileEntityMaxOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    dir?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    name?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    ext?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    description?: keyof typeof SortOrder;
+    @HideField()
+    deletedAt?: keyof typeof SortOrder;
+    @HideField()
+    createdAt?: keyof typeof SortOrder;
+    @HideField()
+    updatedAt?: keyof typeof SortOrder;
+}
+
+@InputType()
+export class FileEntityMinAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    dir?: true;
+    @Field(() => Boolean, {nullable:true})
+    name?: true;
+    @Field(() => Boolean, {nullable:true})
+    ext?: true;
+    @Field(() => Boolean, {nullable:true})
+    description?: true;
+    @HideField()
+    deletedAt?: true;
+    @HideField()
+    createdAt?: true;
+    @HideField()
+    updatedAt?: true;
+}
+
+@ObjectType()
+export class FileEntityMinAggregate {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @Field(() => Date, {nullable:true})
+    deletedAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FileEntityMinOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    dir?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    name?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    ext?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    description?: keyof typeof SortOrder;
+    @HideField()
+    deletedAt?: keyof typeof SortOrder;
+    @HideField()
+    createdAt?: keyof typeof SortOrder;
+    @HideField()
+    updatedAt?: keyof typeof SortOrder;
+}
+
+@InputType()
+export class FileEntityOrderByRelationAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    _count?: keyof typeof SortOrder;
+}
+
+@InputType()
+export class FileEntityOrderByWithAggregationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    dir?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    name?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    ext?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    description?: keyof typeof SortOrder;
+    @HideField()
+    deletedAt?: keyof typeof SortOrder;
+    @HideField()
+    createdAt?: keyof typeof SortOrder;
+    @HideField()
+    updatedAt?: keyof typeof SortOrder;
+    @Field(() => FileEntityCountOrderByAggregateInput, {nullable:true})
+    _count?: InstanceType<typeof FileEntityCountOrderByAggregateInput>;
+    @Field(() => FileEntityMaxOrderByAggregateInput, {nullable:true})
+    _max?: InstanceType<typeof FileEntityMaxOrderByAggregateInput>;
+    @Field(() => FileEntityMinOrderByAggregateInput, {nullable:true})
+    _min?: InstanceType<typeof FileEntityMinOrderByAggregateInput>;
+}
+
+@InputType()
+export class FileEntityOrderByWithRelationInput {
+    @Field(() => SortOrder, {nullable:true})
+    id?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    userId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    dir?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    name?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    ext?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    description?: keyof typeof SortOrder;
+    @HideField()
+    deletedAt?: keyof typeof SortOrder;
+    @HideField()
+    createdAt?: keyof typeof SortOrder;
+    @HideField()
+    updatedAt?: keyof typeof SortOrder;
+    @HideField()
+    user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
+}
+
+@InputType()
+export class FileEntityScalarWhereWithAggregatesInput {
+    @Field(() => [FileEntityScalarWhereWithAggregatesInput], {nullable:true})
+    AND?: Array<FileEntityScalarWhereWithAggregatesInput>;
+    @Field(() => [FileEntityScalarWhereWithAggregatesInput], {nullable:true})
+    OR?: Array<FileEntityScalarWhereWithAggregatesInput>;
+    @Field(() => [FileEntityScalarWhereWithAggregatesInput], {nullable:true})
+    NOT?: Array<FileEntityScalarWhereWithAggregatesInput>;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    id?: InstanceType<typeof UuidWithAggregatesFilter>;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    userId?: InstanceType<typeof UuidWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    dir?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    name?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    ext?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    description?: InstanceType<typeof StringWithAggregatesFilter>;
+    @HideField()
+    deletedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @HideField()
+    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+}
+
+@InputType()
+export class FileEntityScalarWhereInput {
+    @Field(() => [FileEntityScalarWhereInput], {nullable:true})
+    AND?: Array<FileEntityScalarWhereInput>;
+    @Field(() => [FileEntityScalarWhereInput], {nullable:true})
+    OR?: Array<FileEntityScalarWhereInput>;
+    @Field(() => [FileEntityScalarWhereInput], {nullable:true})
+    NOT?: Array<FileEntityScalarWhereInput>;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: InstanceType<typeof UuidFilter>;
+    @Field(() => UuidFilter, {nullable:true})
+    userId?: InstanceType<typeof UuidFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    dir?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    name?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    ext?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    description?: InstanceType<typeof StringFilter>;
+    @HideField()
+    deletedAt?: InstanceType<typeof DateTimeFilter>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @HideField()
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+}
+
+@InputType()
+export class FileEntityUncheckedCreateNestedManyWithoutUserInput {
+    @Field(() => [FileEntityCreateWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateWithoutUserInput)
+    create?: Array<FileEntityCreateWithoutUserInput>;
+    @Field(() => [FileEntityCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<FileEntityCreateOrConnectWithoutUserInput>;
+    @Field(() => FileEntityCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => FileEntityCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof FileEntityCreateManyUserInputEnvelope>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    connect?: Array<FileEntityWhereUniqueInput>;
+}
+
+@InputType()
+export class FileEntityUncheckedCreateWithoutUserInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @HideField()
+    deletedAt?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FileEntityUncheckedCreateInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
+    @HideField()
+    deletedAt?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+}
+
+@InputType()
+export class FileEntityUncheckedUpdateManyWithoutFilesInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileEntityUncheckedUpdateManyWithoutUserNestedInput {
+    @Field(() => [FileEntityCreateWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateWithoutUserInput)
+    create?: Array<FileEntityCreateWithoutUserInput>;
+    @Field(() => [FileEntityCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<FileEntityCreateOrConnectWithoutUserInput>;
+    @Field(() => [FileEntityUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<FileEntityUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => FileEntityCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => FileEntityCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof FileEntityCreateManyUserInputEnvelope>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    set?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    disconnect?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    delete?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    connect?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<FileEntityUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [FileEntityUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<FileEntityUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [FileEntityScalarWhereInput], {nullable:true})
+    @Type(() => FileEntityScalarWhereInput)
+    deleteMany?: Array<FileEntityScalarWhereInput>;
+}
+
+@InputType()
+export class FileEntityUncheckedUpdateManyInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileEntityUncheckedUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileEntityUncheckedUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileEntityUpdateManyMutationInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileEntityUpdateManyWithWhereWithoutUserInput {
+    @Field(() => FileEntityScalarWhereInput, {nullable:false})
+    @Type(() => FileEntityScalarWhereInput)
+    where!: InstanceType<typeof FileEntityScalarWhereInput>;
+    @Field(() => FileEntityUpdateManyMutationInput, {nullable:false})
+    @Type(() => FileEntityUpdateManyMutationInput)
+    data!: InstanceType<typeof FileEntityUpdateManyMutationInput>;
+}
+
+@InputType()
+export class FileEntityUpdateManyWithoutUserNestedInput {
+    @Field(() => [FileEntityCreateWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateWithoutUserInput)
+    create?: Array<FileEntityCreateWithoutUserInput>;
+    @Field(() => [FileEntityCreateOrConnectWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityCreateOrConnectWithoutUserInput)
+    connectOrCreate?: Array<FileEntityCreateOrConnectWithoutUserInput>;
+    @Field(() => [FileEntityUpsertWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityUpsertWithWhereUniqueWithoutUserInput)
+    upsert?: Array<FileEntityUpsertWithWhereUniqueWithoutUserInput>;
+    @Field(() => FileEntityCreateManyUserInputEnvelope, {nullable:true})
+    @Type(() => FileEntityCreateManyUserInputEnvelope)
+    createMany?: InstanceType<typeof FileEntityCreateManyUserInputEnvelope>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    set?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    disconnect?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    delete?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityWhereUniqueInput], {nullable:true})
+    @Type(() => FileEntityWhereUniqueInput)
+    connect?: Array<FileEntityWhereUniqueInput>;
+    @Field(() => [FileEntityUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityUpdateWithWhereUniqueWithoutUserInput)
+    update?: Array<FileEntityUpdateWithWhereUniqueWithoutUserInput>;
+    @Field(() => [FileEntityUpdateManyWithWhereWithoutUserInput], {nullable:true})
+    @Type(() => FileEntityUpdateManyWithWhereWithoutUserInput)
+    updateMany?: Array<FileEntityUpdateManyWithWhereWithoutUserInput>;
+    @Field(() => [FileEntityScalarWhereInput], {nullable:true})
+    @Type(() => FileEntityScalarWhereInput)
+    deleteMany?: Array<FileEntityScalarWhereInput>;
+}
+
+@InputType()
+export class FileEntityUpdateWithWhereUniqueWithoutUserInput {
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => FileEntityUpdateWithoutUserInput, {nullable:false})
+    @Type(() => FileEntityUpdateWithoutUserInput)
+    data!: InstanceType<typeof FileEntityUpdateWithoutUserInput>;
+}
+
+@InputType()
+export class FileEntityUpdateWithoutUserInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+}
+
+@InputType()
+export class FileEntityUpdateInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    user?: InstanceType<typeof UserEntityUpdateOneWithoutFilesNestedInput>;
+}
+
+@InputType()
+export class FileEntityUpsertWithWhereUniqueWithoutUserInput {
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => FileEntityUpdateWithoutUserInput, {nullable:false})
+    @Type(() => FileEntityUpdateWithoutUserInput)
+    update!: InstanceType<typeof FileEntityUpdateWithoutUserInput>;
+    @Field(() => FileEntityCreateWithoutUserInput, {nullable:false})
+    @Type(() => FileEntityCreateWithoutUserInput)
+    create!: InstanceType<typeof FileEntityCreateWithoutUserInput>;
+}
+
+@InputType()
+export class FileEntityWhereUniqueInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+}
+
+@InputType()
+export class FileEntityWhereInput {
+    @Field(() => [FileEntityWhereInput], {nullable:true})
+    AND?: Array<FileEntityWhereInput>;
+    @Field(() => [FileEntityWhereInput], {nullable:true})
+    OR?: Array<FileEntityWhereInput>;
+    @Field(() => [FileEntityWhereInput], {nullable:true})
+    NOT?: Array<FileEntityWhereInput>;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: InstanceType<typeof UuidFilter>;
+    @Field(() => UuidFilter, {nullable:true})
+    userId?: InstanceType<typeof UuidFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    dir?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    name?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    ext?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    description?: InstanceType<typeof StringFilter>;
+    @HideField()
+    deletedAt?: InstanceType<typeof DateTimeFilter>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFilter>;
+    @HideField()
+    updatedAt?: InstanceType<typeof DateTimeFilter>;
+    @HideField()
+    user?: InstanceType<typeof UserEntityRelationFilter>;
+}
+
+/**
+ * Файловое хранилище
+ */
+@ObjectType({description:'Файловое хранилище'})
+export class FileEntity {
+    /**
+     * Имя файла внутри хранилища
+     */
+    @Field(() => Scalars.GraphQLUUID, {nullable:false,description:'Имя файла внутри хранилища'})
+    id!: string;
+    /**
+     * Пользователь, создавший файл
+     */
+    @Field(() => Scalars.GraphQLUUID, {nullable:true,description:'Пользователь, создавший файл'})
+    userId!: string | null;
+    /**
+     * Локальная директория внутри хранилища на диске
+     */
+    @Field(() => String, {nullable:true,description:'Локальная директория внутри хранилища на диске'})
+    dir!: string | null;
+    /**
+     * Оригинальное имя
+     */
+    @Field(() => String, {nullable:true,description:'Оригинальное имя'})
+    name!: string | null;
+    /**
+     * Расширение
+     */
+    @Field(() => String, {nullable:true,description:'Расширение'})
+    ext!: string | null;
+    /**
+     * Описание
+     */
+    @Field(() => String, {nullable:true,description:'Описание'})
+    description!: string | null;
+    /**
+     * Время удаления, если файл должен самоуничтожиться
+     */
+    @Field(() => Date, {nullable:true,description:'Время удаления, если файл должен самоуничтожиться'})
+    deletedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
+    @Field(() => Date, {nullable:true})
+    updatedAt!: Date | null;
+    /**
+     * Пользователь, создавший файл
+     */
+    @Field(() => UserEntity, {nullable:true,description:'Пользователь, создавший файл'})
+    user?: InstanceType<typeof UserEntity> | null;
+}
+
+@ArgsType()
+export class FindFirstFileEntityOrThrowArgs {
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    @Type(() => FileEntityWhereInput)
+    where?: InstanceType<typeof FileEntityWhereInput>;
+    @Field(() => [FileEntityOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileEntityOrderByWithRelationInput>;
+    @Field(() => FileEntityWhereUniqueInput, {nullable:true})
+    cursor?: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FileEntityScalarFieldEnum], {nullable:true})
+    distinct?: Array<keyof typeof FileEntityScalarFieldEnum>;
+}
+
+@ArgsType()
+export class FindFirstFileEntityArgs {
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    @Type(() => FileEntityWhereInput)
+    where?: InstanceType<typeof FileEntityWhereInput>;
+    @Field(() => [FileEntityOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileEntityOrderByWithRelationInput>;
+    @Field(() => FileEntityWhereUniqueInput, {nullable:true})
+    cursor?: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FileEntityScalarFieldEnum], {nullable:true})
+    distinct?: Array<keyof typeof FileEntityScalarFieldEnum>;
+}
+
+@ArgsType()
+export class FindManyFileEntityArgs {
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    @Type(() => FileEntityWhereInput)
+    where?: InstanceType<typeof FileEntityWhereInput>;
+    @Field(() => [FileEntityOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FileEntityOrderByWithRelationInput>;
+    @Field(() => FileEntityWhereUniqueInput, {nullable:true})
+    cursor?: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => Int, {nullable:true})
+    take?: number;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+    @Field(() => [FileEntityScalarFieldEnum], {nullable:true})
+    distinct?: Array<keyof typeof FileEntityScalarFieldEnum>;
+}
+
+@ArgsType()
+export class FindUniqueFileEntityOrThrowArgs {
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+}
+
+@ArgsType()
+export class FindUniqueFileEntityArgs {
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+}
+
+@ArgsType()
+export class UpdateManyFileEntityArgs {
+    @Field(() => FileEntityUpdateManyMutationInput, {nullable:false})
+    @Type(() => FileEntityUpdateManyMutationInput)
+    data!: InstanceType<typeof FileEntityUpdateManyMutationInput>;
+    @Field(() => FileEntityWhereInput, {nullable:true})
+    @Type(() => FileEntityWhereInput)
+    where?: InstanceType<typeof FileEntityWhereInput>;
+}
+
+@ArgsType()
+export class UpdateOneFileEntityArgs {
+    @Field(() => FileEntityUpdateInput, {nullable:false})
+    @Type(() => FileEntityUpdateInput)
+    data!: InstanceType<typeof FileEntityUpdateInput>;
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+}
+
+@ArgsType()
+export class UpsertOneFileEntityArgs {
+    @Field(() => FileEntityWhereUniqueInput, {nullable:false})
+    @Type(() => FileEntityWhereUniqueInput)
+    where!: InstanceType<typeof FileEntityWhereUniqueInput>;
+    @Field(() => FileEntityCreateInput, {nullable:false})
+    @Type(() => FileEntityCreateInput)
+    create!: InstanceType<typeof FileEntityCreateInput>;
+    @Field(() => FileEntityUpdateInput, {nullable:false})
+    @Type(() => FileEntityUpdateInput)
+    update!: InstanceType<typeof FileEntityUpdateInput>;
 }
 
 @ObjectType()
@@ -13227,6 +14293,8 @@ export class UserEntityCountOrderByAggregateInput {
 export class UserEntityCount {
     @Field(() => Int, {nullable:false})
     notifications?: number;
+    @Field(() => Int, {nullable:false})
+    files?: number;
 }
 
 @InputType()
@@ -13255,6 +14323,19 @@ export class UserEntityCreateNestedOneWithoutEmployeeInput {
     @Field(() => UserEntityCreateOrConnectWithoutEmployeeInput, {nullable:true})
     @Type(() => UserEntityCreateOrConnectWithoutEmployeeInput)
     connectOrCreate?: InstanceType<typeof UserEntityCreateOrConnectWithoutEmployeeInput>;
+    @Field(() => UserEntityWhereUniqueInput, {nullable:true})
+    @Type(() => UserEntityWhereUniqueInput)
+    connect?: InstanceType<typeof UserEntityWhereUniqueInput>;
+}
+
+@InputType()
+export class UserEntityCreateNestedOneWithoutFilesInput {
+    @Field(() => UserEntityCreateWithoutFilesInput, {nullable:true})
+    @Type(() => UserEntityCreateWithoutFilesInput)
+    create?: InstanceType<typeof UserEntityCreateWithoutFilesInput>;
+    @Field(() => UserEntityCreateOrConnectWithoutFilesInput, {nullable:true})
+    @Type(() => UserEntityCreateOrConnectWithoutFilesInput)
+    connectOrCreate?: InstanceType<typeof UserEntityCreateOrConnectWithoutFilesInput>;
     @Field(() => UserEntityWhereUniqueInput, {nullable:true})
     @Type(() => UserEntityWhereUniqueInput)
     connect?: InstanceType<typeof UserEntityWhereUniqueInput>;
@@ -13297,6 +14378,16 @@ export class UserEntityCreateOrConnectWithoutEmployeeInput {
 }
 
 @InputType()
+export class UserEntityCreateOrConnectWithoutFilesInput {
+    @Field(() => UserEntityWhereUniqueInput, {nullable:false})
+    @Type(() => UserEntityWhereUniqueInput)
+    where!: InstanceType<typeof UserEntityWhereUniqueInput>;
+    @Field(() => UserEntityCreateWithoutFilesInput, {nullable:false})
+    @Type(() => UserEntityCreateWithoutFilesInput)
+    create!: InstanceType<typeof UserEntityCreateWithoutFilesInput>;
+}
+
+@InputType()
 export class UserEntityCreateOrConnectWithoutNotificationsInput {
     @Field(() => UserEntityWhereUniqueInput, {nullable:false})
     @Type(() => UserEntityWhereUniqueInput)
@@ -13336,6 +14427,32 @@ export class UserEntityCreateWithoutEmployeeInput {
     student?: InstanceType<typeof StudentEntityCreateNestedOneWithoutUserInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserEntityCreateWithoutFilesInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @HideField()
+    tokenHash?: string;
+    @HideField()
+    lastActivity?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+    @HideField()
+    employee?: InstanceType<typeof EmployeeEntityCreateNestedOneWithoutUserInput>;
+    @HideField()
+    student?: InstanceType<typeof StudentEntityCreateNestedOneWithoutUserInput>;
+    @HideField()
+    notifications?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -13358,6 +14475,8 @@ export class UserEntityCreateWithoutNotificationsInput {
     employee?: InstanceType<typeof EmployeeEntityCreateNestedOneWithoutUserInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityCreateNestedOneWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -13380,6 +14499,8 @@ export class UserEntityCreateWithoutStudentInput {
     employee?: InstanceType<typeof EmployeeEntityCreateNestedOneWithoutUserInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -13404,6 +14525,8 @@ export class UserEntityCreateInput {
     student?: InstanceType<typeof StudentEntityCreateNestedOneWithoutUserInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityCreateNestedManyWithoutUserInput>;
 }
 
 @ArgsType()
@@ -13607,6 +14730,8 @@ export class UserEntityOrderByWithRelationInput {
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityOrderByRelationAggregateInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityOrderByRelationAggregateInput>;
 }
 
 @InputType()
@@ -13661,6 +14786,32 @@ export class UserEntityUncheckedCreateWithoutEmployeeInput {
     student?: InstanceType<typeof StudentEntityUncheckedCreateNestedOneWithoutUserInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedCreateNestedManyWithoutUserInput>;
+}
+
+@InputType()
+export class UserEntityUncheckedCreateWithoutFilesInput {
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:false})
+    email!: string;
+    @Field(() => String, {nullable:false})
+    password!: string;
+    @HideField()
+    tokenHash?: string;
+    @HideField()
+    lastActivity?: Date | string;
+    @HideField()
+    createdAt?: Date | string;
+    @HideField()
+    updatedAt?: Date | string;
+    @HideField()
+    employee?: InstanceType<typeof EmployeeEntityUncheckedCreateNestedOneWithoutUserInput>;
+    @HideField()
+    student?: InstanceType<typeof StudentEntityUncheckedCreateNestedOneWithoutUserInput>;
+    @HideField()
+    notifications?: InstanceType<typeof NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -13683,6 +14834,8 @@ export class UserEntityUncheckedCreateWithoutNotificationsInput {
     employee?: InstanceType<typeof EmployeeEntityUncheckedCreateNestedOneWithoutUserInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedCreateNestedOneWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -13705,6 +14858,8 @@ export class UserEntityUncheckedCreateWithoutStudentInput {
     employee?: InstanceType<typeof EmployeeEntityUncheckedCreateNestedOneWithoutUserInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -13729,6 +14884,8 @@ export class UserEntityUncheckedCreateInput {
     student?: InstanceType<typeof StudentEntityUncheckedCreateNestedOneWithoutUserInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedCreateNestedManyWithoutUserInput>;
 }
 
 @InputType()
@@ -13769,6 +14926,32 @@ export class UserEntityUncheckedUpdateWithoutEmployeeInput {
     student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserEntityUncheckedUpdateWithoutFilesInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @HideField()
+    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
+    @HideField()
+    student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
+    @HideField()
+    notifications?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -13791,6 +14974,8 @@ export class UserEntityUncheckedUpdateWithoutNotificationsInput {
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -13813,6 +14998,8 @@ export class UserEntityUncheckedUpdateWithoutStudentInput {
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -13837,6 +15024,8 @@ export class UserEntityUncheckedUpdateInput {
     student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUncheckedUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -13915,6 +15104,29 @@ export class UserEntityUpdateOneRequiredWithoutStudentNestedInput {
 }
 
 @InputType()
+export class UserEntityUpdateOneWithoutFilesNestedInput {
+    @Field(() => UserEntityCreateWithoutFilesInput, {nullable:true})
+    @Type(() => UserEntityCreateWithoutFilesInput)
+    create?: InstanceType<typeof UserEntityCreateWithoutFilesInput>;
+    @Field(() => UserEntityCreateOrConnectWithoutFilesInput, {nullable:true})
+    @Type(() => UserEntityCreateOrConnectWithoutFilesInput)
+    connectOrCreate?: InstanceType<typeof UserEntityCreateOrConnectWithoutFilesInput>;
+    @Field(() => UserEntityUpsertWithoutFilesInput, {nullable:true})
+    @Type(() => UserEntityUpsertWithoutFilesInput)
+    upsert?: InstanceType<typeof UserEntityUpsertWithoutFilesInput>;
+    @Field(() => Boolean, {nullable:true})
+    disconnect?: boolean;
+    @Field(() => Boolean, {nullable:true})
+    delete?: boolean;
+    @Field(() => UserEntityWhereUniqueInput, {nullable:true})
+    @Type(() => UserEntityWhereUniqueInput)
+    connect?: InstanceType<typeof UserEntityWhereUniqueInput>;
+    @Field(() => UserEntityUpdateWithoutFilesInput, {nullable:true})
+    @Type(() => UserEntityUpdateWithoutFilesInput)
+    update?: InstanceType<typeof UserEntityUpdateWithoutFilesInput>;
+}
+
+@InputType()
 export class UserEntityUpdateWithoutEmployeeInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -13930,6 +15142,32 @@ export class UserEntityUpdateWithoutEmployeeInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
+    @HideField()
+    notifications?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUpdateManyWithoutUserNestedInput>;
+}
+
+@InputType()
+export class UserEntityUpdateWithoutFilesInput {
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @HideField()
+    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @HideField()
+    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @HideField()
+    employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -13956,6 +15194,8 @@ export class UserEntityUpdateWithoutNotificationsInput {
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -13978,6 +15218,8 @@ export class UserEntityUpdateWithoutStudentInput {
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -14002,6 +15244,8 @@ export class UserEntityUpdateInput {
     student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutUserNestedInput>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityUpdateManyWithoutUserNestedInput>;
 }
 
 @InputType()
@@ -14012,6 +15256,16 @@ export class UserEntityUpsertWithoutEmployeeInput {
     @Field(() => UserEntityCreateWithoutEmployeeInput, {nullable:false})
     @Type(() => UserEntityCreateWithoutEmployeeInput)
     create!: InstanceType<typeof UserEntityCreateWithoutEmployeeInput>;
+}
+
+@InputType()
+export class UserEntityUpsertWithoutFilesInput {
+    @Field(() => UserEntityUpdateWithoutFilesInput, {nullable:false})
+    @Type(() => UserEntityUpdateWithoutFilesInput)
+    update!: InstanceType<typeof UserEntityUpdateWithoutFilesInput>;
+    @Field(() => UserEntityCreateWithoutFilesInput, {nullable:false})
+    @Type(() => UserEntityCreateWithoutFilesInput)
+    create!: InstanceType<typeof UserEntityCreateWithoutFilesInput>;
 }
 
 @InputType()
@@ -14070,6 +15324,8 @@ export class UserEntityWhereInput {
     student?: InstanceType<typeof StudentEntityRelationFilter>;
     @HideField()
     notifications?: InstanceType<typeof NotificationToUserEntityListRelationFilter>;
+    @HideField()
+    files?: InstanceType<typeof FileEntityListRelationFilter>;
 }
 
 /**
@@ -14121,6 +15377,11 @@ export class UserEntity {
      */
     @Field(() => [NotificationToUserEntity], {nullable:true,description:'Уведомления пользователя'})
     notifications?: Array<NotificationToUserEntity>;
+    /**
+     * Файлы созданные пользователем
+     */
+    @Field(() => [FileEntity], {nullable:true,description:'Файлы созданные пользователем'})
+    files?: Array<FileEntity>;
     @Field(() => UserEntityCount, {nullable:false})
     _count?: InstanceType<typeof UserEntityCount>;
 }

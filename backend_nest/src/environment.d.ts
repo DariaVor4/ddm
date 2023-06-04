@@ -20,5 +20,7 @@ namespace NodeJS {
 
     REFRESH_TOKEN_SECRET: string;
     REFRESH_TOKEN_EXPIRES: string;
+
+    FILES_STORAGE_PATH?: string;
   };
 }

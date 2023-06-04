@@ -1,0 +1,296 @@
+[
+    {
+        "originalName": "Фамилия",
+        "entity": "StudentPassportEntity",
+        "field": "lastName",
+        "startCell": "N11",
+        "length": 3,
+        "count": 27,
+        "step": 4
+    },
+    {
+        "originalName": "Имя",
+        "entity": "StudentPassportEntity",
+        "field": "firstName",
+        "startCell": "N13",
+        "length": 3,
+        "count": 27,
+        "step": 4
+    },
+    {
+        "originalName": "Отчество",
+        "entity": "StudentPassportEntity",
+        "field": "patronymic",
+        "startCell": "Z15",
+        "length": 3,
+        "count": 24,
+        "step": 4
+    },
+    {
+        "originalName": "Гражданство, подданство",
+        "entity": "StudentPassportEntity",
+        "field": "citizenship",
+        "startCell": "V17",
+        "length": 3,
+        "count": 25,
+        "step": 4
+    },
+    {
+        "originalName": "Дата рождения",
+        "entity": "StudentPassportEntity",
+        "field": "birthDate",
+        "children": [
+            {
+                "originalName": "Число",
+                "startCell": "AD20",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Месяц",
+                "startCell": "AT20",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Год",
+                "startCell": "BF20",
+                "length": 3,
+                "count": 4,
+                "step": 4
+            }
+        ]
+    },
+    {
+        "originalName": "Пол: мужской",
+        "entity": "StudentPassportEntity",
+        "field": "gender",
+        "startCell": "BU20",
+        "length": 3,
+        "count": 1,
+        "step": 18
+    },
+    {
+        "originalName": "женский",
+        "entity": "StudentPassportEntity",
+        "field": "gender",
+        "startCell": "CZ20",
+        "length": 3,
+        "count": 1,
+        "step": 2
+    },
+    {
+        "originalName": "Место рождения: государство, город или другой населенный пункт",
+        "entity": "StudentPassportEntity",
+        "field": "birthPlace",
+        "children": [
+            {
+                "originalName": "Строка 1",
+                "startCell": "Z22",
+                "length": 3,
+                "count": 24,
+                "step": 4
+            },
+            {
+                "originalName": "Строка 2",
+                "startCell": "Z24",
+                "length": 3,
+                "count": 24,
+                "step": 4
+            },
+            {
+                "originalName": "Строка 3",
+                "startCell": "Z26",
+                "length": 3,
+                "count": 24,
+                "step": 4
+            }
+        ]
+    },
+    {
+        "originalName": "серия",
+        "entity": "StudentPassportEntity",
+        "field": "series",
+        "startCell": "BF28",
+        "length": 3,
+        "count": 4,
+        "step": 4
+    },
+    {
+        "originalName": "№",
+        "entity": "StudentPassportEntity",
+        "field": "number",
+        "startCell": "BF28",
+        "length": 3,
+        "count": 8,
+        "step": 4
+    },
+    {
+        "originalName": "№",
+        "entity": "StudentPassportEntity",
+        "field": "number",
+        "startCell": "BF28",
+        "length": 3,
+        "count": 11,
+        "step": 4
+    },
+    {
+        "originalName": "Дата выдачи",
+        "entity": "StudentPassportEntity",
+        "field": "issueDate",
+        "children": [
+            {
+                "originalName": "Число",
+                "startCell": "I30",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Месяц",
+                "startCell": "Z30",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Год",
+                "startCell": "AL30",
+                "length": 3,
+                "count": 4,
+                "step": 4
+            }
+        ]
+    },
+    {
+        "originalName": "Срок действия до",
+        "entity": "StudentPassportEntity",
+        "field": "expirationDate",
+        "children": [
+            {
+                "originalName": "Число",
+                "startCell": "BN30",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Месяц",
+                "startCell": "CD30",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Год",
+                "startCell": "CP30",
+                "length": 3,
+                "count": 4,
+                "step": 4
+            }
+        ]
+    },
+    {
+        "originalName": "серия",
+        "entity": "StudentVisaEntity",
+        "field": "blankSeries",
+        "startCell": "J34",
+        "length": 3,
+        "count": 4,
+        "step": 4
+    },
+    {
+        "originalName": "№",
+        "entity": "StudentVisaEntity",
+        "field": "number",
+        "startCell": "AD36",
+        "length": 3,
+        "count": 15,
+        "step": 4
+    },
+    {
+        "originalName": "Дата выдачи",
+        "entity": "StudentVisaEntity",
+        "field": "issueDate",
+        "children": [
+            {
+                "originalName": "Число",
+                "startCell": "I38",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Месяц",
+                "startCell": "Z38",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Год",
+                "startCell": "AL38",
+                "length": 3,
+                "count": 4,
+                "step": 4
+            }
+        ]
+    },
+    {
+        "originalName": "Срок действия до",
+        "entity": "StudentVisaEntity",
+        "field": "expirationDate",
+        "children": [
+            {
+                "originalName": "Число",
+                "startCell": "BN38",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Месяц",
+                "startCell": "CD38",
+                "length": 3,
+                "count": 2,
+                "step": 4
+            },
+            {
+                "originalName": "Год",
+                "startCell": "CP38",
+                "length": 3,
+                "count": 4,
+                "step": 4
+            }
+        ]
+    },
+    {
+        "originalName": "Профессия",
+        "entity": "StudentArrivalNoticeEntity",
+        "field": "profession",
+        "startCell": "R44",
+        "length": 3,
+        "count": 26,
+        "step": 4
+    },
+    {
+        "originalName": "серия",
+        "entity": "StudentMigrationCardEntity",
+        "field": "series",
+        "startCell": "AP48",
+        "length": 3,
+        "count": 4,
+        "step": 4
+    },
+    {
+        "originalName": "№",
+        "entity": "StudentMigrationCardEntity",
+        "field": "number",
+        "startCell": "BJ48",
+        "length": 3,
+        "count": 11,
+        "step": 4
+    }
+]

@@ -14,6 +14,11 @@ import {
   UserEntity,
 } from '@prisma/client';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+export {
+  VisaMultiplicityEnum, GenderEnum, VisaCategoryEnum, VisaRequestStatusEnum,
+} from '.prisma/client';
+
 export type TUser = UserEntity;
 export type TConfirmationEmail = ConfirmationEmailEntity;
 export type TConfirmationPhone = ConfirmationPhoneEntity;

@@ -19,6 +19,7 @@ export default {
       DateTime: 'dayjs#Dayjs',
       EmailAddress: 'string',
       UUID: 'string',
+      URL: 'string',
     },
     // maybeValue: 'T | null',
     // inputMaybeValue: 'T | null | undefined',

@@ -20,6 +20,8 @@ export type Scalars = {
   DateTime: { input: Dayjs; output: Dayjs; }
   /** A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address. */
   EmailAddress: { input: string; output: string; }
+  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
+  URL: { input: string; output: string; }
   /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
   UUID: { input: string; output: string; }
 };
@@ -179,6 +181,88 @@ export type GEmployeeUpsertInput = {
   patronymic?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Файловое хранилище */
+export type GFileEntity = {
+  createdAt: Scalars['DateTime']['output'];
+  /** Время удаления, если файл должен самоуничтожиться */
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Описание */
+  description?: Maybe<Scalars['String']['output']>;
+  /** Локальная директория внутри хранилища на диске */
+  dir?: Maybe<Scalars['String']['output']>;
+  /** Расширение */
+  ext?: Maybe<Scalars['String']['output']>;
+  /** Имя файла внутри хранилища */
+  id: Scalars['UUID']['output'];
+  /** Оригинальное имя */
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Пользователь, создавший файл */
+  user?: Maybe<GUserEntity>;
+  /** Пользователь, создавший файл */
+  userId?: Maybe<Scalars['UUID']['output']>;
+};
+
+export type GFileEntityCountAggregate = {
+  _all: Scalars['Int']['output'];
+  createdAt: Scalars['Int']['output'];
+  deletedAt: Scalars['Int']['output'];
+  description: Scalars['Int']['output'];
+  dir: Scalars['Int']['output'];
+  ext: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['Int']['output'];
+  updatedAt: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+};
+
+export type GFileEntityMaxAggregate = {
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  dir?: Maybe<Scalars['String']['output']>;
+  ext?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['UUID']['output']>;
+};
+
+export type GFileEntityMinAggregate = {
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  dir?: Maybe<Scalars['String']['output']>;
+  ext?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['UUID']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['UUID']['output']>;
+};
+
+export type GFileEntityResponse = {
+  createdAt: Scalars['DateTime']['output'];
+  /** Время удаления, если файл должен самоуничтожиться */
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Описание */
+  description?: Maybe<Scalars['String']['output']>;
+  /** Локальная директория внутри хранилища на диске */
+  dir?: Maybe<Scalars['String']['output']>;
+  /** Расширение */
+  ext?: Maybe<Scalars['String']['output']>;
+  /** Имя файла внутри хранилища */
+  id: Scalars['UUID']['output'];
+  /** Оригинальное имя */
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Ссылка на файл */
+  url: Scalars['URL']['output'];
+  /** Пользователь, создавший файл */
+  user?: Maybe<GUserEntity>;
+  /** Пользователь, создавший файл */
+  userId?: Maybe<Scalars['UUID']['output']>;
+};
+
 /** Пол */
 export enum GGenderEnum {
   Female = 'Female',
@@ -195,7 +279,7 @@ export type GMutation = {
   /** Удаление сотрудников */
   employeesDelete: Scalars['Int']['output'];
   /** Экспорт документов */
-  exportDocuments: Scalars['String']['output'];
+  exportDocuments: GFileEntityResponse;
   /** Вход по почте и паролю, возвращает токен доступа и время его истечения */
   loginByPassword: GTokenResponse;
   /** Обновление пары токенов для авторизованного пользователя */
@@ -1284,6 +1368,8 @@ export type GUserEntity = {
   email: Scalars['EmailAddress']['output'];
   /** Если пользователь - сотрудник */
   employee?: Maybe<GEmployeeEntity>;
+  /** Файлы созданные пользователем */
+  files?: Maybe<Array<GFileEntity>>;
   /** Полное имя. Использовать только если в запросе присутствуют поля паспорта студента или поля сотрудника. */
   fullName: Scalars['String']['output'];
   /** Идентификатор пользователя */
@@ -1302,6 +1388,7 @@ export type GUserEntity = {
 };
 
 export type GUserEntityCount = {
+  files: Scalars['Int']['output'];
   notifications: Scalars['Int']['output'];
 };
 
@@ -1406,6 +1493,14 @@ export type GEmployeeQueryVariables = Exact<{
 
 
 export type GEmployeeQuery = { employee: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } } };
+
+export type GExportDocumentsMutationVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GExportDocumentsMutation = { exportDocuments: { id: string, userId?: string | null, dir?: string | null, name?: string | null, ext?: string | null, description?: string | null, deletedAt?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, url: string, user?: { id: string } | null } };
 
 export type GEmailAvailabilityQueryVariables = Exact<{
   email: Scalars['String']['input'];
@@ -2017,6 +2112,52 @@ export type EmployeeQueryResult = Apollo.QueryResult<GEmployeeQuery, GEmployeeQu
 export function refetchEmployeeQuery(variables?: GEmployeeQueryVariables) {
       return { query: EmployeeDocument, variables: variables }
     }
+export const ExportDocumentsDocument = gql`
+    mutation ExportDocuments($studentId: UUID, $visaRequestId: UUID) {
+  exportDocuments(studentId: $studentId, visaRequestId: $visaRequestId) {
+    id
+    userId
+    dir
+    name
+    ext
+    description
+    deletedAt
+    createdAt
+    updatedAt
+    url
+    user {
+      id
+    }
+  }
+}
+    `;
+export type GExportDocumentsMutationFn = Apollo.MutationFunction<GExportDocumentsMutation, GExportDocumentsMutationVariables>;
+
+/**
+ * __useExportDocumentsMutation__
+ *
+ * To run a mutation, you first call `useExportDocumentsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExportDocumentsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [exportDocumentsMutation, { data, loading, error }] = useExportDocumentsMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *      visaRequestId: // value for 'visaRequestId'
+ *   },
+ * });
+ */
+export function useExportDocumentsMutation(baseOptions?: Apollo.MutationHookOptions<GExportDocumentsMutation, GExportDocumentsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GExportDocumentsMutation, GExportDocumentsMutationVariables>(ExportDocumentsDocument, options);
+      }
+export type ExportDocumentsMutationHookResult = ReturnType<typeof useExportDocumentsMutation>;
+export type ExportDocumentsMutationResult = Apollo.MutationResult<GExportDocumentsMutation>;
+export type ExportDocumentsMutationOptions = Apollo.BaseMutationOptions<GExportDocumentsMutation, GExportDocumentsMutationVariables>;
 export const EmailAvailabilityDocument = gql`
     query EmailAvailability($email: String!) {
   emailAvailability(email: $email) {

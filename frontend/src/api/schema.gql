@@ -179,6 +179,105 @@ input EmployeeUpsertInput {
   patronymic: String
 }
 
+"""Файловое хранилище"""
+type FileEntity {
+  createdAt: DateTime!
+
+  """Время удаления, если файл должен самоуничтожиться"""
+  deletedAt: DateTime
+
+  """Описание"""
+  description: String
+
+  """Локальная директория внутри хранилища на диске"""
+  dir: String
+
+  """Расширение"""
+  ext: String
+
+  """Имя файла внутри хранилища"""
+  id: UUID!
+
+  """Оригинальное имя"""
+  name: String
+  updatedAt: DateTime
+
+  """Пользователь, создавший файл"""
+  user: UserEntity
+
+  """Пользователь, создавший файл"""
+  userId: UUID
+}
+
+type FileEntityCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  description: Int!
+  dir: Int!
+  ext: Int!
+  id: Int!
+  name: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+type FileEntityMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  dir: String
+  ext: String
+  id: UUID
+  name: String
+  updatedAt: DateTime
+  userId: UUID
+}
+
+type FileEntityMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  dir: String
+  ext: String
+  id: UUID
+  name: String
+  updatedAt: DateTime
+  userId: UUID
+}
+
+type FileEntityResponse {
+  createdAt: DateTime!
+
+  """Время удаления, если файл должен самоуничтожиться"""
+  deletedAt: DateTime
+
+  """Описание"""
+  description: String
+
+  """Локальная директория внутри хранилища на диске"""
+  dir: String
+
+  """Расширение"""
+  ext: String
+
+  """Имя файла внутри хранилища"""
+  id: UUID!
+
+  """Оригинальное имя"""
+  name: String
+  updatedAt: DateTime
+
+  """Ссылка на файл"""
+  url: URL!
+
+  """Пользователь, создавший файл"""
+  user: UserEntity
+
+  """Пользователь, создавший файл"""
+  userId: UUID
+}
+
 """Пол"""
 enum GenderEnum {
   Female
@@ -201,7 +300,7 @@ type Mutation {
   employeesDelete(employeeIds: [UUID!]!): Int!
 
   """Экспорт документов"""
-  exportDocuments(studentId: UUID, visaRequestId: UUID): String!
+  exportDocuments(studentId: UUID, visaRequestId: UUID): FileEntityResponse!
 
   """Вход по почте и паролю, возвращает токен доступа и время его истечения"""
   loginByPassword(email: EmailAddress!, password: String!): TokenResponse!
@@ -1277,6 +1376,11 @@ type TokenResponse {
 }
 
 """
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+"""
 A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
 """
 scalar UUID
@@ -1308,6 +1412,9 @@ type UserEntity {
   """Если пользователь - сотрудник"""
   employee: EmployeeEntity
 
+  """Файлы созданные пользователем"""
+  files: [FileEntity!]
+
   """Идентификатор пользователя"""
   id: UUID!
 
@@ -1338,6 +1445,7 @@ type UserEntity {
 }
 
 type UserEntityCount {
+  files: Int!
   notifications: Int!
 }
 
