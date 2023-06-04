@@ -3,7 +3,7 @@ import {
   Button, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Paper, Radio, RadioGroup, Stack, Typography,
 } from '@mui/material';
 import * as yup from 'yup';
-import { compact, keys } from 'lodash';
+import { compact, values } from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormikProvider, useFormik } from 'formik';
 import ms from 'ms';
@@ -41,7 +41,7 @@ const formSchema = yup.object({
   lastName: yup.string().trim().required('Обязательное поле'),
   firstName: yup.string().trim().required('Обязательное поле'),
   patronymic: yup.string().trim().optional(),
-  gender: yup.string().trim().oneOf(keys(GGenderEnum), 'Некорректное значение').required('Обязательное поле'),
+  gender: yup.string().trim().oneOf(values(GGenderEnum), 'Некорректное значение').required('Обязательное поле'),
   birthDate: yup.date()
     .min(new Date(Date.now() - ms('90y')), 'Слишком старая дата')
     .max(new Date(Date.now() - ms('16y')), 'Слишком поздняя дата')
@@ -76,6 +76,7 @@ export const StudentPassportPage: FC = () => {
   const { data: { studentPassport } = {} } = useStudentPassportQuery({ variables: { studentId }, fetchPolicy: 'network-only' });
   const formik = useFormik<IFormValue>({
     enableReinitialize: true,
+    validateOnChange: false,
     initialValues: {
       lastName: studentPassport?.lastName || '',
       firstName: studentPassport?.firstName || '',
@@ -163,14 +164,7 @@ export const StudentPassportPage: FC = () => {
           <FormikTextField label='Гражданство' name='citizenship' />
           <FormikTextField label='Дата истечения' name='expirationDate' type='date' />
           <Stack direction='row' gap={2} justifyContent='flex-end'>
-            <Button
-              color='warning'
-              disabled={!formik.dirty}
-              variant='text'
-              onClick={() => formik.resetForm()}
-            >
-              Сброс
-            </Button>
+            {(!formik.isSubmitting && formik.dirty) && <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>}
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>

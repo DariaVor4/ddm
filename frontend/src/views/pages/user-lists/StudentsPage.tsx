@@ -1,7 +1,7 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { FC, useState } from 'react';
 import {
-  Checkbox, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Checkbox, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -51,6 +51,7 @@ export const StudentsPage: FC = () => {
 
   return (
     <>
+      <Typography align='center' marginBottom={2} variant='h4'>Студенты</Typography>
       <TableContainer className='m-auto' component={Paper}>
         <Table>
           <TableHead>

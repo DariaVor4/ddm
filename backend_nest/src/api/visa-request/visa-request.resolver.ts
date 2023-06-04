@@ -155,7 +155,7 @@ export class VisaRequestResolver {
     if (visaRequest) {
       // Если анкета найдена, то обновляем её
       return this.prisma.studentVisaRequestEntity.update({
-        where: { id: visaRequestId },
+        where: { id: visaRequest.id },
         data: input,
         select,
       });

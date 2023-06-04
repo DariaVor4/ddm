@@ -4,6 +4,11 @@
 
 directive @client on FIELD
 
+extend type UserCurrentResponse {
+    """Роль пользователя. Использовать, только если в запросе присутствует roles."""
+    role: UserRoleEnum!
+}
+
 extend type UserEntity {
     """Инициалы. Использовать только если в запросе присутствуют поля паспорта студента или поля сотрудника."""
     initials: String!

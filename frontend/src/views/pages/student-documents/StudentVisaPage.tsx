@@ -51,6 +51,7 @@ export const StudentVisaPage: FC = () => {
 
   const formik = useFormik<IFormValue>({
     enableReinitialize: true,
+    validateOnChange: false,
     initialValues: {
       id: originalData?.studentVisa?.id || '',
       blankSeries: originalData?.studentVisa?.blankSeries || '',
@@ -108,7 +109,7 @@ export const StudentVisaPage: FC = () => {
             required
           />
           <Stack direction='row' gap={2} justifyContent='flex-end'>
-            <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>
+            {(!formik.isSubmitting && formik.dirty) && <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>}
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>

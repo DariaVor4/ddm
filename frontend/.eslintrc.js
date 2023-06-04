@@ -9,10 +9,15 @@ module.exports = {
     sourceType: 'module',
   },
   ignorePatterns: [
+    /* Src files */
+    'src/api/generated.ts',
+    /* Root files */
     '.eslintrc.js',
     'codegen.ts',
     'codegen-extend.js',
     'codegen-schema-loader.ts',
+    'postcss.config.js',
+    'tailwind.config.js',
   ],
   extends: [
     'eslint:recommended',

@@ -25,6 +25,19 @@ const readFio = (readField: ReadFieldFunction, short = false) => {
  * Дополнительные параметры для считывания полей в Apollo Client.
  */
 export const typePolicies: TypePolicies = {
+  UserCurrentResponse: {
+    fields: {
+      role: {
+        read: (_, { readField }): GUserRoleEnum => {
+          const roles: ReadonlyArray<GUserRoleEnum> | undefined = readField('roles');
+          return roles?.includes(GUserRoleEnum.Admin) ? GUserRoleEnum.Admin
+            : roles?.includes(GUserRoleEnum.Employee) ? GUserRoleEnum.Employee
+              : roles?.includes(GUserRoleEnum.Student) ? GUserRoleEnum.Student
+                : GUserRoleEnum.Any;
+        },
+      },
+    },
+  },
   StudentEntity: {
     fields: {
       initials: {

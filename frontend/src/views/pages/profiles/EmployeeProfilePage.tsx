@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import * as yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
 import { toast } from 'react-toastify';
@@ -95,7 +95,8 @@ export const EmployeeProfilePage: React.FC = () => {
   const dialog = useEmailConfirmationDialog(state => strictPick(state, ['isEmailConfirmed', 'reset', 'open']));
 
   const formik = useFormik<GEmployeeUpsertInput>({
-    enableReinitialize: true,
+    enableReinitialize: pageMode !== PageModeEnum.Create,
+    validateOnChange: false,
     initialValues: {
       lastName: originalData?.employee.lastName || '',
       firstName: originalData?.employee.firstName || '',

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Dayjs } from 'dayjs';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
@@ -1268,6 +1267,8 @@ export type GTokenResponse = {
 export type GUserCurrentResponse = {
   /** Дата истечения токена доступа */
   accessTokenExpires: Scalars['DateTime']['output'];
+  /** Роль пользователя. Использовать, только если в запросе присутствует roles. */
+  role: GUserRoleEnum;
   /** Роли текущего пользователя */
   roles: Array<GUserRoleEnum>;
   /** Текущий пользователь */
@@ -1376,7 +1377,7 @@ export type GLoginByPasswordMutation = { response: { accessToken: string, access
 export type GUserCurrentQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GUserCurrentQuery = { current: { roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt?: Dayjs | null } }> | null } } };
+export type GUserCurrentQuery = { current: { role: GUserRoleEnum, roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt?: Dayjs | null } }> | null } } };
 
 export type GEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1577,7 +1578,52 @@ export type GStudentsDeleteMutationVariables = Exact<{
 
 export type GStudentsDeleteMutation = { deletedCount: number };
 
+export type GVisaRequestFragment = { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null };
 
+export type GVisaRequestsQueryVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GVisaRequestsQuery = { visaRequests: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> };
+
+export type GVisaRequestQueryVariables = Exact<{
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GVisaRequestQuery = { visaRequest?: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null };
+
+export type GVisaRequestUpsertMutationVariables = Exact<{
+  input: GStudentVisaRequestUpsertInput;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GVisaRequestUpsertMutation = { visaRequestUpsert: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } };
+
+export const VisaRequestFragmentDoc = gql`
+    fragment VisaRequest on StudentVisaRequestEntity {
+  id
+  studentId
+  status
+  employeeComment
+  registrationNumber
+  category
+  multiplicity
+  reason
+  addressOfMigrationRegistration
+  estimatedRouteOfStay
+  addressInCountryOfContinuousResidence
+  placeOfWorkOrStudyAndEmploymentPosition
+  russianFederationRelatives
+  attachedDocuments
+  createdAt
+  updatedAt
+}
+    `;
 export const LoginByPasswordDocument = gql`
     mutation LoginByPassword($email: EmailAddress!, $password: String!) {
   response: loginByPassword(email: $email, password: $password) {
@@ -1616,6 +1662,7 @@ export type LoginByPasswordMutationOptions = Apollo.BaseMutationOptions<GLoginBy
 export const UserCurrentDocument = gql`
     query UserCurrent {
   current: userCurrent {
+    role @client
     roles
     accessTokenExpires
     user {
@@ -2908,3 +2955,119 @@ export function useStudentsDeleteMutation(baseOptions?: Apollo.MutationHookOptio
 export type StudentsDeleteMutationHookResult = ReturnType<typeof useStudentsDeleteMutation>;
 export type StudentsDeleteMutationResult = Apollo.MutationResult<GStudentsDeleteMutation>;
 export type StudentsDeleteMutationOptions = Apollo.BaseMutationOptions<GStudentsDeleteMutation, GStudentsDeleteMutationVariables>;
+export const VisaRequestsDocument = gql`
+    query VisaRequests($studentId: UUID) {
+  visaRequests(studentId: $studentId) {
+    ...VisaRequest
+  }
+}
+    ${VisaRequestFragmentDoc}`;
+
+/**
+ * __useVisaRequestsQuery__
+ *
+ * To run a query within a React component, call `useVisaRequestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVisaRequestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVisaRequestsQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useVisaRequestsQuery(baseOptions?: Apollo.QueryHookOptions<GVisaRequestsQuery, GVisaRequestsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GVisaRequestsQuery, GVisaRequestsQueryVariables>(VisaRequestsDocument, options);
+      }
+export function useVisaRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GVisaRequestsQuery, GVisaRequestsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GVisaRequestsQuery, GVisaRequestsQueryVariables>(VisaRequestsDocument, options);
+        }
+export type VisaRequestsQueryHookResult = ReturnType<typeof useVisaRequestsQuery>;
+export type VisaRequestsLazyQueryHookResult = ReturnType<typeof useVisaRequestsLazyQuery>;
+export type VisaRequestsQueryResult = Apollo.QueryResult<GVisaRequestsQuery, GVisaRequestsQueryVariables>;
+export function refetchVisaRequestsQuery(variables?: GVisaRequestsQueryVariables) {
+      return { query: VisaRequestsDocument, variables: variables }
+    }
+export const VisaRequestDocument = gql`
+    query VisaRequest($studentId: UUID, $visaRequestId: UUID) {
+  visaRequest(studentId: $studentId, visaRequestId: $visaRequestId) {
+    ...VisaRequest
+  }
+}
+    ${VisaRequestFragmentDoc}`;
+
+/**
+ * __useVisaRequestQuery__
+ *
+ * To run a query within a React component, call `useVisaRequestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVisaRequestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVisaRequestQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *      visaRequestId: // value for 'visaRequestId'
+ *   },
+ * });
+ */
+export function useVisaRequestQuery(baseOptions?: Apollo.QueryHookOptions<GVisaRequestQuery, GVisaRequestQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GVisaRequestQuery, GVisaRequestQueryVariables>(VisaRequestDocument, options);
+      }
+export function useVisaRequestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GVisaRequestQuery, GVisaRequestQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GVisaRequestQuery, GVisaRequestQueryVariables>(VisaRequestDocument, options);
+        }
+export type VisaRequestQueryHookResult = ReturnType<typeof useVisaRequestQuery>;
+export type VisaRequestLazyQueryHookResult = ReturnType<typeof useVisaRequestLazyQuery>;
+export type VisaRequestQueryResult = Apollo.QueryResult<GVisaRequestQuery, GVisaRequestQueryVariables>;
+export function refetchVisaRequestQuery(variables?: GVisaRequestQueryVariables) {
+      return { query: VisaRequestDocument, variables: variables }
+    }
+export const VisaRequestUpsertDocument = gql`
+    mutation VisaRequestUpsert($input: StudentVisaRequestUpsertInput!, $studentId: UUID, $visaRequestId: UUID) {
+  visaRequestUpsert(
+    input: $input
+    studentId: $studentId
+    visaRequestId: $visaRequestId
+  ) {
+    ...VisaRequest
+  }
+}
+    ${VisaRequestFragmentDoc}`;
+export type GVisaRequestUpsertMutationFn = Apollo.MutationFunction<GVisaRequestUpsertMutation, GVisaRequestUpsertMutationVariables>;
+
+/**
+ * __useVisaRequestUpsertMutation__
+ *
+ * To run a mutation, you first call `useVisaRequestUpsertMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVisaRequestUpsertMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [visaRequestUpsertMutation, { data, loading, error }] = useVisaRequestUpsertMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      studentId: // value for 'studentId'
+ *      visaRequestId: // value for 'visaRequestId'
+ *   },
+ * });
+ */
+export function useVisaRequestUpsertMutation(baseOptions?: Apollo.MutationHookOptions<GVisaRequestUpsertMutation, GVisaRequestUpsertMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GVisaRequestUpsertMutation, GVisaRequestUpsertMutationVariables>(VisaRequestUpsertDocument, options);
+      }
+export type VisaRequestUpsertMutationHookResult = ReturnType<typeof useVisaRequestUpsertMutation>;
+export type VisaRequestUpsertMutationResult = Apollo.MutationResult<GVisaRequestUpsertMutation>;
+export type VisaRequestUpsertMutationOptions = Apollo.BaseMutationOptions<GVisaRequestUpsertMutation, GVisaRequestUpsertMutationVariables>;

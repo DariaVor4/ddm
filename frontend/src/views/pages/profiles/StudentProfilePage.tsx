@@ -31,7 +31,6 @@ import { emailAvailabilityQuery } from '../../../api/global-methods/check-email-
 import { PageLoading } from '../../../components/PageLoading.tsx';
 import { yupFormikValidate } from '../../../core/yup-formik-validate.ts';
 
-// TODO: remove CreateInput
 type StudentUpsertPageForm = GStudentUpsertInput & {
   passwordRepeat: string;
 };
@@ -68,7 +67,6 @@ const validationSchema = yup.object<TValidationSchemaCtx>({
 });
 
 // TODO ERROR: Сделать обработку ошибки если редактируемый студент не найден
-// TODO ERROR: Обработать ошибку при редактировании профиля самим студентом
 export const StudentProfilePage: FC = () => {
   // React Router
   const navigate = useNavigate();
@@ -104,7 +102,7 @@ export const StudentProfilePage: FC = () => {
   const [upsert] = useStudentUpsertMutation({
     refetchQueries: compact([
       [PageModeEnum.Create, PageModeEnum.Update].includes(pageMode) && refetchStudentsQuery(),
-      [PageModeEnum.Create, PageModeEnum.SelfUpdate].includes(pageMode) && refetchStudentQuery({ studentId }),
+      [PageModeEnum.Update, PageModeEnum.SelfUpdate].includes(pageMode) && refetchStudentQuery({ studentId }),
     ]),
   });
   const { data: { student: studentOriginal } = {}, loading: isStudentOriginalLoading } = useStudentQuery({
@@ -118,6 +116,7 @@ export const StudentProfilePage: FC = () => {
   // Main
   const formik = useFormik<StudentUpsertPageForm>({
     enableReinitialize: [PageModeEnum.Update, PageModeEnum.SelfUpdate].includes(pageMode),
+    validateOnChange: false,
     initialValues: {
       lastName: studentOriginal?.passport?.lastName || '',
       firstName: studentOriginal?.passport?.firstName || '',

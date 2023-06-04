@@ -4,57 +4,46 @@ import type { FormControlProps as TFormControlProps, FormHelperTextProps as TFor
 import {
   FormControl, FormHelperText, InputLabel, Select, SelectProps,
 } from '@mui/material';
-import type { SetRequired } from 'type-fest';
 
-type TFormikSelectFieldProps = SetRequired<SelectProps, 'name'> & {
+type TFormikSelectFieldProps = Omit<SelectProps, 'name'> & {
   name: string;
   helpText?: string;
   shrink?: boolean;
   isVisible?: boolean;
   isHidden?: boolean;
+
   FormControlProps?: TFormControlProps;
   InputLabelProps?: TInputLabelProps;
   FormHelperTextProps?: TFormHelperTextProps;
 };
 
 export const FormikSelectField: FC<TFormikSelectFieldProps> = forwardRef(({
-  name,
-  helpText,
-  isVisible,
-  isHidden,
-  children,
-  label,
-  InputLabelProps,
-  FormHelperTextProps,
-  FormControlProps,
+  name, helpText, isVisible, isHidden, children, label,
+  InputLabelProps, FormHelperTextProps, FormControlProps,
   ...props
 }, ref) => {
   const [field, meta] = useField(name);
   const { isSubmitting } = useFormikContext();
+  const errorOrHelpText = (meta.touched && meta.error) || helpText;
+  const isError = meta.touched && !!meta.error;
 
   if (isVisible === false || isHidden === true) return null;
 
   return (
     <>
       <FormControl fullWidth {...FormControlProps}>
-        {label && (
-          <InputLabel
-            {...InputLabelProps}
-          >
-            {label}
-          </InputLabel>
-        )}
+        {label && (<InputLabel {...InputLabelProps}>{label}</InputLabel>)}
         <Select
           {...field}
           ref={ref}
           disabled={isSubmitting}
-          error={meta.touched && !!meta.error}
+          error={isError}
           label={label}
           {...props}
         >
           {children}
         </Select>
-        {helpText && <FormHelperText {...FormHelperTextProps}>{(meta.touched && meta.error) || helpText}</FormHelperText>}
+        {errorOrHelpText && <FormHelperText {...FormHelperTextProps} error={isError}>{errorOrHelpText}</FormHelperText>}
       </FormControl>
     </>
   );

@@ -1,0 +1,30 @@
+fragment VisaRequest on StudentVisaRequestEntity {
+  id
+  studentId
+  status
+  employeeComment
+  registrationNumber
+  category
+  multiplicity
+  reason
+  addressOfMigrationRegistration
+  estimatedRouteOfStay
+  addressInCountryOfContinuousResidence
+  placeOfWorkOrStudyAndEmploymentPosition
+  russianFederationRelatives
+  attachedDocuments
+  createdAt
+  updatedAt
+}
+
+query VisaRequests($studentId: UUID) {
+  visaRequests(studentId: $studentId) { ...VisaRequest }
+}
+
+query VisaRequest($studentId: UUID, $visaRequestId: UUID) {
+  visaRequest(studentId: $studentId, visaRequestId: $visaRequestId) { ...VisaRequest }
+}
+
+mutation VisaRequestUpsert($input: StudentVisaRequestUpsertInput!, $studentId: UUID, $visaRequestId: UUID) {
+  visaRequestUpsert(input: $input, studentId: $studentId, visaRequestId: $visaRequestId) { ...VisaRequest }
+}

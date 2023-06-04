@@ -57,6 +57,7 @@ export const CloseRelativeDialog: FC = () => {
   });
   const formik = useFormik<IFormValues>({
     enableReinitialize: true,
+    validateOnChange: false,
     validationSchema: yup.object({
       lastName: yup.string().required('Обязательное поле'),
       firstName: yup.string().required('Обязательное поле'),
@@ -117,7 +118,7 @@ export const CloseRelativeDialog: FC = () => {
         </FormikProvider>
       </DialogContent>
       <DialogActions>
-        <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>
+        {(!formik.isSubmitting && formik.dirty) && <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>}
         <Button variant='text' onClick={dialog.close}>Отмена</Button>
         <Button
           disabled={formik.isSubmitting || !formik.dirty}

@@ -40,6 +40,7 @@ export const LoginDialog: FC = () => {
   });
   const formik = useFormik<GLoginByPasswordMutationVariables>({
     initialValues: { email: '', password: '' },
+    validateOnChange: false,
     onSubmit: variables => loginByPassword({ variables }),
     validationSchema: yup.object({
       email: yup.string().email('Неверный формат почты').required('Почта обязательна'),

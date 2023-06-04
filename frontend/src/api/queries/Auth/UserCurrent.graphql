@@ -1,5 +1,6 @@
 query UserCurrent {
     current: userCurrent {
+        role @client
         roles
         accessTokenExpires
         user {

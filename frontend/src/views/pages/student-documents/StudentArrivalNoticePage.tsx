@@ -41,6 +41,7 @@ export const StudentArrivalNoticePage: FC = () => {
   const { data: originalData } = useStudentArrivalNoticeQuery({ variables: { studentId }, fetchPolicy: 'network-only' });
   const formik = useFormik<IFormValue>({
     enableReinitialize: true,
+    validateOnChange: false,
     initialValues: {
       profession: originalData?.studentArrivalNotice?.profession || '',
       address: originalData?.studentArrivalNotice?.address || '',
@@ -99,7 +100,7 @@ export const StudentArrivalNoticePage: FC = () => {
           <FormikTextField label='Приглашающая сторона' name='invitingSide' required />
           <FormikTextField label='Принимающая сторона' name='receivingSide' required />
           <Stack direction='row' gap={2} justifyContent='flex-end'>
-            <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>
+            {(!formik.isSubmitting && formik.dirty) && <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>}
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>

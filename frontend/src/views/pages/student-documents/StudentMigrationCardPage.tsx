@@ -23,18 +23,21 @@ type StudentMigrationCardPageParams = {
 };
 
 const formSchema = yup.object({
-  series: yup.number()
-    .min(1000, 'Неправильный номер')
-    .max(9999, 'Неправильный номер')
-    .required('Обязательное поле')
-    .typeError('Введите число'),
-  number: yup.number()
-    .min(1000, 'Неправильный номер')
-    .max(99999999, 'Неправильный номер')
-    .required('Обязательное поле')
-    .typeError('Введите число'),
-  issueDate: yup.date().required('Обязательное поле').min(new Date(1970, 0, 1), 'Неправильная дата').max(new Date(), 'Неправильная дата'),
-  expirationDate: yup.date().min(new Date(), 'Неправильная дата').required('Обязательное поле'),
+  series: yup.number().typeError('Должно быть числом')
+    .min(1000, 'Введите 4 числа')
+    .max(9999, 'Введите 4 числа')
+    .required('Обязательное поле'),
+  number: yup.number().typeError('Должно быть числом')
+    .min(1000, 'Минимум 4 числа')
+    .max(99999999, 'Максимум 8 чисел')
+    .required('Обязательное поле'),
+  issueDate: yup.date()
+    .min(new Date(1970, 0, 1), 'Неправильная дата')
+    .max(new Date(), 'Неправильная дата')
+    .required('Обязательное поле'),
+  expirationDate: yup.date()
+    .min(new Date(), 'Документ должен быть действительным по сегодняшний день')
+    .required('Обязательное поле'),
 });
 
 export const StudentMigrationCardPage: FC = () => {
@@ -45,18 +48,19 @@ export const StudentMigrationCardPage: FC = () => {
     refetchQueries: [refetchStudentMigrationCardQuery({ studentId })],
   });
 
-  const { data: originalData } = useStudentMigrationCardQuery({
+  const { data: { studentMigrationCard } = {} } = useStudentMigrationCardQuery({
     variables: { studentId },
     fetchPolicy: 'network-only',
   });
 
   const formik = useFormik<IFormValue>({
     enableReinitialize: true,
+    validateOnChange: false,
     initialValues: {
-      series: originalData?.studentMigrationCard?.series || '',
-      number: originalData?.studentMigrationCard?.number || '',
-      expirationDate: originalData?.studentMigrationCard?.expirationDate?.format('YYYY-MM-DD') || '',
-      issueDate: originalData?.studentMigrationCard?.issueDate?.format('YYYY-MM-DD') || '',
+      series: studentMigrationCard?.series || '',
+      number: studentMigrationCard?.number || '',
+      expirationDate: studentMigrationCard?.expirationDate?.format('YYYY-MM-DD') || '',
+      issueDate: studentMigrationCard?.issueDate?.format('YYYY-MM-DD') || '',
     },
     validationSchema: formSchema,
     onSubmit: data => toast.promise(saveDocument({
@@ -105,7 +109,7 @@ export const StudentMigrationCardPage: FC = () => {
             required
           />
           <Stack direction='row' gap={2} justifyContent='flex-end'>
-            <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>
+            {(!formik.isSubmitting && formik.dirty) && <Button color='warning' variant='text' onClick={() => formik.resetForm()}>Сброс</Button>}
             <Button disabled={formik.isSubmitting || !formik.dirty} onClick={formik.submitForm}>Сохранить</Button>
           </Stack>
         </Paper>
