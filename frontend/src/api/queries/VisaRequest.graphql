@@ -1,6 +1,15 @@
 fragment VisaRequest on StudentVisaRequestEntity {
   id
   studentId
+  student {
+    fullName @client
+    initials @client
+    passport {
+      lastName
+      firstName
+      patronymic
+    }
+  }
   status
   employeeComment
   registrationNumber
@@ -25,6 +34,13 @@ query VisaRequest($studentId: UUID, $visaRequestId: UUID) {
   visaRequest(studentId: $studentId, visaRequestId: $visaRequestId) { ...VisaRequest }
 }
 
-mutation VisaRequestUpsert($input: StudentVisaRequestUpsertInput!, $studentId: UUID, $visaRequestId: UUID) {
-  visaRequestUpsert(input: $input, studentId: $studentId, visaRequestId: $visaRequestId) { ...VisaRequest }
+mutation visaRequestUpsert($input: StudentVisaRequestUpsertInput!, $isForceCreate: Boolean, $studentId: UUID, $visaRequestId: UUID) {
+  visaRequestUpsert(input: $input, isForceCreate: $isForceCreate, studentId: $studentId, visaRequestId: $visaRequestId) { ...VisaRequest }
+}
+
+
+mutation VisaRequestDelete($visaRequestId: UUID, $studentId: UUID) {
+  visaRequestDelete(visaRequestId: $visaRequestId, studentId: $studentId) {
+    id
+  }
 }

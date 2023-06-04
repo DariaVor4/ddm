@@ -44,6 +44,11 @@ const sameThemeProperties: ThemeOptions = {
         className: '!min-h-[0] py-1',
       },
     },
+    MuiChip: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
   },
 };
 

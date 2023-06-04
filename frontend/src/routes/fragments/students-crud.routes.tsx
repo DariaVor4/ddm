@@ -7,6 +7,7 @@ import { StudentArrivalNoticePage } from '../../views/pages/student-documents/St
 import { StudentCloseRelativesPage } from '../../views/pages/student-documents/StudentCloseRelativesPage.tsx';
 import { StudentProfilePage } from '../../views/pages/profiles/StudentProfilePage.tsx';
 import { AppRoutesEnum } from '../app-routes.enum.ts';
+import { VisaRequestPage } from '../../views/pages/VisaRequestPage.tsx';
 
 export const StudentsCrudRoutes = (
   <>
@@ -20,5 +21,6 @@ export const StudentsCrudRoutes = (
     <Route element={<StudentMigrationCardPage />} path={AppRoutesEnum.StudentMigrationCardPattern} />
     <Route element={<StudentArrivalNoticePage />} path={AppRoutesEnum.StudentArrivalNoticePattern} />
     <Route element={<StudentCloseRelativesPage />} path={AppRoutesEnum.StudentCloseRelativesPattern} />
+    <Route element={<VisaRequestPage />} path={AppRoutesEnum.VisaRequestPattern} />
   </>
 );

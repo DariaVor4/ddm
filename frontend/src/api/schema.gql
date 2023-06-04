@@ -310,7 +310,7 @@ type Mutation {
   visaRequestDelete(studentId: UUID, visaRequestId: UUID): StudentVisaRequestEntity!
 
   """Перезапись визовой анкеты"""
-  visaRequestUpsert(input: StudentVisaRequestUpsertInput!, studentId: UUID, visaRequestId: UUID): StudentVisaRequestEntity!
+  visaRequestUpsert(input: StudentVisaRequestUpsertInput!, isForceCreate: Boolean, studentId: UUID, visaRequestId: UUID): StudentVisaRequestEntity!
 }
 
 """Уведомление"""

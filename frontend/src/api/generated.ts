@@ -373,6 +373,7 @@ export type GMutationVisaRequestDeleteArgs = {
 
 export type GMutationVisaRequestUpsertArgs = {
   input: GStudentVisaRequestUpsertInput;
+  isForceCreate?: InputMaybe<Scalars['Boolean']['input']>;
   studentId?: InputMaybe<Scalars['UUID']['input']>;
   visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
 };
@@ -1578,14 +1579,14 @@ export type GStudentsDeleteMutationVariables = Exact<{
 
 export type GStudentsDeleteMutation = { deletedCount: number };
 
-export type GVisaRequestFragment = { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null };
+export type GVisaRequestFragment = { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } };
 
 export type GVisaRequestsQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GVisaRequestsQuery = { visaRequests: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> };
+export type GVisaRequestsQuery = { visaRequests: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } }> };
 
 export type GVisaRequestQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']['input']>;
@@ -1593,21 +1594,39 @@ export type GVisaRequestQueryVariables = Exact<{
 }>;
 
 
-export type GVisaRequestQuery = { visaRequest?: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null };
+export type GVisaRequestQuery = { visaRequest?: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } } | null };
 
 export type GVisaRequestUpsertMutationVariables = Exact<{
   input: GStudentVisaRequestUpsertInput;
+  isForceCreate?: InputMaybe<Scalars['Boolean']['input']>;
   studentId?: InputMaybe<Scalars['UUID']['input']>;
   visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GVisaRequestUpsertMutation = { visaRequestUpsert: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } };
+export type GVisaRequestUpsertMutation = { visaRequestUpsert: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } } };
+
+export type GVisaRequestDeleteMutationVariables = Exact<{
+  visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  studentId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GVisaRequestDeleteMutation = { visaRequestDelete: { id: string } };
 
 export const VisaRequestFragmentDoc = gql`
     fragment VisaRequest on StudentVisaRequestEntity {
   id
   studentId
+  student {
+    fullName @client
+    initials @client
+    passport {
+      lastName
+      firstName
+      patronymic
+    }
+  }
   status
   employeeComment
   registrationNumber
@@ -3033,9 +3052,10 @@ export function refetchVisaRequestQuery(variables?: GVisaRequestQueryVariables) 
       return { query: VisaRequestDocument, variables: variables }
     }
 export const VisaRequestUpsertDocument = gql`
-    mutation VisaRequestUpsert($input: StudentVisaRequestUpsertInput!, $studentId: UUID, $visaRequestId: UUID) {
+    mutation visaRequestUpsert($input: StudentVisaRequestUpsertInput!, $isForceCreate: Boolean, $studentId: UUID, $visaRequestId: UUID) {
   visaRequestUpsert(
     input: $input
+    isForceCreate: $isForceCreate
     studentId: $studentId
     visaRequestId: $visaRequestId
   ) {
@@ -3059,6 +3079,7 @@ export type GVisaRequestUpsertMutationFn = Apollo.MutationFunction<GVisaRequestU
  * const [visaRequestUpsertMutation, { data, loading, error }] = useVisaRequestUpsertMutation({
  *   variables: {
  *      input: // value for 'input'
+ *      isForceCreate: // value for 'isForceCreate'
  *      studentId: // value for 'studentId'
  *      visaRequestId: // value for 'visaRequestId'
  *   },
@@ -3071,3 +3092,37 @@ export function useVisaRequestUpsertMutation(baseOptions?: Apollo.MutationHookOp
 export type VisaRequestUpsertMutationHookResult = ReturnType<typeof useVisaRequestUpsertMutation>;
 export type VisaRequestUpsertMutationResult = Apollo.MutationResult<GVisaRequestUpsertMutation>;
 export type VisaRequestUpsertMutationOptions = Apollo.BaseMutationOptions<GVisaRequestUpsertMutation, GVisaRequestUpsertMutationVariables>;
+export const VisaRequestDeleteDocument = gql`
+    mutation VisaRequestDelete($visaRequestId: UUID, $studentId: UUID) {
+  visaRequestDelete(visaRequestId: $visaRequestId, studentId: $studentId) {
+    id
+  }
+}
+    `;
+export type GVisaRequestDeleteMutationFn = Apollo.MutationFunction<GVisaRequestDeleteMutation, GVisaRequestDeleteMutationVariables>;
+
+/**
+ * __useVisaRequestDeleteMutation__
+ *
+ * To run a mutation, you first call `useVisaRequestDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVisaRequestDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [visaRequestDeleteMutation, { data, loading, error }] = useVisaRequestDeleteMutation({
+ *   variables: {
+ *      visaRequestId: // value for 'visaRequestId'
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useVisaRequestDeleteMutation(baseOptions?: Apollo.MutationHookOptions<GVisaRequestDeleteMutation, GVisaRequestDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GVisaRequestDeleteMutation, GVisaRequestDeleteMutationVariables>(VisaRequestDeleteDocument, options);
+      }
+export type VisaRequestDeleteMutationHookResult = ReturnType<typeof useVisaRequestDeleteMutation>;
+export type VisaRequestDeleteMutationResult = Apollo.MutationResult<GVisaRequestDeleteMutation>;
+export type VisaRequestDeleteMutationOptions = Apollo.BaseMutationOptions<GVisaRequestDeleteMutation, GVisaRequestDeleteMutationVariables>;

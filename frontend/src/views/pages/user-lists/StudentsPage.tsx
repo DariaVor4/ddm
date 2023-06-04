@@ -145,6 +145,11 @@ export const StudentsPage: FC = () => {
           <ListItemText>Ближайшие родственники</ListItemText>
         </MenuItem>
         <Divider />
+        <MenuItem component={Link} to={AppRoutesEnum.VisaRequestByStudentIdRoute(menuStudent?.id!)}>
+          <ListItemIcon><FamilyRestroomIcon /></ListItemIcon>
+          <ListItemText>Визовая анкета</ListItemText>
+        </MenuItem>
+        <Divider />
         <MenuItem
           onClick={() => confirmDelete({
             title: 'Удаление студента',

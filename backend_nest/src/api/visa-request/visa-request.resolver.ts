@@ -111,6 +111,7 @@ export class VisaRequestResolver {
    * @param select Поля, запрошенные через GraphQL.
    * @param session Текущая сессия.
    * @param input Данные для создания или обновления визовой анкеты.
+   * @param isForceCreate Если true, то будет создана новая визовая анкета, даже если у студента есть другие анкеты.
    * @param studentId UUID Студента, для которого перезаписывается визовая анкета.
    * @param visaRequestId UUID Визовой анкеты, которую нужно перезаписать.
    * @returns Визовая анкета.
@@ -125,6 +126,7 @@ export class VisaRequestResolver {
     @PrismaSelector() select: Prisma.StudentPassportEntitySelect,
     @CurrentSession() session: ISessionContext,
     @Args('input') input: StudentVisaRequestUpsertInput,
+    @Args('isForceCreate', { type: () => Boolean, nullable: true }) isForceCreate?: boolean,
     @Args('studentId', { type: UUID, nullable: true }) studentId?: string,
     @Args('visaRequestId', { type: UUID, nullable: true }) visaRequestId?: string,
   ): Promise<PartialDeep<StudentVisaRequestEntity>> {
@@ -136,8 +138,11 @@ export class VisaRequestResolver {
     if (!isUserIsStudent && targetStudentId === session.userId) {
       throw new BadRequestException('Тип аккаунта не позволяет перезаписывать визовую анкету без studentId или visaRequestId');
     }
+    if (isForceCreate && visaRequestId) {
+      throw new BadRequestException('Нельзя указывать visaRequestId при isForceCreate');
+    }
     // Поиск визовой анкеты, которую нужно перезаписать
-    const visaRequest = await this.prisma.studentVisaRequestEntity.findFirst({
+    const visaRequest = !isForceCreate && await this.prisma.studentVisaRequestEntity.findFirst({
       where: {
         studentId: targetStudentId,
         id: visaRequestId,
@@ -196,12 +201,12 @@ export class VisaRequestResolver {
     if (isUserIsStudent && studentId && studentId !== targetStudentId) {
       throw new ForbiddenException(ifDebug('Студенты не могут удалять чужие визовые анкеты'));
     }
-    if (!isUserIsStudent && targetStudentId === session.userId) {
+    if (!isUserIsStudent && !visaRequestId && targetStudentId === session.userId) {
       throw new BadRequestException('Тип аккаунта не позволяет удалять визовые анкеты без studentId или visaRequestId');
     }
     const visaRequest = await this.prisma.studentVisaRequestEntity.findFirstOrThrow({
       where: {
-        studentId: targetStudentId,
+        studentId: visaRequestId ? undefined : targetStudentId,
         id: visaRequestId,
         createdAt: { gte: new Date(Date.now() - this.visaRequestAgeLimit) },
       },
@@ -211,7 +216,7 @@ export class VisaRequestResolver {
         id: true,
       },
     }).catch(throwCb(new NotFoundException('Визовая анкета не найдена')));
-    if (visaRequest && visaRequest.studentId !== targetStudentId) {
+    if (isUserIsStudent && visaRequest && visaRequest.studentId !== targetStudentId) {
       throw new ForbiddenException(ifDebug('Студенты не могут удалять чужие визовые анкеты'));
     }
     return this.prisma.studentVisaRequestEntity.delete({

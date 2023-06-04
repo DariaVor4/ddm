@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { FormikProvider, useFormik } from 'formik';
 import {
-  Button, Divider, IconButton, MenuItem, Paper, Stack, Typography,
+  Button, Divider, IconButton, MenuItem, Paper, Stack, TextField, Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +16,7 @@ import {
   GVisaMultiplicityEnum,
   GVisaRequestStatusEnum,
   refetchVisaRequestQuery,
-  refetchVisaRequestsQuery,
+  refetchVisaRequestsQuery, useStudentQuery,
   useUserCurrentQuery,
   useVisaRequestQuery,
   useVisaRequestUpsertMutation,
@@ -46,10 +46,12 @@ const validationSchema = yup.object<TValidationSchemaCtx>({
   employeeComment: yup.string().optional(),
 });
 
+// TODO QUESTION: Что должно происходить, если визовых анкет несколько?
 export const VisaRequestPage: FC = () => {
   // React Router
   const navigate = useNavigate();
   const { isForceCreate } = useTypedLocation<{ isForceCreate?: boolean } | undefined>()?.state || {};
+  const { studentId: studentIdParams } = useParams();
 
   // For update
   const { visaRequestId, studentId } = useParams<{ studentId?: string, visaRequestId?: string }>();
@@ -58,10 +60,13 @@ export const VisaRequestPage: FC = () => {
     skip: isForceCreate,
     fetchPolicy: 'network-only',
   });
+  const { data: { student } = {} } = useStudentQuery({
+    variables: { studentId: studentIdParams },
+  });
 
   // Page mode
   const { data: { current } = {} } = useUserCurrentQuery();
-  const pageRole = current?.role === GUserRoleEnum.Employee ? PageRoleEnum.Employee : PageRoleEnum.Student;
+  const pageRole = current?.role !== GUserRoleEnum.Student ? PageRoleEnum.Employee : PageRoleEnum.Student;
   const pageMode = visaRequest ? PageModeEnum.Update : PageModeEnum.Create;
   const pageTitle = pageMode === PageModeEnum.Create ? 'Создание визовой анкеты' : 'Редактирование визовой анкеты';
   const pageActionTitle = pageMode === PageModeEnum.Create ? 'Создать' : 'Сохранить';
@@ -88,12 +93,17 @@ export const VisaRequestPage: FC = () => {
       attachedDocuments: visaRequest?.attachedDocuments || '',
       /* Поля сотрудника */
       registrationNumber: visaRequest?.registrationNumber || '',
-      status: (pageRole === PageRoleEnum.Employee && visaRequest?.status) || GVisaRequestStatusEnum.Pending,
+      status: visaRequest?.status || '' as unknown as null,
       /* Поле сотрудника, видимое студенту только для чтения */
       employeeComment: visaRequest?.employeeComment || '',
     },
     onSubmit: async input => {
-      const { data } = await toast.promise(upsert({ variables: { input, studentId, visaRequestId } }), {
+      console.log(isForceCreate);
+      const { data } = await toast.promise(upsert({
+        variables: {
+          input, studentId, visaRequestId, isForceCreate,
+        },
+      }), {
         pending: 'Сохранение...',
         success: 'Сохранено',
         error: { render: ({ data: err }) => `Ошибка сохранения: ${err}` },
@@ -119,6 +129,15 @@ export const VisaRequestPage: FC = () => {
         <Typography align='center' fontWeight='500' variant='h5'>{pageTitle}</Typography>
       </Stack>
       <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
+        {student && (
+        <TextField
+          defaultValue={student.fullName}
+          InputLabelProps={{ shrink: true }}
+          label='Студент'
+          variant='standard'
+          disabled
+        />
+        )}
         <FormikSelectField label='Категория визы' name='category'>
           <MenuItem value={GVisaCategoryEnum.RegularPrivate}>Обыкновенная - Частная</MenuItem>
           <MenuItem value={GVisaCategoryEnum.RegularHumanitarian}>Обыкновенная - Гуманитарная</MenuItem>
@@ -144,24 +163,30 @@ export const VisaRequestPage: FC = () => {
         <FormikTextField label='Родственники на территории РФ' name='russianFederationRelatives' />
         <FormikTextField label='Прилагаемые документы' name='attachedDocuments' />
         {(pageRole === PageRoleEnum.Employee || visaRequest?.employeeComment) && <Divider />}
-        {pageRole === PageRoleEnum.Employee && (
-        <>
-          <FormikTextField label='Регистрационный номер' name='registrationNumber' />
-          <FormikSelectField label='Статус анкеты' name='status'>
-            <MenuItem value={GVisaRequestStatusEnum.Pending}>Ожидает проверки сотрудником</MenuItem>
-            <MenuItem value={GVisaRequestStatusEnum.PendingCorrectionsByStudent}>Требуются правки студента</MenuItem>
-            <MenuItem value={GVisaRequestStatusEnum.Verified}>Проверена</MenuItem>
-            <MenuItem value={GVisaRequestStatusEnum.Finished}>Передана в визовый отдел</MenuItem>
-          </FormikSelectField>
-        </>
-        )}
         {(pageRole === PageRoleEnum.Employee || visaRequest?.employeeComment) && (
-        <FormikTextField
-          disabled={pageRole === PageRoleEnum.Student}
-          label='Комментарий сотрудника'
-          name='employeeComment'
-          multiline
-        />
+          <>
+            <FormikTextField
+              disabled={pageRole === PageRoleEnum.Student}
+              label='Регистрационный номер'
+              name='registrationNumber'
+            />
+            <FormikSelectField
+              disabled={pageRole === PageRoleEnum.Student}
+              label='Статус анкеты'
+              name='status'
+            >
+              <MenuItem value={GVisaRequestStatusEnum.Pending}>Ожидает проверки сотрудником</MenuItem>
+              <MenuItem value={GVisaRequestStatusEnum.PendingCorrectionsByStudent}>Требуются правки студента</MenuItem>
+              <MenuItem value={GVisaRequestStatusEnum.Verified}>Проверена</MenuItem>
+              <MenuItem value={GVisaRequestStatusEnum.Finished}>Передана в визовый отдел</MenuItem>
+            </FormikSelectField>
+            <FormikTextField
+              disabled={pageRole === PageRoleEnum.Student}
+              label='Комментарий сотрудника'
+              name='employeeComment'
+              multiline
+            />
+          </>
         )}
         <Divider />
         <Stack direction='row' gap={2} justifyContent='flex-end'>

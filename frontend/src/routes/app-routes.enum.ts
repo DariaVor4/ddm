@@ -10,7 +10,10 @@ export const AppRoutesEnum = {
   /* Visa Requests */
   VisaRequestsRoute: '/visa-requests',
   VisaRequestRoute: '/visa-request',
-  VisaRequestByIdRoute: (id:string) => `/visa-requests/${id}`,
+  VisaRequestByStudentIdRoute: (id:string) => `/visa-requests/${id}`,
+  VisaRequestPattern: '/visa-requests/:studentId',
+  VisaRequestByVisaRequestIdRoute: (requestId:string) => `/visa-requests/${requestId}`,
+  VisaRequestByVisaRequestIdPattern: '/visa-requests/:requestId',
 
   /* Student Documents */
   /* * For students * */
