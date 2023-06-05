@@ -20,8 +20,6 @@ export type Scalars = {
   DateTime: { input: Dayjs; output: Dayjs; }
   /** A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address. */
   EmailAddress: { input: string; output: string; }
-  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
-  URL: { input: string; output: string; }
   /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
   UUID: { input: string; output: string; }
 };
@@ -256,7 +254,7 @@ export type GFileEntityResponse = {
   name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   /** Ссылка на файл */
-  url: Scalars['URL']['output'];
+  url: Scalars['String']['output'];
   /** Пользователь, создавший файл */
   user?: Maybe<GUserEntity>;
   /** Пользователь, создавший файл */
@@ -279,7 +277,7 @@ export type GMutation = {
   /** Удаление сотрудников */
   employeesDelete: Scalars['Int']['output'];
   /** Экспорт документов */
-  exportDocuments: GFileEntityResponse;
+  exportDocuments: Array<GFileEntityResponse>;
   /** Вход по почте и паролю, возвращает токен доступа и время его истечения */
   loginByPassword: GTokenResponse;
   /** Обновление пары токенов для авторизованного пользователя */
@@ -1500,7 +1498,7 @@ export type GExportDocumentsMutationVariables = Exact<{
 }>;
 
 
-export type GExportDocumentsMutation = { exportDocuments: { id: string, userId?: string | null, dir?: string | null, name?: string | null, ext?: string | null, description?: string | null, deletedAt?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, url: string, user?: { id: string } | null } };
+export type GExportDocumentsMutation = { exportDocuments: Array<{ id: string, userId?: string | null, dir?: string | null, name?: string | null, ext?: string | null, description?: string | null, deletedAt?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, url: string, user?: { id: string } | null }> };
 
 export type GEmailAvailabilityQueryVariables = Exact<{
   email: Scalars['String']['input'];

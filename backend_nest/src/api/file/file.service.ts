@@ -1,14 +1,18 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable, InternalServerErrorException, Logger, OnModuleInit,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import * as path from 'path';
 import fs from 'fs/promises';
 import { FileEntity } from '@prisma-nestjs-graphql';
 import { PartialDeep } from 'type-fest';
 import { throwCb } from '@common';
-import { omit } from 'lodash';
+import { compact, omit } from 'lodash';
+import ms from 'ms';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConfigService } from '../../config/config.service';
 import { FileEntityResponse } from './responses/file-entity.response';
+import { FileConstants } from './file-constants';
 
 interface TFileCreateParams {
   userId?: string;
@@ -17,17 +21,43 @@ interface TFileCreateParams {
   subDirs?: string[];
   description?: string;
   select?: Prisma.FileEntitySelect;
+  expiresAt?: Date;
 }
 
 /**
  * Сервис для работы с файлами.
  */
 @Injectable()
-export class FileService {
+export class FileService implements OnModuleInit {
+  private readonly logger = new Logger(FileService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
   ) {}
+
+  public async onModuleInit() {
+    // Интервал удаления устаревших файлов
+    await this.killExpiredFiles();
+    setInterval(this.killExpiredFiles, FileConstants.fileKillerInterval);
+  }
+
+  /**
+   * Удаление устаревших файлов.
+   */
+  private killExpiredFiles = async () => {
+    const expiredFiles = await this.prisma.fileEntity.findMany({
+      where: { updatedAt: { lte: new Date() } },
+      select: { id: true, dir: true, ext: true },
+    });
+    const deletedIds: string[] = [];
+    await Promise.all(expiredFiles.map(async (file) => {
+      await fs.unlink(this.getLocalFullFilePath(file))
+        .then(() => deletedIds.push(file.id))
+        .catch((err) => this.logger.error(`Ошибка удаления истёкшего файла "${file.id}": ${err.message}`));
+    }));
+    await this.prisma.fileEntity.deleteMany({ where: { id: { in: deletedIds } } });
+  };
 
   /**
    * Сохранение файла в системе.
@@ -37,7 +67,11 @@ export class FileService {
    */
   public async fileCreate(params: TFileCreateParams): Promise<PartialDeep<FileEntityResponse>> {
     const subDirs = params.subDirs || [];
-    const ext = path.extname(params.fileName) || undefined;
+    let ext = path.extname(params.fileName).replace(/\./g, '') || undefined;
+    if (ext) {
+      ext = `.${ext.toLowerCase()}`;
+    }
+
     return this.prisma.$transaction(async (prisma) => {
       // Сохранение файла в БД
       const file = await prisma.fileEntity.create({
@@ -47,19 +81,23 @@ export class FileService {
           name: params.fileName,
           description: params.description,
           user: params.userId ? { connect: { id: params.userId } } : undefined,
+          deletedAt: params.expiresAt,
         },
-        select: { ...omit(params.select, 'url'), id: true },
+        select: {
+          ...omit(params.select, 'url'),
+          id: true,
+          dir: true,
+          ext: true,
+          name: true,
+        },
       }).catch(throwCb((err) => new InternalServerErrorException(`Ошибка записи файла в БД: ${err.message}`)));
 
       // Сохранение файла на диск
-      const fileDir = path.resolve(this.configService.config.filesStoragePath, ...subDirs);
+      const filePath = this.getLocalFullFilePath(file);
+      const fileDir = path.dirname(filePath);
       await fs.mkdir(fileDir, { recursive: true });
-
-      console.debug('Saving file into dir:', fileDir);
-      const filePath = path.resolve(fileDir, `${file.id}.${ext?.replace('.', '')}`);
       await fs.writeFile(filePath, params.buffer)
         .catch(throwCb((err) => new InternalServerErrorException(`Ошибка записи файла на диск: ${err.message}`)));
-      console.debug('File saved:', filePath);
       return {
         ...file,
         url: `/files/${file.id}`,
@@ -67,17 +105,11 @@ export class FileService {
     });
   }
 
-  /**
-   * Получение URL файла.
-   * @param file Файл или его ID.
-   * @returns URL файла.
-   * @throws {InternalServerErrorException} Файл не найден.
-   */
-  public async getFileUrl(file: string | FileEntity): Promise<string> {
-    const fileEntity = typeof file === 'string'
-      ? await this.prisma.fileEntity.findUniqueOrThrow({ where: { id: file } })
-        .catch(throwCb(new InternalServerErrorException('Файл не найден')))
-      : file;
-    return `/files/${fileEntity.id}`;
+  public getLocalFileName(file: Pick<FileEntity, 'id' | 'ext'>) {
+    return compact([file.id, file.ext]).join('');
+  }
+
+  public getLocalFullFilePath(file: Pick<FileEntity, 'id' | 'ext' | 'dir'>) {
+    return path.resolve(...compact([this.configService.config.filesStoragePath, file.dir, this.getLocalFileName(file)]));
   }
 }

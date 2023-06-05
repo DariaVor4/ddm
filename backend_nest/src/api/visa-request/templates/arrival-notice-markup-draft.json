@@ -276,7 +276,7 @@
         "step": 4
     },
     {
-        "originalName": "серия",
+        "originalName": "Серия",
         "entity": "StudentMigrationCardEntity",
         "field": "series",
         "startCell": "AP48",

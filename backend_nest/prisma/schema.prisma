@@ -52,13 +52,13 @@ model FileEntity {
   description String?
   /// Время удаления, если файл должен самоуничтожиться
   /// @HideField({ input: true, output: false })
-  deletedAt   DateTime? @map("deleted_at")
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("file_store")
 }
@@ -75,9 +75,9 @@ model ConfirmationEmailEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("confirmation_email")
 }
@@ -93,9 +93,9 @@ model ConfirmationPhoneEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("confirmation_phone")
 }
@@ -116,7 +116,7 @@ model UserEntity {
   tokenHash     String?                    @map("token_hash")
   /// Последняя активность
   /// @HideField({ input: true, output: false })
-  lastActivity  DateTime?                  @map("last_activity")
+  lastActivity  DateTime?                  @map("last_activity") @db.Timestamptz
   /// Если пользователь - сотрудник
   /// @HideField({ input: true, output: false })
   employee      EmployeeEntity?
@@ -132,9 +132,9 @@ model UserEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("user")
 }
@@ -157,9 +157,9 @@ model EmployeeEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("employee")
 }
@@ -177,9 +177,9 @@ model NotificationEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("notification")
 }
@@ -200,9 +200,9 @@ model NotificationToUserEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@id([userId, notificationId])
   @@map("notification_to_user")
@@ -249,9 +249,9 @@ model StudentEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("student")
 }
@@ -272,7 +272,7 @@ model StudentCloseRelativeEntity {
   /// Отчество
   patronymic                 String?
   /// Дата рождения
-  birthDate                  DateTime? @map("birth_date")
+  birthDate                  DateTime? @map("birth_date") @db.Timestamptz
   /// Гражданство
   citizenship                String?
   /// Постоянное место жительства
@@ -283,9 +283,9 @@ model StudentCloseRelativeEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("student_close_relative")
 }
@@ -304,9 +304,9 @@ model StudentArrivalNoticeEntity {
   /// Адрес регистрации
   address       String?   @map("registration_address")
   /// Дата регистрации
-  date          DateTime? @map("registration_date")
+  date          DateTime? @map("registration_date") @db.Timestamptz
   /// Дата окончания регистрации
-  expires       DateTime? @map("registration_expires")
+  expires       DateTime? @map("registration_expires") @db.Timestamptz
   /// Приглашающая сторона
   invitingSide  String?   @map("inviting_side")
   /// Принимающая сторона
@@ -314,9 +314,9 @@ model StudentArrivalNoticeEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("student_arrival_notice")
 }
@@ -337,15 +337,15 @@ model StudentMigrationCardEntity {
   /// Номер
   number         String?
   /// Дата выдачи
-  issueDate      DateTime? @map("issue_date")
+  issueDate      DateTime? @map("issue_date") @db.Timestamptz
   /// Дата истечения
-  expirationDate DateTime? @map("expiration_date")
+  expirationDate DateTime? @map("expiration_date") @db.Timestamptz
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("student_migration_card")
 }
@@ -365,9 +365,9 @@ model StudentVisaEntity {
   /// Номер
   number           String?
   /// Дата выдачи
-  issueDate        DateTime? @map("issue_date")
+  issueDate        DateTime? @map("issue_date") @db.Timestamptz
   /// Дата истечения
-  expirationDate   DateTime? @map("expiration_date")
+  expirationDate   DateTime? @map("expiration_date") @db.Timestamptz
   /// Номер приглашения
   invitationNumber String?   @map("invitation_number")
   // TODO: "дата выдачи" и дата начала действия - две разные даты. Въезд с и по (дата истечения)
@@ -375,9 +375,9 @@ model StudentVisaEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("student_visa")
 }
@@ -404,7 +404,7 @@ model StudentPassportEntity {
   /// Отчество
   patronymic     String?
   /// Дата рождения
-  birthDate      DateTime?   @map("birth_date")
+  birthDate      DateTime?   @map("birth_date") @db.Timestamptz
   /// Место рождения
   birthPlace     String?     @map("birth_place")
   /// Пол
@@ -417,17 +417,17 @@ model StudentPassportEntity {
   /// Номер
   number         String?
   /// Дата выдачи
-  issueDate      DateTime?   @map("issue_date")
+  issueDate      DateTime?   @map("issue_date") @db.Timestamptz
   /// Кем выдан
   issuedBy       String?     @map("issued_by")
   /// Дата истечения
-  expirationDate DateTime?   @map("expiration_date")
+  expirationDate DateTime?   @map("expiration_date") @db.Timestamptz
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("student_passport")
 }
@@ -514,9 +514,9 @@ model StudentVisaRequestEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("student_visa_request")
 }

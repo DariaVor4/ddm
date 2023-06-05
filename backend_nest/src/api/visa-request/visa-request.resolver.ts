@@ -16,6 +16,7 @@ import { CurrentSession, ISessionContext } from '../auth/decorators/current-sess
 import { StudentVisaRequestUpsertInput } from './inputs/student-visa-request-upsert.input';
 import { VisaRequestWordExportService } from './services/visa-request-word-export.service';
 import { FileEntityResponse } from '../file/responses/file-entity.response';
+import {ArrivalNoticeExcelExportService} from "./services/arrival-notice-excel-export.service";
 
 /**
  * Резолвер для работы с визовыми анкетами студентов.
@@ -28,6 +29,7 @@ export class VisaRequestResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly visaRequestWordExportService: VisaRequestWordExportService,
+    private readonly arrivalNoticeExcelExportService: ArrivalNoticeExcelExportService,
   ) {}
 
   /**
@@ -239,7 +241,7 @@ export class VisaRequestResolver {
    * @param studentId UUID Студента, для которого экспортируются документы.
    * @param visaRequestId UUID Визовой анкеты, для которой экспортируются документы.
    */
-  @Mutation(() => FileEntityResponse, {
+  @Mutation(() => [FileEntityResponse], {
     description: 'Экспорт документов',
   })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
@@ -248,7 +250,7 @@ export class VisaRequestResolver {
     @CurrentSession() session: ISessionContext,
     @Args('studentId', { type: UUID, nullable: true }) studentId?: string,
     @Args('visaRequestId', { type: UUID, nullable: true }) visaRequestId?: string,
-  ): Promise<PartialDeep<FileEntityResponse>> {
+  ): Promise<PartialDeep<FileEntityResponse>[]> {
     const isUserIsStudent = isRoleStudent(session.roles);
     const targetStudentId = studentId || session.userId;
     if (isUserIsStudent && studentId && studentId !== targetStudentId) {
@@ -268,6 +270,9 @@ export class VisaRequestResolver {
     if (isUserIsStudent && visaRequest && visaRequest.studentId !== targetStudentId) {
       throw new ForbiddenException(ifDebug('Студенты не могут экспортировать чужие документы'));
     }
-    return this.visaRequestWordExportService.exportWordFile(visaRequest.id, select);
+    return [
+      await this.visaRequestWordExportService.exportWordFile(visaRequest.id, select),
+      await this.arrivalNoticeExcelExportService.exportExcelFile(visaRequest.studentId, select),
+    ];
   }
 }

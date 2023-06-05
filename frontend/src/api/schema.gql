@@ -269,7 +269,7 @@ type FileEntityResponse {
   updatedAt: DateTime
 
   """Ссылка на файл"""
-  url: URL!
+  url: String!
 
   """Пользователь, создавший файл"""
   user: UserEntity
@@ -300,7 +300,7 @@ type Mutation {
   employeesDelete(employeeIds: [UUID!]!): Int!
 
   """Экспорт документов"""
-  exportDocuments(studentId: UUID, visaRequestId: UUID): FileEntityResponse!
+  exportDocuments(studentId: UUID, visaRequestId: UUID): [FileEntityResponse!]!
 
   """Вход по почте и паролю, возвращает токен доступа и время его истечения"""
   loginByPassword(email: EmailAddress!, password: String!): TokenResponse!
@@ -1374,11 +1374,6 @@ type TokenResponse {
   """Время истечения токена"""
   accessTokenExpires: DateTime!
 }
-
-"""
-A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
-"""
-scalar URL
 
 """
 A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.

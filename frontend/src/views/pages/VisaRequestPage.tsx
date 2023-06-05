@@ -6,7 +6,7 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { compact, values } from 'lodash';
+import { compact, delay, values } from 'lodash';
 import { toast } from 'react-toastify';
 import { FormikTextField } from '../../components/forms/FormikTextField.tsx';
 import {
@@ -86,7 +86,10 @@ export const VisaRequestPage: FC = () => {
       studentId,
       visaRequestId,
     },
-    onCompleted: ({ exportDocuments: res }) => fileDownload(res.url),
+    onCompleted: ({ exportDocuments: res }) => res.forEach(async ({ url }, index) => delay(() => {
+      toast.success(url);
+      fileDownload(url);
+    }, 1500 * index)),
   });
 
   const [upsert] = useVisaRequestUpsertMutation({

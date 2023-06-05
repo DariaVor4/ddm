@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Injectable, NotFoundException } from '@nestjs/common';
-import path from 'path';
 import fs from 'fs/promises';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
@@ -10,10 +9,12 @@ import { PartialDeep } from 'type-fest';
 import { compact } from 'lodash';
 import dayjs from 'dayjs';
 import { Prisma } from '@prisma/client';
+import ms from 'ms';
 import { IVisaRequestWordFields } from '../interfaces/visa-request-word-fields.interface';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { FileService } from '../../file/file.service';
 import { FileEntityResponse } from '../../file/responses/file-entity.response';
+import { VisaRequestConstants } from '../visa-request-constants';
 
 @Injectable()
 export class VisaRequestWordExportService {
@@ -30,22 +31,24 @@ export class VisaRequestWordExportService {
    * @throws {NotFoundException} Визовая анкета не найдена.
    */
   public async exportWordFile(visaRequestId: string, select?: Prisma.FileEntitySelect): Promise<PartialDeep<FileEntityResponse>> {
-    const templatePath = path.resolve(__dirname, '..', 'templates', 'visa-request.docx');
-    const content = await fs.readFile(templatePath, { encoding: 'binary' });
+    const content = await fs.readFile(VisaRequestConstants.visaRequestTemplatePathDocx, { encoding: 'binary' });
     const zip = new PizZip(content);
     const doc = new Docxtemplater(zip);
     doc.setData(await this.getFields(visaRequestId)).render();
     const buffer = doc.getZip().generate({ type: 'nodebuffer' });
 
-    const { firstName, lastName, patronymic } = await this.prisma.studentVisaRequestEntity
+    const { id, passport } = await this.prisma.studentVisaRequestEntity
       .findUniqueOrThrow({ where: { id: visaRequestId } })
-      .student()
-      .passport({ select: { lastName: true, firstName: true, patronymic: true } })
+      .student({ select: { id: true, passport: { select: { lastName: true, firstName: true, patronymic: true } } } })
       .catch(throwCb(new NotFoundException('Визовая анкета не найдена')));
 
     return this.fileService.fileCreate({
-      fileName: `Визовая анкета студента ${compact([lastName, firstName, patronymic]).join(' ')}.docx`,
+      fileName: `Визовая анкета студента ${
+        compact([passport?.lastName, passport?.firstName, passport?.patronymic]).join(' ') || id
+      }.docx`,
       buffer,
+      userId: id,
+      expiresAt: new Date(Date.now() + VisaRequestConstants.docsExpires),
       select,
     });
   }

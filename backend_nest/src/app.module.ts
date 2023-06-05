@@ -31,7 +31,7 @@ import { FileModule } from './api/file/file.module';
       resolvers: {
         UUID: GraphQLUUID,
         EmailAddress: GraphQLEmailAddress,
-        URL: GraphQLURL,
+        // URL: GraphQLURL,
       },
       // subscriptions
       // subscriptions: {
