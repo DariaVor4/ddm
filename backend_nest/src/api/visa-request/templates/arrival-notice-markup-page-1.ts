@@ -1,4 +1,6 @@
-export const arrivalNoticeMarkup = {
+import { GenderEnum } from '@prisma-types';
+
+export const arrivalNoticeMarkupPage1 = {
   passport: [
     {
       originalName: 'Фамилия',
@@ -40,30 +42,31 @@ export const arrivalNoticeMarkup = {
       originalName: 'Дата рождения',
       type: 'date',
       field: 'birthDate',
-      day: {
+      values: [{
+        format: 'DD',
         startCell: 'AD20',
         length: 3,
         count: 2,
         step: 4,
-      },
-      month: {
+      }, {
+        format: 'MM',
         startCell: 'AT20',
         length: 3,
         count: 2,
         step: 4,
-      },
-      year: {
+      }, {
+        format: 'YYYY',
         startCell: 'BF20',
         length: 3,
         count: 4,
         step: 4,
-      },
+      }],
     },
     {
       originalName: 'Пол: мужской',
-      type: 'check',
-      alias: 'genderMale',
       field: 'gender',
+      type: 'enum',
+      value: GenderEnum.Male,
       startCell: 'CL20',
       length: 3,
       count: 1,
@@ -71,9 +74,9 @@ export const arrivalNoticeMarkup = {
     },
     {
       originalName: 'женский',
-      type: 'check',
-      alias: 'genderFemale',
       field: 'gender',
+      type: 'enum',
+      value: GenderEnum.Female,
       startCell: 'DB20',
       length: 3,
       count: 1,
@@ -138,47 +141,49 @@ export const arrivalNoticeMarkup = {
       originalName: 'Дата выдачи',
       type: 'date',
       field: 'issueDate',
-      day: {
+      values: [{
+        format: 'DD',
         startCell: 'I30',
         length: 3,
         count: 2,
         step: 4,
-      },
-      month: {
+      }, {
+        format: 'MM',
         startCell: 'Z30',
         length: 3,
         count: 2,
         step: 4,
-      },
-      year: {
+      }, {
+        format: 'YYYY',
         startCell: 'AL30',
         length: 3,
         count: 4,
         step: 4,
-      },
+      }],
     },
     {
       originalName: 'Срок действия до',
       type: 'date',
       field: 'expirationDate',
-      day: {
+      values: [{
+        format: 'DD',
         startCell: 'BN30',
         length: 3,
         count: 2,
         step: 4,
-      },
-      month: {
+      }, {
+        format: 'MM',
         startCell: 'CD30',
         length: 3,
         count: 2,
         step: 4,
-      },
-      year: {
+      }, {
+        format: 'YYYY',
         startCell: 'CP30',
         length: 3,
         count: 4,
         step: 4,
-      },
+      }],
     },
   ],
   visa: [
@@ -204,47 +209,49 @@ export const arrivalNoticeMarkup = {
       originalName: 'Дата выдачи',
       type: 'date',
       field: 'issueDate',
-      day: {
+      values: [{
+        format: 'DD',
         startCell: 'I38',
         length: 3,
         count: 2,
         step: 4,
-      },
-      month: {
+      }, {
+        format: 'MM',
         startCell: 'Z38',
         length: 3,
         count: 2,
         step: 4,
-      },
-      year: {
+      }, {
+        format: 'YYYY',
         startCell: 'AL38',
         length: 3,
         count: 4,
         step: 4,
-      },
+      }],
     },
     {
       originalName: 'Срок действия до',
       type: 'date',
       field: 'expirationDate',
-      day: {
+      values: [{
+        format: 'DD',
         startCell: 'BN38',
         length: 3,
         count: 2,
         step: 4,
-      },
-      month: {
+      }, {
+        format: 'MM',
         startCell: 'CD38',
         length: 3,
         count: 2,
         step: 4,
-      },
-      year: {
+      }, {
+        format: 'YYYY',
         startCell: 'CP38',
         length: 3,
         count: 4,
         step: 4,
-      },
+      }],
     },
   ],
   migrationCard: [

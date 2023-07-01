@@ -5,17 +5,19 @@ import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { throwCb } from '@common';
 import { GenderEnum, VisaCategoryEnum, VisaMultiplicityEnum } from '@prisma-nestjs-graphql';
-import { PartialDeep } from 'type-fest';
+import type { PartialDeep } from 'type-fest';
 import { compact } from 'lodash';
 import dayjs from 'dayjs';
 import { Prisma } from '@prisma/client';
-import ms from 'ms';
 import { IVisaRequestWordFields } from '../interfaces/visa-request-word-fields.interface';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { FileService } from '../../file/file.service';
 import { FileEntityResponse } from '../../file/responses/file-entity.response';
 import { VisaRequestConstants } from '../visa-request-constants';
 
+/**
+ * Сервис для экспорта визовой анкеты в формате word.
+ */
 @Injectable()
 export class VisaRequestWordExportService {
   constructor(
@@ -31,17 +33,24 @@ export class VisaRequestWordExportService {
    * @throws {NotFoundException} Визовая анкета не найдена.
    */
   public async exportWordFile(visaRequestId: string, select?: Prisma.FileEntitySelect): Promise<PartialDeep<FileEntityResponse>> {
+    // Read word template
     const content = await fs.readFile(VisaRequestConstants.visaRequestTemplatePathDocx, { encoding: 'binary' });
     const zip = new PizZip(content);
     const doc = new Docxtemplater(zip);
+
+    // Insert data to template
     doc.setData(await this.getFields(visaRequestId)).render();
+
+    // Write buffer
     const buffer = doc.getZip().generate({ type: 'nodebuffer' });
 
+    // Get student id and passport
     const { id, passport } = await this.prisma.studentVisaRequestEntity
       .findUniqueOrThrow({ where: { id: visaRequestId } })
       .student({ select: { id: true, passport: { select: { lastName: true, firstName: true, patronymic: true } } } })
       .catch(throwCb(new NotFoundException('Визовая анкета не найдена')));
 
+    // Create file
     return this.fileService.fileCreate({
       fileName: `Визовая анкета студента ${
         compact([passport?.lastName, passport?.firstName, passport?.patronymic]).join(' ') || id
@@ -53,7 +62,13 @@ export class VisaRequestWordExportService {
     });
   }
 
+  /**
+   * Получение полей для вставки в шаблон.
+   * @param visaRequestId Идентификатор визовой анкеты.
+   * @returns Поля для вставки в шаблон.
+   */
   private async getFields(visaRequestId: string): Promise<IVisaRequestWordFields> {
+    // TODO: Доделать закомментированные таблицы и всё что можно вставить в шаблон
     const {
       student: {
         passport,
@@ -79,7 +94,8 @@ export class VisaRequestWordExportService {
       },
     }).catch(throwCb(new NotFoundException('Визовая анкета не найдена')));
 
-    /** ✓ ✔ ☑ ☐ ☒ * */
+    /** ✓ ✔ ☑ ☐ ☒ * √ */
+
     return {
       /** ******** VisaRequest ********* */
       visaRequestReason: visaRequest.reason || '',

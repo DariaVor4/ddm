@@ -1,0 +1,58 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Frontend Dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}/frontend"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Backend Build",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "swc:build"
+      ],
+      "cwd": "${workspaceFolder}/backend_nest"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Backend Start",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "swc:start"
+      ],
+      "cwd": "${workspaceFolder}/backend_nest"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Backend Build & Start",
+      "configurations": [
+        "Backend Build",
+        "Backend Start",
+      ]
+    },
+    {
+      "name": "Front & Back",
+      "configurations": [
+        "Frontend Dev",
+        "Backend Build",
+        "Backend Start",
+      ]
+    }
+  ]
+}

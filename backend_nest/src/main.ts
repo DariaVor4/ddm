@@ -8,7 +8,7 @@ import './common/dayjs-configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: process.env.NODE_ENV !== 'development' ? ['error', 'warn', 'log'] : undefined,
+    logger: !runtimeMode.isDev ? ['error', 'warn', 'log'] : undefined,
   });
   // app.enableCors();
   app.enableCors({

@@ -8,7 +8,6 @@ import { FileEntity } from '@prisma-nestjs-graphql';
 import { PartialDeep } from 'type-fest';
 import { throwCb } from '@common';
 import { compact, omit } from 'lodash';
-import ms from 'ms';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConfigService } from '../../config/config.service';
 import { FileEntityResponse } from './responses/file-entity.response';

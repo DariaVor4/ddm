@@ -33,7 +33,7 @@ enum UserRoleEnum {
 model FileEntity {
   /// Имя файла внутри хранилища
   /// @FieldType('Scalars.GraphQLUUID')
-  id     String      @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
+  id     String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// Пользователь, создавший файл
   /// @HideField({ input: true, output: false })
   user   UserEntity? @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -42,7 +42,7 @@ model FileEntity {
   userId String?     @db.Uuid
 
   /// Локальная директория внутри хранилища на диске
-  dir  String? @map("file_location")
+  dir  String?
   /// Оригинальное имя
   name String?
   /// Расширение
@@ -52,52 +52,46 @@ model FileEntity {
   description String?
   /// Время удаления, если файл должен самоуничтожиться
   /// @HideField({ input: true, output: false })
-  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz
+  deletedAt   DateTime? @db.Timestamptz
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("file_store")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Подтверждение почтового адреса
 model ConfirmationEmailEntity {
   /// @FieldType('Scalars.GraphQLUUID')
-  id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
 
   /// @FieldType('Scalars.GraphQLEmailAddress')
   email       String
   code        String
-  isConfirmed Boolean @default(false) @map("is_confirmed")
+  isConfirmed Boolean @default(false)
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("confirmation_email")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Подтверждение номера телефона
 model ConfirmationPhoneEntity {
   /// @FieldType('Scalars.GraphQLUUID')
-  id String @id @default(dbgenerated("uuid_generate_v4()")) @map("id") @db.Uuid
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
 
   phone       String
   code        String
-  isConfirmed Boolean @default(false) @map("is_confirmed")
+  isConfirmed Boolean @default(false)
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("confirmation_phone")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Пользователь
@@ -113,10 +107,10 @@ model UserEntity {
   password      String
   /// Авторизован ли сейчас пользователь?
   /// @HideField({ input: true, output: true })
-  tokenHash     String?                    @map("token_hash")
+  tokenHash     String?
   /// Последняя активность
   /// @HideField({ input: true, output: false })
-  lastActivity  DateTime?                  @map("last_activity") @db.Timestamptz
+  lastActivity  DateTime?                  @db.Timestamptz
   /// Если пользователь - сотрудник
   /// @HideField({ input: true, output: false })
   employee      EmployeeEntity?
@@ -132,11 +126,9 @@ model UserEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("user")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Сотрудник
@@ -144,24 +136,22 @@ model EmployeeEntity {
   /// @HideField({ input: true, output: false })
   user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
-  id   String     @id() @unique @map("id_user") @db.Uuid
+  id   String     @id() @unique @db.Uuid
 
   /// Фамилия
-  lastName   String? @map("last_name")
+  lastName   String?
   /// Имя
-  firstName  String? @map("first_name")
+  firstName  String?
   /// Отчество
   patronymic String?
   /// Является ли админом?
-  isAdmin    Boolean @default(false) @map("is_admin")
+  isAdmin    Boolean @default(false)
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("employee")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Уведомление
@@ -177,35 +167,32 @@ model NotificationEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("notification")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Уведомления для пользователей
 model NotificationToUserEntity {
   notification   NotificationEntity @relation(fields: [notificationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
-  notificationId String             @map("id_notification") @db.Uuid
+  notificationId String             @db.Uuid
 
   /// @HideField({ input: true, output: false })
   user   UserEntity @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
-  userId String     @map("id_user") @db.Uuid
+  userId String     @db.Uuid
 
   /// Прочитано ли уведомление?
-  isRead Boolean @default(false) @map("is_read")
+  isRead Boolean @default(false)
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 
   @@id([userId, notificationId])
-  @@map("notification_to_user")
 }
 
 /// Студент
@@ -213,7 +200,7 @@ model StudentEntity {
   /// @HideField({ input: true, output: false })
   user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
-  id   String     @id() @unique @map("id_user") @db.Uuid
+  id   String     @id() @unique @db.Uuid
 
   /// Уведомление о прибытии
   /// @HideField({ input: true, output: false })
@@ -249,11 +236,9 @@ model StudentEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("student")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Близкие родственники студента
@@ -263,31 +248,29 @@ model StudentCloseRelativeEntity {
   /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   /// @FieldType('Scalars.GraphQLUUID')
-  studentId String        @map("id_student") @db.Uuid
+  studentId String        @db.Uuid
 
   /// Фамилия
-  lastName                   String?   @map("last_name")
+  lastName                   String?
   /// Имя
-  firstName                  String?   @map("first_name")
+  firstName                  String?
   /// Отчество
   patronymic                 String?
   /// Дата рождения
-  birthDate                  DateTime? @map("birth_date") @db.Timestamptz
+  birthDate                  DateTime? @db.Timestamptz
   /// Гражданство
   citizenship                String?
   /// Постоянное место жительства
-  addressContinuousResidence String?   @map("address_continuos_residence")
+  addressContinuousResidence String?
   // TODO: Кем является
   // TODO: Контактный номер телефона + почта
   // TODO: при окончании визы можно уведомлять близких родственников
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("student_close_relative")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Уведомление о прибытии студента
@@ -297,28 +280,26 @@ model StudentArrivalNoticeEntity {
   /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
-  studentId String        @unique @map("id_student") @db.Uuid
+  studentId String        @unique @db.Uuid
 
   /// Профессия. Заполняется только сотрудниками.
   profession    String?
   /// Адрес регистрации
-  address       String?   @map("registration_address")
+  address       String?
   /// Дата регистрации
-  date          DateTime? @map("registration_date") @db.Timestamptz
+  date          DateTime? @db.Timestamptz
   /// Дата окончания регистрации
-  expires       DateTime? @map("registration_expires") @db.Timestamptz
+  expires       DateTime? @db.Timestamptz
   /// Приглашающая сторона
-  invitingSide  String?   @map("inviting_side")
+  invitingSide  String?
   /// Принимающая сторона
-  receivingSide String?   @map("receiving_side")
+  receivingSide String?
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("student_arrival_notice")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 // TODO: Для формирования документа на основе всех данных нужна будет дополнительная таблица "Остальное"... поля нужно будет делать с Гаисом
@@ -330,24 +311,22 @@ model StudentMigrationCardEntity {
   /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
-  studentId String        @unique @map("id_student") @db.Uuid
+  studentId String        @unique @db.Uuid
 
   /// Серия
   series         String?
   /// Номер
   number         String?
   /// Дата выдачи
-  issueDate      DateTime? @map("issue_date") @db.Timestamptz
+  issueDate      DateTime? @db.Timestamptz
   /// Дата истечения
-  expirationDate DateTime? @map("expiration_date") @db.Timestamptz
+  expirationDate DateTime? @db.Timestamptz
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("student_migration_card")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Виза студента
@@ -358,28 +337,26 @@ model StudentVisaEntity {
   /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
-  studentId String        @unique @map("id_student") @db.Uuid
+  studentId String        @unique @db.Uuid
 
   /// Серия бланка
-  blankSeries      String?   @map("blank_series")
+  blankSeries      String?
   /// Номер
   number           String?
   /// Дата выдачи
-  issueDate        DateTime? @map("issue_date") @db.Timestamptz
+  issueDate        DateTime? @db.Timestamptz
   /// Дата истечения
-  expirationDate   DateTime? @map("expiration_date") @db.Timestamptz
+  expirationDate   DateTime? @db.Timestamptz
   /// Номер приглашения
-  invitationNumber String?   @map("invitation_number")
+  invitationNumber String?
   // TODO: "дата выдачи" и дата начала действия - две разные даты. Въезд с и по (дата истечения)
   // TODO: Уведомление должно быть за 45 дней до истечения визы
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("student_visa")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Пол
@@ -395,18 +372,18 @@ model StudentPassportEntity {
   /// @HideField({ input: true, output: false })
   student   StudentEntity @relation(fields: [studentId], references: [id])
   /// @FieldType('Scalars.GraphQLUUID')
-  studentId String        @unique @map("id_student") @db.Uuid
+  studentId String        @unique @db.Uuid
 
   /// Фамилия
-  lastName       String?     @map("last_name")
+  lastName       String?
   /// Имя
-  firstName      String?     @map("first_name")
+  firstName      String?
   /// Отчество
   patronymic     String?
   /// Дата рождения
-  birthDate      DateTime?   @map("birth_date") @db.Timestamptz
+  birthDate      DateTime?   @db.Timestamptz
   /// Место рождения
-  birthPlace     String?     @map("birth_place")
+  birthPlace     String?
   /// Пол
   gender         GenderEnum?
   /// Гражданство
@@ -417,19 +394,17 @@ model StudentPassportEntity {
   /// Номер
   number         String?
   /// Дата выдачи
-  issueDate      DateTime?   @map("issue_date") @db.Timestamptz
+  issueDate      DateTime?   @db.Timestamptz
   /// Кем выдан
-  issuedBy       String?     @map("issued_by")
+  issuedBy       String?
   /// Дата истечения
-  expirationDate DateTime?   @map("expiration_date") @db.Timestamptz
+  expirationDate DateTime?   @db.Timestamptz
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("student_passport")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
 /// Требуемая кратность визы в визовой анкете
@@ -492,7 +467,7 @@ model StudentVisaRequestEntity {
   employeeComment String?
 
   /// Регистрационный номер заполняемый только сотрудником
-  registrationNumber                      String?               @map("registration_number")
+  registrationNumber                      String?
   /// Категория визы
   category                                VisaCategoryEnum?
   /// Кратность визы
@@ -500,23 +475,21 @@ model StudentVisaRequestEntity {
   /// В связи с ...
   reason                                  String?
   /// Адрес постановки на миграционный учет
-  addressOfMigrationRegistration          String?               @map("address_of_migration_registration")
+  addressOfMigrationRegistration          String?
   /// Маршрут предполагаемого пребывания
-  estimatedRouteOfStay                    String?               @map("estimated_route_of_stay")
+  estimatedRouteOfStay                    String?
   /// Адрес в стране постоянного проживания
-  addressInCountryOfContinuousResidence   String?               @map("address_in_country_of_continuous_residence")
+  addressInCountryOfContinuousResidence   String?
   /// Место работы или учёбы, должность
-  placeOfWorkOrStudyAndEmploymentPosition String?               @map("place_of_work_or_study_and_employment_position")
+  placeOfWorkOrStudyAndEmploymentPosition String?
   /// Родственники на территории РФ
-  russianFederationRelatives              String?               @map("russian_federation_relatives")
+  russianFederationRelatives              String?
   /// Прилагаемые документы
-  attachedDocuments                       String?               @map("attached_documents")
+  attachedDocuments                       String?
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("student_visa_request")
+  updatedAt DateTime? @updatedAt @db.Timestamptz
 }
