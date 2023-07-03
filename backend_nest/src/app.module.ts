@@ -19,6 +19,7 @@ import { StudentMigrationCardModule } from './api/student-migration-card/student
 import { StudentVisaModule } from './api/student-visa/student-visa.module';
 import { VisaRequestModule } from './api/visa-request/visa-request.module';
 import { FileModule } from './api/file/file.module';
+import { NotificationModule } from './api/notification/notification.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { FileModule } from './api/file/file.module';
     StudentVisaModule,
     VisaRequestModule,
     FileModule,
+    NotificationModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },

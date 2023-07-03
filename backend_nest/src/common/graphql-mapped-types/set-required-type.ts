@@ -13,7 +13,7 @@ import {
 import { Field } from '@nestjs/graphql';
 import { applyFieldDecorators } from '@nestjs/graphql/dist/type-helpers/type-helpers.utils';
 import { METADATA_FACTORY_NAME } from '@nestjs/graphql/dist/plugin/plugin-constants';
-import { SetRequired } from 'type-fest';
+import type { SetRequired } from 'type-fest';
 
 export function SetRequiredType<T, K extends keyof T>(
   classRef: Type<T>,

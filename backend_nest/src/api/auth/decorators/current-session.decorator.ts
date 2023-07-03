@@ -23,9 +23,9 @@ export const CurrentSession = createParamDecorator(
 
 export interface ISessionContext extends IAccessTokenPayloadCreate {
   userEmail: string;
-  accessToken: string;
-  refreshToken: string;
+  // accessToken: string;
+  // refreshToken: string;
   accessTokenExpires: Date;
-  cookies: TCookies;
-  headers: IncomingHttpHeaders;
+  // cookies: TCookies;
+  // headers: IncomingHttpHeaders;
 }

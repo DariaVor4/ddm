@@ -24,7 +24,7 @@ export class UserResolver {
   @Query(() => UserCurrentResponse, {
     description: 'Получить текущего пользователя',
   })
-  @Roles(UserRoleEnum.Any)
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
   async userCurrent(
     @CurrentSession() ctx: ISessionContext,
     @PrismaSelector<UserCurrentResponse>('user') select: Prisma.UserEntitySelect,

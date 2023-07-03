@@ -5,12 +5,13 @@ import cookieParser from 'cookie-parser';
 import { runtimeMode } from '@common';
 import { AppModule } from './app.module';
 import './common/dayjs-configuration';
+import { ConfigService } from './config/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: !runtimeMode.isDev ? ['error', 'warn', 'log'] : undefined,
   });
-  // app.enableCors();
+  const { config: { port, nodeEnv } } = await app.resolve(ConfigService);
   app.enableCors({
     origin: runtimeMode.isDebug,
     credentials: true,
@@ -30,7 +31,9 @@ async function bootstrap() {
   // const document = SwaggerModule.createDocument(app, config);
   // SwaggerModule.setup('api', app, document);
 
-  await app.listen(5000);
+  await app.listen(port).then(() => {
+    console.log(`App is running in ${nodeEnv.toUpperCase()} mode on port ${port}`);
+  });
 }
 
 bootstrap();

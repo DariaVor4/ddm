@@ -31,7 +31,7 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
   /**
    * Method automatically callable for getting express request from graphql context
    */
-  getRequest(context: ExecutionContextHost): Request {
+  getRequest(context: ExecutionContextHost)/* : Request */ {
     return GqlExecutionContext.create(context).getContext().req;
   }
 

@@ -134,7 +134,7 @@ model UserEntity {
 /// Сотрудник
 model EmployeeEntity {
   /// @HideField({ input: true, output: false })
-  user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user UserEntity @relation(fields: [id], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   id   String     @id() @unique @db.Uuid
 
@@ -154,6 +154,20 @@ model EmployeeEntity {
   updatedAt DateTime? @updatedAt @db.Timestamptz
 }
 
+/// Сервисы для отправки уведомлений
+enum NotificationServiceEnum {
+  /// Онлайн
+  Web
+  /// Почта
+  Email
+  /// СМС
+  Sms
+  /// Бот ВКонтакте
+  Vk
+  /// Бот Телеграм
+  Telegram
+}
+
 /// Уведомление
 model NotificationEntity {
   /// @FieldType('Scalars.GraphQLUUID')
@@ -164,6 +178,8 @@ model NotificationEntity {
   content String
   /// Получатели
   users   NotificationToUserEntity[]
+  /// Сервисы для отправки уведомлений
+  services NotificationServiceEnum[]
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
@@ -174,12 +190,12 @@ model NotificationEntity {
 
 /// Уведомления для пользователей
 model NotificationToUserEntity {
-  notification   NotificationEntity @relation(fields: [notificationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notification   NotificationEntity @relation(fields: [notificationId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   notificationId String             @db.Uuid
 
   /// @HideField({ input: true, output: false })
-  user   UserEntity @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user   UserEntity @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   userId String     @db.Uuid
 
@@ -198,7 +214,7 @@ model NotificationToUserEntity {
 /// Студент
 model StudentEntity {
   /// @HideField({ input: true, output: false })
-  user UserEntity @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user UserEntity @relation(fields: [id], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   id   String     @id() @unique @db.Uuid
 
@@ -246,7 +262,7 @@ model StudentCloseRelativeEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// @HideField({ input: true, output: false })
-  student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @db.Uuid
 
@@ -278,7 +294,7 @@ model StudentArrivalNoticeEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// @HideField({ input: true, output: false })
-  student   StudentEntity @relation(fields: [studentId], references: [id])
+  student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @db.Uuid
 
@@ -309,7 +325,7 @@ model StudentMigrationCardEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// @HideField({ input: true, output: false })
-  student   StudentEntity @relation(fields: [studentId], references: [id])
+  student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @db.Uuid
 
@@ -335,7 +351,7 @@ model StudentVisaEntity {
   /// @FieldType('String')
   id        String        @id()
   /// @HideField({ input: true, output: false })
-  student   StudentEntity @relation(fields: [studentId], references: [id])
+  student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @db.Uuid
 
@@ -370,7 +386,7 @@ model StudentPassportEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id        String        @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// @HideField({ input: true, output: false })
-  student   StudentEntity @relation(fields: [studentId], references: [id])
+  student   StudentEntity @relation(fields: [studentId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   studentId String        @unique @db.Uuid
 
@@ -458,7 +474,7 @@ model StudentVisaRequestEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   id              String                @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// @HideField({ input: true, output: false })
-  student         StudentEntity         @relation(fields: [studentId], references: [id])
+  student         StudentEntity         @relation(fields: [studentId], references: [id], onDelete: Cascade)
   /// @FieldType('Scalars.GraphQLUUID')
   studentId       String                @db.Uuid
   /// Статус визовой анкеты

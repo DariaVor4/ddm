@@ -10,7 +10,6 @@ import { Prisma } from '@prisma/client';
 import { StudentEntity } from '@prisma-nestjs-graphql';
 import { UUID } from '@common/scalars';
 import { GraphQLUUID } from 'graphql-scalars';
-import { PartialDeep } from 'type-fest';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { StudentService } from '../student.service';
 import { Roles } from '../../auth/decorators/roles.decorator';

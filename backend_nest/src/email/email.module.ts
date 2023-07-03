@@ -25,18 +25,12 @@ import { EmailService } from './email.service';
             rejectUnauthorized: false,
           },
         },
-        defaults: {
-          from: configService.config.mailerDefaultFrom,
-        },
+        defaults: { from: configService.config.mailerDefaultFrom },
         template: {
           dir: path.join(__dirname, 'templates'),
-          adapter: new PugAdapter({
-            // or new HandlebarsAdapter() or new EjsAdapter()
-            inlineCssEnabled: true,
-          }),
-          options: {
-            strict: true,
-          },
+          // or new HandlebarsAdapter() or new EjsAdapter()
+          adapter: new PugAdapter({ inlineCssEnabled: true }),
+          options: { strict: true },
         },
       }),
     }),

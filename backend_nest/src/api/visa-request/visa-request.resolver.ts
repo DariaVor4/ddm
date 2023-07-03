@@ -2,7 +2,7 @@ import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { StudentVisaRequestEntity, VisaRequestStatusEnum } from '@prisma-nestjs-graphql';
-import { PartialDeep } from 'type-fest';
+import type { PartialDeep } from 'type-fest';
 import { UUID } from '@common/scalars';
 import { Prisma } from '@prisma/client';
 import { ifDebug, isRoleStudent, throwCb } from '@common';

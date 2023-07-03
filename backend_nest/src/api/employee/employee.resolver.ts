@@ -9,7 +9,7 @@ import { EmployeeEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
 import { UUID } from '@common/scalars';
 import { GraphQLUUID } from 'graphql-scalars';
-import { PartialDeep } from 'type-fest';
+import type { PartialDeep } from 'type-fest';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmployeeService } from './employee.service';
 import { Roles } from '../auth/decorators/roles.decorator';

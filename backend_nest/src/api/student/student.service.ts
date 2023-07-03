@@ -6,7 +6,7 @@ import { isNil, isUndefined, pick } from 'lodash';
 import { Prisma } from '@prisma/client';
 import * as uuid from 'uuid';
 import { UserEntity, StudentEntity, StudentPassportEntity } from '@prisma-nestjs-graphql';
-import { PartialDeep, SetRequired } from 'type-fest';
+import type { PartialDeep, SetRequired } from 'type-fest';
 import { elseThrow } from '@common/throw-utils';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -65,7 +65,7 @@ export class StudentService {
           user: { update: userProperties },
           passport: { upsert: { create: passportProperties, update: passportProperties } },
         },
-      });
+      }) as Promise<PartialDeep<StudentEntity>>;
     }
     // Create
     if (!userProperties.email || !userProperties.password) {
@@ -80,7 +80,7 @@ export class StudentService {
           create: { ...userProperties, email: userProperties.email, password: userProperties.password },
         },
       },
-    });
+    }) as Promise<PartialDeep<StudentEntity>>;
   }
 
   /**

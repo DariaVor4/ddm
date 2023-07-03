@@ -161,6 +161,19 @@ export enum QueryMode {
     insensitive = "insensitive"
 }
 
+export enum NullsOrder {
+    first = "first",
+    last = "last"
+}
+
+export enum NotificationServiceEnum {
+    Web = "Web",
+    Email = "Email",
+    Sms = "Sms",
+    Vk = "Vk",
+    Telegram = "Telegram"
+}
+
 export enum GenderEnum {
     Male = "Male",
     Female = "Female"
@@ -178,6 +191,7 @@ export enum NotificationEntityScalarFieldEnum {
     id = "id",
     title = "title",
     content = "content",
+    services = "services",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
 }
@@ -229,6 +243,8 @@ registerEnumType(FileEntityScalarFieldEnum, { name: 'FileEntityScalarFieldEnum',
 registerEnumType(NotificationEntityScalarFieldEnum, { name: 'NotificationEntityScalarFieldEnum', description: undefined })
 registerEnumType(NotificationToUserEntityScalarFieldEnum, { name: 'NotificationToUserEntityScalarFieldEnum', description: undefined })
 registerEnumType(GenderEnum, { name: 'GenderEnum', description: "Пол" })
+registerEnumType(NotificationServiceEnum, { name: 'NotificationServiceEnum', description: "Сервисы для отправки уведомлений" })
+registerEnumType(NullsOrder, { name: 'NullsOrder', description: undefined })
 registerEnumType(QueryMode, { name: 'QueryMode', description: undefined })
 registerEnumType(SortOrder, { name: 'SortOrder', description: undefined })
 registerEnumType(TransactionIsolationLevel, { name: 'TransactionIsolationLevel', description: undefined })
@@ -513,7 +529,7 @@ export class ConfirmationEmailEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => ConfirmationEmailEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof ConfirmationEmailEntityCountOrderByAggregateInput>;
     @Field(() => ConfirmationEmailEntityMaxOrderByAggregateInput, {nullable:true})
@@ -535,7 +551,7 @@ export class ConfirmationEmailEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
 }
 
 @InputType()
@@ -1084,7 +1100,7 @@ export class ConfirmationPhoneEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => ConfirmationPhoneEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof ConfirmationPhoneEntityCountOrderByAggregateInput>;
     @Field(() => ConfirmationPhoneEntityMaxOrderByAggregateInput, {nullable:true})
@@ -1106,7 +1122,7 @@ export class ConfirmationPhoneEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
 }
 
 @InputType()
@@ -1739,18 +1755,18 @@ export class EmployeeEntityMinOrderByAggregateInput {
 export class EmployeeEntityOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    lastName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    firstName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    patronymic?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    lastName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    firstName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    patronymic?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     isAdmin?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => EmployeeEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof EmployeeEntityCountOrderByAggregateInput>;
     @Field(() => EmployeeEntityMaxOrderByAggregateInput, {nullable:true})
@@ -1763,18 +1779,18 @@ export class EmployeeEntityOrderByWithAggregationInput {
 export class EmployeeEntityOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    lastName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    firstName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    patronymic?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    lastName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    firstName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    patronymic?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     isAdmin?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
 }
@@ -2202,9 +2218,9 @@ export class CreateManyFileEntityArgs {
 
 @ArgsType()
 export class CreateOneFileEntityArgs {
-    @Field(() => FileEntityCreateInput, {nullable:false})
+    @Field(() => FileEntityCreateInput, {nullable:true})
     @Type(() => FileEntityCreateInput)
-    data!: InstanceType<typeof FileEntityCreateInput>;
+    data?: InstanceType<typeof FileEntityCreateInput>;
 }
 
 @ArgsType()
@@ -2634,22 +2650,22 @@ export class FileEntityOrderByRelationAggregateInput {
 export class FileEntityOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    userId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    dir?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    name?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    ext?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    description?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    userId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    dir?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    name?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    ext?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    description?: InstanceType<typeof SortOrderInput>;
     @HideField()
-    deletedAt?: keyof typeof SortOrder;
+    deletedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => FileEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof FileEntityCountOrderByAggregateInput>;
     @Field(() => FileEntityMaxOrderByAggregateInput, {nullable:true})
@@ -2662,22 +2678,22 @@ export class FileEntityOrderByWithAggregationInput {
 export class FileEntityOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    userId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    dir?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    name?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    ext?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    description?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    userId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    dir?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    name?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    ext?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    description?: InstanceType<typeof SortOrderInput>;
     @HideField()
-    deletedAt?: keyof typeof SortOrder;
+    deletedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
 }
@@ -3368,6 +3384,8 @@ export class NotificationEntityCountAggregateInput {
     title?: true;
     @Field(() => Boolean, {nullable:true})
     content?: true;
+    @Field(() => Boolean, {nullable:true})
+    services?: true;
     @HideField()
     createdAt?: true;
     @HideField()
@@ -3385,6 +3403,8 @@ export class NotificationEntityCountAggregate {
     @Field(() => Int, {nullable:false})
     content!: number;
     @Field(() => Int, {nullable:false})
+    services!: number;
+    @Field(() => Int, {nullable:false})
     createdAt!: number;
     @Field(() => Int, {nullable:false})
     updatedAt!: number;
@@ -3400,6 +3420,8 @@ export class NotificationEntityCountOrderByAggregateInput {
     title?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     content?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    services?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -3420,6 +3442,8 @@ export class NotificationEntityCreateManyInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
+    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3457,6 +3481,8 @@ export class NotificationEntityCreateWithoutUsersInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
+    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3471,12 +3497,20 @@ export class NotificationEntityCreateInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
+    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
     updatedAt?: Date | string;
     @Field(() => NotificationToUserEntityCreateNestedManyWithoutNotificationInput, {nullable:true})
     users?: InstanceType<typeof NotificationToUserEntityCreateNestedManyWithoutNotificationInput>;
+}
+
+@InputType()
+export class NotificationEntityCreateservicesInput {
+    @Field(() => [NotificationServiceEnum], {nullable:false})
+    set!: Array<keyof typeof NotificationServiceEnum>;
 }
 
 @ArgsType()
@@ -3510,6 +3544,8 @@ export class NotificationEntityGroupBy {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
     @Field(() => Date, {nullable:true})
@@ -3614,10 +3650,12 @@ export class NotificationEntityOrderByWithAggregationInput {
     title?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     content?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    services?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => NotificationEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof NotificationEntityCountOrderByAggregateInput>;
     @Field(() => NotificationEntityMaxOrderByAggregateInput, {nullable:true})
@@ -3634,10 +3672,12 @@ export class NotificationEntityOrderByWithRelationInput {
     title?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     content?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    services?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => NotificationToUserEntityOrderByRelationAggregateInput, {nullable:true})
     users?: InstanceType<typeof NotificationToUserEntityOrderByRelationAggregateInput>;
 }
@@ -3664,6 +3704,8 @@ export class NotificationEntityScalarWhereWithAggregatesInput {
     title?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     content?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => EnumNotificationServiceEnumListFilter, {nullable:true})
+    services?: InstanceType<typeof EnumNotificationServiceEnumListFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @HideField()
@@ -3678,6 +3720,8 @@ export class NotificationEntityUncheckedCreateWithoutUsersInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
+    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3692,6 +3736,8 @@ export class NotificationEntityUncheckedCreateInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
+    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3708,6 +3754,8 @@ export class NotificationEntityUncheckedUpdateManyInput {
     title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -3722,6 +3770,8 @@ export class NotificationEntityUncheckedUpdateWithoutUsersInput {
     title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -3736,6 +3786,8 @@ export class NotificationEntityUncheckedUpdateInput {
     title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -3752,6 +3804,8 @@ export class NotificationEntityUpdateManyMutationInput {
     title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -3785,6 +3839,8 @@ export class NotificationEntityUpdateWithoutUsersInput {
     title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -3799,12 +3855,22 @@ export class NotificationEntityUpdateInput {
     title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
+    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
     updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => NotificationToUserEntityUpdateManyWithoutNotificationNestedInput, {nullable:true})
     users?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutNotificationNestedInput>;
+}
+
+@InputType()
+export class NotificationEntityUpdateservicesInput {
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    set?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    push?: Array<keyof typeof NotificationServiceEnum>;
 }
 
 @InputType()
@@ -3837,6 +3903,8 @@ export class NotificationEntityWhereInput {
     title?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     content?: InstanceType<typeof StringFilter>;
+    @Field(() => EnumNotificationServiceEnumListFilter, {nullable:true})
+    services?: InstanceType<typeof EnumNotificationServiceEnumListFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
@@ -3862,6 +3930,11 @@ export class NotificationEntity {
      */
     @Field(() => String, {nullable:false,description:'Содержимое'})
     content!: string;
+    /**
+     * Сервисы для отправки уведомлений
+     */
+    @Field(() => [NotificationServiceEnum], {nullable:true,description:'Сервисы для отправки уведомлений'})
+    services!: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
     @Field(() => Date, {nullable:true})
@@ -4380,7 +4453,7 @@ export class NotificationToUserEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => NotificationToUserEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof NotificationToUserEntityCountOrderByAggregateInput>;
     @Field(() => NotificationToUserEntityMaxOrderByAggregateInput, {nullable:true})
@@ -4400,7 +4473,7 @@ export class NotificationToUserEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => NotificationEntityOrderByWithRelationInput, {nullable:true})
     notification?: InstanceType<typeof NotificationEntityOrderByWithRelationInput>;
     @HideField()
@@ -5067,6 +5140,20 @@ export class EnumGenderEnumWithAggregatesFilter {
 }
 
 @InputType()
+export class EnumNotificationServiceEnumListFilter {
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    equals?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => NotificationServiceEnum, {nullable:true})
+    has?: keyof typeof NotificationServiceEnum;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    hasEvery?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    hasSome?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isEmpty?: boolean;
+}
+
+@InputType()
 export class EnumVisaCategoryEnumFilter {
     @Field(() => VisaCategoryEnum, {nullable:true})
     equals?: keyof typeof VisaCategoryEnum;
@@ -5274,6 +5361,14 @@ export class NullableIntFieldUpdateOperationsInput {
 export class NullableStringFieldUpdateOperationsInput {
     @Field(() => String, {nullable:true})
     set?: string;
+}
+
+@InputType()
+export class SortOrderInput {
+    @Field(() => SortOrder, {nullable:false})
+    sort!: keyof typeof SortOrder;
+    @Field(() => NullsOrder, {nullable:true})
+    nulls?: keyof typeof NullsOrder;
 }
 
 @InputType()
@@ -5892,22 +5987,22 @@ export class StudentArrivalNoticeEntityOrderByWithAggregationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    profession?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    address?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    date?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expires?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    invitingSide?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    receivingSide?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    profession?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    address?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    date?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expires?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    invitingSide?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    receivingSide?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StudentArrivalNoticeEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentArrivalNoticeEntityCountOrderByAggregateInput>;
     @Field(() => StudentArrivalNoticeEntityMaxOrderByAggregateInput, {nullable:true})
@@ -5922,22 +6017,22 @@ export class StudentArrivalNoticeEntityOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    profession?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    address?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    date?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expires?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    invitingSide?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    receivingSide?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    profession?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    address?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    date?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expires?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    invitingSide?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    receivingSide?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -6901,22 +6996,22 @@ export class StudentCloseRelativeEntityOrderByWithAggregationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    lastName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    firstName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    patronymic?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    birthDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    citizenship?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    addressContinuousResidence?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    lastName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    firstName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    patronymic?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    birthDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    citizenship?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    addressContinuousResidence?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StudentCloseRelativeEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentCloseRelativeEntityCountOrderByAggregateInput>;
     @Field(() => StudentCloseRelativeEntityMaxOrderByAggregateInput, {nullable:true})
@@ -6931,22 +7026,22 @@ export class StudentCloseRelativeEntityOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    lastName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    firstName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    patronymic?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    birthDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    citizenship?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    addressContinuousResidence?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    lastName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    firstName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    patronymic?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    birthDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    citizenship?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    addressContinuousResidence?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -8286,20 +8381,20 @@ export class StudentEntityMinOrderByAggregateInput {
 export class StudentEntityOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    phone?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    curator?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    faculty?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    course?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    group?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    phone?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    curator?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    faculty?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    course?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    group?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StudentEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentEntityCountOrderByAggregateInput>;
     @Field(() => StudentEntityAvgOrderByAggregateInput, {nullable:true})
@@ -8316,20 +8411,20 @@ export class StudentEntityOrderByWithAggregationInput {
 export class StudentEntityOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    phone?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    curator?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    faculty?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    course?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    group?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    phone?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    curator?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    faculty?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    course?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    group?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
     @HideField()
@@ -10002,18 +10097,18 @@ export class StudentMigrationCardEntityOrderByWithAggregationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    series?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    number?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issueDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expirationDate?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    series?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    number?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issueDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expirationDate?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StudentMigrationCardEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentMigrationCardEntityCountOrderByAggregateInput>;
     @Field(() => StudentMigrationCardEntityMaxOrderByAggregateInput, {nullable:true})
@@ -10028,18 +10123,18 @@ export class StudentMigrationCardEntityOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    series?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    number?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issueDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expirationDate?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    series?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    number?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issueDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expirationDate?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -11059,34 +11154,34 @@ export class StudentPassportEntityOrderByWithAggregationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    lastName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    firstName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    patronymic?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    birthDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    birthPlace?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    gender?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    citizenship?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    series?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    number?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issueDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issuedBy?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expirationDate?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    lastName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    firstName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    patronymic?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    birthDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    birthPlace?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    gender?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    citizenship?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    series?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    number?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issueDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issuedBy?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expirationDate?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StudentPassportEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentPassportEntityCountOrderByAggregateInput>;
     @Field(() => StudentPassportEntityMaxOrderByAggregateInput, {nullable:true})
@@ -11101,34 +11196,34 @@ export class StudentPassportEntityOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    lastName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    firstName?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    patronymic?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    birthDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    birthPlace?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    gender?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    citizenship?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    series?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    number?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issueDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issuedBy?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expirationDate?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    lastName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    firstName?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    patronymic?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    birthDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    birthPlace?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    gender?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    citizenship?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    series?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    number?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issueDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issuedBy?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expirationDate?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -12166,20 +12261,20 @@ export class StudentVisaEntityOrderByWithAggregationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    blankSeries?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    number?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issueDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expirationDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    invitationNumber?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    blankSeries?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    number?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issueDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expirationDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    invitationNumber?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StudentVisaEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentVisaEntityCountOrderByAggregateInput>;
     @Field(() => StudentVisaEntityMaxOrderByAggregateInput, {nullable:true})
@@ -12194,20 +12289,20 @@ export class StudentVisaEntityOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     studentId?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    blankSeries?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    number?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    issueDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    expirationDate?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    invitationNumber?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    blankSeries?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    number?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    issueDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    expirationDate?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    invitationNumber?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -13319,32 +13414,32 @@ export class StudentVisaRequestEntityOrderByWithAggregationInput {
     studentId?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     status?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    employeeComment?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    registrationNumber?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    category?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    multiplicity?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    reason?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    addressOfMigrationRegistration?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    estimatedRouteOfStay?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    addressInCountryOfContinuousResidence?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    russianFederationRelatives?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    attachedDocuments?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    employeeComment?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    registrationNumber?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    category?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    multiplicity?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    reason?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    addressOfMigrationRegistration?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    estimatedRouteOfStay?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    addressInCountryOfContinuousResidence?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    russianFederationRelatives?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    attachedDocuments?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StudentVisaRequestEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentVisaRequestEntityCountOrderByAggregateInput>;
     @Field(() => StudentVisaRequestEntityMaxOrderByAggregateInput, {nullable:true})
@@ -13361,32 +13456,32 @@ export class StudentVisaRequestEntityOrderByWithRelationInput {
     studentId?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     status?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    employeeComment?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    registrationNumber?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    category?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    multiplicity?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    reason?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    addressOfMigrationRegistration?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    estimatedRouteOfStay?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    addressInCountryOfContinuousResidence?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    russianFederationRelatives?: keyof typeof SortOrder;
-    @Field(() => SortOrder, {nullable:true})
-    attachedDocuments?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    employeeComment?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    registrationNumber?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    category?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    multiplicity?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    reason?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    addressOfMigrationRegistration?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    estimatedRouteOfStay?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    addressInCountryOfContinuousResidence?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    russianFederationRelatives?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    attachedDocuments?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -14693,13 +14788,13 @@ export class UserEntityOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     password?: keyof typeof SortOrder;
     @HideField()
-    tokenHash?: keyof typeof SortOrder;
+    tokenHash?: InstanceType<typeof SortOrderInput>;
     @HideField()
-    lastActivity?: keyof typeof SortOrder;
+    lastActivity?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => UserEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountOrderByAggregateInput>;
     @Field(() => UserEntityMaxOrderByAggregateInput, {nullable:true})
@@ -14717,13 +14812,13 @@ export class UserEntityOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     password?: keyof typeof SortOrder;
     @HideField()
-    tokenHash?: keyof typeof SortOrder;
+    tokenHash?: InstanceType<typeof SortOrderInput>;
     @HideField()
-    lastActivity?: keyof typeof SortOrder;
+    lastActivity?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: keyof typeof SortOrder;
+    updatedAt?: InstanceType<typeof SortOrderInput>;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityOrderByWithRelationInput>;
     @HideField()

@@ -2,7 +2,7 @@ import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { pick } from 'lodash';
 import { EmployeeEntity, UserEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
-import { PartialDeep } from 'type-fest';
+import type { PartialDeep } from 'type-fest';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import EmployeeCreateInput from './inputs/employee-create.input';

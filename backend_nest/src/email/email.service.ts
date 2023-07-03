@@ -1,5 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { ISendMailOptions } from '@nestjs-modules/mailer/dist/interfaces/send-mail-options.interface';
+import type { SetRequired } from 'type-fest';
 import { ISentMessageInfo } from './sent-message-info.interface';
 
 /**
@@ -28,6 +30,17 @@ export class EmailService {
     return this.mailerService.sendMail({
       to: email,
       subject,
+      template: 'simpleText',
+      context,
+    });
+  }
+
+  async sendSimpleText2(
+    options: SetRequired<ISendMailOptions, 'to' | 'subject'>,
+    context: { title?: string, name?: string, message: string },
+  ) {
+    return this.mailerService.sendMail({
+      ...options,
       template: 'simpleText',
       context,
     });

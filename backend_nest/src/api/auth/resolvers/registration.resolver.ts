@@ -110,16 +110,14 @@ export class RegistrationResolver {
         // Запись кода подтверждения в БД
         prisma.confirmationEmailEntity.create({ data: { email, code } }),
         // Отправка письма с кодом подтверждения
-        this.emailService
-          .sendSimpleText({
-            email,
-            subject: 'Подтверждение электронной почты',
-            message: `Код подтверждения вашей электронной почты: ${code}`,
-          })
-          .catch((error) => {
-            this.logger.error(error);
-            throw new InternalServerErrorException('К сожалению, не удалось отправить код подтверждения');
-          }),
+        this.emailService.sendSimpleText({
+          email,
+          subject: 'Подтверждение электронной почты',
+          message: `Код подтверждения вашей электронной почты: ${code}`,
+        }).catch((error) => {
+          this.logger.error(error);
+          throw new InternalServerErrorException('К сожалению, не удалось отправить код подтверждения');
+        }),
       ]);
       assert(
         emailResult.accepted.includes(email),

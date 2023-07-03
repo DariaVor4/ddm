@@ -1,16 +1,16 @@
 import { assert, joi, vercelMsValidator } from '@common';
 import { Injectable, Logger } from '@nestjs/common';
-import dotenv from 'dotenv';
 import * as process from 'process';
-import type { ReadonlyDeep } from 'type-fest';
+import type { PartialDeep, ReadonlyDeep } from 'type-fest';
 import path from 'path';
+import { NodeEnvEnum } from './node-env.enum';
 
 /**
  * Interface for typing the application startup configuration.
  * Also provides connection data to various services.
  */
 export interface IAppConfig {
-  nodeEnv: 'production' | 'development' | 'test';
+  nodeEnv: NodeEnvEnum;
 
   mailerHost: string;
   mailerUser: string;
@@ -28,6 +28,7 @@ export interface IAppConfig {
   refreshTokenSecret: string;
   refreshTokenExpires: string;
 
+  port: number;
   filesStoragePath: string;
 }
 
@@ -48,59 +49,59 @@ export class ConfigService {
   private logger = new Logger(ConfigService.name);
 
   /**
-   * Config Constructor: tries to read env.CONFIG_PATH or 'config.${NODE_ENV}.json'.
+   * Config Constructor.
    * Performs initialization for use of the getConfig() method.
    */
   constructor() {
-    dotenv.config({ path: path.join(process.cwd(), `.env.${process.env.NODE_ENV}`) });
+    const { value, error } = this.appConfigSchema().validate({
+      nodeEnv: process.env.VISCEN_NODE_ENV,
 
-    this.appConfig = {
-      nodeEnv: process.env.NODE_ENV,
+      mailerHost: process.env.VISCEN_MAILER_HOST,
+      mailerUser: process.env.VISCEN_MAILER_USER,
+      mailerPassword: process.env.VISCEN_MAILER_PASSWORD,
+      mailerDefaultFrom: process.env.VISCEN_MAILER_DEFAULT_FROM,
 
-      mailerHost: process.env.MAILER_HOST,
-      mailerUser: process.env.MAILER_USER,
-      mailerPassword: process.env.MAILER_PASSWORD,
-      mailerDefaultFrom: process.env.MAILER_DEFAULT_FROM,
+      confirmationCodeLength: Number(process.env.VISCEN_CONFIRM_CODE_LEN),
+      emailConfirmationCodeExpires: process.env.VISCEN_CONFIRM_EMAIL_CODE_EXP,
+      phoneConfirmationCodeExpires: process.env.VISCEN_CONFIRM_PHONE_CODE_EXP,
+      bcryptRounds: Number(process.env.VISCEN_PASSWORD_BCRYPT_ROUNDS),
 
-      confirmationCodeLength: Number(process.env.CONFIRMATION_CODE_LENGTH),
-      emailConfirmationCodeExpires: process.env.EMAIL_CONFIRMATION_CODE_EXPIRES,
-      phoneConfirmationCodeExpires: process.env.PHONE_CONFIRMATION_CODE_EXPIRES,
-      bcryptRounds: Number(process.env.PASSWORD_BCRYPT_ROUNDS),
+      accessTokenSecret: process.env.VISCEN_ACCESS_TOKEN_SECRET,
+      accessTokenExpires: process.env.VISCEN_ACCESS_TOKEN_EXPIRES,
 
-      accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
-      accessTokenExpires: process.env.ACCESS_TOKEN_EXPIRES,
+      refreshTokenSecret: process.env.VISCEN_REFRESH_TOKEN_SECRET,
+      refreshTokenExpires: process.env.VISCEN_REFRESH_TOKEN_EXPIRES,
 
-      refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
-      refreshTokenExpires: process.env.REFRESH_TOKEN_EXPIRES,
-
-      filesStoragePath: process.env.FILES_STORAGE_PATH!,
-    };
-
-    const { error } = this.appConfigSchema().validate(this.appConfig);
-    assert(!error, new Error(error?.message));
-
-    this.logger.log(`Environment successfully loaded from .env.${process.env.NODE_ENV}`);
+      port: Number(process.env.VISCEN_PORT),
+      filesStoragePath: process.env.VISCEN_FILES_STORAGE_PATH,
+    } satisfies PartialDeep<IAppConfig>);
+    if (error) {
+      throw new Error(error.message);
+    }
+    this.appConfig = value;
+    this.logger.log('Environment successfully loaded!');
   }
 
   private appConfigSchema = () => joi.object<IAppConfig>({
-    nodeEnv: joi.string().valid('production', 'development', 'test').required(),
+    nodeEnv: joi.string().valid('prod', 'dev', 'test').required(),
 
     mailerHost: joi.string().required(),
     mailerUser: joi.string().email().required(),
     mailerPassword: joi.string().required(),
     mailerDefaultFrom: joi.string().required(),
 
-    confirmationCodeLength: joi.number().min(3).required(),
-    emailConfirmationCodeExpires: joi.string().custom(vercelMsValidator).required(),
-    phoneConfirmationCodeExpires: joi.string().custom(vercelMsValidator).required(),
-    bcryptRounds: joi.number().min(6).required(),
+    confirmationCodeLength: joi.number().min(3).optional().default(6),
+    emailConfirmationCodeExpires: joi.string().custom(vercelMsValidator).optional().default('15m'),
+    phoneConfirmationCodeExpires: joi.string().custom(vercelMsValidator).optional().default('15m'),
+    bcryptRounds: joi.number().min(6).optional().default(10),
 
     accessTokenSecret: joi.string().required(),
-    accessTokenExpires: joi.string().custom(vercelMsValidator).required(),
+    accessTokenExpires: joi.string().custom(vercelMsValidator).optional().default('15m'),
 
     refreshTokenSecret: joi.string().required(),
-    refreshTokenExpires: joi.string().custom(vercelMsValidator).required(),
+    refreshTokenExpires: joi.string().custom(vercelMsValidator).optional().default('1d'),
 
+    port: joi.number().port().optional().default(5000),
     filesStoragePath: joi.string().optional().default(path.join(require.main!.path, 'files_storage')),
   });
 }

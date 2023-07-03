@@ -1,0 +1,17 @@
+// Variables
+-
+  var title = title?.trim();
+  var name = name?.trim();
+  var message = message?.split('\n').map(line => line.trim()) || [];
+
+doctype html
+html
+  head
+    title= title || 'Уведомление от визового центра ВолгГТУ'
+  body
+    if title
+      h1= title
+    if name
+      h2 Здравствуйте, #{name}!
+    for line in message
+      p= line
