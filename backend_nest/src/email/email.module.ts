@@ -15,17 +15,17 @@ import { EmailService } from './email.service';
       useFactory: async (configService: ConfigService) => ({
         // transport: 'smtps://user@example.com:topsecret@smtp.example.com',
         transport: {
-          host: configService.config.mailerHost,
+          host: configService.config.mailer.host,
           secure: false,
           auth: {
-            user: configService.config.mailerUser,
-            pass: configService.config.mailerPassword,
+            user: configService.config.mailer.user,
+            pass: configService.config.mailer.password,
           },
           tls: {
             rejectUnauthorized: false,
           },
         },
-        defaults: { from: configService.config.mailerDefaultFrom },
+        defaults: { from: configService.config.mailer.defaultFrom },
         template: {
           dir: path.join(__dirname, 'templates'),
           // or new HandlebarsAdapter() or new EjsAdapter()

@@ -103,7 +103,7 @@ export class RegistrationResolver {
     });
     // Сгенерировать код
     const code = await this.authService.generateSingleUseCode();
-    const registrationTimeOut = Date.now() + ms(this.configService.config.emailConfirmationCodeExpires);
+    const registrationTimeOut = Date.now() + ms(this.configService.config.confirm.emailCodeExpires);
     // Запись кода подтверждения в БД, отправка письма с кодом подтверждения, установка RegistrationToken в cookies
     await this.prisma.$transaction(async (prisma) => {
       const [confirmationEmail, emailResult] = await Promise.all([

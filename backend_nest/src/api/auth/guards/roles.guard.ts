@@ -1,9 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { TUser } from '@prisma-types';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { UserService } from '../../user/user.service';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import UserRoleEnum from '../interfaces/user-role.enum';
 import { ISessionContext } from '../decorators/current-session.decorator';
@@ -26,7 +24,10 @@ export class RolesGuard implements CanActivate {
    * Automatically called method for checking roles of the current authorized user
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const rolesRequired = this.reflector.get<UserRoleEnum[] | undefined>(ROLES_KEY, context.getHandler()) ?? [];
+    const rolesRequired = this.reflector.getAllAndOverride<UserRoleEnum[] | undefined>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]) ?? [];
     if (rolesRequired.includes(UserRoleEnum.Any)) {
       return true;
     }

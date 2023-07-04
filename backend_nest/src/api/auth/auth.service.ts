@@ -1,12 +1,12 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { TUser } from '@prisma-types';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { CookieOptions, Request, Response } from 'express';
-import { throwCb, ifDebug, runtimeMode } from '@common';
+import { ifDebug, runtimeMode, throwCb } from '@common';
 import { isString } from 'lodash';
 import ms from 'ms';
+import { UserEntity } from '@prisma/client';
 import { ConfigService } from '../../config/config.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -33,7 +33,7 @@ export class AuthService {
    * Generates and returns a new pair of tokens.
    * Puts access token hash into user.
    */
-  public async generateTokens(user: Pick<TUser, 'id' | 'updatedAt'>) {
+  public async generateTokens(user: Pick<UserEntity, 'id' | 'updatedAt'>) {
     const accessTokenPayload: IAccessTokenPayloadCreate = {
       userId: user.id,
       roles: await this.userService.getUserRoles(user.id),
@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   async generateSingleUseCode(): Promise<string> {
-    const length = this.configService.config.confirmationCodeLength;
+    const length = this.configService.config.confirm.codeLength;
     return new Promise((resolve, reject) => {
       crypto.randomInt(123, 10 ** length, (err, num) => {
         if (err) {

@@ -19,7 +19,7 @@ generator nestgraphql {
 
 datasource db {
   provider   = "postgresql"
-  url        = env("DATABASE_URL")
+  url        = env("VISCEN_DATABASE_URL")
   extensions = [uuidOssp(map: "uuid-ossp")]
 }
 
@@ -123,6 +123,10 @@ model UserEntity {
   /// Файлы созданные пользователем
   /// @HideField({ input: true, output: false })
   files         FileEntity[]
+  /// Telegram User ID
+  telegramId    Int? @unique
+  /// VK User ID
+  // vkId          Int?
 
   // Служебные поля
   /// @HideField({ input: true, output: false })

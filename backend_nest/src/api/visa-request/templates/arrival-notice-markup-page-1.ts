@@ -1,4 +1,4 @@
-import { GenderEnum } from '@prisma-types';
+import { GenderEnum } from '@prisma/client';
 
 export const arrivalNoticeMarkupPage1 = {
   passport: [

@@ -16,6 +16,7 @@ export enum UserEntityScalarFieldEnum {
     password = "password",
     tokenHash = "tokenHash",
     lastActivity = "lastActivity",
+    telegramId = "telegramId",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
 }
@@ -14171,6 +14172,10 @@ export class UpsertOneStudentVisaRequestEntityArgs {
 export class AggregateUserEntity {
     @Field(() => UserEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregate>;
+    @Field(() => UserEntityAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof UserEntityAvgAggregate>;
+    @Field(() => UserEntitySumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof UserEntitySumAggregate>;
     @Field(() => UserEntityMinAggregate, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregate>;
     @Field(() => UserEntityMaxAggregate, {nullable:true})
@@ -14320,10 +14325,32 @@ export class UserEntityAggregateArgs {
     skip?: number;
     @Field(() => UserEntityCountAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregateInput>;
+    @Field(() => UserEntityAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof UserEntityAvgAggregateInput>;
+    @Field(() => UserEntitySumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof UserEntitySumAggregateInput>;
     @Field(() => UserEntityMinAggregateInput, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregateInput>;
     @Field(() => UserEntityMaxAggregateInput, {nullable:true})
     _max?: InstanceType<typeof UserEntityMaxAggregateInput>;
+}
+
+@InputType()
+export class UserEntityAvgAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    telegramId?: true;
+}
+
+@ObjectType()
+export class UserEntityAvgAggregate {
+    @Field(() => Float, {nullable:true})
+    telegramId?: number;
+}
+
+@InputType()
+export class UserEntityAvgOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    telegramId?: keyof typeof SortOrder;
 }
 
 @InputType()
@@ -14338,6 +14365,8 @@ export class UserEntityCountAggregateInput {
     tokenHash?: true;
     @HideField()
     lastActivity?: true;
+    @Field(() => Boolean, {nullable:true})
+    telegramId?: true;
     @HideField()
     createdAt?: true;
     @HideField()
@@ -14359,6 +14388,8 @@ export class UserEntityCountAggregate {
     @Field(() => Int, {nullable:false})
     lastActivity!: number;
     @Field(() => Int, {nullable:false})
+    telegramId!: number;
+    @Field(() => Int, {nullable:false})
     createdAt!: number;
     @Field(() => Int, {nullable:false})
     updatedAt!: number;
@@ -14378,6 +14409,8 @@ export class UserEntityCountOrderByAggregateInput {
     tokenHash?: keyof typeof SortOrder;
     @HideField()
     lastActivity?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    telegramId?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -14404,6 +14437,8 @@ export class UserEntityCreateManyInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14514,6 +14549,8 @@ export class UserEntityCreateWithoutEmployeeInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14538,6 +14575,8 @@ export class UserEntityCreateWithoutFilesInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14562,6 +14601,8 @@ export class UserEntityCreateWithoutNotificationsInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14586,6 +14627,8 @@ export class UserEntityCreateWithoutStudentInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14610,6 +14653,8 @@ export class UserEntityCreateInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14641,6 +14686,10 @@ export class UserEntityGroupByArgs {
     skip?: number;
     @Field(() => UserEntityCountAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregateInput>;
+    @Field(() => UserEntityAvgAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof UserEntityAvgAggregateInput>;
+    @Field(() => UserEntitySumAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof UserEntitySumAggregateInput>;
     @Field(() => UserEntityMinAggregateInput, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregateInput>;
     @Field(() => UserEntityMaxAggregateInput, {nullable:true})
@@ -14659,12 +14708,18 @@ export class UserEntityGroupBy {
     tokenHash?: string;
     @Field(() => Date, {nullable:true})
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
     @Field(() => UserEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregate>;
+    @Field(() => UserEntityAvgAggregate, {nullable:true})
+    _avg?: InstanceType<typeof UserEntityAvgAggregate>;
+    @Field(() => UserEntitySumAggregate, {nullable:true})
+    _sum?: InstanceType<typeof UserEntitySumAggregate>;
     @Field(() => UserEntityMinAggregate, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregate>;
     @Field(() => UserEntityMaxAggregate, {nullable:true})
@@ -14683,6 +14738,8 @@ export class UserEntityMaxAggregateInput {
     tokenHash?: true;
     @HideField()
     lastActivity?: true;
+    @Field(() => Boolean, {nullable:true})
+    telegramId?: true;
     @HideField()
     createdAt?: true;
     @HideField()
@@ -14701,6 +14758,8 @@ export class UserEntityMaxAggregate {
     tokenHash?: string;
     @Field(() => Date, {nullable:true})
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -14719,6 +14778,8 @@ export class UserEntityMaxOrderByAggregateInput {
     tokenHash?: keyof typeof SortOrder;
     @HideField()
     lastActivity?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    telegramId?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -14737,6 +14798,8 @@ export class UserEntityMinAggregateInput {
     tokenHash?: true;
     @HideField()
     lastActivity?: true;
+    @Field(() => Boolean, {nullable:true})
+    telegramId?: true;
     @HideField()
     createdAt?: true;
     @HideField()
@@ -14755,6 +14818,8 @@ export class UserEntityMinAggregate {
     tokenHash?: string;
     @Field(() => Date, {nullable:true})
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -14773,6 +14838,8 @@ export class UserEntityMinOrderByAggregateInput {
     tokenHash?: keyof typeof SortOrder;
     @HideField()
     lastActivity?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    telegramId?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -14791,16 +14858,22 @@ export class UserEntityOrderByWithAggregationInput {
     tokenHash?: InstanceType<typeof SortOrderInput>;
     @HideField()
     lastActivity?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    telegramId?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
     updatedAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => UserEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountOrderByAggregateInput>;
+    @Field(() => UserEntityAvgOrderByAggregateInput, {nullable:true})
+    _avg?: InstanceType<typeof UserEntityAvgOrderByAggregateInput>;
     @Field(() => UserEntityMaxOrderByAggregateInput, {nullable:true})
     _max?: InstanceType<typeof UserEntityMaxOrderByAggregateInput>;
     @Field(() => UserEntityMinOrderByAggregateInput, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinOrderByAggregateInput>;
+    @Field(() => UserEntitySumOrderByAggregateInput, {nullable:true})
+    _sum?: InstanceType<typeof UserEntitySumOrderByAggregateInput>;
 }
 
 @InputType()
@@ -14815,6 +14888,8 @@ export class UserEntityOrderByWithRelationInput {
     tokenHash?: InstanceType<typeof SortOrderInput>;
     @HideField()
     lastActivity?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    telegramId?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -14855,10 +14930,30 @@ export class UserEntityScalarWhereWithAggregatesInput {
     tokenHash?: InstanceType<typeof StringWithAggregatesFilter>;
     @HideField()
     lastActivity?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    telegramId?: InstanceType<typeof IntWithAggregatesFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+}
+
+@InputType()
+export class UserEntitySumAggregateInput {
+    @Field(() => Boolean, {nullable:true})
+    telegramId?: true;
+}
+
+@ObjectType()
+export class UserEntitySumAggregate {
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
+}
+
+@InputType()
+export class UserEntitySumOrderByAggregateInput {
+    @Field(() => SortOrder, {nullable:true})
+    telegramId?: keyof typeof SortOrder;
 }
 
 @InputType()
@@ -14873,6 +14968,8 @@ export class UserEntityUncheckedCreateWithoutEmployeeInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14897,6 +14994,8 @@ export class UserEntityUncheckedCreateWithoutFilesInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14921,6 +15020,8 @@ export class UserEntityUncheckedCreateWithoutNotificationsInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14945,6 +15046,8 @@ export class UserEntityUncheckedCreateWithoutStudentInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14969,6 +15072,8 @@ export class UserEntityUncheckedCreateInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14995,6 +15100,8 @@ export class UserEntityUncheckedUpdateManyInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15013,6 +15120,8 @@ export class UserEntityUncheckedUpdateWithoutEmployeeInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15037,6 +15146,8 @@ export class UserEntityUncheckedUpdateWithoutFilesInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15061,6 +15172,8 @@ export class UserEntityUncheckedUpdateWithoutNotificationsInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15085,6 +15198,8 @@ export class UserEntityUncheckedUpdateWithoutStudentInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15109,6 +15224,8 @@ export class UserEntityUncheckedUpdateInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15135,6 +15252,8 @@ export class UserEntityUpdateManyMutationInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15233,6 +15352,8 @@ export class UserEntityUpdateWithoutEmployeeInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15257,6 +15378,8 @@ export class UserEntityUpdateWithoutFilesInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15281,6 +15404,8 @@ export class UserEntityUpdateWithoutNotificationsInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15305,6 +15430,8 @@ export class UserEntityUpdateWithoutStudentInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15329,6 +15456,8 @@ export class UserEntityUpdateInput {
     tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @HideField()
     lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @HideField()
@@ -15389,6 +15518,8 @@ export class UserEntityWhereUniqueInput {
     id?: string;
     @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
     email?: string;
+    @Field(() => Int, {nullable:true})
+    telegramId?: number;
 }
 
 @InputType()
@@ -15409,6 +15540,8 @@ export class UserEntityWhereInput {
     tokenHash?: InstanceType<typeof StringFilter>;
     @HideField()
     lastActivity?: InstanceType<typeof DateTimeFilter>;
+    @Field(() => IntFilter, {nullable:true})
+    telegramId?: InstanceType<typeof IntFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
@@ -15453,6 +15586,11 @@ export class UserEntity {
      */
     @Field(() => Date, {nullable:true,description:'Последняя активность'})
     lastActivity!: Date | null;
+    /**
+     * Telegram User ID
+     */
+    @Field(() => Int, {nullable:true,description:'Telegram User ID'})
+    telegramId!: number | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
     @Field(() => Date, {nullable:true})

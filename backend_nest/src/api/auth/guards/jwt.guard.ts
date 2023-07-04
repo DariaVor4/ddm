@@ -58,10 +58,10 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
    * Method automatically callable for check the current user's access to the endpoints
    */
   canActivate(context: ExecutionContextHost): boolean {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+    const isPublic = this.reflector.getAllAndOverride<boolean | undefined>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
-    ]);
+    ]) ?? false;
     return isPublic || (super.canActivate(context) as boolean);
   }
 }
