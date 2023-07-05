@@ -42,12 +42,21 @@ export interface IAppConfig {
  */
 @Injectable()
 export class ConfigService {
+  private static appConfig: IAppConfig;
+
   private readonly appConfig: IAppConfig;
 
   /**
    * Method for getting the loaded application configuration
    */
   public get config(): ReadonlyDeep<IAppConfig> {
+    return this.appConfig;
+  }
+
+  /**
+   * Static method for getting the loaded application configuration.
+   */
+  static get config(): ReadonlyDeep<IAppConfig> {
     return this.appConfig;
   }
 
@@ -89,6 +98,7 @@ export class ConfigService {
       throw new Error(error.message);
     }
     this.appConfig = value;
+    ConfigService.appConfig = value;
     this.logger.log('Environment successfully loaded!');
   }
 

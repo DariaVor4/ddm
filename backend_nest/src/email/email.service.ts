@@ -38,10 +38,10 @@ export class EmailService {
   async sendSimpleText2(
     options: SetRequired<ISendMailOptions, 'to' | 'subject'>,
     context: { title?: string, name?: string, message: string },
-  ) {
+  ): Promise<ISentMessageInfo> {
     return this.mailerService.sendMail({
       ...options,
-      template: 'simpleText',
+      template: 'template2',
       context,
     });
   }

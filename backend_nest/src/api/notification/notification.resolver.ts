@@ -122,8 +122,9 @@ export class NotificationResolver {
 
   /**
    * Удаление уведомлений.
-   * При передаче массива userId удаляются адресованные пользователю уведомления.
-   * При передаче массива notificationId указанные уведомления удаляются сразу у всех пользователей.
+   * При передаче userId и notificationId удаляются указанные уведомления у указанных пользователя.
+   * При передаче только userId удалятся ВСЕ уведомления для указанных пользователей.
+   * При передаче только notificationId указанные уведомления удалятся сразу у всех пользователей.
    * @param session Текущая сессия.
    * @param notificationIds Идентификаторы уведомлений.
    * @param userIds Идентификаторы пользователей.
@@ -132,8 +133,9 @@ export class NotificationResolver {
    */
   @Mutation(() => Boolean, {
     description: 'Удаление уведомлений. '
-      + 'При передаче массива userId удаляются адресованные пользователю уведомления. '
-      + 'При передаче массива notificationId указанные уведомления удаляются сразу у всех пользователей.',
+      + 'При передаче userId и notificationId удаляются указанные уведомления у указанных пользователя. '
+      + 'При передаче только userId удалятся ВСЕ уведомления для указанных пользователей. '
+      + 'При передаче только notificationId указанные уведомления удалятся сразу у всех пользователей.',
   })
   @Roles(UserRoleEnum.Admin)
   async notificationsDelete(
@@ -144,17 +146,18 @@ export class NotificationResolver {
     if (isEmpty(notificationIds) && isEmpty(userIds)) {
       throw new BadRequestException('Необходимо указать хотя бы один идентификатор уведомления или пользователя');
     }
+    // TODO: add saving bots messages ids into database and removing notifications both with bots messages.
     return this.prisma.$transaction(async (transaction) => {
       const { count: notificationToUserEntityCount } = await transaction.notificationToUserEntity.deleteMany({
-        where: {
-          OR: [
-            { userId: { in: userIds ?? [] } },
-            { notificationId: { in: notificationIds ?? [] } },
-          ],
+        where: isEmpty(notificationIds) ? {
+          userId: { in: userIds ?? [] },
+        } : {
+          userId: { in: userIds ?? [] },
+          notificationId: { in: notificationIds ?? [] },
         },
       });
       const { count: notificationEntityCount } = await transaction.notificationEntity.deleteMany({
-        where: { id: { in: notificationIds ?? [] } },
+        where: { id: { in: isEmpty(userIds) ? notificationIds ?? [] : [] } },
       });
       return notificationToUserEntityCount + notificationEntityCount > 0;
     });

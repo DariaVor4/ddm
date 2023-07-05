@@ -6,11 +6,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from './config/config.module';
 import { EmailModule } from './email/email.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { TelegramBotModule } from './telegram-bot/telegram-bot.module';
-import { VkBotModule } from './vk-bot/vk-bot.module';
 import { ApiModule } from './api/api.module';
 import { JwtGuard } from './api/auth/guards/jwt.guard';
 import { RolesGuard } from './api/auth/guards/roles.guard';
+import { BotsModule } from './bots/bots.module';
 
 @Module({
   imports: [
@@ -33,8 +32,7 @@ import { RolesGuard } from './api/auth/guards/roles.guard';
     PrismaModule,
     EmailModule,
     ApiModule,
-    TelegramBotModule,
-    VkBotModule,
+    BotsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },

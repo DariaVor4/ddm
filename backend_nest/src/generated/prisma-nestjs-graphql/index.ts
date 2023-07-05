@@ -17,6 +17,7 @@ export enum UserEntityScalarFieldEnum {
     tokenHash = "tokenHash",
     lastActivity = "lastActivity",
     telegramId = "telegramId",
+    vkId = "vkId",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
 }
@@ -183,6 +184,7 @@ export enum GenderEnum {
 export enum NotificationToUserEntityScalarFieldEnum {
     notificationId = "notificationId",
     userId = "userId",
+    sentTo = "sentTo",
     isRead = "isRead",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
@@ -411,8 +413,8 @@ export class ConfirmationEmailEntityGroupBy {
     isConfirmed!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => ConfirmationEmailEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof ConfirmationEmailEntityCountAggregate>;
     @Field(() => ConfirmationEmailEntityMinAggregate, {nullable:true})
@@ -530,7 +532,7 @@ export class ConfirmationEmailEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => ConfirmationEmailEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof ConfirmationEmailEntityCountOrderByAggregateInput>;
     @Field(() => ConfirmationEmailEntityMaxOrderByAggregateInput, {nullable:true})
@@ -552,7 +554,7 @@ export class ConfirmationEmailEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
 }
 
 @InputType()
@@ -595,66 +597,66 @@ export class ConfirmationEmailEntityUncheckedCreateInput {
 
 @InputType()
 export class ConfirmationEmailEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class ConfirmationEmailEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class ConfirmationEmailEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class ConfirmationEmailEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -700,8 +702,8 @@ export class ConfirmationEmailEntity {
     isConfirmed!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
 }
 
 @ArgsType()
@@ -982,8 +984,8 @@ export class ConfirmationPhoneEntityGroupBy {
     isConfirmed!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => ConfirmationPhoneEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof ConfirmationPhoneEntityCountAggregate>;
     @Field(() => ConfirmationPhoneEntityMinAggregate, {nullable:true})
@@ -1101,7 +1103,7 @@ export class ConfirmationPhoneEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => ConfirmationPhoneEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof ConfirmationPhoneEntityCountOrderByAggregateInput>;
     @Field(() => ConfirmationPhoneEntityMaxOrderByAggregateInput, {nullable:true})
@@ -1123,7 +1125,7 @@ export class ConfirmationPhoneEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
 }
 
 @InputType()
@@ -1166,66 +1168,66 @@ export class ConfirmationPhoneEntityUncheckedCreateInput {
 
 @InputType()
 export class ConfirmationPhoneEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class ConfirmationPhoneEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class ConfirmationPhoneEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class ConfirmationPhoneEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    code?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isConfirmed?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    code?: string;
+    @Field(() => Boolean, {nullable:true})
+    isConfirmed?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -1271,8 +1273,8 @@ export class ConfirmationPhoneEntity {
     isConfirmed!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
 }
 
 @ArgsType()
@@ -1634,8 +1636,8 @@ export class EmployeeEntityGroupBy {
     isAdmin!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => EmployeeEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof EmployeeEntityCountAggregate>;
     @Field(() => EmployeeEntityMinAggregate, {nullable:true})
@@ -1767,7 +1769,7 @@ export class EmployeeEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => EmployeeEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof EmployeeEntityCountOrderByAggregateInput>;
     @Field(() => EmployeeEntityMaxOrderByAggregateInput, {nullable:true})
@@ -1791,7 +1793,7 @@ export class EmployeeEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
 }
@@ -1877,20 +1879,20 @@ export class EmployeeEntityUncheckedCreateInput {
 
 @InputType()
 export class EmployeeEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isAdmin?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -1918,52 +1920,52 @@ export class EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput {
 
 @InputType()
 export class EmployeeEntityUncheckedUpdateWithoutUserInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isAdmin?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class EmployeeEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isAdmin?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class EmployeeEntityUpdateManyMutationInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isAdmin?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -1991,34 +1993,34 @@ export class EmployeeEntityUpdateOneWithoutUserNestedInput {
 
 @InputType()
 export class EmployeeEntityUpdateWithoutUserInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isAdmin?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class EmployeeEntityUpdateInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isAdmin?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutEmployeeNestedInput>;
 }
@@ -2094,8 +2096,8 @@ export class EmployeeEntity {
     isAdmin!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => UserEntity, {nullable:false})
     user?: InstanceType<typeof UserEntity>;
 }
@@ -2219,9 +2221,9 @@ export class CreateManyFileEntityArgs {
 
 @ArgsType()
 export class CreateOneFileEntityArgs {
-    @Field(() => FileEntityCreateInput, {nullable:true})
+    @Field(() => FileEntityCreateInput, {nullable:false})
     @Type(() => FileEntityCreateInput)
-    data?: InstanceType<typeof FileEntityCreateInput>;
+    data!: InstanceType<typeof FileEntityCreateInput>;
 }
 
 @ArgsType()
@@ -2489,8 +2491,8 @@ export class FileEntityGroupBy {
     deletedAt?: Date | string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => FileEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof FileEntityCountAggregate>;
     @Field(() => FileEntityMinAggregate, {nullable:true})
@@ -2666,7 +2668,7 @@ export class FileEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => FileEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof FileEntityCountOrderByAggregateInput>;
     @Field(() => FileEntityMaxOrderByAggregateInput, {nullable:true})
@@ -2694,7 +2696,7 @@ export class FileEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
 }
@@ -2815,22 +2817,22 @@ export class FileEntityUncheckedCreateInput {
 
 @InputType()
 export class FileEntityUncheckedUpdateManyWithoutFilesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
     @HideField()
-    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    deletedAt?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -2872,86 +2874,86 @@ export class FileEntityUncheckedUpdateManyWithoutUserNestedInput {
 
 @InputType()
 export class FileEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
     @HideField()
-    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    deletedAt?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class FileEntityUncheckedUpdateWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
     @HideField()
-    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    deletedAt?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class FileEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
     @HideField()
-    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    deletedAt?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class FileEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
     @HideField()
-    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    deletedAt?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -3013,42 +3015,42 @@ export class FileEntityUpdateWithWhereUniqueWithoutUserInput {
 
 @InputType()
 export class FileEntityUpdateWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
     @HideField()
-    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    deletedAt?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class FileEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    dir?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ext?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    dir?: string;
+    @Field(() => String, {nullable:true})
+    name?: string;
+    @Field(() => String, {nullable:true})
+    ext?: string;
+    @Field(() => String, {nullable:true})
+    description?: string;
     @HideField()
-    deletedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    deletedAt?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneWithoutFilesNestedInput>;
 }
@@ -3144,8 +3146,8 @@ export class FileEntity {
     deletedAt!: Date | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     /**
      * Пользователь, создавший файл
      */
@@ -3443,8 +3445,8 @@ export class NotificationEntityCreateManyInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
-    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3482,8 +3484,8 @@ export class NotificationEntityCreateWithoutUsersInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
-    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3498,8 +3500,8 @@ export class NotificationEntityCreateInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
-    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3549,8 +3551,8 @@ export class NotificationEntityGroupBy {
     services?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => NotificationEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof NotificationEntityCountAggregate>;
     @Field(() => NotificationEntityMinAggregate, {nullable:true})
@@ -3656,7 +3658,7 @@ export class NotificationEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => NotificationEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof NotificationEntityCountOrderByAggregateInput>;
     @Field(() => NotificationEntityMaxOrderByAggregateInput, {nullable:true})
@@ -3678,7 +3680,7 @@ export class NotificationEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => NotificationToUserEntityOrderByRelationAggregateInput, {nullable:true})
     users?: InstanceType<typeof NotificationToUserEntityOrderByRelationAggregateInput>;
 }
@@ -3721,8 +3723,8 @@ export class NotificationEntityUncheckedCreateWithoutUsersInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
-    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3737,8 +3739,8 @@ export class NotificationEntityUncheckedCreateInput {
     title!: string;
     @Field(() => String, {nullable:false})
     content!: string;
-    @Field(() => NotificationEntityCreateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityCreateservicesInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -3749,68 +3751,68 @@ export class NotificationEntityUncheckedCreateInput {
 
 @InputType()
 export class NotificationEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    content?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationEntityUncheckedUpdateWithoutUsersInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    content?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    content?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @Field(() => NotificationToUserEntityUncheckedUpdateManyWithoutNotificationNestedInput, {nullable:true})
     users?: InstanceType<typeof NotificationToUserEntityUncheckedUpdateManyWithoutNotificationNestedInput>;
 }
 
 @InputType()
 export class NotificationEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    content?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -3834,34 +3836,34 @@ export class NotificationEntityUpdateOneRequiredWithoutUsersNestedInput {
 
 @InputType()
 export class NotificationEntityUpdateWithoutUsersInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    content?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    title?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    content?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NotificationEntityUpdateservicesInput, {nullable:true})
-    services?: InstanceType<typeof NotificationEntityUpdateservicesInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    title?: string;
+    @Field(() => String, {nullable:true})
+    content?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    services?: Array<keyof typeof NotificationServiceEnum>;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @Field(() => NotificationToUserEntityUpdateManyWithoutNotificationNestedInput, {nullable:true})
     users?: InstanceType<typeof NotificationToUserEntityUpdateManyWithoutNotificationNestedInput>;
 }
@@ -3938,8 +3940,8 @@ export class NotificationEntity {
     services!: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     /**
      * Получатели
      */
@@ -4115,6 +4117,8 @@ export class NotificationToUserEntityCountAggregateInput {
     @Field(() => Boolean, {nullable:true})
     userId?: true;
     @Field(() => Boolean, {nullable:true})
+    sentTo?: true;
+    @Field(() => Boolean, {nullable:true})
     isRead?: true;
     @HideField()
     createdAt?: true;
@@ -4131,6 +4135,8 @@ export class NotificationToUserEntityCountAggregate {
     @Field(() => Int, {nullable:false})
     userId!: number;
     @Field(() => Int, {nullable:false})
+    sentTo!: number;
+    @Field(() => Int, {nullable:false})
     isRead!: number;
     @Field(() => Int, {nullable:false})
     createdAt!: number;
@@ -4146,6 +4152,8 @@ export class NotificationToUserEntityCountOrderByAggregateInput {
     notificationId?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     userId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    sentTo?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     isRead?: keyof typeof SortOrder;
     @HideField()
@@ -4167,6 +4175,8 @@ export class NotificationToUserEntityCreateManyNotificationInputEnvelope {
 export class NotificationToUserEntityCreateManyNotificationInput {
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     userId!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4188,6 +4198,8 @@ export class NotificationToUserEntityCreateManyUserInputEnvelope {
 export class NotificationToUserEntityCreateManyUserInput {
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     notificationId!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4202,6 +4214,8 @@ export class NotificationToUserEntityCreateManyInput {
     notificationId!: string;
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     userId!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4264,6 +4278,8 @@ export class NotificationToUserEntityCreateOrConnectWithoutUserInput {
 
 @InputType()
 export class NotificationToUserEntityCreateWithoutNotificationInput {
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4276,6 +4292,8 @@ export class NotificationToUserEntityCreateWithoutNotificationInput {
 
 @InputType()
 export class NotificationToUserEntityCreateWithoutUserInput {
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4288,6 +4306,8 @@ export class NotificationToUserEntityCreateWithoutUserInput {
 
 @InputType()
 export class NotificationToUserEntityCreateInput {
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4298,6 +4318,12 @@ export class NotificationToUserEntityCreateInput {
     notification!: InstanceType<typeof NotificationEntityCreateNestedOneWithoutUsersInput>;
     @HideField()
     user!: InstanceType<typeof UserEntityCreateNestedOneWithoutNotificationsInput>;
+}
+
+@InputType()
+export class NotificationToUserEntityCreatesentToInput {
+    @Field(() => [NotificationServiceEnum], {nullable:false})
+    set!: Array<keyof typeof NotificationServiceEnum>;
 }
 
 @ArgsType()
@@ -4329,12 +4355,14 @@ export class NotificationToUserEntityGroupBy {
     notificationId!: string;
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     userId!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:false})
     isRead!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => NotificationToUserEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof NotificationToUserEntityCountAggregate>;
     @Field(() => NotificationToUserEntityMinAggregate, {nullable:true})
@@ -4450,11 +4478,13 @@ export class NotificationToUserEntityOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     userId?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
+    sentTo?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
     isRead?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => NotificationToUserEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof NotificationToUserEntityCountOrderByAggregateInput>;
     @Field(() => NotificationToUserEntityMaxOrderByAggregateInput, {nullable:true})
@@ -4470,11 +4500,13 @@ export class NotificationToUserEntityOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     userId?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
+    sentTo?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
     isRead?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => NotificationEntityOrderByWithRelationInput, {nullable:true})
     notification?: InstanceType<typeof NotificationEntityOrderByWithRelationInput>;
     @HideField()
@@ -4493,6 +4525,8 @@ export class NotificationToUserEntityScalarWhereWithAggregatesInput {
     notificationId?: InstanceType<typeof UuidWithAggregatesFilter>;
     @Field(() => UuidWithAggregatesFilter, {nullable:true})
     userId?: InstanceType<typeof UuidWithAggregatesFilter>;
+    @Field(() => EnumNotificationServiceEnumListFilter, {nullable:true})
+    sentTo?: InstanceType<typeof EnumNotificationServiceEnumListFilter>;
     @Field(() => BoolWithAggregatesFilter, {nullable:true})
     isRead?: InstanceType<typeof BoolWithAggregatesFilter>;
     @HideField()
@@ -4513,6 +4547,8 @@ export class NotificationToUserEntityScalarWhereInput {
     notificationId?: InstanceType<typeof UuidFilter>;
     @Field(() => UuidFilter, {nullable:true})
     userId?: InstanceType<typeof UuidFilter>;
+    @Field(() => EnumNotificationServiceEnumListFilter, {nullable:true})
+    sentTo?: InstanceType<typeof EnumNotificationServiceEnumListFilter>;
     @Field(() => BoolFilter, {nullable:true})
     isRead?: InstanceType<typeof BoolFilter>;
     @HideField()
@@ -4557,6 +4593,8 @@ export class NotificationToUserEntityUncheckedCreateNestedManyWithoutUserInput {
 export class NotificationToUserEntityUncheckedCreateWithoutNotificationInput {
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     userId!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4569,6 +4607,8 @@ export class NotificationToUserEntityUncheckedCreateWithoutNotificationInput {
 export class NotificationToUserEntityUncheckedCreateWithoutUserInput {
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     notificationId!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4583,6 +4623,8 @@ export class NotificationToUserEntityUncheckedCreateInput {
     notificationId!: string;
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     userId!: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
     @Field(() => Boolean, {nullable:true})
     isRead?: boolean;
     @HideField()
@@ -4630,14 +4672,16 @@ export class NotificationToUserEntityUncheckedUpdateManyWithoutNotificationNeste
 
 @InputType()
 export class NotificationToUserEntityUncheckedUpdateManyWithoutNotificationsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    notificationId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    notificationId?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -4679,76 +4723,88 @@ export class NotificationToUserEntityUncheckedUpdateManyWithoutUserNestedInput {
 
 @InputType()
 export class NotificationToUserEntityUncheckedUpdateManyWithoutUsersInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationToUserEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    notificationId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    notificationId?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationToUserEntityUncheckedUpdateWithoutNotificationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationToUserEntityUncheckedUpdateWithoutUserInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    notificationId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    notificationId?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationToUserEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    notificationId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    notificationId?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    userId?: string;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class NotificationToUserEntityUpdateManyMutationInput {
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -4867,40 +4923,54 @@ export class NotificationToUserEntityUpdateWithWhereUniqueWithoutUserInput {
 
 @InputType()
 export class NotificationToUserEntityUpdateWithoutNotificationInput {
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutNotificationsNestedInput>;
 }
 
 @InputType()
 export class NotificationToUserEntityUpdateWithoutUserInput {
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @Field(() => NotificationEntityUpdateOneRequiredWithoutUsersNestedInput, {nullable:true})
     notification?: InstanceType<typeof NotificationEntityUpdateOneRequiredWithoutUsersNestedInput>;
 }
 
 @InputType()
 export class NotificationToUserEntityUpdateInput {
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isRead?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    sentTo?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => Boolean, {nullable:true})
+    isRead?: boolean;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @Field(() => NotificationEntityUpdateOneRequiredWithoutUsersNestedInput, {nullable:true})
     notification?: InstanceType<typeof NotificationEntityUpdateOneRequiredWithoutUsersNestedInput>;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutNotificationsNestedInput>;
+}
+
+@InputType()
+export class NotificationToUserEntityUpdatesentToInput {
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    set?: Array<keyof typeof NotificationServiceEnum>;
+    @Field(() => [NotificationServiceEnum], {nullable:true})
+    push?: Array<keyof typeof NotificationServiceEnum>;
 }
 
 @InputType()
@@ -4955,6 +5025,8 @@ export class NotificationToUserEntityWhereInput {
     notificationId?: InstanceType<typeof UuidFilter>;
     @Field(() => UuidFilter, {nullable:true})
     userId?: InstanceType<typeof UuidFilter>;
+    @Field(() => EnumNotificationServiceEnumListFilter, {nullable:true})
+    sentTo?: InstanceType<typeof EnumNotificationServiceEnumListFilter>;
     @Field(() => BoolFilter, {nullable:true})
     isRead?: InstanceType<typeof BoolFilter>;
     @HideField()
@@ -4977,14 +5049,19 @@ export class NotificationToUserEntity {
     @Field(() => Scalars.GraphQLUUID, {nullable:false})
     userId!: string;
     /**
+     * В какие сервисы отправлено уведомление
+     */
+    @Field(() => [NotificationServiceEnum], {nullable:true,description:'В какие сервисы отправлено уведомление'})
+    sentTo!: Array<keyof typeof NotificationServiceEnum>;
+    /**
      * Прочитано ли уведомление?
      */
     @Field(() => Boolean, {nullable:false,defaultValue:false,description:'Прочитано ли уведомление?'})
     isRead!: boolean;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => NotificationEntity, {nullable:false})
     notification?: InstanceType<typeof NotificationEntity>;
     @Field(() => UserEntity, {nullable:false})
@@ -5031,12 +5108,6 @@ export class AffectedRows {
 }
 
 @InputType()
-export class BoolFieldUpdateOperationsInput {
-    @Field(() => Boolean, {nullable:true})
-    set?: boolean;
-}
-
-@InputType()
 export class BoolFilter {
     @Field(() => Boolean, {nullable:true})
     equals?: boolean;
@@ -5056,12 +5127,6 @@ export class BoolWithAggregatesFilter {
     _min?: InstanceType<typeof BoolFilter>;
     @Field(() => BoolFilter, {nullable:true})
     _max?: InstanceType<typeof BoolFilter>;
-}
-
-@InputType()
-export class DateTimeFieldUpdateOperationsInput {
-    @Field(() => Date, {nullable:true})
-    set?: Date | string;
 }
 
 @InputType()
@@ -5215,12 +5280,6 @@ export class EnumVisaMultiplicityEnumWithAggregatesFilter {
 }
 
 @InputType()
-export class EnumVisaRequestStatusEnumFieldUpdateOperationsInput {
-    @Field(() => VisaRequestStatusEnum, {nullable:true})
-    set?: keyof typeof VisaRequestStatusEnum;
-}
-
-@InputType()
 export class EnumVisaRequestStatusEnumFilter {
     @Field(() => VisaRequestStatusEnum, {nullable:true})
     equals?: keyof typeof VisaRequestStatusEnum;
@@ -5321,61 +5380,11 @@ export class IntWithAggregatesFilter {
 }
 
 @InputType()
-export class NullableDateTimeFieldUpdateOperationsInput {
-    @Field(() => Date, {nullable:true})
-    set?: Date | string;
-}
-
-@InputType()
-export class NullableEnumGenderEnumFieldUpdateOperationsInput {
-    @Field(() => GenderEnum, {nullable:true})
-    set?: keyof typeof GenderEnum;
-}
-
-@InputType()
-export class NullableEnumVisaCategoryEnumFieldUpdateOperationsInput {
-    @Field(() => VisaCategoryEnum, {nullable:true})
-    set?: keyof typeof VisaCategoryEnum;
-}
-
-@InputType()
-export class NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput {
-    @Field(() => VisaMultiplicityEnum, {nullable:true})
-    set?: keyof typeof VisaMultiplicityEnum;
-}
-
-@InputType()
-export class NullableIntFieldUpdateOperationsInput {
-    @Field(() => Int, {nullable:true})
-    set?: number;
-    @Field(() => Int, {nullable:true})
-    increment?: number;
-    @Field(() => Int, {nullable:true})
-    decrement?: number;
-    @Field(() => Int, {nullable:true})
-    multiply?: number;
-    @Field(() => Int, {nullable:true})
-    divide?: number;
-}
-
-@InputType()
-export class NullableStringFieldUpdateOperationsInput {
-    @Field(() => String, {nullable:true})
-    set?: string;
-}
-
-@InputType()
 export class SortOrderInput {
     @Field(() => SortOrder, {nullable:false})
     sort!: keyof typeof SortOrder;
     @Field(() => NullsOrder, {nullable:true})
     nulls?: keyof typeof NullsOrder;
-}
-
-@InputType()
-export class StringFieldUpdateOperationsInput {
-    @Field(() => String, {nullable:true})
-    set?: string;
 }
 
 @InputType()
@@ -5828,8 +5837,8 @@ export class StudentArrivalNoticeEntityGroupBy {
     receivingSide?: string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => StudentArrivalNoticeEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof StudentArrivalNoticeEntityCountAggregate>;
     @Field(() => StudentArrivalNoticeEntityMinAggregate, {nullable:true})
@@ -6003,7 +6012,7 @@ export class StudentArrivalNoticeEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => StudentArrivalNoticeEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentArrivalNoticeEntityCountOrderByAggregateInput>;
     @Field(() => StudentArrivalNoticeEntityMaxOrderByAggregateInput, {nullable:true})
@@ -6033,7 +6042,7 @@ export class StudentArrivalNoticeEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -6137,26 +6146,26 @@ export class StudentArrivalNoticeEntityUncheckedCreateInput {
 
 @InputType()
 export class StudentArrivalNoticeEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    profession?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    address?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    date?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expires?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    receivingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    profession?: string;
+    @Field(() => String, {nullable:true})
+    address?: string;
+    @Field(() => Date, {nullable:true})
+    date?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expires?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitingSide?: string;
+    @Field(() => String, {nullable:true})
+    receivingSide?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -6184,70 +6193,70 @@ export class StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInp
 
 @InputType()
 export class StudentArrivalNoticeEntityUncheckedUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    profession?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    address?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    date?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expires?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    receivingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    profession?: string;
+    @Field(() => String, {nullable:true})
+    address?: string;
+    @Field(() => Date, {nullable:true})
+    date?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expires?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitingSide?: string;
+    @Field(() => String, {nullable:true})
+    receivingSide?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentArrivalNoticeEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    profession?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    address?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    date?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expires?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    receivingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    profession?: string;
+    @Field(() => String, {nullable:true})
+    address?: string;
+    @Field(() => Date, {nullable:true})
+    date?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expires?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitingSide?: string;
+    @Field(() => String, {nullable:true})
+    receivingSide?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentArrivalNoticeEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    profession?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    address?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    date?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expires?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    receivingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    profession?: string;
+    @Field(() => String, {nullable:true})
+    address?: string;
+    @Field(() => Date, {nullable:true})
+    date?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expires?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitingSide?: string;
+    @Field(() => String, {nullable:true})
+    receivingSide?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -6275,46 +6284,46 @@ export class StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput {
 
 @InputType()
 export class StudentArrivalNoticeEntityUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    profession?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    address?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    date?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expires?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    receivingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    profession?: string;
+    @Field(() => String, {nullable:true})
+    address?: string;
+    @Field(() => Date, {nullable:true})
+    date?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expires?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitingSide?: string;
+    @Field(() => String, {nullable:true})
+    receivingSide?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentArrivalNoticeEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    profession?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    address?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    date?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expires?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    receivingSide?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    profession?: string;
+    @Field(() => String, {nullable:true})
+    address?: string;
+    @Field(() => Date, {nullable:true})
+    date?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expires?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitingSide?: string;
+    @Field(() => String, {nullable:true})
+    receivingSide?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutArrivalNoticeNestedInput>;
 }
@@ -6410,8 +6419,8 @@ export class StudentArrivalNoticeEntity {
     receivingSide!: string | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => StudentEntity, {nullable:false})
     student?: InstanceType<typeof StudentEntity>;
 }
@@ -6821,8 +6830,8 @@ export class StudentCloseRelativeEntityGroupBy {
     addressContinuousResidence?: string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => StudentCloseRelativeEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof StudentCloseRelativeEntityCountAggregate>;
     @Field(() => StudentCloseRelativeEntityMinAggregate, {nullable:true})
@@ -7012,7 +7021,7 @@ export class StudentCloseRelativeEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => StudentCloseRelativeEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentCloseRelativeEntityCountOrderByAggregateInput>;
     @Field(() => StudentCloseRelativeEntityMaxOrderByAggregateInput, {nullable:true})
@@ -7042,7 +7051,7 @@ export class StudentCloseRelativeEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -7171,24 +7180,24 @@ export class StudentCloseRelativeEntityUncheckedCreateInput {
 
 @InputType()
 export class StudentCloseRelativeEntityUncheckedUpdateManyWithoutCloseRelativesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    addressContinuousResidence?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -7230,94 +7239,94 @@ export class StudentCloseRelativeEntityUncheckedUpdateManyWithoutStudentNestedIn
 
 @InputType()
 export class StudentCloseRelativeEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    addressContinuousResidence?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentCloseRelativeEntityUncheckedUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    addressContinuousResidence?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentCloseRelativeEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    addressContinuousResidence?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentCloseRelativeEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    addressContinuousResidence?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -7379,46 +7388,46 @@ export class StudentCloseRelativeEntityUpdateWithWhereUniqueWithoutStudentInput 
 
 @InputType()
 export class StudentCloseRelativeEntityUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    addressContinuousResidence?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentCloseRelativeEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    addressContinuousResidence?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutCloseRelativesNestedInput>;
 }
@@ -7515,8 +7524,8 @@ export class StudentCloseRelativeEntity {
     addressContinuousResidence!: string | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => StudentEntity, {nullable:false})
     student?: InstanceType<typeof StudentEntity>;
 }
@@ -8244,8 +8253,8 @@ export class StudentEntityGroupBy {
     group?: string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => StudentEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof StudentEntityCountAggregate>;
     @Field(() => StudentEntityAvgAggregate, {nullable:true})
@@ -8395,7 +8404,7 @@ export class StudentEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => StudentEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentEntityCountOrderByAggregateInput>;
     @Field(() => StudentEntityAvgOrderByAggregateInput, {nullable:true})
@@ -8425,7 +8434,7 @@ export class StudentEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     user?: InstanceType<typeof UserEntityOrderByWithRelationInput>;
     @HideField()
@@ -8751,22 +8760,22 @@ export class StudentEntityUncheckedCreateInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -8794,22 +8803,22 @@ export class StudentEntityUncheckedUpdateOneWithoutUserNestedInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateWithoutArrivalNoticeInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     migrationCard?: InstanceType<typeof StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -8824,22 +8833,22 @@ export class StudentEntityUncheckedUpdateWithoutArrivalNoticeInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateWithoutCloseRelativesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -8854,22 +8863,22 @@ export class StudentEntityUncheckedUpdateWithoutCloseRelativesInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateWithoutMigrationCardInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -8884,22 +8893,22 @@ export class StudentEntityUncheckedUpdateWithoutMigrationCardInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateWithoutPassportInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -8914,20 +8923,20 @@ export class StudentEntityUncheckedUpdateWithoutPassportInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateWithoutUserInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -8944,22 +8953,22 @@ export class StudentEntityUncheckedUpdateWithoutUserInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateWithoutVisaRequestsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -8974,22 +8983,22 @@ export class StudentEntityUncheckedUpdateWithoutVisaRequestsInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateWithoutVisaInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -9004,22 +9013,22 @@ export class StudentEntityUncheckedUpdateWithoutVisaInput {
 
 @InputType()
 export class StudentEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUncheckedUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -9036,20 +9045,20 @@ export class StudentEntityUncheckedUpdateInput {
 
 @InputType()
 export class StudentEntityUpdateManyMutationInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -9191,20 +9200,20 @@ export class StudentEntityUpdateOneWithoutUserNestedInput {
 
 @InputType()
 export class StudentEntityUpdateWithoutArrivalNoticeInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
     @HideField()
@@ -9221,20 +9230,20 @@ export class StudentEntityUpdateWithoutArrivalNoticeInput {
 
 @InputType()
 export class StudentEntityUpdateWithoutCloseRelativesInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
     @HideField()
@@ -9251,20 +9260,20 @@ export class StudentEntityUpdateWithoutCloseRelativesInput {
 
 @InputType()
 export class StudentEntityUpdateWithoutMigrationCardInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
     @HideField()
@@ -9281,20 +9290,20 @@ export class StudentEntityUpdateWithoutMigrationCardInput {
 
 @InputType()
 export class StudentEntityUpdateWithoutPassportInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
     @HideField()
@@ -9311,20 +9320,20 @@ export class StudentEntityUpdateWithoutPassportInput {
 
 @InputType()
 export class StudentEntityUpdateWithoutUserInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     arrivalNotice?: InstanceType<typeof StudentArrivalNoticeEntityUpdateOneWithoutStudentNestedInput>;
     @HideField()
@@ -9341,20 +9350,20 @@ export class StudentEntityUpdateWithoutUserInput {
 
 @InputType()
 export class StudentEntityUpdateWithoutVisaRequestsInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
     @HideField()
@@ -9371,20 +9380,20 @@ export class StudentEntityUpdateWithoutVisaRequestsInput {
 
 @InputType()
 export class StudentEntityUpdateWithoutVisaInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
     @HideField()
@@ -9401,20 +9410,20 @@ export class StudentEntityUpdateWithoutVisaInput {
 
 @InputType()
 export class StudentEntityUpdateInput {
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    phone?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    curator?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    faculty?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    course?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    group?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    phone?: string;
+    @Field(() => String, {nullable:true})
+    curator?: string;
+    @Field(() => String, {nullable:true})
+    faculty?: string;
+    @Field(() => Int, {nullable:true})
+    course?: number;
+    @Field(() => String, {nullable:true})
+    group?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     user?: InstanceType<typeof UserEntityUpdateOneRequiredWithoutStudentNestedInput>;
     @HideField()
@@ -9581,8 +9590,8 @@ export class StudentEntity {
     group!: string | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => UserEntity, {nullable:false})
     user?: InstanceType<typeof UserEntity>;
     /**
@@ -9962,8 +9971,8 @@ export class StudentMigrationCardEntityGroupBy {
     expirationDate?: Date | string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => StudentMigrationCardEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof StudentMigrationCardEntityCountAggregate>;
     @Field(() => StudentMigrationCardEntityMinAggregate, {nullable:true})
@@ -10109,7 +10118,7 @@ export class StudentMigrationCardEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => StudentMigrationCardEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentMigrationCardEntityCountOrderByAggregateInput>;
     @Field(() => StudentMigrationCardEntityMaxOrderByAggregateInput, {nullable:true})
@@ -10135,7 +10144,7 @@ export class StudentMigrationCardEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -10227,22 +10236,22 @@ export class StudentMigrationCardEntityUncheckedCreateInput {
 
 @InputType()
 export class StudentMigrationCardEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -10270,58 +10279,58 @@ export class StudentMigrationCardEntityUncheckedUpdateOneWithoutStudentNestedInp
 
 @InputType()
 export class StudentMigrationCardEntityUncheckedUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentMigrationCardEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentMigrationCardEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -10349,38 +10358,38 @@ export class StudentMigrationCardEntityUpdateOneWithoutStudentNestedInput {
 
 @InputType()
 export class StudentMigrationCardEntityUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentMigrationCardEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutMigrationCardNestedInput>;
 }
@@ -10462,8 +10471,8 @@ export class StudentMigrationCardEntity {
     expirationDate!: Date | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => StudentEntity, {nullable:false})
     student?: InstanceType<typeof StudentEntity>;
 }
@@ -10923,8 +10932,8 @@ export class StudentPassportEntityGroupBy {
     expirationDate?: Date | string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => StudentPassportEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof StudentPassportEntityCountAggregate>;
     @Field(() => StudentPassportEntityMinAggregate, {nullable:true})
@@ -11182,7 +11191,7 @@ export class StudentPassportEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => StudentPassportEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentPassportEntityCountOrderByAggregateInput>;
     @Field(() => StudentPassportEntityMaxOrderByAggregateInput, {nullable:true})
@@ -11224,7 +11233,7 @@ export class StudentPassportEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -11364,38 +11373,38 @@ export class StudentPassportEntityUncheckedCreateInput {
 
 @InputType()
 export class StudentPassportEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    birthPlace?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumGenderEnumFieldUpdateOperationsInput, {nullable:true})
-    gender?: InstanceType<typeof NullableEnumGenderEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    issuedBy?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    birthPlace?: string;
+    @Field(() => GenderEnum, {nullable:true})
+    gender?: keyof typeof GenderEnum;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    issuedBy?: string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -11423,106 +11432,106 @@ export class StudentPassportEntityUncheckedUpdateOneWithoutStudentNestedInput {
 
 @InputType()
 export class StudentPassportEntityUncheckedUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    birthPlace?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumGenderEnumFieldUpdateOperationsInput, {nullable:true})
-    gender?: InstanceType<typeof NullableEnumGenderEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    issuedBy?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    birthPlace?: string;
+    @Field(() => GenderEnum, {nullable:true})
+    gender?: keyof typeof GenderEnum;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    issuedBy?: string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentPassportEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    birthPlace?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumGenderEnumFieldUpdateOperationsInput, {nullable:true})
-    gender?: InstanceType<typeof NullableEnumGenderEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    issuedBy?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    birthPlace?: string;
+    @Field(() => GenderEnum, {nullable:true})
+    gender?: keyof typeof GenderEnum;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    issuedBy?: string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentPassportEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    birthPlace?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumGenderEnumFieldUpdateOperationsInput, {nullable:true})
-    gender?: InstanceType<typeof NullableEnumGenderEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    issuedBy?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    birthPlace?: string;
+    @Field(() => GenderEnum, {nullable:true})
+    gender?: keyof typeof GenderEnum;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    issuedBy?: string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -11550,70 +11559,70 @@ export class StudentPassportEntityUpdateOneWithoutStudentNestedInput {
 
 @InputType()
 export class StudentPassportEntityUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    birthPlace?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumGenderEnumFieldUpdateOperationsInput, {nullable:true})
-    gender?: InstanceType<typeof NullableEnumGenderEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    issuedBy?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    birthPlace?: string;
+    @Field(() => GenderEnum, {nullable:true})
+    gender?: keyof typeof GenderEnum;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    issuedBy?: string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentPassportEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    lastName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    firstName?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    patronymic?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    birthDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    birthPlace?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumGenderEnumFieldUpdateOperationsInput, {nullable:true})
-    gender?: InstanceType<typeof NullableEnumGenderEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    citizenship?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    series?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    issuedBy?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    lastName?: string;
+    @Field(() => String, {nullable:true})
+    firstName?: string;
+    @Field(() => String, {nullable:true})
+    patronymic?: string;
+    @Field(() => Date, {nullable:true})
+    birthDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    birthPlace?: string;
+    @Field(() => GenderEnum, {nullable:true})
+    gender?: keyof typeof GenderEnum;
+    @Field(() => String, {nullable:true})
+    citizenship?: string;
+    @Field(() => String, {nullable:true})
+    series?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    issuedBy?: string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutPassportNestedInput>;
 }
@@ -11751,8 +11760,8 @@ export class StudentPassportEntity {
     expirationDate!: Date | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => StudentEntity, {nullable:false})
     student?: InstanceType<typeof StudentEntity>;
 }
@@ -12114,8 +12123,8 @@ export class StudentVisaEntityGroupBy {
     invitationNumber?: string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => StudentVisaEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof StudentVisaEntityCountAggregate>;
     @Field(() => StudentVisaEntityMinAggregate, {nullable:true})
@@ -12275,7 +12284,7 @@ export class StudentVisaEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => StudentVisaEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentVisaEntityCountOrderByAggregateInput>;
     @Field(() => StudentVisaEntityMaxOrderByAggregateInput, {nullable:true})
@@ -12303,7 +12312,7 @@ export class StudentVisaEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -12401,24 +12410,24 @@ export class StudentVisaEntityUncheckedCreateInput {
 
 @InputType()
 export class StudentVisaEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    blankSeries?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    blankSeries?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitationNumber?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -12446,64 +12455,64 @@ export class StudentVisaEntityUncheckedUpdateOneWithoutStudentNestedInput {
 
 @InputType()
 export class StudentVisaEntityUncheckedUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    blankSeries?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    blankSeries?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitationNumber?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    blankSeries?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => String, {nullable:true})
+    blankSeries?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitationNumber?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    blankSeries?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    blankSeries?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitationNumber?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -12531,42 +12540,42 @@ export class StudentVisaEntityUpdateOneWithoutStudentNestedInput {
 
 @InputType()
 export class StudentVisaEntityUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    blankSeries?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    blankSeries?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitationNumber?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    blankSeries?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    number?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    issueDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    expirationDate?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    invitationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => String, {nullable:true})
+    id?: string;
+    @Field(() => String, {nullable:true})
+    blankSeries?: string;
+    @Field(() => String, {nullable:true})
+    number?: string;
+    @Field(() => Date, {nullable:true})
+    issueDate?: Date | string;
+    @Field(() => Date, {nullable:true})
+    expirationDate?: Date | string;
+    @Field(() => String, {nullable:true})
+    invitationNumber?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutVisaNestedInput>;
 }
@@ -12658,8 +12667,8 @@ export class StudentVisaEntity {
     invitationNumber!: string | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => StudentEntity, {nullable:false})
     student?: InstanceType<typeof StudentEntity>;
 }
@@ -13165,8 +13174,8 @@ export class StudentVisaRequestEntityGroupBy {
     attachedDocuments?: string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => StudentVisaRequestEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof StudentVisaRequestEntityCountAggregate>;
     @Field(() => StudentVisaRequestEntityMinAggregate, {nullable:true})
@@ -13440,7 +13449,7 @@ export class StudentVisaRequestEntityOrderByWithAggregationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => StudentVisaRequestEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StudentVisaRequestEntityCountOrderByAggregateInput>;
     @Field(() => StudentVisaRequestEntityMaxOrderByAggregateInput, {nullable:true})
@@ -13482,7 +13491,7 @@ export class StudentVisaRequestEntityOrderByWithRelationInput {
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     student?: InstanceType<typeof StudentEntityOrderByWithRelationInput>;
 }
@@ -13696,176 +13705,176 @@ export class StudentVisaRequestEntityUncheckedUpdateManyWithoutStudentNestedInpu
 
 @InputType()
 export class StudentVisaRequestEntityUncheckedUpdateManyWithoutVisaRequestsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumVisaRequestStatusEnumFieldUpdateOperationsInput, {nullable:true})
-    status?: InstanceType<typeof EnumVisaRequestStatusEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    employeeComment?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaCategoryEnumFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableEnumVisaCategoryEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput, {nullable:true})
-    multiplicity?: InstanceType<typeof NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    reason?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressOfMigrationRegistration?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    estimatedRouteOfStay?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressInCountryOfContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    russianFederationRelatives?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    attachedDocuments?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => VisaRequestStatusEnum, {nullable:true})
+    status?: keyof typeof VisaRequestStatusEnum;
+    @Field(() => String, {nullable:true})
+    employeeComment?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => VisaCategoryEnum, {nullable:true})
+    category?: keyof typeof VisaCategoryEnum;
+    @Field(() => VisaMultiplicityEnum, {nullable:true})
+    multiplicity?: keyof typeof VisaMultiplicityEnum;
+    @Field(() => String, {nullable:true})
+    reason?: string;
+    @Field(() => String, {nullable:true})
+    addressOfMigrationRegistration?: string;
+    @Field(() => String, {nullable:true})
+    estimatedRouteOfStay?: string;
+    @Field(() => String, {nullable:true})
+    addressInCountryOfContinuousResidence?: string;
+    @Field(() => String, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: string;
+    @Field(() => String, {nullable:true})
+    russianFederationRelatives?: string;
+    @Field(() => String, {nullable:true})
+    attachedDocuments?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaRequestEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumVisaRequestStatusEnumFieldUpdateOperationsInput, {nullable:true})
-    status?: InstanceType<typeof EnumVisaRequestStatusEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    employeeComment?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaCategoryEnumFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableEnumVisaCategoryEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput, {nullable:true})
-    multiplicity?: InstanceType<typeof NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    reason?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressOfMigrationRegistration?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    estimatedRouteOfStay?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressInCountryOfContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    russianFederationRelatives?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    attachedDocuments?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => VisaRequestStatusEnum, {nullable:true})
+    status?: keyof typeof VisaRequestStatusEnum;
+    @Field(() => String, {nullable:true})
+    employeeComment?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => VisaCategoryEnum, {nullable:true})
+    category?: keyof typeof VisaCategoryEnum;
+    @Field(() => VisaMultiplicityEnum, {nullable:true})
+    multiplicity?: keyof typeof VisaMultiplicityEnum;
+    @Field(() => String, {nullable:true})
+    reason?: string;
+    @Field(() => String, {nullable:true})
+    addressOfMigrationRegistration?: string;
+    @Field(() => String, {nullable:true})
+    estimatedRouteOfStay?: string;
+    @Field(() => String, {nullable:true})
+    addressInCountryOfContinuousResidence?: string;
+    @Field(() => String, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: string;
+    @Field(() => String, {nullable:true})
+    russianFederationRelatives?: string;
+    @Field(() => String, {nullable:true})
+    attachedDocuments?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaRequestEntityUncheckedUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumVisaRequestStatusEnumFieldUpdateOperationsInput, {nullable:true})
-    status?: InstanceType<typeof EnumVisaRequestStatusEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    employeeComment?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaCategoryEnumFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableEnumVisaCategoryEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput, {nullable:true})
-    multiplicity?: InstanceType<typeof NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    reason?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressOfMigrationRegistration?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    estimatedRouteOfStay?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressInCountryOfContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    russianFederationRelatives?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    attachedDocuments?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => VisaRequestStatusEnum, {nullable:true})
+    status?: keyof typeof VisaRequestStatusEnum;
+    @Field(() => String, {nullable:true})
+    employeeComment?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => VisaCategoryEnum, {nullable:true})
+    category?: keyof typeof VisaCategoryEnum;
+    @Field(() => VisaMultiplicityEnum, {nullable:true})
+    multiplicity?: keyof typeof VisaMultiplicityEnum;
+    @Field(() => String, {nullable:true})
+    reason?: string;
+    @Field(() => String, {nullable:true})
+    addressOfMigrationRegistration?: string;
+    @Field(() => String, {nullable:true})
+    estimatedRouteOfStay?: string;
+    @Field(() => String, {nullable:true})
+    addressInCountryOfContinuousResidence?: string;
+    @Field(() => String, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: string;
+    @Field(() => String, {nullable:true})
+    russianFederationRelatives?: string;
+    @Field(() => String, {nullable:true})
+    attachedDocuments?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaRequestEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    studentId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumVisaRequestStatusEnumFieldUpdateOperationsInput, {nullable:true})
-    status?: InstanceType<typeof EnumVisaRequestStatusEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    employeeComment?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaCategoryEnumFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableEnumVisaCategoryEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput, {nullable:true})
-    multiplicity?: InstanceType<typeof NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    reason?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressOfMigrationRegistration?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    estimatedRouteOfStay?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressInCountryOfContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    russianFederationRelatives?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    attachedDocuments?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    studentId?: string;
+    @Field(() => VisaRequestStatusEnum, {nullable:true})
+    status?: keyof typeof VisaRequestStatusEnum;
+    @Field(() => String, {nullable:true})
+    employeeComment?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => VisaCategoryEnum, {nullable:true})
+    category?: keyof typeof VisaCategoryEnum;
+    @Field(() => VisaMultiplicityEnum, {nullable:true})
+    multiplicity?: keyof typeof VisaMultiplicityEnum;
+    @Field(() => String, {nullable:true})
+    reason?: string;
+    @Field(() => String, {nullable:true})
+    addressOfMigrationRegistration?: string;
+    @Field(() => String, {nullable:true})
+    estimatedRouteOfStay?: string;
+    @Field(() => String, {nullable:true})
+    addressInCountryOfContinuousResidence?: string;
+    @Field(() => String, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: string;
+    @Field(() => String, {nullable:true})
+    russianFederationRelatives?: string;
+    @Field(() => String, {nullable:true})
+    attachedDocuments?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaRequestEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumVisaRequestStatusEnumFieldUpdateOperationsInput, {nullable:true})
-    status?: InstanceType<typeof EnumVisaRequestStatusEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    employeeComment?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaCategoryEnumFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableEnumVisaCategoryEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput, {nullable:true})
-    multiplicity?: InstanceType<typeof NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    reason?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressOfMigrationRegistration?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    estimatedRouteOfStay?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressInCountryOfContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    russianFederationRelatives?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    attachedDocuments?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => VisaRequestStatusEnum, {nullable:true})
+    status?: keyof typeof VisaRequestStatusEnum;
+    @Field(() => String, {nullable:true})
+    employeeComment?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => VisaCategoryEnum, {nullable:true})
+    category?: keyof typeof VisaCategoryEnum;
+    @Field(() => VisaMultiplicityEnum, {nullable:true})
+    multiplicity?: keyof typeof VisaMultiplicityEnum;
+    @Field(() => String, {nullable:true})
+    reason?: string;
+    @Field(() => String, {nullable:true})
+    addressOfMigrationRegistration?: string;
+    @Field(() => String, {nullable:true})
+    estimatedRouteOfStay?: string;
+    @Field(() => String, {nullable:true})
+    addressInCountryOfContinuousResidence?: string;
+    @Field(() => String, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: string;
+    @Field(() => String, {nullable:true})
+    russianFederationRelatives?: string;
+    @Field(() => String, {nullable:true})
+    attachedDocuments?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -13927,70 +13936,70 @@ export class StudentVisaRequestEntityUpdateWithWhereUniqueWithoutStudentInput {
 
 @InputType()
 export class StudentVisaRequestEntityUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumVisaRequestStatusEnumFieldUpdateOperationsInput, {nullable:true})
-    status?: InstanceType<typeof EnumVisaRequestStatusEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    employeeComment?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaCategoryEnumFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableEnumVisaCategoryEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput, {nullable:true})
-    multiplicity?: InstanceType<typeof NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    reason?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressOfMigrationRegistration?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    estimatedRouteOfStay?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressInCountryOfContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    russianFederationRelatives?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    attachedDocuments?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => VisaRequestStatusEnum, {nullable:true})
+    status?: keyof typeof VisaRequestStatusEnum;
+    @Field(() => String, {nullable:true})
+    employeeComment?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => VisaCategoryEnum, {nullable:true})
+    category?: keyof typeof VisaCategoryEnum;
+    @Field(() => VisaMultiplicityEnum, {nullable:true})
+    multiplicity?: keyof typeof VisaMultiplicityEnum;
+    @Field(() => String, {nullable:true})
+    reason?: string;
+    @Field(() => String, {nullable:true})
+    addressOfMigrationRegistration?: string;
+    @Field(() => String, {nullable:true})
+    estimatedRouteOfStay?: string;
+    @Field(() => String, {nullable:true})
+    addressInCountryOfContinuousResidence?: string;
+    @Field(() => String, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: string;
+    @Field(() => String, {nullable:true})
+    russianFederationRelatives?: string;
+    @Field(() => String, {nullable:true})
+    attachedDocuments?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class StudentVisaRequestEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumVisaRequestStatusEnumFieldUpdateOperationsInput, {nullable:true})
-    status?: InstanceType<typeof EnumVisaRequestStatusEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    employeeComment?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    registrationNumber?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaCategoryEnumFieldUpdateOperationsInput, {nullable:true})
-    category?: InstanceType<typeof NullableEnumVisaCategoryEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput, {nullable:true})
-    multiplicity?: InstanceType<typeof NullableEnumVisaMultiplicityEnumFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    reason?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressOfMigrationRegistration?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    estimatedRouteOfStay?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    addressInCountryOfContinuousResidence?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    placeOfWorkOrStudyAndEmploymentPosition?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    russianFederationRelatives?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    attachedDocuments?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => VisaRequestStatusEnum, {nullable:true})
+    status?: keyof typeof VisaRequestStatusEnum;
+    @Field(() => String, {nullable:true})
+    employeeComment?: string;
+    @Field(() => String, {nullable:true})
+    registrationNumber?: string;
+    @Field(() => VisaCategoryEnum, {nullable:true})
+    category?: keyof typeof VisaCategoryEnum;
+    @Field(() => VisaMultiplicityEnum, {nullable:true})
+    multiplicity?: keyof typeof VisaMultiplicityEnum;
+    @Field(() => String, {nullable:true})
+    reason?: string;
+    @Field(() => String, {nullable:true})
+    addressOfMigrationRegistration?: string;
+    @Field(() => String, {nullable:true})
+    estimatedRouteOfStay?: string;
+    @Field(() => String, {nullable:true})
+    addressInCountryOfContinuousResidence?: string;
+    @Field(() => String, {nullable:true})
+    placeOfWorkOrStudyAndEmploymentPosition?: string;
+    @Field(() => String, {nullable:true})
+    russianFederationRelatives?: string;
+    @Field(() => String, {nullable:true})
+    attachedDocuments?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneRequiredWithoutVisaRequestsNestedInput>;
 }
@@ -14129,8 +14138,8 @@ export class StudentVisaRequestEntity {
     attachedDocuments!: string | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     @Field(() => StudentEntity, {nullable:false})
     student?: InstanceType<typeof StudentEntity>;
 }
@@ -14172,10 +14181,6 @@ export class UpsertOneStudentVisaRequestEntityArgs {
 export class AggregateUserEntity {
     @Field(() => UserEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregate>;
-    @Field(() => UserEntityAvgAggregate, {nullable:true})
-    _avg?: InstanceType<typeof UserEntityAvgAggregate>;
-    @Field(() => UserEntitySumAggregate, {nullable:true})
-    _sum?: InstanceType<typeof UserEntitySumAggregate>;
     @Field(() => UserEntityMinAggregate, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregate>;
     @Field(() => UserEntityMaxAggregate, {nullable:true})
@@ -14325,32 +14330,10 @@ export class UserEntityAggregateArgs {
     skip?: number;
     @Field(() => UserEntityCountAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregateInput>;
-    @Field(() => UserEntityAvgAggregateInput, {nullable:true})
-    _avg?: InstanceType<typeof UserEntityAvgAggregateInput>;
-    @Field(() => UserEntitySumAggregateInput, {nullable:true})
-    _sum?: InstanceType<typeof UserEntitySumAggregateInput>;
     @Field(() => UserEntityMinAggregateInput, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregateInput>;
     @Field(() => UserEntityMaxAggregateInput, {nullable:true})
     _max?: InstanceType<typeof UserEntityMaxAggregateInput>;
-}
-
-@InputType()
-export class UserEntityAvgAggregateInput {
-    @Field(() => Boolean, {nullable:true})
-    telegramId?: true;
-}
-
-@ObjectType()
-export class UserEntityAvgAggregate {
-    @Field(() => Float, {nullable:true})
-    telegramId?: number;
-}
-
-@InputType()
-export class UserEntityAvgOrderByAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    telegramId?: keyof typeof SortOrder;
 }
 
 @InputType()
@@ -14367,6 +14350,8 @@ export class UserEntityCountAggregateInput {
     lastActivity?: true;
     @Field(() => Boolean, {nullable:true})
     telegramId?: true;
+    @Field(() => Boolean, {nullable:true})
+    vkId?: true;
     @HideField()
     createdAt?: true;
     @HideField()
@@ -14390,6 +14375,8 @@ export class UserEntityCountAggregate {
     @Field(() => Int, {nullable:false})
     telegramId!: number;
     @Field(() => Int, {nullable:false})
+    vkId!: number;
+    @Field(() => Int, {nullable:false})
     createdAt!: number;
     @Field(() => Int, {nullable:false})
     updatedAt!: number;
@@ -14411,6 +14398,8 @@ export class UserEntityCountOrderByAggregateInput {
     lastActivity?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     telegramId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    vkId?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -14437,8 +14426,10 @@ export class UserEntityCreateManyInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14549,8 +14540,10 @@ export class UserEntityCreateWithoutEmployeeInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14575,8 +14568,10 @@ export class UserEntityCreateWithoutFilesInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14601,8 +14596,10 @@ export class UserEntityCreateWithoutNotificationsInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14627,8 +14624,10 @@ export class UserEntityCreateWithoutStudentInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14653,8 +14652,10 @@ export class UserEntityCreateInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14686,10 +14687,6 @@ export class UserEntityGroupByArgs {
     skip?: number;
     @Field(() => UserEntityCountAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregateInput>;
-    @Field(() => UserEntityAvgAggregateInput, {nullable:true})
-    _avg?: InstanceType<typeof UserEntityAvgAggregateInput>;
-    @Field(() => UserEntitySumAggregateInput, {nullable:true})
-    _sum?: InstanceType<typeof UserEntitySumAggregateInput>;
     @Field(() => UserEntityMinAggregateInput, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregateInput>;
     @Field(() => UserEntityMaxAggregateInput, {nullable:true})
@@ -14708,18 +14705,16 @@ export class UserEntityGroupBy {
     tokenHash?: string;
     @Field(() => Date, {nullable:true})
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date | string;
     @Field(() => UserEntityCountAggregate, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountAggregate>;
-    @Field(() => UserEntityAvgAggregate, {nullable:true})
-    _avg?: InstanceType<typeof UserEntityAvgAggregate>;
-    @Field(() => UserEntitySumAggregate, {nullable:true})
-    _sum?: InstanceType<typeof UserEntitySumAggregate>;
     @Field(() => UserEntityMinAggregate, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinAggregate>;
     @Field(() => UserEntityMaxAggregate, {nullable:true})
@@ -14740,6 +14735,8 @@ export class UserEntityMaxAggregateInput {
     lastActivity?: true;
     @Field(() => Boolean, {nullable:true})
     telegramId?: true;
+    @Field(() => Boolean, {nullable:true})
+    vkId?: true;
     @HideField()
     createdAt?: true;
     @HideField()
@@ -14758,8 +14755,10 @@ export class UserEntityMaxAggregate {
     tokenHash?: string;
     @Field(() => Date, {nullable:true})
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -14780,6 +14779,8 @@ export class UserEntityMaxOrderByAggregateInput {
     lastActivity?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     telegramId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    vkId?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -14800,6 +14801,8 @@ export class UserEntityMinAggregateInput {
     lastActivity?: true;
     @Field(() => Boolean, {nullable:true})
     telegramId?: true;
+    @Field(() => Boolean, {nullable:true})
+    vkId?: true;
     @HideField()
     createdAt?: true;
     @HideField()
@@ -14818,8 +14821,10 @@ export class UserEntityMinAggregate {
     tokenHash?: string;
     @Field(() => Date, {nullable:true})
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
@@ -14840,6 +14845,8 @@ export class UserEntityMinOrderByAggregateInput {
     lastActivity?: keyof typeof SortOrder;
     @Field(() => SortOrder, {nullable:true})
     telegramId?: keyof typeof SortOrder;
+    @Field(() => SortOrder, {nullable:true})
+    vkId?: keyof typeof SortOrder;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
@@ -14860,20 +14867,18 @@ export class UserEntityOrderByWithAggregationInput {
     lastActivity?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     telegramId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    vkId?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @Field(() => UserEntityCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof UserEntityCountOrderByAggregateInput>;
-    @Field(() => UserEntityAvgOrderByAggregateInput, {nullable:true})
-    _avg?: InstanceType<typeof UserEntityAvgOrderByAggregateInput>;
     @Field(() => UserEntityMaxOrderByAggregateInput, {nullable:true})
     _max?: InstanceType<typeof UserEntityMaxOrderByAggregateInput>;
     @Field(() => UserEntityMinOrderByAggregateInput, {nullable:true})
     _min?: InstanceType<typeof UserEntityMinOrderByAggregateInput>;
-    @Field(() => UserEntitySumOrderByAggregateInput, {nullable:true})
-    _sum?: InstanceType<typeof UserEntitySumOrderByAggregateInput>;
 }
 
 @InputType()
@@ -14890,10 +14895,12 @@ export class UserEntityOrderByWithRelationInput {
     lastActivity?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     telegramId?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrderInput, {nullable:true})
+    vkId?: InstanceType<typeof SortOrderInput>;
     @HideField()
     createdAt?: keyof typeof SortOrder;
     @HideField()
-    updatedAt?: InstanceType<typeof SortOrderInput>;
+    updatedAt?: keyof typeof SortOrder;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityOrderByWithRelationInput>;
     @HideField()
@@ -14930,30 +14937,14 @@ export class UserEntityScalarWhereWithAggregatesInput {
     tokenHash?: InstanceType<typeof StringWithAggregatesFilter>;
     @HideField()
     lastActivity?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-    @Field(() => IntWithAggregatesFilter, {nullable:true})
-    telegramId?: InstanceType<typeof IntWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    telegramId?: InstanceType<typeof StringWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    vkId?: InstanceType<typeof StringWithAggregatesFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @HideField()
     updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-}
-
-@InputType()
-export class UserEntitySumAggregateInput {
-    @Field(() => Boolean, {nullable:true})
-    telegramId?: true;
-}
-
-@ObjectType()
-export class UserEntitySumAggregate {
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
-}
-
-@InputType()
-export class UserEntitySumOrderByAggregateInput {
-    @Field(() => SortOrder, {nullable:true})
-    telegramId?: keyof typeof SortOrder;
 }
 
 @InputType()
@@ -14968,8 +14959,10 @@ export class UserEntityUncheckedCreateWithoutEmployeeInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -14994,8 +14987,10 @@ export class UserEntityUncheckedCreateWithoutFilesInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -15020,8 +15015,10 @@ export class UserEntityUncheckedCreateWithoutNotificationsInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -15046,8 +15043,10 @@ export class UserEntityUncheckedCreateWithoutStudentInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -15072,8 +15071,10 @@ export class UserEntityUncheckedCreateInput {
     tokenHash?: string;
     @HideField()
     lastActivity?: Date | string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
     createdAt?: Date | string;
     @HideField()
@@ -15090,42 +15091,46 @@ export class UserEntityUncheckedCreateInput {
 
 @InputType()
 export class UserEntityUncheckedUpdateManyInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
 export class UserEntityUncheckedUpdateWithoutEmployeeInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15136,22 +15141,24 @@ export class UserEntityUncheckedUpdateWithoutEmployeeInput {
 
 @InputType()
 export class UserEntityUncheckedUpdateWithoutFilesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15162,22 +15169,24 @@ export class UserEntityUncheckedUpdateWithoutFilesInput {
 
 @InputType()
 export class UserEntityUncheckedUpdateWithoutNotificationsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15188,22 +15197,24 @@ export class UserEntityUncheckedUpdateWithoutNotificationsInput {
 
 @InputType()
 export class UserEntityUncheckedUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15214,22 +15225,24 @@ export class UserEntityUncheckedUpdateWithoutStudentInput {
 
 @InputType()
 export class UserEntityUncheckedUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUncheckedUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15242,22 +15255,24 @@ export class UserEntityUncheckedUpdateInput {
 
 @InputType()
 export class UserEntityUpdateManyMutationInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
 }
 
 @InputType()
@@ -15342,22 +15357,24 @@ export class UserEntityUpdateOneWithoutFilesNestedInput {
 
 @InputType()
 export class UserEntityUpdateWithoutEmployeeInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     student?: InstanceType<typeof StudentEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15368,22 +15385,24 @@ export class UserEntityUpdateWithoutEmployeeInput {
 
 @InputType()
 export class UserEntityUpdateWithoutFilesInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15394,22 +15413,24 @@ export class UserEntityUpdateWithoutFilesInput {
 
 @InputType()
 export class UserEntityUpdateWithoutNotificationsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15420,22 +15441,24 @@ export class UserEntityUpdateWithoutNotificationsInput {
 
 @InputType()
 export class UserEntityUpdateWithoutStudentInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15446,22 +15469,24 @@ export class UserEntityUpdateWithoutStudentInput {
 
 @InputType()
 export class UserEntityUpdateInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    email?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    password?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    @Field(() => Scalars.GraphQLUUID, {nullable:true})
+    id?: string;
+    @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
+    email?: string;
+    @Field(() => String, {nullable:true})
+    password?: string;
     @HideField()
-    tokenHash?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    tokenHash?: string;
     @HideField()
-    lastActivity?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    telegramId?: InstanceType<typeof NullableIntFieldUpdateOperationsInput>;
+    lastActivity?: Date | string;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
     @HideField()
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    createdAt?: Date | string;
     @HideField()
-    updatedAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    updatedAt?: Date | string;
     @HideField()
     employee?: InstanceType<typeof EmployeeEntityUpdateOneWithoutUserNestedInput>;
     @HideField()
@@ -15518,8 +15543,10 @@ export class UserEntityWhereUniqueInput {
     id?: string;
     @Field(() => Scalars.GraphQLEmailAddress, {nullable:true})
     email?: string;
-    @Field(() => Int, {nullable:true})
-    telegramId?: number;
+    @Field(() => String, {nullable:true})
+    telegramId?: string;
+    @Field(() => String, {nullable:true})
+    vkId?: string;
 }
 
 @InputType()
@@ -15540,8 +15567,10 @@ export class UserEntityWhereInput {
     tokenHash?: InstanceType<typeof StringFilter>;
     @HideField()
     lastActivity?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => IntFilter, {nullable:true})
-    telegramId?: InstanceType<typeof IntFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    telegramId?: InstanceType<typeof StringFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    vkId?: InstanceType<typeof StringFilter>;
     @HideField()
     createdAt?: InstanceType<typeof DateTimeFilter>;
     @HideField()
@@ -15589,12 +15618,17 @@ export class UserEntity {
     /**
      * Telegram User ID
      */
-    @Field(() => Int, {nullable:true,description:'Telegram User ID'})
-    telegramId!: number | null;
+    @Field(() => String, {nullable:true,description:'Telegram User ID'})
+    telegramId!: string | null;
+    /**
+     * VK User ID
+     */
+    @Field(() => String, {nullable:true,description:'VK User ID'})
+    vkId!: string | null;
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
-    @Field(() => Date, {nullable:true})
-    updatedAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    updatedAt!: Date;
     /**
      * Если пользователь - сотрудник
      */

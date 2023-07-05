@@ -5,13 +5,15 @@ generator client {
 }
 
 generator nestgraphql {
-  provider              = "node node_modules/prisma-nestjs-graphql"
+  provider             = "node node_modules/prisma-nestjs-graphql"
   // provider = "prisma-nestjs-graphql"
-  output                = "../src/generated/prisma-nestjs-graphql"
-  reExport              = All
-  combineScalarFilters  = true
-  emitSingle            = true
-  purgeOutput           = true
+  output               = "../src/generated/prisma-nestjs-graphql"
+  reExport             = All
+  combineScalarFilters = true
+  noAtomicOperations   = true
+  purgeOutput          = true
+  emitSingle           = true
+
   fields_Scalars_from   = "graphql-scalars"
   fields_Scalars_input  = true
   fields_Scalars_output = true
@@ -56,9 +58,9 @@ model FileEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Подтверждение почтового адреса
@@ -73,9 +75,9 @@ model ConfirmationEmailEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Подтверждение номера телефона
@@ -89,9 +91,9 @@ model ConfirmationPhoneEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Пользователь
@@ -124,15 +126,15 @@ model UserEntity {
   /// @HideField({ input: true, output: false })
   files         FileEntity[]
   /// Telegram User ID
-  telegramId    Int? @unique
+  telegramId    String?                    @unique
   /// VK User ID
-  // vkId          Int?
+  vkId          String?                    @unique
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Сотрудник
@@ -153,9 +155,9 @@ model EmployeeEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Сервисы для отправки уведомлений
@@ -175,21 +177,21 @@ enum NotificationServiceEnum {
 /// Уведомление
 model NotificationEntity {
   /// @FieldType('Scalars.GraphQLUUID')
-  id      String                     @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id       String                     @id() @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   /// Заголовок
-  title   String
+  title    String
   /// Содержимое
-  content String
+  content  String
   /// Получатели
-  users   NotificationToUserEntity[]
+  users    NotificationToUserEntity[]
   /// Сервисы для отправки уведомлений
   services NotificationServiceEnum[]
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Уведомления для пользователей
@@ -203,14 +205,16 @@ model NotificationToUserEntity {
   /// @FieldType('Scalars.GraphQLUUID')
   userId String     @db.Uuid
 
+  /// В какие сервисы отправлено уведомление
+  sentTo NotificationServiceEnum[]
   /// Прочитано ли уведомление?
-  isRead Boolean @default(false)
+  isRead Boolean                   @default(false)
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   @@id([userId, notificationId])
 }
@@ -256,9 +260,9 @@ model StudentEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Близкие родственники студента
@@ -288,9 +292,9 @@ model StudentCloseRelativeEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Уведомление о прибытии студента
@@ -317,9 +321,9 @@ model StudentArrivalNoticeEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 // TODO: Для формирования документа на основе всех данных нужна будет дополнительная таблица "Остальное"... поля нужно будет делать с Гаисом
@@ -344,9 +348,9 @@ model StudentMigrationCardEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Виза студента
@@ -374,9 +378,9 @@ model StudentVisaEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Пол
@@ -422,9 +426,9 @@ model StudentPassportEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 /// Требуемая кратность визы в визовой анкете
@@ -509,7 +513,7 @@ model StudentVisaRequestEntity {
 
   // Служебные поля
   /// @HideField({ input: true, output: false })
-  createdAt DateTime  @default(now()) @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
   /// @HideField({ input: true, output: false })
-  updatedAt DateTime? @updatedAt @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }

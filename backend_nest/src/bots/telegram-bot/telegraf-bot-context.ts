@@ -3,7 +3,7 @@ import { Context } from 'telegraf';
 /**
  * Контекст Telegraf бота приложения.
  */
-export class TelegrafAppContext extends Context {
+export class TelegrafBotContext extends Context {
   /**
    * Полезная нагрузка для команды /start.
    */

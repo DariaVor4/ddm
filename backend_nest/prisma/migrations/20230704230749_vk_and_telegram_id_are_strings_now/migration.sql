@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "UserEntity" ALTER COLUMN "telegramId" SET DATA TYPE TEXT,
+ALTER COLUMN "vkId" SET DATA TYPE TEXT;
