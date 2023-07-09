@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { UserEntity } from '@prisma-nestjs-graphql';
 import UserRoleEnum from '../../auth/interfaces/user-role.enum';
+import { UserEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Ответ на запрос получения текущего пользователя.

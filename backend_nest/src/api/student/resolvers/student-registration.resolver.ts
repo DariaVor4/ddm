@@ -2,7 +2,6 @@ import {
   Args, Context, Mutation, Resolver,
 } from '@nestjs/graphql';
 import { BadRequestException, Logger, NotAcceptableException } from '@nestjs/common';
-import { throwCb } from '@common';
 import * as uuid from 'uuid';
 import { compact } from 'lodash';
 import { Response } from 'express';
@@ -16,6 +15,7 @@ import { CookiesPick } from '../../auth/decorators/cookies-pick.decorator';
 import { CookieKeysEnum } from '../../auth/enums/cookie-keys.enum';
 import StudentUpsertInput from '../inputs/student-upsert.input';
 import { AuthService } from '../../auth/auth.service';
+import { throwCb } from '../../../common';
 
 @Resolver('student-registration')
 export class StudentRegistrationResolver {

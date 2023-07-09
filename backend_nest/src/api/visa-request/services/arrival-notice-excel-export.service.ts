@@ -4,15 +4,14 @@ import { Prisma } from '@prisma/client';
 import type { PartialDeep } from 'type-fest';
 import ExcelJS from 'exceljs';
 import { compact, isNil, range } from 'lodash';
-import { throwCb } from '@common';
 import XLSX from 'xlsx';
-import { strictEntries } from '@common/lodash/strict-entries';
 import dayjs from 'dayjs';
 import { arrivalNoticeMarkupPage1 } from '../templates/arrival-notice-markup-page-1';
 import { FileEntityResponse } from '../../file/responses/file-entity.response';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { FileService } from '../../file/file.service';
 import { VisaRequestConstants } from '../visa-request-constants';
+import { strictEntries, throwCb } from '../../../common';
 
 /**
  * Сервис для экспорта Excel файла "Уведомление о прибытии" студента.

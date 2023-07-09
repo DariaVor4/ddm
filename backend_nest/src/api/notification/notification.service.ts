@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { compact, isEmpty, values } from 'lodash';
-import { NotificationServiceEnum } from '@prisma-nestjs-graphql';
 import { NotificationsSendInput } from './inputs/notifications-send.input';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmailService } from '../../email/email.service';
 import { BotsCommonService } from '../../bots/services/bots-common.service';
 import { BotEnum } from '../../bots/bot.enum';
+import { NotificationServiceEnum } from '../../generated/prisma-nestjs-graphql';
 
 @Injectable()
 export class NotificationService {

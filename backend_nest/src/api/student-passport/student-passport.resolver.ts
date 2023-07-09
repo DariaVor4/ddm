@@ -4,8 +4,7 @@ import {
 import {
   BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
-import { throwCb } from '@common';
-import { UUID } from '@common/scalars';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
@@ -14,7 +13,7 @@ import { CurrentSession, ISessionContext } from '../auth/decorators/current-sess
 import StudentPassportUpsertInput from './inputs/student-passport-upsert.input';
 import StudentPassportWithoutStudentResult from './results/student-passport-without-student.result';
 import { StudentDocumentsService } from '../student/student-documents.service';
-import { Prisma } from '@prisma/client';
+import { throwCb, UUID } from '../../common';
 
 /**
  * Резолвер для работы с паспортами студентов.

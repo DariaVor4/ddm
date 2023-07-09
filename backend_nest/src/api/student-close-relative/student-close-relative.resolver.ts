@@ -2,18 +2,19 @@ import {
   Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
-import { UUID } from '@common/scalars';
-import { throwCb, ifDebug, isRoleStudent } from '@common';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { GraphQLUUID } from 'graphql-scalars';
 import * as uuid from 'uuid';
-import { PrismaService } from '../../prisma/prisma.service';
-import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
 import StudentCloseRelativeWithoutStudentResult from './results/student-close-relative-without-student.result';
 import { Roles } from '../auth/decorators/roles.decorator';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
 import StudentCloseRelativeUpsertInput from './input/student-close-relative-upsert.input';
+import {
+  ifDebug, isRoleStudent, throwCb, UUID,
+} from '../../common';
+import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
 
 /**
  * Резолвер для работы с близкими родственниками студентов.

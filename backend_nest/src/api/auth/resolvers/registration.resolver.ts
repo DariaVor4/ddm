@@ -7,9 +7,7 @@ import {
 } from '@nestjs/common';
 import ms from 'ms';
 import { Request, Response } from 'express';
-import { assert } from '@common';
 import * as uuid from 'uuid';
-import { EmailAddress } from '@common/scalars';
 import { PublicEndpoint } from '../decorators/public.decorator';
 import { Roles } from '../decorators/roles.decorator';
 import UserRoleEnum from '../interfaces/user-role.enum';
@@ -22,6 +20,7 @@ import EmailAvailabilityResponse from '../responses/email-availability.response'
 import { EmailAvailabilityVerdictEnum } from '../enums/email-verdict.enum';
 import { AuthService } from '../auth.service';
 import { UserService } from '../../user/user.service';
+import { assert, EmailAddress } from '../../../common';
 
 /**
  * Резолвер общих вспомогательных методов для регистрации.

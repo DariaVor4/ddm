@@ -1,9 +1,9 @@
-import { joi, vercelMsValidator } from '@common';
 import { Injectable, Logger } from '@nestjs/common';
 import * as process from 'process';
 import type { PartialDeep, ReadonlyDeep } from 'type-fest';
 import path from 'path';
 import { NodeEnvEnum } from './node-env.enum';
+import { joi, vercelMsValidator } from '../common';
 
 /**
  * Interface for typing the application startup configuration.

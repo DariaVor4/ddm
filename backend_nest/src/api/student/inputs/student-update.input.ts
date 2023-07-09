@@ -1,8 +1,8 @@
 import {
   InputType, IntersectionType, PartialType, PickType,
 } from '@nestjs/graphql';
-import { UserEntity } from '@prisma-nestjs-graphql';
 import StudentCreateInput from './student-create.input';
+import { UserEntity } from '../../../generated/prisma-nestjs-graphql';
 
 @InputType()
 export default class StudentUpdateInput extends IntersectionType(

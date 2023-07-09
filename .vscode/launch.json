@@ -18,18 +18,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Back Build",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "swc:build"
-      ],
-      "cwd": "${workspaceFolder}/backend_nest"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Back Start Universal",
+      "name": "Back Dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
@@ -40,36 +29,21 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Back Start",
+      "name": "Back Dev Swc",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
-        "swc:start"
+        "start:dev:swc"
       ],
       "cwd": "${workspaceFolder}/backend_nest"
-    }
+    },
   ],
   "compounds": [
-    {
-      "name": "Back Build & Start",
-      "configurations": [
-        "Back Build",
-        "Back Start",
-      ]
-    },
     {
       "name": "Front & Back",
       "configurations": [
         "Frontend Dev",
-        "Back Build",
-        "Back Start",
-      ]
-    },
-    {
-      "name": "Front & Back Universal",
-      "configurations": [
-        "Frontend Dev",
-        "Back Start Universal",
+        "Back Dev Swc",
       ]
     }
   ]

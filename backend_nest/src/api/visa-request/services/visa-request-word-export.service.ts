@@ -3,8 +3,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import fs from 'fs/promises';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
-import { throwCb } from '@common';
-import { GenderEnum, VisaCategoryEnum, VisaMultiplicityEnum } from '@prisma-nestjs-graphql';
 import type { PartialDeep } from 'type-fest';
 import { compact } from 'lodash';
 import dayjs from 'dayjs';
@@ -14,6 +12,8 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { FileService } from '../../file/file.service';
 import { FileEntityResponse } from '../../file/responses/file-entity.response';
 import { VisaRequestConstants } from '../visa-request-constants';
+import { throwCb } from '../../../common';
+import { GenderEnum, VisaCategoryEnum, VisaMultiplicityEnum } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Сервис для экспорта визовой анкеты в формате word.

@@ -2,8 +2,7 @@ import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
-import { UUID } from '@common/scalars';
-import { throwCb, ifDebug, isRoleStudent } from '@common';
+
 import {
   BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
@@ -15,6 +14,7 @@ import { CurrentSession, ISessionContext } from '../auth/decorators/current-sess
 import { PrismaService } from '../../prisma/prisma.service';
 import StudentArrivalNoticeUpsertInput from './inputs/student-arrival-notice-upsert.input';
 import { StudentDocumentsService } from '../student/student-documents.service';
+import { throwCb, UUID } from '../../common';
 
 /**
  * Резолвер для работы с уведомлениями о прибытии студентов.

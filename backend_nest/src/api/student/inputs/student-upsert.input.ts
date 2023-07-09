@@ -1,7 +1,7 @@
 import {
   InputType, IntersectionType, PartialType, PickType,
 } from '@nestjs/graphql';
-import { StudentEntityCreateInput, StudentPassportEntityCreateInput, UserEntityCreateInput } from '@prisma-nestjs-graphql';
+import { StudentEntityCreateInput, StudentPassportEntityCreateInput, UserEntityCreateInput } from '../../../generated/prisma-nestjs-graphql';
 
 @InputType()
 export default class StudentUpsertInput extends PartialType(

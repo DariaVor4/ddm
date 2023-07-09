@@ -1,11 +1,8 @@
 import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
-import { StudentVisaRequestEntity, VisaRequestStatusEnum } from '@prisma-nestjs-graphql';
 import type { PartialDeep } from 'type-fest';
-import { UUID } from '@common/scalars';
 import { Prisma } from '@prisma/client';
-import { ifDebug, isRoleStudent, throwCb } from '@common';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import ms from 'ms';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -16,7 +13,11 @@ import { CurrentSession, ISessionContext } from '../auth/decorators/current-sess
 import { StudentVisaRequestUpsertInput } from './inputs/student-visa-request-upsert.input';
 import { VisaRequestWordExportService } from './services/visa-request-word-export.service';
 import { FileEntityResponse } from '../file/responses/file-entity.response';
-import {ArrivalNoticeExcelExportService} from "./services/arrival-notice-excel-export.service";
+import { ArrivalNoticeExcelExportService } from './services/arrival-notice-excel-export.service';
+import { StudentVisaRequestEntity, VisaRequestStatusEnum } from '../../generated/prisma-nestjs-graphql';
+import {
+  ifDebug, isRoleStudent, throwCb, UUID,
+} from '../../common';
 
 /**
  * Резолвер для работы с визовыми анкетами студентов.

@@ -1,4 +1,3 @@
-import { assert, runtimeMode } from '@common';
 import {
   CanActivate, Injectable, Logger, UnauthorizedException,
 } from '@nestjs/common';
@@ -6,10 +5,9 @@ import { Reflector } from '@nestjs/core';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { Request } from 'express';
-
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { ISessionContext } from '../decorators/current-session.decorator';
+import { assert, runtimeMode } from '../../../common';
 
 // Order of methods calls:
 // 1. Guard.canActivate

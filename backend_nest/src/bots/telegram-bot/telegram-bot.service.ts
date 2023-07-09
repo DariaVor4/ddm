@@ -1,9 +1,7 @@
-import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectBot } from 'nestjs-telegraf';
 import { Telegraf } from 'telegraf';
 import type { UserFromGetMe } from 'typegram';
-import ms from 'ms';
-import { Message } from 'typegram';
 import { TelegrafBotContext } from './telegraf-bot-context';
 import { PrismaService } from '../../prisma/prisma.service';
 

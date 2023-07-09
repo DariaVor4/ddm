@@ -1,5 +1,5 @@
 import { ObjectType, OmitType } from '@nestjs/graphql';
-import { StudentMigrationCardEntity } from '@prisma-nestjs-graphql';
+import { StudentMigrationCardEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Миграционная карта студента без возможности выбора самого студента.

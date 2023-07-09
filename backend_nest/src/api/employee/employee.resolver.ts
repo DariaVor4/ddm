@@ -2,12 +2,7 @@ import {
   Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { ForbiddenException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import {
-  assert, ifDebug, isRoleAdmin, throwCb,
-} from '@common';
-import { EmployeeEntity } from '@prisma-nestjs-graphql';
 import { Prisma } from '@prisma/client';
-import { UUID } from '@common/scalars';
 import { GraphQLUUID } from 'graphql-scalars';
 import type { PartialDeep } from 'type-fest';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -19,6 +14,10 @@ import { CurrentSession, ISessionContext } from '../auth/decorators/current-sess
 import EmployeeUpdateInput from './inputs/employee-update.input';
 import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
 import { EmployeeUpsertInput } from './inputs/employee-upsert.input';
+import {
+  UUID, assert, ifDebug, isRoleAdmin, throwCb,
+} from '../../common';
+import { EmployeeEntity } from '../../generated/prisma-nestjs-graphql';
 
 /**
  * Контроллер для работы со сотрудниками.

@@ -2,13 +2,7 @@ import {
   Args, Int, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
-import {
-  throwCb, assert, isRoleAdminOrEmployee, isRoleStudent, ifDebug,
-} from '@common';
-import * as uuid from 'uuid';
 import { Prisma } from '@prisma/client';
-import { StudentEntity } from '@prisma-nestjs-graphql';
-import { UUID } from '@common/scalars';
 import { GraphQLUUID } from 'graphql-scalars';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { StudentService } from '../student.service';
@@ -19,6 +13,10 @@ import StudentUpdateInput from '../inputs/student-update.input';
 import { PrismaSelector } from '../../../prisma/decorators/prisma-selector.decorator';
 import { CurrentSession, ISessionContext } from '../../auth/decorators/current-session.decorator';
 import StudentUpsertInput from '../inputs/student-upsert.input';
+import {
+  ifDebug, isRoleAdminOrEmployee, isRoleStudent, throwCb, UUID,
+} from '../../../common';
+import { StudentEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Резолвер для работы со студентами.

@@ -1,5 +1,5 @@
 import { InputType, OmitType } from '@nestjs/graphql';
-import { StudentArrivalNoticeEntityCreateInput } from '@prisma-nestjs-graphql';
+import { StudentArrivalNoticeEntityCreateInput } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Входные данные для создания/обновления уведомления о прибытии студента.

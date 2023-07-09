@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLUUID } from 'graphql-scalars';
-import { NotificationServiceEnum } from '@prisma-nestjs-graphql';
+import { NotificationServiceEnum } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Входные данные для отправки уведомления.

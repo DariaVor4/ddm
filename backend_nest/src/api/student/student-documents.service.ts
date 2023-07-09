@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { ifDebug, isRoleStudent } from '@common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ISessionContext } from '../auth/decorators/current-session.decorator';
+import { ifDebug, isRoleStudent } from '../../common';
 
 @Injectable()
 export class StudentDocumentsService {

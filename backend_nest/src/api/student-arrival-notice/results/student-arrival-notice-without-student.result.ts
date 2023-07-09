@@ -1,5 +1,5 @@
 import { ObjectType, OmitType } from '@nestjs/graphql';
-import { StudentArrivalNoticeEntity } from '@prisma-nestjs-graphql';
+import { StudentArrivalNoticeEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Уведомление о прибытии студента без возможности выбора самого студента.

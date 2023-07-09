@@ -1,6 +1,6 @@
 import { IntersectionType, ObjectType, PickType } from '@nestjs/graphql';
-import { NotificationEntity, NotificationToUserEntity } from '@prisma-nestjs-graphql';
 import { GetPrismaSelect } from '../../../prisma/get-prisma-select.type';
+import { NotificationEntity, NotificationToUserEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Уведомление пользователя.

@@ -2,11 +2,7 @@ import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
-import { UUID } from '@common/scalars';
-import { throwCb } from '@common';
-import {
-  BadRequestException, ForbiddenException, InternalServerErrorException, NotFoundException,
-} from '@nestjs/common';
+import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
@@ -15,6 +11,7 @@ import { CurrentSession, ISessionContext } from '../auth/decorators/current-sess
 import StudentMigrationCardWithoutStudentResponse from './responses/student-migration-card-without-student.response';
 import StudentMigrationCardUpsertInput from './inputs/student-migration-card-upsert.input';
 import { StudentDocumentsService } from '../student/student-documents.service';
+import { UUID, throwCb } from '../../common';
 
 /**
  * Резолвер для работы с миграционными картами студентов.

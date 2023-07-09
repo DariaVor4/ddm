@@ -2,15 +2,13 @@ import {
   BadRequestException, Injectable, InternalServerErrorException, NotFoundException,
 } from '@nestjs/common';
 import ms from 'ms';
-import { elseThrow, throwCb } from '@common/throw-utils';
 import crypto from 'crypto';
 import { UserEntity } from '@prisma/client';
-import _, {
-  compact, filter, isEmpty, isError, isNil, isString, map,
-} from 'lodash';
+import { compact, isNil } from 'lodash';
 import { BotEnum } from '../bot.enum';
 import { TelegramBotService } from '../telegram-bot/telegram-bot.service';
 import { VkBotService } from '../vk-bot/vk-bot.service';
+import { elseThrow, throwCb } from '../../common';
 import { PrismaService } from '../../prisma/prisma.service';
 
 /**
@@ -41,7 +39,7 @@ export class BotsCommonService {
     private readonly prisma: PrismaService,
     private readonly telegramBotService: TelegramBotService,
     private readonly vkBotService: VkBotService,
-  ) {}
+  ) { }
 
   /**
    * Получение имени поля в таблице пользователя по перечислению ботов.
@@ -138,9 +136,9 @@ export class BotsCommonService {
     // Отправка сообщений в указанных ботов.
     const [tgErrored, vkErrored] = await Promise.all(compact([
       (isNil(botTypes) || botTypes.includes(BotEnum.Telegram))
-        && await this.telegramBotService.sendMessages(telegramIds, message),
+      && await this.telegramBotService.sendMessages(telegramIds, message),
       (isNil(botTypes) || botTypes.includes(BotEnum.Vk))
-        && await this.vkBotService.sendMessages(vkIds, message),
+      && await this.vkBotService.sendMessages(vkIds, message),
     ]));
     return {
       tgErrored: tgErrored.errored,

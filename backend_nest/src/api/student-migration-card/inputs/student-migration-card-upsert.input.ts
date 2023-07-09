@@ -1,5 +1,5 @@
 import { InputType, OmitType } from '@nestjs/graphql';
-import { StudentMigrationCardEntityCreateInput } from '@prisma-nestjs-graphql';
+import { StudentMigrationCardEntityCreateInput } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Входные данные для создания/обновления миграционной карты студента.

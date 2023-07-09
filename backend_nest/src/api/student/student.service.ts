@@ -1,19 +1,18 @@
 import {
   BadRequestException, Injectable, NotAcceptableException, NotFoundException,
 } from '@nestjs/common';
-import { assert } from '@common';
-import { isNil, isUndefined, pick } from 'lodash';
+import { pick } from 'lodash';
 import { Prisma } from '@prisma/client';
 import * as uuid from 'uuid';
-import { UserEntity, StudentEntity, StudentPassportEntity } from '@prisma-nestjs-graphql';
-import type { PartialDeep, SetRequired } from 'type-fest';
-import { elseThrow } from '@common/throw-utils';
+import type { PartialDeep } from 'type-fest';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import StudentCreateInput from './inputs/student-create.input';
 import StudentUpdateInput from './inputs/student-update.input';
 import { AuthService } from '../auth/auth.service';
 import StudentUpsertInput from './inputs/student-upsert.input';
+import { assert } from '../../common';
+import { StudentEntity, StudentPassportEntity, UserEntity } from '../../generated/prisma-nestjs-graphql';
 
 /**
  * Сервис для работы со студентами.

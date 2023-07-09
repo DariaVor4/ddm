@@ -1,11 +1,11 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { ifDebug, isRoleAdmin } from '@common';
 import { ForbiddenException } from '@nestjs/common';
 import { CurrentSession, ISessionContext } from '../api/auth/decorators/current-session.decorator';
 import { BotsCommonService } from './services/bots-common.service';
 import { Roles } from '../api/auth/decorators/roles.decorator';
 import UserRoleEnum from '../api/auth/interfaces/user-role.enum';
 import { BotConnectionInput } from './inputs/bot-connection.input';
+import { ifDebug, isRoleAdmin } from '../common';
 
 /**
  * Резолвер для ботов.

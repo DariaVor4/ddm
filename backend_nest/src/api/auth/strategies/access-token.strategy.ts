@@ -1,4 +1,3 @@
-import { ifDebug, runtimeMode, throwCb } from '@common';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
@@ -11,6 +10,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { CookieKeysEnum } from '../enums/cookie-keys.enum';
 import { IAccessTokenPayload } from '../interfaces/access-token-payload.interface';
 import { ISessionContext } from '../decorators/current-session.decorator';
+import { ifDebug, runtimeMode, throwCb } from '../../../common';
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {

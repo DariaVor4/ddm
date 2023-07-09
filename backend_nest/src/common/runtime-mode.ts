@@ -1,4 +1,4 @@
-import { strictCopyMerge } from '@common/lodash/strict-copy-merge';
+import { strictCopyMerge } from './lodash';
 import { NodeEnvEnum } from '../config/node-env.enum';
 
 const isDev = process.env.VISCEN_NODE_ENV === NodeEnvEnum.Dev;

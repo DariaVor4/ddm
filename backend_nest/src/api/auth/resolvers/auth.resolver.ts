@@ -1,14 +1,10 @@
 import {
-  throwCb, assert, ifDebug, joi,
-} from '@common';
-import {
   Args, Context, Mutation, Resolver,
 } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import type { Request, Response } from 'express';
 import ms from 'ms';
-import { NotAcceptableException, UnauthorizedException } from '@nestjs/common';
-import { EmailAddress } from '@common/scalars';
+import { UnauthorizedException } from '@nestjs/common';
 import { PublicEndpoint } from '../decorators/public.decorator';
 import { Roles } from '../decorators/roles.decorator';
 import UserRoleEnum from '../interfaces/user-role.enum';
@@ -16,8 +12,8 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { ConfigService } from '../../../config/config.service';
 import { AuthService } from '../auth.service';
 import { CookieKeysEnum } from '../enums/cookie-keys.enum';
-import { CookiesPick } from '../decorators/cookies-pick.decorator';
 import TokenResponse from '../responses/token.response';
+import { EmailAddress, ifDebug, throwCb } from '../../../common';
 
 /**
  * Резолвер авторизации

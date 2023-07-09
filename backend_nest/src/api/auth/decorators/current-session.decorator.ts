@@ -1,10 +1,8 @@
-import { assert } from '@common';
 import { createParamDecorator, ExecutionContext, InternalServerErrorException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
-import { IncomingHttpHeaders } from 'http';
 import { IAccessTokenPayloadCreate } from '../interfaces/access-token-payload.interface';
-import { TCookies } from './cookies-pick.decorator';
+import { assert } from '../../../common';
 
 /**
  * Декоратор для получения контекста текущего авторизованного пользователя.

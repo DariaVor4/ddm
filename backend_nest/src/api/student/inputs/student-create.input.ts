@@ -1,6 +1,6 @@
 import { InputType } from '@nestjs/graphql';
-import { SetRequiredType } from '@common/graphql-mapped-types/set-required-type';
 import StudentUpsertInput from './student-upsert.input';
+import { SetRequiredType } from '../../../common';
 
 // TODO: remove this
 @InputType()

@@ -1,10 +1,10 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { compact, isNil } from 'lodash';
-import { assert, joi } from '@common';
 import * as uuid from 'uuid';
 import { PrismaService } from '../../prisma/prisma.service';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
 import { ConfigService } from '../../config/config.service';
+import { assert, joi } from '../../common';
 
 /**
  * Сервис для работы с пользователями.

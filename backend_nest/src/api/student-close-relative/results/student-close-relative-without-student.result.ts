@@ -1,5 +1,5 @@
 import { ObjectType, OmitType } from '@nestjs/graphql';
-import { StudentCloseRelativeEntity } from '@prisma-nestjs-graphql';
+import { StudentCloseRelativeEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Близкий родственник студента без возможности выбора самого студента.

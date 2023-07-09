@@ -1,5 +1,5 @@
 import { ObjectType, OmitType } from '@nestjs/graphql';
-import { StudentVisaEntity } from '@prisma-nestjs-graphql';
+import { StudentVisaEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Виза студента без возможности выбора самого студента.

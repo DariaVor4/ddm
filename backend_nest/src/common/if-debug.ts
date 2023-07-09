@@ -1,4 +1,4 @@
-import { runtimeMode } from '@common';
+import { runtimeMode } from './runtime-mode';
 
 /**
  * Returns the value if the environment is dev or test, otherwise undefined.

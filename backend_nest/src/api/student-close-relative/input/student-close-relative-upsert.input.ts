@@ -1,7 +1,7 @@
 import {
   InputType, IntersectionType, OmitType, PartialType, PickType,
 } from '@nestjs/graphql';
-import { StudentCloseRelativeEntity, StudentCloseRelativeEntityCreateInput } from '@prisma-nestjs-graphql';
+import { StudentCloseRelativeEntity, StudentCloseRelativeEntityCreateInput } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Входные данные для создания/обновления близкого родственника студента.

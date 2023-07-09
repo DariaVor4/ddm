@@ -13,4 +13,8 @@ module.exports = {
   upgrade: true,
   // Выбор пакетов для обновления в интерактивном режиме.
   interactive: true,
+  // Игнорировать обновления определенных пакетов.
+  reject: [
+    'styled-components', // @mui/styled-engine-sc 5.12.0 supports styled-components@^5.3.1
+  ]
 };

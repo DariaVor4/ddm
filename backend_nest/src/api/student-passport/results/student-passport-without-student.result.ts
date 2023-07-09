@@ -1,5 +1,5 @@
 import { ObjectType, OmitType } from '@nestjs/graphql';
-import { StudentPassportEntity } from '@prisma-nestjs-graphql';
+import { StudentPassportEntity } from '../../../generated/prisma-nestjs-graphql';
 
 /**
  * Паспорт студента, где вместо студента присутствует только его studentId.

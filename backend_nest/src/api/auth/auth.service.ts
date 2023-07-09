@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { CookieOptions, Request, Response } from 'express';
-import { ifDebug, runtimeMode, throwCb } from '@common';
 import { isString } from 'lodash';
 import ms from 'ms';
 import { UserEntity } from '@prisma/client';
@@ -13,6 +12,7 @@ import { UserService } from '../user/user.service';
 import { IAccessTokenPayload, IAccessTokenPayloadCreate } from './interfaces/access-token-payload.interface';
 import { CookieKeysEnum } from './enums/cookie-keys.enum';
 import TokenResponse from './responses/token.response';
+import { ifDebug, runtimeMode, throwCb } from '../../common';
 
 /**
  * Service implementing authorization,

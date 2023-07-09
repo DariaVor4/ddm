@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { FileEntity } from '@prisma-nestjs-graphql';
+import { FileEntity } from '../../../generated/prisma-nestjs-graphql';
 
 @ObjectType()
 export class FileEntityResponse extends FileEntity {

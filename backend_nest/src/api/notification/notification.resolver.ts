@@ -1,15 +1,10 @@
 import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
-import { UUID } from '@common/scalars';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
-import { ifDebug, isRoleAdmin, throwCb } from '@common';
 import {
-  compact,
   isEmpty, keys, omit, pick,
 } from 'lodash';
-import { strictMerge } from '@common/lodash/strict-merge';
-import { NotificationEntityScalarFieldEnum, NotificationToUserEntityScalarFieldEnum } from '@prisma-nestjs-graphql';
 import type { PartialDeep } from 'type-fest';
 import { GraphQLUUID } from 'graphql-scalars';
 import { NotificationService } from './notification.service';
@@ -23,6 +18,10 @@ import { PaginationInput } from '../../prisma/inputs/pagination.input';
 import { UserNotificationNoContentObjectSelect } from './objects/user-notification-no-content.object';
 import { NotificationsResponse } from './responses/notifications.response';
 import { UserNotificationObject, UserNotificationObjectSelect } from './objects/user-notification.object';
+import {
+  ifDebug, isRoleAdmin, strictMerge, throwCb, UUID,
+} from '../../common';
+import { NotificationEntityScalarFieldEnum, NotificationToUserEntityScalarFieldEnum } from '../../generated/prisma-nestjs-graphql';
 
 @Resolver()
 export class NotificationResolver {

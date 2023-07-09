@@ -4,14 +4,14 @@ import {
 import { Prisma } from '@prisma/client';
 import * as path from 'path';
 import fs from 'fs/promises';
-import { FileEntity } from '@prisma-nestjs-graphql';
 import type { PartialDeep } from 'type-fest';
-import { throwCb } from '@common';
 import { compact, omit } from 'lodash';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConfigService } from '../../config/config.service';
 import { FileEntityResponse } from './responses/file-entity.response';
 import { FileConstants } from './file-constants';
+import { throwCb } from '../../common';
+import { FileEntity } from '../../generated/prisma-nestjs-graphql';
 
 interface TFileCreateParams {
   userId?: string;

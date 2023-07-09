@@ -2,7 +2,6 @@ import {
   Controller, Get, InternalServerErrorException, NotFoundException, Param, Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { throwCb } from '@common';
 import fs from 'fs/promises';
 import { PublicEndpoint } from '../auth/decorators/public.decorator';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -10,6 +9,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
 import { ConfigService } from '../../config/config.service';
 import { FileService } from './file.service';
+import { throwCb } from '../../common';
 
 /**
  * Контроллер для получения или отправки файлов.

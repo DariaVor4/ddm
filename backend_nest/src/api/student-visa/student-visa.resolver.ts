@@ -2,8 +2,7 @@ import {
   Args, Mutation, Query, Resolver,
 } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
-import { UUID } from '@common/scalars';
-import { throwCb } from '@common';
+
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StudentDocumentsService } from '../student/student-documents.service';
@@ -13,6 +12,7 @@ import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorato
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
 import StudentVisaWithoutStudentResponse from './responses/student-visa-without-student.response';
 import StudentVisaUpsertInput from './inputs/student-visa-upsert.input';
+import { throwCb, UUID } from '../../common';
 
 /**
  * Резолвер для работы с визами студентов.
