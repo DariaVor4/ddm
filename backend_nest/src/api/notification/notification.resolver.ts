@@ -1,27 +1,28 @@
-import {
-  Args, Mutation, Query, Resolver,
-} from '@nestjs/graphql';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import {
-  isEmpty, keys, omit, pick,
-} from 'lodash';
-import type { PartialDeep } from 'type-fest';
+  Args, Mutation, Query, Resolver, Subscription,
+} from '@nestjs/graphql';
 import { GraphQLUUID } from 'graphql-scalars';
-import { NotificationService } from './notification.service';
-import { NotificationsSendInput } from './inputs/notifications-send.input';
-import { Roles } from '../auth/decorators/roles.decorator';
-import UserRoleEnum from '../auth/interfaces/user-role.enum';
-import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
-import { PrismaService } from '../../prisma/prisma.service';
-import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
-import { PaginationInput } from '../../prisma/inputs/pagination.input';
-import { UserNotificationNoContentObjectSelect } from './objects/user-notification-no-content.object';
-import { NotificationsResponse } from './responses/notifications.response';
-import { UserNotificationObject, UserNotificationObjectSelect } from './objects/user-notification.object';
+import { isEmpty } from 'lodash';
+import type { PartialDeep } from 'type-fest';
 import {
-  ifDebug, isRoleAdmin, strictMerge, throwCb, UUID,
+  extractPick, ifDebug, isRoleAdmin, strictKeys, strictMediumOmit, strictAdditionalMerge, throwCb, UUID,
 } from '../../common';
 import { NotificationEntityScalarFieldEnum, NotificationToUserEntityScalarFieldEnum } from '../../generated/prisma-nestjs-graphql';
+import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
+import { PaginationInput } from '../../prisma/inputs/pagination.input';
+import { PrismaService } from '../../prisma/prisma.service';
+import { IGraphqlWsContext } from '../../types/IGraphqlWsContext';
+import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
+import { PublicEndpoint } from '../auth/decorators/public.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
+import UserRoleEnum from '../auth/interfaces/user-role.enum';
+import { NotificationsSendInput } from './inputs/notifications-send.input';
+import { NotificationConstants } from './notification.constants';
+import { NotificationService } from './notification.service';
+import { UserNotificationNoContentObject, UserNotificationNoContentObjectSelect } from './objects/user-notification-no-content.object';
+import { UserNotificationObject, UserNotificationObjectSelect } from './objects/user-notification.object';
+import { NotificationsResponse } from './responses/notifications.response';
 
 @Resolver()
 export class NotificationResolver {
@@ -35,7 +36,9 @@ export class NotificationResolver {
    * @param input Входные данные.
    * @returns Флаг успешности операции.
    */
-  @Mutation(() => Boolean)
+  @Mutation(() => Boolean, {
+    description: 'Рассылка уведомлений',
+  })
   @Roles(UserRoleEnum.Admin)
   async notificationsSend(
     @Args('input') input: NotificationsSendInput,
@@ -52,7 +55,9 @@ export class NotificationResolver {
    * @returns Уведомления пользователя.
    * @throws {ForbiddenException} Если пользователь не является администратором и запрашивает уведомления другого пользователя.
    */
-  @Query(() => NotificationsResponse)
+  @Query(() => NotificationsResponse, {
+    description: 'Получение уведомлений пользователя',
+  })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
   async notifications(
     @CurrentSession() session: ISessionContext,
@@ -66,18 +71,24 @@ export class NotificationResolver {
     }
     const totalCount = await this.prisma.notificationToUserEntity.count({ where: { userId: userIdToUse } });
     const unreadCount = await this.prisma.notificationToUserEntity.count({ where: { userId: userIdToUse, isRead: false } });
-    const notificationToUserEntitySelect = pick(select, keys(NotificationToUserEntityScalarFieldEnum));
-    const notificationEntitySelect = pick(omit(select, keys(notificationToUserEntitySelect)), keys(NotificationEntityScalarFieldEnum));
+    const selectNotificationToUserEntity = extractPick(select, ...strictKeys(NotificationToUserEntityScalarFieldEnum));
+    const selectNotificationEntity = extractPick(strictMediumOmit(select, ...strictKeys(selectNotificationToUserEntity)), ...strictKeys(NotificationEntityScalarFieldEnum));
     const notifications = await this.prisma.notificationToUserEntity.findMany({
       where: { userId: userIdToUse },
       select: {
-        ...notificationToUserEntitySelect,
-        notification: { select: notificationEntitySelect },
+        ...selectNotificationToUserEntity,
+        userId: true,
+        notification: {
+          select: {
+            ...selectNotificationEntity,
+            id: true,
+          },
+        },
       },
       orderBy: { updatedAt: 'desc' },
       skip: pagination?.skip,
-      take: pagination?.take || 10,
-    }).then((result) => result.map((n) => strictMerge(n.notification, n)));
+      take: pagination?.take || 30,
+    }).then((result) => result.map((n) => strictAdditionalMerge(n.notification, n)));
 
     const result = {
       notifications,
@@ -89,34 +100,75 @@ export class NotificationResolver {
 
   /**
    * Получение уведомления.
+   * Помечает уведомление как прочитанное.
    * @param session Текущая сессия.
    * @param select Поля для выборки.
    * @param notificationId Идентификатор уведомления.
+   * @param userId Идентификатор пользователя, если нужно уведомление другого пользователя.
    * @returns Уведомление.
    * @throws {NotFoundException} Уведомление не найдено.
    */
-  @Query(() => UserNotificationObject)
+  @Query(() => UserNotificationObject, {
+    description: 'Получение уведомления. Помечает уведомление как прочитанное.',
+  })
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
   async notification(
     @CurrentSession() session: ISessionContext,
     @PrismaSelector<UserNotificationObject>() select: UserNotificationObjectSelect,
     @Args('notificationId', { type: UUID }) notificationId: string,
+    @Args('userId', { type: UUID, nullable: true }) userId?: string,
   ): Promise<PartialDeep<UserNotificationObject>> {
-    const selectNotificationToUserEntity = pick(select, keys(NotificationToUserEntityScalarFieldEnum));
-    const selectNotificationEntity = pick(omit(select, keys(selectNotificationToUserEntity)), keys(NotificationEntityScalarFieldEnum));
-    return this.prisma.notificationToUserEntity.findFirstOrThrow({
+    // Получаем уведомление
+    const selectNotificationToUserEntity = extractPick(select, ...strictKeys(NotificationToUserEntityScalarFieldEnum));
+    const selectNotificationEntity = extractPick(strictMediumOmit(select, ...strictKeys(selectNotificationToUserEntity)), ...strictKeys(NotificationEntityScalarFieldEnum));
+    const notification = await this.prisma.notificationToUserEntity.findFirstOrThrow({
       where: {
         notificationId,
         // Если пользователь не администратор, то он может просматривать только свои уведомления
-        userId: isRoleAdmin(session.roles) ? undefined : session.userId,
+        userId: isRoleAdmin(session.roles) ? userId : session.userId,
       },
       select: {
         ...selectNotificationToUserEntity,
-        notification: { select: selectNotificationEntity },
+        notification: {
+          select: {
+            ...selectNotificationEntity,
+            id: true,
+          },
+        },
+        isRead: true,
+        userId: true,
       },
     })
-      .then((n) => strictMerge(n.notification, n))
+      .then((nToU) => strictAdditionalMerge(nToU.notification, nToU))
       .catch(throwCb(new NotFoundException('Уведомление не найдено')));
+    // Помечаем уведомление как прочитанное, если оно принадлежит текущему пользователю
+    if (session.userId === notification.userId && !notification.isRead) {
+      await this.prisma.notificationToUserEntity.update({
+        where: { userId_notificationId: { userId: session.userId, notificationId } },
+        data: { isRead: true },
+      });
+    }
+    return notification;
+  }
+
+  /**
+   * Подписка на уведомления.
+   * @returns Уведомление.
+   */
+  @PublicEndpoint()
+  @Roles(UserRoleEnum.Any)
+  @Subscription(() => UserNotificationNoContentObject, {
+    description: 'Подписка на уведомления',
+    filter(
+      payload: { [NotificationConstants.NotificationSubscription]: UserNotificationNoContentObject },
+      variables: object,
+      context: IGraphqlWsContext,
+    ) {
+      return payload.notificationSubscription.userId === context.extra.user.userId;
+    },
+  })
+  async notificationSubscription(): Promise<AsyncIterator<UserNotificationNoContentObject>> {
+    return this.notificationService.pubSub.asyncIterator(NotificationConstants.NotificationSubscription);
   }
 
   /**

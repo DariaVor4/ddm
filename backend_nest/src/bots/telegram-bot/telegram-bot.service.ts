@@ -35,11 +35,13 @@ export class TelegramBotService implements OnModuleInit {
   }
 
   public async sendMessages(externalIds: string[], message: string) {
+    const sent: string[] = [];
     const errored: string[] = [];
     await Promise.all(externalIds.map(
       async (externalId) => this.bot.telegram.sendMessage(externalId, message)
+        .then(() => sent.push(externalId))
         .catch(() => errored.push(externalId)),
     ));
-    return { errored };
+    return { sent, errored };
   }
 }

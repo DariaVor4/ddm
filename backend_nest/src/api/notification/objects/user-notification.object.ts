@@ -8,7 +8,7 @@ import { NotificationEntity, NotificationToUserEntity } from '../../../generated
 @ObjectType({ description: 'Уведомление пользователя' })
 export class UserNotificationObject extends IntersectionType(
   PickType(NotificationEntity, ['id', 'title', 'content', 'services', 'createdAt']),
-  PickType(NotificationToUserEntity, ['userId', 'isRead']),
+  PickType(NotificationToUserEntity, ['userId', 'isRead', 'sentTo']),
   ObjectType,
 ) {}
 

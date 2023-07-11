@@ -1,1 +1,6 @@
-export const strictEntries = <T extends object, K extends keyof T>(obj: T): [K, T[K]][] => Object.entries(obj) as [K, T[K]][];
+import { entries } from 'lodash';
+
+/**
+ * Строго типизированный lodash.entries
+ */
+export const strictEntries = <T extends object, K extends keyof T>(obj: T) => entries(obj) as [K, T[K]][];

@@ -27,3 +27,7 @@ export interface ISessionContext extends IAccessTokenPayloadCreate {
   // cookies: TCookies;
   // headers: IncomingHttpHeaders;
 }
+
+export interface IWsContext {
+  user: ISessionContext;
+}

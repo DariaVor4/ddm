@@ -3,11 +3,11 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
-import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
-import { ISessionContext } from '../decorators/current-session.decorator';
+import { AuthGuard } from '@nestjs/passport';
 import { assert, runtimeMode } from '../../../common';
+import { ISessionContext } from '../decorators/current-session.decorator';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 // Order of methods calls:
 // 1. Guard.canActivate
@@ -29,7 +29,7 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
   /**
    * Method automatically callable for getting express request from graphql context
    */
-  getRequest(context: ExecutionContextHost)/* : Request */ {
+  getRequest<Request>(context: ExecutionContextHost): Request {
     return GqlExecutionContext.create(context).getContext().req;
   }
 

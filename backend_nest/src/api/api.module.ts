@@ -27,5 +27,8 @@ import { NotificationModule } from './notification/notification.module';
     FileModule,
     NotificationModule,
   ],
+  exports: [
+    AuthModule,
+  ],
 })
 export class ApiModule {}

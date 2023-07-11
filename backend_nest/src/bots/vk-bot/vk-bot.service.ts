@@ -37,19 +37,20 @@ export class VkBotService implements OnModuleInit {
   }
 
   public async sendMessages(externalIds: string[], message: string) {
-    const promise = this.vk.api.messages.send({
-      message,
-      user_ids: externalIds.map(Number),
-      random_id: Math.floor(Math.random() * 2 ** 31),
-    }) as unknown as Promise<IMessagesSendUserIdsResponseItem[]>;
-
-    return {
-      errored: await promise
-        .then((items) => compact(items.map((item) => item.error && item.peer_id?.toString())))
-        .catch((error) => {
-          this.logger.error(`Error in vk.api.messages.send: ${error.message}`);
-          return externalIds;
-        }),
-    };
+    try {
+      const responses = await this.vk.api.messages.send({
+        message,
+        user_ids: externalIds.map(Number),
+        random_id: Math.floor(Math.random() * 2 ** 31),
+      }) as unknown as IMessagesSendUserIdsResponseItem[];
+      const sent = compact(responses.map((res) => !res.error && res.peer_id?.toString()));
+      return {
+        sent,
+        errored: externalIds.filter((id) => !sent.includes(id)),
+      };
+    } catch (err) {
+      this.logger.error(`Error in vk.api.messages.send: ${(err as Error).message}`);
+      return { sent: [], errored: externalIds };
+    }
   }
 }

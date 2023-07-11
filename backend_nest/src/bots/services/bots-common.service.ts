@@ -134,15 +134,12 @@ export class BotsCommonService {
     const telegramIds = compact(users.map((user) => user.telegramId));
     const vkIds = compact(users.map((user) => user.vkId));
     // Отправка сообщений в указанных ботов.
-    const [tgErrored, vkErrored] = await Promise.all(compact([
+    const [tgResult, vkResult] = await Promise.all([
       (isNil(botTypes) || botTypes.includes(BotEnum.Telegram))
-      && await this.telegramBotService.sendMessages(telegramIds, message),
+        ? await this.telegramBotService.sendMessages(telegramIds, message) : undefined,
       (isNil(botTypes) || botTypes.includes(BotEnum.Vk))
-      && await this.vkBotService.sendMessages(vkIds, message),
-    ]));
-    return {
-      tgErrored: tgErrored.errored,
-      vkErrored: vkErrored.errored,
-    };
+        ? await this.vkBotService.sendMessages(vkIds, message) : undefined,
+    ]);
+    return { tgResult, vkResult };
   }
 }

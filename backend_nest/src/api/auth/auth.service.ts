@@ -1,18 +1,22 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UserEntity } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { CookieOptions, Request, Response } from 'express';
-import { isString } from 'lodash';
+import { Context } from 'graphql-ws';
+import { isBoolean, isString, mapKeys } from 'lodash';
 import ms from 'ms';
-import { UserEntity } from '@prisma/client';
+import { ifDebug, runtimeMode, throwCb } from '../../common';
+import { findInRawHeaders } from '../../common/findInRawHeaders';
 import { ConfigService } from '../../config/config.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
-import { IAccessTokenPayload, IAccessTokenPayloadCreate } from './interfaces/access-token-payload.interface';
+import { ISessionContext, IWsContext } from './decorators/current-session.decorator';
 import { CookieKeysEnum } from './enums/cookie-keys.enum';
+import { HeadersKeysEnum } from './enums/headers-keys.enum';
+import { IAccessTokenPayload, IAccessTokenPayloadCreate } from './interfaces/access-token-payload.interface';
 import TokenResponse from './responses/token.response';
-import { ifDebug, runtimeMode, throwCb } from '../../common';
 
 /**
  * Service implementing authorization,
@@ -174,4 +178,83 @@ export class AuthService {
       throw e;
     }
   }
+
+  /**
+   * Проверка авторизации пользователя по токенам.
+   * @param data - Данные для проверки авторизации.
+   * @returns Контекст сессии.
+   */
+  public async checkAuth(
+    data: { accessToken: string | undefined, refreshToken: string | undefined, payload?: IAccessTokenPayload },
+  ): Promise<ISessionContext> {
+    // If there is no access token, there is nothing to talk about
+    if (!data.accessToken) {
+      throw new UnauthorizedException(ifDebug('AccessToken not found'));
+    }
+    // Check RefreshToken if not dev
+    if (!runtimeMode.isDev || data.refreshToken) {
+      if (!data.refreshToken) {
+        throw new UnauthorizedException(ifDebug('RefreshToken not found'));
+      }
+      if (!await this.jwtService.verifyAsync(data.refreshToken, {
+        secret: this.configService.config.refreshTokenSecret + data.accessToken,
+        ignoreExpiration: false,
+      }).catch(() => false)) {
+        throw new UnauthorizedException(ifDebug('Invalid RefreshToken'));
+      }
+    }
+    // Ensure payload
+    const payloadSafe = data.payload || await this.jwtService.verifyAsync<IAccessTokenPayload>(data.accessToken, {
+      secret: this.configService.config.accessTokenSecret,
+      ignoreExpiration: false,
+    });
+    // Get User
+    const user = await this.prisma.userEntity.findFirstOrThrow({
+      where: {
+        id: payloadSafe.userId,
+        tokenHash: { not: null },
+      },
+      select: {
+        id: true,
+        email: true,
+        tokenHash: true,
+        updatedAt: true,
+      },
+    }).catch(throwCb(new UnauthorizedException(ifDebug('User not found or was not authorized'))));
+    // Check User.tokenHash
+    if (!data.accessToken || !user.tokenHash || !(await bcrypt.compare(data.accessToken, user.tokenHash))) {
+      throw new UnauthorizedException(ifDebug('Invalid AccessToken'));
+    }
+    // Update user.lastActivity
+    await this.prisma.userEntity.update({
+      where: { id: payloadSafe.userId },
+      data: { lastActivity: new Date(), updatedAt: user.updatedAt },
+    });
+    // Return UserEntity
+    return {
+      userId: user.id,
+      userEmail: user.email,
+      // accessToken,
+      // refreshToken,
+      roles: payloadSafe.roles,
+      accessTokenExpires: new Date(payloadSafe.exp * 1000),
+      // cookies: req.cookies,
+      // headers: req.headers,
+    };
+  }
+
+  /**
+   * Проверка авторизации пользователя по токенам в [graphql-ws].onConnect в AppModule.
+   */
+  public readonly onConnectWs = async (ctx: Context<Record<string, any>>) => {
+    const extra = ctx.extra as any;
+    const headers = mapKeys(ctx.connectionParams, (value, key) => key.toLowerCase());
+    const rawHeaders = extra?.request?.rawHeaders as string[] | undefined;
+    // Get AccessToken
+    const accessToken = headers?.authorization?.replace('Bearer ', '')
+    || findInRawHeaders(rawHeaders, HeadersKeysEnum.AccessTokenKey, 'Bearer ');
+    // Get RefreshToken
+    const refreshToken = findInRawHeaders(rawHeaders, 'Cookie', `${CookieKeysEnum.RefreshTokenKey}=`);
+    extra.user = await this.checkAuth({ accessToken, refreshToken });
+  };
 }
