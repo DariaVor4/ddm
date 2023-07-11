@@ -1,5 +1,20 @@
 directive @client on FIELD
 
+"""Входные данные для подключения или отключения бота для аккаунта"""
+input BotConnectionInput {
+  """Тип бота"""
+  botType: BotEnum!
+
+  """Идентификатор пользователя"""
+  userId: UUID
+}
+
+"""Перечисление ботов приложения."""
+enum BotEnum {
+  Telegram
+  Vk
+}
+
 type ConfirmationEmailEntityCountAggregate {
   _all: Int!
   code: Int!
@@ -111,7 +126,7 @@ type EmployeeEntity {
 
   """Отчество"""
   patronymic: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: UserEntity!
 
   """Инициалы"""
@@ -200,7 +215,7 @@ type FileEntity {
 
   """Оригинальное имя"""
   name: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
 
   """Пользователь, создавший файл"""
   user: UserEntity
@@ -266,7 +281,7 @@ type FileEntityResponse {
 
   """Оригинальное имя"""
   name: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
 
   """Ссылка на файл"""
   url: String!
@@ -285,6 +300,9 @@ enum GenderEnum {
 }
 
 type Mutation {
+  botConnect(input: BotConnectionInput!): String!
+  botDisconnect(input: BotConnectionInput!): Boolean!
+
   """Создание сотрудника"""
   createEmployee(input: EmployeeCreateInput!): EmployeeEntity!
 
@@ -304,6 +322,14 @@ type Mutation {
 
   """Вход по почте и паролю, возвращает токен доступа и время его истечения"""
   loginByPassword(email: EmailAddress!, password: String!): TokenResponse!
+
+  """
+  Удаление уведомлений. При передаче userId и notificationId удаляются указанные уведомления у указанных пользователя. При передаче только userId удалятся ВСЕ уведомления для указанных пользователей. При передаче только notificationId указанные уведомления удалятся сразу у всех пользователей.
+  """
+  notificationsDelete(notificationIds: [UUID!], userIds: [UUID!]): Boolean!
+
+  """Рассылка уведомлений"""
+  notificationsSend(input: NotificationsSendInput!): Boolean!
 
   """Обновление пары токенов для авторизованного пользователя"""
   refreshTokens: TokenResponse!
@@ -421,9 +447,12 @@ type NotificationEntity {
   createdAt: DateTime!
   id: UUID!
 
+  """Сервисы для отправки уведомлений"""
+  services: [NotificationServiceEnum!]
+
   """Заголовок"""
   title: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 
   """Получатели"""
   users: [NotificationToUserEntity!]
@@ -438,6 +467,7 @@ type NotificationEntityCountAggregate {
   content: Int!
   createdAt: Int!
   id: Int!
+  services: Int!
   title: Int!
   updatedAt: Int!
 }
@@ -458,6 +488,15 @@ type NotificationEntityMinAggregate {
   updatedAt: DateTime
 }
 
+"""Сервисы для отправки уведомлений"""
+enum NotificationServiceEnum {
+  Email
+  Sms
+  Telegram
+  Vk
+  Web
+}
+
 """Уведомления для пользователей"""
 type NotificationToUserEntity {
   createdAt: DateTime!
@@ -466,7 +505,10 @@ type NotificationToUserEntity {
   isRead: Boolean!
   notification: NotificationEntity!
   notificationId: UUID!
-  updatedAt: DateTime
+
+  """В какие сервисы отправлено уведомление"""
+  sentTo: [NotificationServiceEnum!]
+  updatedAt: DateTime!
   user: UserEntity!
   userId: UUID!
 }
@@ -476,6 +518,7 @@ type NotificationToUserEntityCountAggregate {
   createdAt: Int!
   isRead: Int!
   notificationId: Int!
+  sentTo: Int!
   updatedAt: Int!
   userId: Int!
 }
@@ -496,6 +539,44 @@ type NotificationToUserEntityMinAggregate {
   userId: UUID
 }
 
+"""Ответ на запрос уведомлений пользователя"""
+type NotificationsResponse {
+  """Уведомления"""
+  notifications: [UserNotificationNoContentObject!]!
+
+  """Общее количество уведомлений"""
+  totalCount: Float!
+
+  """Количество непрочитанных уведомлений"""
+  unreadCount: Float!
+}
+
+input NotificationsSendInput {
+  """Всем сотрудникам"""
+  allEmployees: Boolean
+
+  """Всем студентам"""
+  allStudents: Boolean
+
+  """Текст уведомления"""
+  content: String!
+
+  """Сервисы для рассылки (по умолчанию все)"""
+  services: [NotificationServiceEnum!]
+
+  """Заголовок уведомления"""
+  title: String!
+
+  """Получатели"""
+  userIds: [UUID!]
+}
+
+"""Входные данные для пагинации"""
+input PaginationInput {
+  skip: Float
+  take: Float
+}
+
 type Query {
   """Проверка почты на корректность и доступность"""
   emailAvailability(email: String!): EmailAvailabilityResponse!
@@ -507,6 +588,12 @@ type Query {
 
   """Выборка всех сотрудников"""
   employees: [EmployeeEntity!]!
+
+  """Получение уведомления. Помечает уведомление как прочитанное."""
+  notification(notificationId: UUID!, userId: UUID): UserNotificationObject!
+
+  """Получение уведомлений пользователя"""
+  notifications(pagination: PaginationInput, userId: UUID): NotificationsResponse!
 
   """Получение студента по id."""
   student(
@@ -586,7 +673,7 @@ type StudentArrivalNoticeEntity {
   receivingSide: String
   student: StudentEntity!
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type StudentArrivalNoticeEntityCountAggregate {
@@ -661,7 +748,7 @@ type StudentArrivalNoticeWithoutStudentResult {
   """Принимающая сторона"""
   receivingSide: String
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 """Близкие родственники студента"""
@@ -687,7 +774,7 @@ type StudentCloseRelativeEntity {
   patronymic: String
   student: StudentEntity!
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type StudentCloseRelativeEntityCountAggregate {
@@ -763,7 +850,7 @@ type StudentCloseRelativeWithoutStudentResult {
   """Отчество"""
   patronymic: String
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input StudentCreateInput {
@@ -811,7 +898,7 @@ type StudentEntity {
 
   """Телефон"""
   phone: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: UserEntity!
 
   """Виза"""
@@ -896,7 +983,7 @@ type StudentMigrationCardEntity {
   series: String
   student: StudentEntity!
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type StudentMigrationCardEntityCountAggregate {
@@ -958,7 +1045,7 @@ type StudentMigrationCardWithoutStudentResponse {
   """Серия"""
   series: String
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 """Паспорт студента"""
@@ -1002,7 +1089,7 @@ type StudentPassportEntity {
   series: String
   student: StudentEntity!
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type StudentPassportEntityCountAggregate {
@@ -1121,7 +1208,7 @@ type StudentPassportWithoutStudentResult {
   """Серия"""
   series: String
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input StudentUpdateInput {
@@ -1175,7 +1262,7 @@ type StudentVisaEntity {
   number: String
   student: StudentEntity!
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type StudentVisaEntityCountAggregate {
@@ -1256,7 +1343,7 @@ type StudentVisaRequestEntity {
   status: VisaRequestStatusEnum!
   student: StudentEntity!
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type StudentVisaRequestEntityCountAggregate {
@@ -1363,7 +1450,12 @@ type StudentVisaWithoutStudentResponse {
   """Номер"""
   number: String
   studentId: UUID!
-  updatedAt: DateTime
+  updatedAt: DateTime!
+}
+
+type Subscription {
+  """Подписка на уведомления"""
+  notificationSubscription: UserNotificationNoContentObject!
 }
 
 """Ответ на запрос токена"""
@@ -1421,7 +1513,13 @@ type UserEntity {
 
   """Если пользователь - студент"""
   student: StudentEntity
-  updatedAt: DateTime
+
+  """Telegram User ID"""
+  telegramId: String
+  updatedAt: DateTime!
+
+  """VK User ID"""
+  vkId: String
 
   """
   Инициалы. Использовать только если в запросе присутствуют поля паспорта студента или поля сотрудника.
@@ -1450,7 +1548,9 @@ type UserEntityCountAggregate {
   email: Int!
   id: Int!
   lastActivity: Int!
+  telegramId: Int!
   updatedAt: Int!
+  vkId: Int!
 }
 
 type UserEntityMaxAggregate {
@@ -1458,7 +1558,9 @@ type UserEntityMaxAggregate {
   email: EmailAddress
   id: UUID
   lastActivity: DateTime
+  telegramId: String
   updatedAt: DateTime
+  vkId: String
 }
 
 type UserEntityMinAggregate {
@@ -1466,7 +1568,46 @@ type UserEntityMinAggregate {
   email: EmailAddress
   id: UUID
   lastActivity: DateTime
+  telegramId: String
   updatedAt: DateTime
+  vkId: String
+}
+
+"""Уведомление пользователя без контента"""
+type UserNotificationNoContentObject {
+  createdAt: DateTime!
+  id: UUID!
+
+  """Прочитано ли уведомление?"""
+  isRead: Boolean!
+
+  """В какие сервисы отправлено уведомление"""
+  sentTo: [NotificationServiceEnum!]
+
+  """Заголовок"""
+  title: String!
+  userId: UUID!
+}
+
+"""Уведомление пользователя"""
+type UserNotificationObject {
+  """Содержимое"""
+  content: String!
+  createdAt: DateTime!
+  id: UUID!
+
+  """Прочитано ли уведомление?"""
+  isRead: Boolean!
+
+  """В какие сервисы отправлено уведомление"""
+  sentTo: [NotificationServiceEnum!]
+
+  """Сервисы для отправки уведомлений"""
+  services: [NotificationServiceEnum!]
+
+  """Заголовок"""
+  title: String!
+  userId: UUID!
 }
 
 """Роли пользователя"""

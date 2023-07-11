@@ -1,0 +1,16 @@
+query NotificationsCount {
+  notifications {
+    unreadCount
+  }
+}
+
+subscription NewNotification {
+  notificationSubscription {
+    id
+    title
+    createdAt
+    userId
+    sentTo
+    isRead
+  }
+}

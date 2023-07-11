@@ -3,7 +3,6 @@ import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { cloneDeep } from 'lodash';
 import { Button, DialogActions, DialogContent } from '@mui/material';
-import { toast } from 'react-toastify';
 import { AppDialog } from '../../components/Dialogs/AppDialog.tsx';
 import { onEnterDown } from '../on-enter-down.ts';
 
@@ -28,10 +27,8 @@ const useConfirmActionDialog = create(combine(cloneDeep(initialState), (set, get
   }),
   cancel: () => set({ isOpen: false }),
   confirm: () => {
-    if (get().action) {
-      get().action();
-      set({ isOpen: false });
-    } else toast.error('Ошибка: Ничего не произошло так как не назначено действие');
+    get().action();
+    set({ isOpen: false });
   },
 })));
 

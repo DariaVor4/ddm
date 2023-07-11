@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { makeVar, useReactiveVar } from '@apollo/client';
 import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
 import { GLoginByPasswordMutationVariables, useLoginByPasswordMutation } from '../../api/generated';
-import { authHelper } from '../../api/apollo-client.tsx';
+import { authHelper } from '../../api/apollo-client/apollo-client.tsx';
 import { onEnterDown } from '../../core/on-enter-down.ts';
 import { FormikTextField } from '../forms/FormikTextField.tsx';
 import { AppDialog } from './AppDialog.tsx';

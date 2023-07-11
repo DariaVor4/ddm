@@ -8,7 +8,7 @@ import { MainLayout } from './views/layouts/MainLayout.tsx';
 import { UserRoutes } from './routes';
 import { NotFoundPage } from './views/pages/common-pages/NotFoundPage.tsx';
 import { globalNavigateVar } from './store/global-navigate.ts';
-import { isConnectionLostVar } from './api/apollo-client.tsx';
+import { isConnectionLostVar } from './api/apollo-client/apollo-client.tsx';
 import { NoConnectionPage } from './views/pages/common-pages/NoConnectionPage.tsx';
 import { PageLoading } from './components/PageLoading.tsx';
 import { StudentProfilePage } from './views/pages/profiles/StudentProfilePage.tsx';

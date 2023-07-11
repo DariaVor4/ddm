@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 import { CssBaseline } from '@mui/material';
 import dayjs from 'dayjs';
 import { App } from './app.tsx';
-import { client } from './api/apollo-client.tsx';
+import { client } from './api/apollo-client/apollo-client.tsx';
 import { AppThemeProvider } from './styles/theme/AppThemeProvider.tsx';
 
 import './styles/global.scss';

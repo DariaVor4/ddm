@@ -1,9 +1,11 @@
-import type {CodegenConfig} from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli';
+import { join } from 'path';
+import { generatedTs, srcApiDir } from '../utils';
 
 export default {
-  schema: './src/api/{schema,schema-client}.gql',
+  schema: join(srcApiDir, '{schema,schema-client}.gql'),
   overwrite: true,
-  documents: './src/api/queries/**/*.{gql,graphql}',
+  documents: join(srcApiDir, 'queries', '**', '*.{gql,graphql}'),
   config: {
     typesPrefix: 'G',
     skipTypename: true,
@@ -25,11 +27,10 @@ export default {
     // inputMaybeValue: 'T | null | undefined',
   },
   generates: {
-    './src/api/generated.ts': {
+    [generatedTs]: {
       // hooks: {afterOneFileWrite: ['eslint --fix']},
       plugins: [
         // {add: {content: '/* eslint-disable */'}},
-        // {add: {content: '/* eslint-disable max-len */'}},
         'typescript',
         'typescript-operations',
         'typescript-react-apollo',

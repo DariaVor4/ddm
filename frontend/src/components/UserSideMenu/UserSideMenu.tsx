@@ -11,7 +11,7 @@ import { useUserCurrentQuery } from '../../api/generated.ts';
 import { getRole } from '../../core/roles-checker.ts';
 import { UserRoleIcon } from '../UserRoleIcon.tsx';
 import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
-import { authHelper } from '../../api/apollo-client.tsx';
+import { authHelper } from '../../api/apollo-client/apollo-client.tsx';
 import type { TMuiColor } from '../../styles/theme/mui-theme.ts';
 
 export const UserSideMenu: FC = () => {

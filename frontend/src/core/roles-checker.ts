@@ -17,8 +17,9 @@ function isRoleStudent(roles?: GUserRoleEnum[]): boolean {
 //   return !!roles?.some(role => role === GUserRoleEnum.Admin || role === GUserRoleEnum.Employee);
 // }
 
-export function getRole(roles?: GUserRoleEnum[] | GUserRoleEnum): GUserRoleEnum {
-  const rolesArray = !roles ? undefined
+export function getRole(roles?: readonly GUserRoleEnum[] | GUserRoleEnum): GUserRoleEnum {
+  const rolesArray = !roles
+    ? undefined
     : Array.isArray(roles)
       ? roles
       : [roles];

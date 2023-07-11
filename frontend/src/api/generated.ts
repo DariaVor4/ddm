@@ -24,6 +24,20 @@ export type Scalars = {
   UUID: { input: string; output: string; }
 };
 
+/** Входные данные для подключения или отключения бота для аккаунта */
+export type GBotConnectionInput = {
+  /** Тип бота */
+  botType: GBotEnum;
+  /** Идентификатор пользователя */
+  userId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** Перечисление ботов приложения. */
+export enum GBotEnum {
+  Telegram = 'Telegram',
+  Vk = 'Vk'
+}
+
 export type GConfirmationEmailEntityCountAggregate = {
   _all: Scalars['Int']['output'];
   code: Scalars['Int']['output'];
@@ -121,7 +135,7 @@ export type GEmployeeEntity = {
   lastName?: Maybe<Scalars['String']['output']>;
   /** Отчество */
   patronymic?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
   user: GUserEntity;
 };
 
@@ -194,7 +208,7 @@ export type GFileEntity = {
   id: Scalars['UUID']['output'];
   /** Оригинальное имя */
   name?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
   /** Пользователь, создавший файл */
   user?: Maybe<GUserEntity>;
   /** Пользователь, создавший файл */
@@ -252,7 +266,7 @@ export type GFileEntityResponse = {
   id: Scalars['UUID']['output'];
   /** Оригинальное имя */
   name?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
   /** Ссылка на файл */
   url: Scalars['String']['output'];
   /** Пользователь, создавший файл */
@@ -268,6 +282,8 @@ export enum GGenderEnum {
 }
 
 export type GMutation = {
+  botConnect: Scalars['String']['output'];
+  botDisconnect: Scalars['Boolean']['output'];
   /** Создание сотрудника */
   createEmployee: GEmployeeEntity;
   /** Подтверждение электронной почты кодом. Возвращает true, если почта успешно подтверждена. */
@@ -280,6 +296,10 @@ export type GMutation = {
   exportDocuments: Array<GFileEntityResponse>;
   /** Вход по почте и паролю, возвращает токен доступа и время его истечения */
   loginByPassword: GTokenResponse;
+  /** Удаление уведомлений. При передаче userId и notificationId удаляются указанные уведомления у указанных пользователя. При передаче только userId удалятся ВСЕ уведомления для указанных пользователей. При передаче только notificationId указанные уведомления удалятся сразу у всех пользователей. */
+  notificationsDelete: Scalars['Boolean']['output'];
+  /** Рассылка уведомлений */
+  notificationsSend: Scalars['Boolean']['output'];
   /** Обновление пары токенов для авторизованного пользователя */
   refreshTokens: GTokenResponse;
   /** Регистрация студента. Сначала необходимо подтвердить почту. */
@@ -323,6 +343,16 @@ export type GMutation = {
 };
 
 
+export type GMutationBotConnectArgs = {
+  input: GBotConnectionInput;
+};
+
+
+export type GMutationBotDisconnectArgs = {
+  input: GBotConnectionInput;
+};
+
+
 export type GMutationCreateEmployeeArgs = {
   input: GEmployeeCreateInput;
 };
@@ -354,6 +384,17 @@ export type GMutationExportDocumentsArgs = {
 export type GMutationLoginByPasswordArgs = {
   email: Scalars['EmailAddress']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type GMutationNotificationsDeleteArgs = {
+  notificationIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
+  userIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
+};
+
+
+export type GMutationNotificationsSendArgs = {
+  input: GNotificationsSendInput;
 };
 
 
@@ -467,9 +508,11 @@ export type GNotificationEntity = {
   content: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['UUID']['output'];
+  /** Сервисы для отправки уведомлений */
+  services?: Maybe<Array<GNotificationServiceEnum>>;
   /** Заголовок */
   title: Scalars['String']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
   /** Получатели */
   users?: Maybe<Array<GNotificationToUserEntity>>;
 };
@@ -483,6 +526,7 @@ export type GNotificationEntityCountAggregate = {
   content: Scalars['Int']['output'];
   createdAt: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  services: Scalars['Int']['output'];
   title: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
 };
@@ -503,6 +547,15 @@ export type GNotificationEntityMinAggregate = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+/** Сервисы для отправки уведомлений */
+export enum GNotificationServiceEnum {
+  Email = 'Email',
+  Sms = 'Sms',
+  Telegram = 'Telegram',
+  Vk = 'Vk',
+  Web = 'Web'
+}
+
 /** Уведомления для пользователей */
 export type GNotificationToUserEntity = {
   createdAt: Scalars['DateTime']['output'];
@@ -510,7 +563,9 @@ export type GNotificationToUserEntity = {
   isRead: Scalars['Boolean']['output'];
   notification: GNotificationEntity;
   notificationId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** В какие сервисы отправлено уведомление */
+  sentTo?: Maybe<Array<GNotificationServiceEnum>>;
+  updatedAt: Scalars['DateTime']['output'];
   user: GUserEntity;
   userId: Scalars['UUID']['output'];
 };
@@ -520,6 +575,7 @@ export type GNotificationToUserEntityCountAggregate = {
   createdAt: Scalars['Int']['output'];
   isRead: Scalars['Int']['output'];
   notificationId: Scalars['Int']['output'];
+  sentTo: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
 };
@@ -540,6 +596,37 @@ export type GNotificationToUserEntityMinAggregate = {
   userId?: Maybe<Scalars['UUID']['output']>;
 };
 
+/** Ответ на запрос уведомлений пользователя */
+export type GNotificationsResponse = {
+  /** Уведомления */
+  notifications: Array<GUserNotificationNoContentObject>;
+  /** Общее количество уведомлений */
+  totalCount: Scalars['Float']['output'];
+  /** Количество непрочитанных уведомлений */
+  unreadCount: Scalars['Float']['output'];
+};
+
+export type GNotificationsSendInput = {
+  /** Всем сотрудникам */
+  allEmployees?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Всем студентам */
+  allStudents?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Текст уведомления */
+  content: Scalars['String']['input'];
+  /** Сервисы для рассылки (по умолчанию все) */
+  services?: InputMaybe<Array<GNotificationServiceEnum>>;
+  /** Заголовок уведомления */
+  title: Scalars['String']['input'];
+  /** Получатели */
+  userIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
+};
+
+/** Входные данные для пагинации */
+export type GPaginationInput = {
+  skip?: InputMaybe<Scalars['Float']['input']>;
+  take?: InputMaybe<Scalars['Float']['input']>;
+};
+
 export type GQuery = {
   /** Проверка почты на корректность и доступность */
   emailAvailability: GEmailAvailabilityResponse;
@@ -547,6 +634,10 @@ export type GQuery = {
   employee: GEmployeeEntity;
   /** Выборка всех сотрудников */
   employees: Array<GEmployeeEntity>;
+  /** Получение уведомления. Помечает уведомление как прочитанное. */
+  notification: GUserNotificationObject;
+  /** Получение уведомлений пользователя */
+  notifications: GNotificationsResponse;
   /** Получение студента по id. */
   student: GStudentEntity;
   /** Получение уведомления о прибытии студента */
@@ -579,6 +670,18 @@ export type GQueryEmailAvailabilityArgs = {
 
 export type GQueryEmployeeArgs = {
   employeeId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
+export type GQueryNotificationArgs = {
+  notificationId: Scalars['UUID']['input'];
+  userId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
+export type GQueryNotificationsArgs = {
+  pagination?: InputMaybe<GPaginationInput>;
+  userId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
@@ -645,7 +748,7 @@ export type GStudentArrivalNoticeEntity = {
   receivingSide?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentArrivalNoticeEntityCountAggregate = {
@@ -715,7 +818,7 @@ export type GStudentArrivalNoticeWithoutStudentResult = {
   /** Принимающая сторона */
   receivingSide?: Maybe<Scalars['String']['output']>;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 /** Близкие родственники студента */
@@ -736,7 +839,7 @@ export type GStudentCloseRelativeEntity = {
   patronymic?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentCloseRelativeEntityCountAggregate = {
@@ -807,7 +910,7 @@ export type GStudentCloseRelativeWithoutStudentResult = {
   /** Отчество */
   patronymic?: Maybe<Scalars['String']['output']>;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentCreateInput = {
@@ -850,7 +953,7 @@ export type GStudentEntity = {
   passport?: Maybe<GStudentPassportEntity>;
   /** Телефон */
   phone?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
   user: GUserEntity;
   /** Виза */
   visa?: Maybe<GStudentVisaEntity>;
@@ -919,7 +1022,7 @@ export type GStudentMigrationCardEntity = {
   series?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentMigrationCardEntityCountAggregate = {
@@ -977,7 +1080,7 @@ export type GStudentMigrationCardWithoutStudentResponse = {
   /** Серия */
   series?: Maybe<Scalars['String']['output']>;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 /** Паспорт студента */
@@ -1010,7 +1113,7 @@ export type GStudentPassportEntity = {
   series?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentPassportEntityCountAggregate = {
@@ -1116,7 +1219,7 @@ export type GStudentPassportWithoutStudentResult = {
   /** Серия */
   series?: Maybe<Scalars['String']['output']>;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentUpdateInput = {
@@ -1164,7 +1267,7 @@ export type GStudentVisaEntity = {
   number?: Maybe<Scalars['String']['output']>;
   student: GStudentEntity;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentVisaEntityCountAggregate = {
@@ -1234,7 +1337,7 @@ export type GStudentVisaRequestEntity = {
   status: GVisaRequestStatusEnum;
   student: GStudentEntity;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type GStudentVisaRequestEntityCountAggregate = {
@@ -1336,7 +1439,12 @@ export type GStudentVisaWithoutStudentResponse = {
   /** Номер */
   number?: Maybe<Scalars['String']['output']>;
   studentId: Scalars['UUID']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type GSubscription = {
+  /** Подписка на уведомления */
+  notificationSubscription: GUserNotificationNoContentObject;
 };
 
 /** Ответ на запрос токена */
@@ -1382,7 +1490,11 @@ export type GUserEntity = {
   role: GUserRoleEnum;
   /** Если пользователь - студент */
   student?: Maybe<GStudentEntity>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Telegram User ID */
+  telegramId?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  /** VK User ID */
+  vkId?: Maybe<Scalars['String']['output']>;
 };
 
 export type GUserEntityCount = {
@@ -1396,7 +1508,9 @@ export type GUserEntityCountAggregate = {
   email: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   lastActivity: Scalars['Int']['output'];
+  telegramId: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
+  vkId: Scalars['Int']['output'];
 };
 
 export type GUserEntityMaxAggregate = {
@@ -1404,7 +1518,9 @@ export type GUserEntityMaxAggregate = {
   email?: Maybe<Scalars['EmailAddress']['output']>;
   id?: Maybe<Scalars['UUID']['output']>;
   lastActivity?: Maybe<Scalars['DateTime']['output']>;
+  telegramId?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  vkId?: Maybe<Scalars['String']['output']>;
 };
 
 export type GUserEntityMinAggregate = {
@@ -1412,7 +1528,39 @@ export type GUserEntityMinAggregate = {
   email?: Maybe<Scalars['EmailAddress']['output']>;
   id?: Maybe<Scalars['UUID']['output']>;
   lastActivity?: Maybe<Scalars['DateTime']['output']>;
+  telegramId?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  vkId?: Maybe<Scalars['String']['output']>;
+};
+
+/** Уведомление пользователя без контента */
+export type GUserNotificationNoContentObject = {
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  /** Прочитано ли уведомление? */
+  isRead: Scalars['Boolean']['output'];
+  /** В какие сервисы отправлено уведомление */
+  sentTo?: Maybe<Array<GNotificationServiceEnum>>;
+  /** Заголовок */
+  title: Scalars['String']['output'];
+  userId: Scalars['UUID']['output'];
+};
+
+/** Уведомление пользователя */
+export type GUserNotificationObject = {
+  /** Содержимое */
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  /** Прочитано ли уведомление? */
+  isRead: Scalars['Boolean']['output'];
+  /** В какие сервисы отправлено уведомление */
+  sentTo?: Maybe<Array<GNotificationServiceEnum>>;
+  /** Сервисы для отправки уведомлений */
+  services?: Maybe<Array<GNotificationServiceEnum>>;
+  /** Заголовок */
+  title: Scalars['String']['output'];
+  userId: Scalars['UUID']['output'];
 };
 
 /** Роли пользователя */
@@ -1463,12 +1611,12 @@ export type GLoginByPasswordMutation = { response: { accessToken: string, access
 export type GUserCurrentQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GUserCurrentQuery = { current: { role: GUserRoleEnum, roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt?: Dayjs | null } }> | null } } };
+export type GUserCurrentQuery = { current: { role: GUserRoleEnum, roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt: Dayjs, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt: Dayjs, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt: Dayjs } }> | null } } };
 
 export type GEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GEmployeesQuery = { employees: Array<{ id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } }> };
+export type GEmployeesQuery = { employees: Array<{ id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs, user: { email: string, createdAt: Dayjs, updatedAt: Dayjs, lastActivity?: Dayjs | null } }> };
 
 export type GEmployeesDeleteMutationVariables = Exact<{
   employeeIds: Array<Scalars['UUID']['input']> | Scalars['UUID']['input'];
@@ -1483,14 +1631,14 @@ export type GEmployeeUpsertMutationVariables = Exact<{
 }>;
 
 
-export type GEmployeeUpsertMutation = { employeeUpsert: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } } };
+export type GEmployeeUpsertMutation = { employeeUpsert: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs, user: { email: string, createdAt: Dayjs, updatedAt: Dayjs, lastActivity?: Dayjs | null } } };
 
 export type GEmployeeQueryVariables = Exact<{
   employeeId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GEmployeeQuery = { employee: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { email: string, createdAt: Dayjs, updatedAt?: Dayjs | null, lastActivity?: Dayjs | null } } };
+export type GEmployeeQuery = { employee: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs, user: { email: string, createdAt: Dayjs, updatedAt: Dayjs, lastActivity?: Dayjs | null } } };
 
 export type GExportDocumentsMutationVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']['input']>;
@@ -1498,7 +1646,17 @@ export type GExportDocumentsMutationVariables = Exact<{
 }>;
 
 
-export type GExportDocumentsMutation = { exportDocuments: Array<{ id: string, userId?: string | null, dir?: string | null, name?: string | null, ext?: string | null, description?: string | null, deletedAt?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null, url: string, user?: { id: string } | null }> };
+export type GExportDocumentsMutation = { exportDocuments: Array<{ id: string, userId?: string | null, dir?: string | null, name?: string | null, ext?: string | null, description?: string | null, deletedAt?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs, url: string, user?: { id: string } | null }> };
+
+export type GNotificationsCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GNotificationsCountQuery = { notifications: { unreadCount: number } };
+
+export type GNewNotificationSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GNewNotificationSubscription = { notificationSubscription: { id: string, title: string, createdAt: Dayjs, userId: string, sentTo?: Array<GNotificationServiceEnum> | null, isRead: boolean } };
 
 export type GEmailAvailabilityQueryVariables = Exact<{
   email: Scalars['String']['input'];
@@ -1534,7 +1692,7 @@ export type GStudentArrivalNoticeQueryVariables = Exact<{
 }>;
 
 
-export type GStudentArrivalNoticeQuery = { studentArrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null };
+export type GStudentArrivalNoticeQuery = { studentArrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null };
 
 export type GStudentArrivalNoticeUpsertMutationVariables = Exact<{
   data: GStudentArrivalNoticeUpsertInput;
@@ -1556,14 +1714,14 @@ export type GStudentCloseRelativesQueryVariables = Exact<{
 }>;
 
 
-export type GStudentCloseRelativesQuery = { studentCloseRelatives: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null }> };
+export type GStudentCloseRelativesQuery = { studentCloseRelatives: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> };
 
 export type GStudentCloseRelativeQueryVariables = Exact<{
   closeRelativeId: Scalars['UUID']['input'];
 }>;
 
 
-export type GStudentCloseRelativeQuery = { studentCloseRelative: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } };
+export type GStudentCloseRelativeQuery = { studentCloseRelative: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt: Dayjs } };
 
 export type GStudentCloseRelativeUpsertMutationVariables = Exact<{
   data: GStudentCloseRelativeUpsertInput;
@@ -1606,7 +1764,7 @@ export type GStudentPassportQueryVariables = Exact<{
 }>;
 
 
-export type GStudentPassportQuery = { studentPassport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null };
+export type GStudentPassportQuery = { studentPassport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null };
 
 export type GStudentPassportUpsertMutationVariables = Exact<{
   data: GStudentPassportUpsertInput;
@@ -1648,14 +1806,14 @@ export type GStudentVisaUpsertMutation = { studentVisaUpsert: boolean };
 export type GStudentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GStudentsQuery = { students: Array<{ initials: string, fullName: string, id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null }, arrivalNotice?: { id: string, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, migrationCard?: { id: string, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, visa?: { id: string, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, passport?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null, closeRelatives?: Array<{ id: string, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, visaRequests?: Array<{ id: string, createdAt: Dayjs, updatedAt?: Dayjs | null }> | null, _count: { closeRelatives: number, visaRequests: number } }> };
+export type GStudentsQuery = { students: Array<{ initials: string, fullName: string, id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs }, arrivalNotice?: { id: string, createdAt: Dayjs, updatedAt: Dayjs } | null, migrationCard?: { id: string, createdAt: Dayjs, updatedAt: Dayjs } | null, visa?: { id: string, createdAt: Dayjs, updatedAt: Dayjs } | null, passport?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, closeRelatives?: Array<{ id: string, createdAt: Dayjs, updatedAt: Dayjs }> | null, visaRequests?: Array<{ id: string, createdAt: Dayjs, updatedAt: Dayjs }> | null, _count: { closeRelatives: number, visaRequests: number } }> };
 
 export type GStudentQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GStudentQuery = { student: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, initials: string, fullName: string, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null }, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt?: Dayjs | null } | null } };
+export type GStudentQuery = { student: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt: Dayjs, initials: string, fullName: string, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs }, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null } };
 
 export type GStudentUpsertMutationVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']['input']>;
@@ -1672,14 +1830,14 @@ export type GStudentsDeleteMutationVariables = Exact<{
 
 export type GStudentsDeleteMutation = { deletedCount: number };
 
-export type GVisaRequestFragment = { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } };
+export type GVisaRequestFragment = { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } };
 
 export type GVisaRequestsQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GVisaRequestsQuery = { visaRequests: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } }> };
+export type GVisaRequestsQuery = { visaRequests: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } }> };
 
 export type GVisaRequestQueryVariables = Exact<{
   studentId?: InputMaybe<Scalars['UUID']['input']>;
@@ -1687,7 +1845,7 @@ export type GVisaRequestQueryVariables = Exact<{
 }>;
 
 
-export type GVisaRequestQuery = { visaRequest?: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } } | null };
+export type GVisaRequestQuery = { visaRequest?: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } } | null };
 
 export type GVisaRequestUpsertMutationVariables = Exact<{
   input: GStudentVisaRequestUpsertInput;
@@ -1697,7 +1855,7 @@ export type GVisaRequestUpsertMutationVariables = Exact<{
 }>;
 
 
-export type GVisaRequestUpsertMutation = { visaRequestUpsert: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt?: Dayjs | null, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } } };
+export type GVisaRequestUpsertMutation = { visaRequestUpsert: { id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs, student: { fullName: string, initials: string, passport?: { lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } } };
 
 export type GVisaRequestDeleteMutationVariables = Exact<{
   visaRequestId?: InputMaybe<Scalars['UUID']['input']>;
@@ -2156,6 +2314,77 @@ export function useExportDocumentsMutation(baseOptions?: Apollo.MutationHookOpti
 export type ExportDocumentsMutationHookResult = ReturnType<typeof useExportDocumentsMutation>;
 export type ExportDocumentsMutationResult = Apollo.MutationResult<GExportDocumentsMutation>;
 export type ExportDocumentsMutationOptions = Apollo.BaseMutationOptions<GExportDocumentsMutation, GExportDocumentsMutationVariables>;
+export const NotificationsCountDocument = gql`
+    query NotificationsCount {
+  notifications {
+    unreadCount
+  }
+}
+    `;
+
+/**
+ * __useNotificationsCountQuery__
+ *
+ * To run a query within a React component, call `useNotificationsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationsCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNotificationsCountQuery(baseOptions?: Apollo.QueryHookOptions<GNotificationsCountQuery, GNotificationsCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GNotificationsCountQuery, GNotificationsCountQueryVariables>(NotificationsCountDocument, options);
+      }
+export function useNotificationsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GNotificationsCountQuery, GNotificationsCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GNotificationsCountQuery, GNotificationsCountQueryVariables>(NotificationsCountDocument, options);
+        }
+export type NotificationsCountQueryHookResult = ReturnType<typeof useNotificationsCountQuery>;
+export type NotificationsCountLazyQueryHookResult = ReturnType<typeof useNotificationsCountLazyQuery>;
+export type NotificationsCountQueryResult = Apollo.QueryResult<GNotificationsCountQuery, GNotificationsCountQueryVariables>;
+export function refetchNotificationsCountQuery(variables?: GNotificationsCountQueryVariables) {
+      return { query: NotificationsCountDocument, variables: variables }
+    }
+export const NewNotificationDocument = gql`
+    subscription NewNotification {
+  notificationSubscription {
+    id
+    title
+    createdAt
+    userId
+    sentTo
+    isRead
+  }
+}
+    `;
+
+/**
+ * __useNewNotificationSubscription__
+ *
+ * To run a query within a React component, call `useNewNotificationSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewNotificationSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewNotificationSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNewNotificationSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GNewNotificationSubscription, GNewNotificationSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GNewNotificationSubscription, GNewNotificationSubscriptionVariables>(NewNotificationDocument, options);
+      }
+export type NewNotificationSubscriptionHookResult = ReturnType<typeof useNewNotificationSubscription>;
+export type NewNotificationSubscriptionResult = Apollo.SubscriptionResult<GNewNotificationSubscription>;
 export const EmailAvailabilityDocument = gql`
     query EmailAvailability($email: String!) {
   emailAvailability(email: $email) {

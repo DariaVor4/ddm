@@ -1,32 +1,35 @@
 /* eslint-disable @typescript-eslint/no-use-before-define,no-return-assign */
 import {
-  ApolloClient, ApolloLink, createHttpLink, fromPromise, InMemoryCache, makeVar,
+  ApolloClient, ApolloLink, fromPromise, InMemoryCache, makeVar, split,
 } from '@apollo/client';
-import { isString, merge } from 'lodash';
 import { onError } from '@apollo/client/link/error';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { withScalars } from 'apollo-link-scalars';
-import { buildClientSchema, IntrospectionQuery } from 'graphql/utilities';
-import { GraphQLScalarType } from 'graphql/type';
 import dayjs, { isDayjs } from 'dayjs';
 import { Kind } from 'graphql/language';
+import { GraphQLScalarType } from 'graphql/type';
+import { buildClientSchema, IntrospectionQuery } from 'graphql/utilities';
+import { isString, merge } from 'lodash';
 import { toast } from 'react-toastify';
 import { Id } from 'react-toastify/dist/types';
-import { LocalStorageKeys } from './local-storage-keys';
-import { GTokenResponse } from './generated';
-import { AppRoutesEnum } from '../routes/app-routes.enum.ts';
-import { globalNavigateVar } from '../store/global-navigate.ts';
-import * as introspectionResult from './schema.json';
-import { refreshTokens } from './refresh-tokens.ts';
-import { typePolicies } from './type-policies.ts';
+import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
+import { globalNavigateVar } from '../../store/global-navigate.ts';
+import { GTokenResponse } from '../generated.ts';
+import { LocalStorageKeysEnum } from '../enums/local-storage-keys.enum.ts';
+import { refreshTokens } from '../global-methods/refresh-tokens.ts';
+import * as introspectionResult from '../schema.json';
+import { typePolicies } from './apollo-type-policies.ts';
+import { httpLink } from './apollo-http-link.ts';
+import { wsLink } from './apollo-ws-link.ts';
 
 /**
  * Auth helper for handle login and logout.
  */
 export const authHelper = {
   login: async (data: GTokenResponse) => {
-    const isTokenUndefinedBefore = !localStorage.getItem(LocalStorageKeys.AccessTokenKey);
-    localStorage.setItem(LocalStorageKeys.AccessTokenKey, data.accessToken);
-    localStorage.setItem(LocalStorageKeys.AccessTokenExpiresKey, data.accessTokenExpires.toISOString());
+    const isTokenUndefinedBefore = !localStorage.getItem(LocalStorageKeysEnum.AccessTokenKey);
+    localStorage.setItem(LocalStorageKeysEnum.AccessTokenKey, data.accessToken);
+    localStorage.setItem(LocalStorageKeysEnum.AccessTokenExpiresKey, data.accessTokenExpires.toISOString());
     if (isTokenUndefinedBefore) {
       globalNavigateVar()(AppRoutesEnum.HomeRoute);
       await client.resetStore().catch(() => undefined);
@@ -34,8 +37,8 @@ export const authHelper = {
   },
   logout: async () => {
     // console.debug('logging out...');
-    localStorage.removeItem(LocalStorageKeys.AccessTokenKey);
-    localStorage.removeItem(LocalStorageKeys.AccessTokenExpiresKey);
+    localStorage.removeItem(LocalStorageKeysEnum.AccessTokenKey);
+    localStorage.removeItem(LocalStorageKeysEnum.AccessTokenExpiresKey);
     globalNavigateVar()(AppRoutesEnum.HomeRoute);
     await client.resetStore().catch(() => 123);
   },
@@ -45,7 +48,7 @@ export const authHelper = {
  * Middleware for add authorization header.
  */
 const authOnlineLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem(LocalStorageKeys.AccessTokenKey);
+  const token = localStorage.getItem(LocalStorageKeysEnum.AccessTokenKey);
   operation.setContext(merge(operation.getContext(), {
     headers: { authorization: token ? `Bearer ${token}` : undefined },
   }));
@@ -90,7 +93,7 @@ const errorLink = onError(({
       console.error('[GraphQLError in Middleware]', graphQLError);
     }
     return acc && isUnauthorized;
-  }, !!localStorage.getItem(LocalStorageKeys.AccessTokenKey));
+  }, !!localStorage.getItem(LocalStorageKeysEnum.AccessTokenKey));
   if (networkError) {
     console.error('[NetworkError in Middleware]', networkError);
     if (/Error when attempting to fetch resource/ig.test(networkError.message)) {
@@ -139,19 +142,25 @@ const scalarsLink = withScalars({
   schema: buildClientSchema((introspectionResult as unknown) as IntrospectionQuery),
 });
 
-/**
- * Connection properties for Apollo Client.
- */
-const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_API_GRAPHQL_ENDPOINT,
-  credentials: import.meta.env.MODE === 'development' ? 'include' : 'same-origin',
-});
+// The split function takes three parameters:
+//
+// * A function that's called for each operation to execute
+// * The Link to use for an operation if the function returns a "truthy" value
+// * The Link to use for an operation if the function returns a "falsy" value
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (definition.kind === 'OperationDefinition' && definition.operation === 'subscription');
+  },
+  wsLink,
+  httpLink,
+);
 
 /**
  * Main GraphQL Apollo Client.
  */
 export const client = new ApolloClient({
-  link: ApolloLink.from([errorLink, scalarsLink, authOnlineLink, httpLink]),
+  link: ApolloLink.from([errorLink, scalarsLink, authOnlineLink, splitLink]),
   cache: new InMemoryCache({ typePolicies }),
   defaultOptions: {
     query: {

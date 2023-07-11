@@ -11,7 +11,7 @@ export const Header: FC = () => (
   <AppBar position='sticky'>
     <Toolbar>
       <Box className='grow flex justify-start'>
-        <Link className='flex grow items-center gap-1' to={AppRoutesEnum.HomeRoute}>
+        <Link className='flex items-center gap-1' to={AppRoutesEnum.HomeRoute}>
           <HubIcon className='mr-2' />
           <Typography fontSize='medium'>VisaCenter</Typography>
         </Link>

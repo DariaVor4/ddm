@@ -1,7 +1,8 @@
 import { Reference, TypePolicies } from '@apollo/client';
 import { compact } from 'lodash';
 import { ReadFieldFunction } from '@apollo/client/cache/core/types/common';
-import { GUserRoleEnum } from './generated.ts';
+import { GUserRoleEnum } from '../generated.ts';
+import { getRole } from '../../core/roles-checker.ts';
 
 /**
  * При GraphQL запросе считывает поля студента/сотрудника для получения ФИО.
@@ -30,10 +31,7 @@ export const typePolicies: TypePolicies = {
       role: {
         read: (_, { readField }): GUserRoleEnum => {
           const roles: ReadonlyArray<GUserRoleEnum> | undefined = readField('roles');
-          return roles?.includes(GUserRoleEnum.Admin) ? GUserRoleEnum.Admin
-            : roles?.includes(GUserRoleEnum.Employee) ? GUserRoleEnum.Employee
-              : roles?.includes(GUserRoleEnum.Student) ? GUserRoleEnum.Student
-                : GUserRoleEnum.Any;
+          return getRole(roles);
         },
       },
     },
