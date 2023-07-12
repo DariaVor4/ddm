@@ -7,15 +7,15 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useReactiveVar } from '@apollo/client';
 import { UserMenuButtons } from './UserSideMenuButtons/UserMenuButtons.tsx';
 import { isUserMenuOpenVar, navigateFromMenu, userMenuToggleFn } from './user-side-menu-store.ts';
-import { useUserCurrentQuery } from '../../api/generated.ts';
 import { getRole } from '../../core/roles-checker.ts';
 import { UserRoleIcon } from '../UserRoleIcon.tsx';
 import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
 import { authHelper } from '../../api/apollo-client/apollo-client.tsx';
 import type { TMuiColor } from '../../styles/theme/mui-theme.ts';
+import { useCurrentUser } from '../../core/hooks/useCurrentUser.ts';
 
 export const UserSideMenu: FC = () => {
-  const { data: { current } = {} } = useUserCurrentQuery();
+  const [current] = useCurrentUser();
   const role = getRole(current?.roles);
   const isMenuOpen = useReactiveVar(isUserMenuOpenVar);
 

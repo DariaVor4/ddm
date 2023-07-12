@@ -9,6 +9,8 @@ query UserCurrent {
             lastActivity
             createdAt
             updatedAt
+            telegramId
+            vkId
             role @client
             initials @client
             fullName @client

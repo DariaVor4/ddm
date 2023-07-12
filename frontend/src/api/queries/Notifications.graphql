@@ -14,3 +14,7 @@ subscription NewNotification {
     isRead
   }
 }
+
+mutation NotificationsSend($input: NotificationsSendInput!) {
+  notificationsSend(input: $input)
+}

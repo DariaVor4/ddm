@@ -1,0 +1,11 @@
+query BotConnectionLink($input: BotConnectionInput!) {
+  botConnectionLink(input: $input)
+}
+
+mutation BotDisconnect($input: BotConnectionInput!) {
+  botDisconnect(input: $input)
+}
+
+subscription BotConnected {
+  botConnected
+}

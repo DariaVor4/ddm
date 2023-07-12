@@ -15,7 +15,7 @@ export async function refreshTokens(): Promise<GTokenResponse> {
   return fetch(`${origin}/rest/auth/refreshTokens`, {
     method: 'POST',
     headers: { authorization: `Bearer ${token}` },
-    credentials: import.meta.env.MODE === 'development' ? 'include' : 'same-origin',
+    credentials: import.meta.env.DEV ? 'include' : 'same-origin',
   }).then(async (res): Promise<GTokenResponse> => {
     const response: Record<keyof GTokenResponse, string> = await res.json();
     if (res.ok) {

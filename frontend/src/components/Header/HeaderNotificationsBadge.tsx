@@ -1,5 +1,5 @@
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Badge, IconButton } from '@mui/material';
+import { Badge, IconButton, Tooltip } from '@mui/material';
 import dayjs from 'dayjs';
 import { compact } from 'lodash';
 import { FC } from 'react';
@@ -20,11 +20,19 @@ export const HeaderNotificationsBadge: FC = () => {
     },
   });
 
+  const tooltipText = () => `У вас ${unreadCount} ${
+    unreadCount.toString().endsWith('1') && !unreadCount.toString().endsWith('11')
+      ? 'непрочитанное уведомление'
+      : 'непрочитанных уведомлений'
+  }`;
+
   return (
-    <IconButton color='inherit'>
-      <Badge badgeContent={unreadCount} color='error'>
-        <NotificationsIcon />
-      </Badge>
-    </IconButton>
+    <Tooltip title={unreadCount ? tooltipText() : 'Нет новых уведомлений'}>
+      <IconButton color='inherit'>
+        <Badge badgeContent={unreadCount} color='error'>
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
+    </Tooltip>
   );
 };

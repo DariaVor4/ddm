@@ -10,13 +10,7 @@ import { useMatch, useNavigate, useParams } from 'react-router-dom';
 import { compact, omitBy } from 'lodash';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
-  GEmailAvailabilityVerdictEnum,
-  GEmployeeUpsertInput,
-  refetchEmployeeQuery,
-  refetchEmployeesQuery,
-  useEmployeeQuery,
-  useEmployeeUpsertMutation,
-  useUserCurrentQuery,
+  GEmailAvailabilityVerdictEnum, GEmployeeUpsertInput, refetchEmployeeQuery, refetchEmployeesQuery, useEmployeeQuery, useEmployeeUpsertMutation,
 } from '../../../api/generated.ts';
 import { checkPassword } from '../../../core/password-checker.ts';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
@@ -25,6 +19,7 @@ import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
 import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 import { emailAvailabilityQuery } from '../../../api/global-methods/check-email-availability.ts';
 import { yupFormikValidate } from '../../../core/yup-formik-validate.ts';
+import { useCurrentUser } from '../../../core/hooks/useCurrentUser.ts';
 
 enum PageModeEnum {Create, Update, SelfUpdate}
 
@@ -57,7 +52,7 @@ export const EmployeeProfilePage: React.FC = () => {
   const { employeeId } = useParams<{ employeeId: string }>();
 
   // Current user
-  const { data: { current } = {} } = useUserCurrentQuery();
+  const [current] = useCurrentUser();
 
   // Page mode
   const isCreate = !!useMatch(AppRoutesEnum.EmployeeCreate);

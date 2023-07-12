@@ -3,10 +3,12 @@ import type { ConditionalPickDeep } from 'type-fest';
 import type { DeepKeys } from '../../core/type-utils/deep_keys.type.ts';
 
 const sameThemeProperties: ThemeOptions = {
-  palette: {
-
-  },
   components: {
+    MuiTooltip: {
+      defaultProps: {
+        arrow: true,
+      },
+    },
     MuiInputLabel: {
       defaultProps: {
         size: 'small',

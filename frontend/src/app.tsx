@@ -1,7 +1,7 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { FC, useEffect } from 'react';
 import { useReactiveVar } from '@apollo/client';
-import { GUserRoleEnum, useUserCurrentQuery } from './api/generated.ts';
+import { GUserRoleEnum } from './api/generated.ts';
 import { AppRoutesEnum } from './routes/app-routes.enum.ts';
 import { HomePage } from './views/pages/common-pages/HomePage.tsx';
 import { MainLayout } from './views/layouts/MainLayout.tsx';
@@ -14,9 +14,11 @@ import { PageLoading } from './components/PageLoading.tsx';
 import { StudentProfilePage } from './views/pages/profiles/StudentProfilePage.tsx';
 import { LoginDialog } from './components/Dialogs/LoginDialog.tsx';
 import { UserSideMenu } from './components/UserSideMenu/UserSideMenu.tsx';
+import { useCurrentUser } from './core/hooks/useCurrentUser.ts';
 
 export const App: FC = () => {
-  const { data: { current } = {}, loading: isUserLoading } = useUserCurrentQuery();
+  const [current, isUserLoading] = useCurrentUser();
+
   const isConnectionLost = useReactiveVar(isConnectionLostVar);
   const navigate = useNavigate();
 

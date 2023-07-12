@@ -282,7 +282,6 @@ export enum GGenderEnum {
 }
 
 export type GMutation = {
-  botConnect: Scalars['String']['output'];
   botDisconnect: Scalars['Boolean']['output'];
   /** Создание сотрудника */
   createEmployee: GEmployeeEntity;
@@ -340,11 +339,6 @@ export type GMutation = {
   visaRequestDelete: GStudentVisaRequestEntity;
   /** Перезапись визовой анкеты */
   visaRequestUpsert: GStudentVisaRequestEntity;
-};
-
-
-export type GMutationBotConnectArgs = {
-  input: GBotConnectionInput;
 };
 
 
@@ -628,6 +622,7 @@ export type GPaginationInput = {
 };
 
 export type GQuery = {
+  botConnectionLink: Scalars['String']['output'];
   /** Проверка почты на корректность и доступность */
   emailAvailability: GEmailAvailabilityResponse;
   /** Получение сотрудника. Если не передан идентификатор сотрудника, то возвращает текущего. Только админ может получить других сотрудников. */
@@ -660,6 +655,11 @@ export type GQuery = {
   visaRequest?: Maybe<GStudentVisaRequestEntity>;
   /** Получение визовых анкет всех или одного студента. */
   visaRequests: Array<GStudentVisaRequestEntity>;
+};
+
+
+export type GQueryBotConnectionLinkArgs = {
+  input: GBotConnectionInput;
 };
 
 
@@ -1443,6 +1443,7 @@ export type GStudentVisaWithoutStudentResponse = {
 };
 
 export type GSubscription = {
+  botConnected: GBotEnum;
   /** Подписка на уведомления */
   notificationSubscription: GUserNotificationNoContentObject;
 };
@@ -1611,7 +1612,7 @@ export type GLoginByPasswordMutation = { response: { accessToken: string, access
 export type GUserCurrentQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GUserCurrentQuery = { current: { role: GUserRoleEnum, roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt: Dayjs, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt: Dayjs, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt: Dayjs } }> | null } } };
+export type GUserCurrentQuery = { current: { role: GUserRoleEnum, roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs, telegramId?: string | null, vkId?: string | null, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt: Dayjs, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt: Dayjs, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt: Dayjs } }> | null } } };
 
 export type GEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1657,6 +1658,32 @@ export type GNewNotificationSubscriptionVariables = Exact<{ [key: string]: never
 
 
 export type GNewNotificationSubscription = { notificationSubscription: { id: string, title: string, createdAt: Dayjs, userId: string, sentTo?: Array<GNotificationServiceEnum> | null, isRead: boolean } };
+
+export type GNotificationsSendMutationVariables = Exact<{
+  input: GNotificationsSendInput;
+}>;
+
+
+export type GNotificationsSendMutation = { notificationsSend: boolean };
+
+export type GBotConnectionLinkQueryVariables = Exact<{
+  input: GBotConnectionInput;
+}>;
+
+
+export type GBotConnectionLinkQuery = { botConnectionLink: string };
+
+export type GBotDisconnectMutationVariables = Exact<{
+  input: GBotConnectionInput;
+}>;
+
+
+export type GBotDisconnectMutation = { botDisconnect: boolean };
+
+export type GBotConnectedSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GBotConnectedSubscription = { botConnected: GBotEnum };
 
 export type GEmailAvailabilityQueryVariables = Exact<{
   email: Scalars['String']['input'];
@@ -1941,6 +1968,8 @@ export const UserCurrentDocument = gql`
       lastActivity
       createdAt
       updatedAt
+      telegramId
+      vkId
       role @client
       initials @client
       fullName @client
@@ -2385,6 +2414,131 @@ export function useNewNotificationSubscription(baseOptions?: Apollo.Subscription
       }
 export type NewNotificationSubscriptionHookResult = ReturnType<typeof useNewNotificationSubscription>;
 export type NewNotificationSubscriptionResult = Apollo.SubscriptionResult<GNewNotificationSubscription>;
+export const NotificationsSendDocument = gql`
+    mutation NotificationsSend($input: NotificationsSendInput!) {
+  notificationsSend(input: $input)
+}
+    `;
+export type GNotificationsSendMutationFn = Apollo.MutationFunction<GNotificationsSendMutation, GNotificationsSendMutationVariables>;
+
+/**
+ * __useNotificationsSendMutation__
+ *
+ * To run a mutation, you first call `useNotificationsSendMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsSendMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [notificationsSendMutation, { data, loading, error }] = useNotificationsSendMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useNotificationsSendMutation(baseOptions?: Apollo.MutationHookOptions<GNotificationsSendMutation, GNotificationsSendMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GNotificationsSendMutation, GNotificationsSendMutationVariables>(NotificationsSendDocument, options);
+      }
+export type NotificationsSendMutationHookResult = ReturnType<typeof useNotificationsSendMutation>;
+export type NotificationsSendMutationResult = Apollo.MutationResult<GNotificationsSendMutation>;
+export type NotificationsSendMutationOptions = Apollo.BaseMutationOptions<GNotificationsSendMutation, GNotificationsSendMutationVariables>;
+export const BotConnectionLinkDocument = gql`
+    query BotConnectionLink($input: BotConnectionInput!) {
+  botConnectionLink(input: $input)
+}
+    `;
+
+/**
+ * __useBotConnectionLinkQuery__
+ *
+ * To run a query within a React component, call `useBotConnectionLinkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBotConnectionLinkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBotConnectionLinkQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useBotConnectionLinkQuery(baseOptions: Apollo.QueryHookOptions<GBotConnectionLinkQuery, GBotConnectionLinkQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GBotConnectionLinkQuery, GBotConnectionLinkQueryVariables>(BotConnectionLinkDocument, options);
+      }
+export function useBotConnectionLinkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GBotConnectionLinkQuery, GBotConnectionLinkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GBotConnectionLinkQuery, GBotConnectionLinkQueryVariables>(BotConnectionLinkDocument, options);
+        }
+export type BotConnectionLinkQueryHookResult = ReturnType<typeof useBotConnectionLinkQuery>;
+export type BotConnectionLinkLazyQueryHookResult = ReturnType<typeof useBotConnectionLinkLazyQuery>;
+export type BotConnectionLinkQueryResult = Apollo.QueryResult<GBotConnectionLinkQuery, GBotConnectionLinkQueryVariables>;
+export function refetchBotConnectionLinkQuery(variables: GBotConnectionLinkQueryVariables) {
+      return { query: BotConnectionLinkDocument, variables: variables }
+    }
+export const BotDisconnectDocument = gql`
+    mutation BotDisconnect($input: BotConnectionInput!) {
+  botDisconnect(input: $input)
+}
+    `;
+export type GBotDisconnectMutationFn = Apollo.MutationFunction<GBotDisconnectMutation, GBotDisconnectMutationVariables>;
+
+/**
+ * __useBotDisconnectMutation__
+ *
+ * To run a mutation, you first call `useBotDisconnectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBotDisconnectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [botDisconnectMutation, { data, loading, error }] = useBotDisconnectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useBotDisconnectMutation(baseOptions?: Apollo.MutationHookOptions<GBotDisconnectMutation, GBotDisconnectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GBotDisconnectMutation, GBotDisconnectMutationVariables>(BotDisconnectDocument, options);
+      }
+export type BotDisconnectMutationHookResult = ReturnType<typeof useBotDisconnectMutation>;
+export type BotDisconnectMutationResult = Apollo.MutationResult<GBotDisconnectMutation>;
+export type BotDisconnectMutationOptions = Apollo.BaseMutationOptions<GBotDisconnectMutation, GBotDisconnectMutationVariables>;
+export const BotConnectedDocument = gql`
+    subscription BotConnected {
+  botConnected
+}
+    `;
+
+/**
+ * __useBotConnectedSubscription__
+ *
+ * To run a query within a React component, call `useBotConnectedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useBotConnectedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBotConnectedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBotConnectedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GBotConnectedSubscription, GBotConnectedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GBotConnectedSubscription, GBotConnectedSubscriptionVariables>(BotConnectedDocument, options);
+      }
+export type BotConnectedSubscriptionHookResult = ReturnType<typeof useBotConnectedSubscription>;
+export type BotConnectedSubscriptionResult = Apollo.SubscriptionResult<GBotConnectedSubscription>;
 export const EmailAvailabilityDocument = gql`
     query EmailAvailability($email: String!) {
   emailAvailability(email: $email) {

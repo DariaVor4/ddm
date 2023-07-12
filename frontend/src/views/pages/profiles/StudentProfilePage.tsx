@@ -1,16 +1,17 @@
-import { FC, useEffect, useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import {
   Button, IconButton, InputAdornment, Paper, Stack, Tooltip, Typography,
 } from '@mui/material';
 import { FormikProvider, useFormik } from 'formik';
-import * as yup from 'yup';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import VerifiedIcon from '@mui/icons-material/Verified';
+import { compact } from 'lodash';
+import { FC, useEffect, useState } from 'react';
 import { useMatch, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { compact } from 'lodash';
+import * as yup from 'yup';
 import {
+  GBotEnum,
   GEmailAvailabilityVerdictEnum,
   GStudentUpsertInput,
   refetchStudentQuery,
@@ -18,18 +19,19 @@ import {
   useRegistrationMutation,
   useStudentQuery,
   useStudentUpsertMutation,
-  useUserCurrentQuery,
 } from '../../../api/generated.ts';
-import { loginDialogOpenFn } from '../../../components/Dialogs/LoginDialog.tsx';
-import { EmailConfirmationDialog, useEmailConfirmationDialog } from '../../../components/Dialogs/EmailConfirmationDialog.tsx';
-import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
-import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
-import { strictOmit } from '../../../core/strict-lodash/strict-omit.ts';
-import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
-import { checkPassword } from '../../../core/password-checker.ts';
 import { emailAvailabilityQuery } from '../../../api/global-methods/check-email-availability.ts';
+import { BotConnectionButton } from '../../../components/BotConnectionButton.tsx';
+import { EmailConfirmationDialog, useEmailConfirmationDialog } from '../../../components/Dialogs/EmailConfirmationDialog.tsx';
+import { loginDialogOpenFn } from '../../../components/Dialogs/LoginDialog.tsx';
+import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
 import { PageLoading } from '../../../components/PageLoading.tsx';
+import { checkPassword } from '../../../core/password-checker.ts';
+import { strictOmit } from '../../../core/strict-lodash/strict-omit.ts';
+import { strictPick } from '../../../core/strict-lodash/strict-pick.ts';
 import { yupFormikValidate } from '../../../core/yup-formik-validate.ts';
+import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
+import { useCurrentUser } from '../../../core/hooks/useCurrentUser.ts';
 
 type StudentUpsertPageForm = GStudentUpsertInput & {
   passwordRepeat: string;
@@ -73,7 +75,7 @@ export const StudentProfilePage: FC = () => {
   const { studentId } = useParams<{ studentId?: string }>();
 
   // Page mode
-  const { data: { current } = {}, loading: isUserCurrentLoading } = useUserCurrentQuery();
+  const [current, isUserLoading] = useCurrentUser();
   const isRegisterRoute = useMatch(AppRoutesEnum.RegisterRoute);
   const isStudentProfileRoute = useMatch(AppRoutesEnum.AccountSettingsRoute);
   const pageMode = isRegisterRoute ? PageModeEnum.Register
@@ -159,7 +161,7 @@ export const StudentProfilePage: FC = () => {
     }),
   });
 
-  if (pageMode !== PageModeEnum.Register && (isUserCurrentLoading || isStudentOriginalLoading)) return <PageLoading />;
+  if (pageMode !== PageModeEnum.Register && (isUserLoading || isStudentOriginalLoading)) return <PageLoading />;
 
   return (
     <FormikProvider value={formik}>
@@ -175,7 +177,7 @@ export const StudentProfilePage: FC = () => {
         {pageMode !== PageModeEnum.Register && <IconButton onClick={() => navigate(-1)}><ArrowBackIcon /></IconButton>}
         <Typography align='center' fontWeight='500' variant='h5'>{pageTitle}</Typography>
       </Stack>
-      <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
+      <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-2xl' elevation={4}>
         <FormikTextField label='Фамилия' name='lastName' required />
         <FormikTextField label='Имя' name='firstName' required />
         <FormikTextField label='Отчество' name='patronymic' />
@@ -232,6 +234,12 @@ export const StudentProfilePage: FC = () => {
           onFocus={() => [PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode) && setIsShowPassword(false)}
           onPaste={e => [PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode) && e.preventDefault()}
         />
+        { pageMode === PageModeEnum.SelfUpdate && (
+        <div className='flex gap-3 justify-stretch'>
+          <BotConnectionButton botType={GBotEnum.Vk} className='grow' />
+          <BotConnectionButton botType={GBotEnum.Telegram} className='grow' />
+        </div>
+        )}
         <FormikTextField label='Факультет' name='faculty' required />
         <FormikTextField
           label='Курс'

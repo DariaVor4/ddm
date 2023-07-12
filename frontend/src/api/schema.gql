@@ -300,7 +300,6 @@ enum GenderEnum {
 }
 
 type Mutation {
-  botConnect(input: BotConnectionInput!): String!
   botDisconnect(input: BotConnectionInput!): Boolean!
 
   """Создание сотрудника"""
@@ -578,6 +577,8 @@ input PaginationInput {
 }
 
 type Query {
+  botConnectionLink(input: BotConnectionInput!): String!
+
   """Проверка почты на корректность и доступность"""
   emailAvailability(email: String!): EmailAvailabilityResponse!
 
@@ -1454,6 +1455,8 @@ type StudentVisaWithoutStudentResponse {
 }
 
 type Subscription {
+  botConnected: BotEnum!
+
   """Подписка на уведомления"""
   notificationSubscription: UserNotificationNoContentObject!
 }

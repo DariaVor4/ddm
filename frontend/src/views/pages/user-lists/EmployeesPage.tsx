@@ -9,15 +9,16 @@ import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 import {
-  GEmployeesQuery, refetchEmployeesQuery, useEmployeesDeleteMutation, useEmployeesQuery, useUserCurrentQuery,
+  GEmployeesQuery, refetchEmployeesQuery, useEmployeesDeleteMutation, useEmployeesQuery,
 } from '../../../api/generated.ts';
 import { useConfirmAction } from '../../../core/hooks/useConfirmAction.tsx';
+import { useCurrentUser } from '../../../core/hooks/useCurrentUser.ts';
 
 export const EmployeesPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const { data: { employees: employeesOriginal = [] } = {} } = useEmployeesQuery();
-  const { data: { current } = {} } = useUserCurrentQuery();
+  const [current] = useCurrentUser();
 
   const employees = useMemo(() => employeesOriginal.filter(e => e.id !== current?.user.id), [employeesOriginal, current]);
 

@@ -5,5 +5,5 @@ import { createHttpLink } from '@apollo/client';
  */
 export const httpLink = createHttpLink({
   uri: import.meta.env.VITE_API_GRAPHQL_ENDPOINT,
-  credentials: import.meta.env.MODE === 'development' ? 'include' : 'same-origin',
+  credentials: import.meta.env.DEV ? 'include' : 'same-origin',
 });

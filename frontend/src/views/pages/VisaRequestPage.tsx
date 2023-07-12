@@ -19,7 +19,6 @@ import {
   refetchVisaRequestsQuery,
   useExportDocumentsMutation,
   useStudentQuery,
-  useUserCurrentQuery,
   useVisaRequestQuery,
   useVisaRequestUpsertMutation,
 } from '../../api/generated.ts';
@@ -28,6 +27,7 @@ import { yupFormikValidate } from '../../core/yup-formik-validate.ts';
 import { useTypedLocation } from '../../core/react-router-dom/use-typed-location.ts';
 import { fileDownload } from '../../core/file-download.ts';
 import { strictPick } from '../../core/strict-lodash/strict-pick.ts';
+import { useCurrentUser } from '../../core/hooks/useCurrentUser.ts';
 
 enum PageRoleEnum {Employee, Student}
 enum PageModeEnum {Create, Update}
@@ -74,7 +74,7 @@ export const VisaRequestPage: FC = () => {
   });
 
   // Page mode
-  const { data: { current } = {} } = useUserCurrentQuery();
+  const [current] = useCurrentUser();
   const pageRole = current?.role !== GUserRoleEnum.Student ? PageRoleEnum.Employee : PageRoleEnum.Student;
   const pageMode = visaRequest ? PageModeEnum.Update : PageModeEnum.Create;
   const pageTitle = pageMode === PageModeEnum.Create ? 'Создание визовой анкеты' : 'Редактирование визовой анкеты';
@@ -119,7 +119,6 @@ export const VisaRequestPage: FC = () => {
       employeeComment: visaRequest?.employeeComment || '',
     },
     onSubmit: async input => {
-      console.log(isForceCreate);
       const { data } = await toast.promise(upsert({
         variables: {
           input, studentId, visaRequestId, isForceCreate,

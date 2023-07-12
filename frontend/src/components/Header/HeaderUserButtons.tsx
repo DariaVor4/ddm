@@ -1,13 +1,13 @@
 import { useReactiveVar } from '@apollo/client';
 import { Button } from '@mui/material';
 import { FC } from 'react';
-import { useUserCurrentQuery } from '../../api/generated.ts';
 import { UserRoleIcon } from '../UserRoleIcon.tsx';
 import { isUserMenuOpenVar, userMenuToggleFn } from '../UserSideMenu/user-side-menu-store.ts';
 import { HeaderNotificationsBadge } from './HeaderNotificationsBadge.tsx';
+import { useCurrentUser } from '../../core/hooks/useCurrentUser.ts';
 
 export const HeaderUserButtons: FC = () => {
-  const { data: { current } = {} } = useUserCurrentQuery();
+  const [current] = useCurrentUser();
   const isUserMenuOpen = useReactiveVar(isUserMenuOpenVar);
 
   return (

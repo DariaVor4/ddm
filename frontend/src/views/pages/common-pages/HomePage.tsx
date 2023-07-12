@@ -2,13 +2,13 @@ import {
   Button, Grid, Stack, Typography,
 } from '@mui/material';
 import { FC } from 'react';
-import { useUserCurrentQuery } from '../../../api/generated.ts';
 import image from '../../../assets/HomePageImage.svg';
 import { loginDialogOpenFn } from '../../../components/Dialogs/LoginDialog.tsx';
 import { userMenuToggleFn } from '../../../components/UserSideMenu/user-side-menu-store.ts';
+import { useCurrentUser } from '../../../core/hooks/useCurrentUser.ts';
 
 export const HomePage: FC = () => {
-  const { data: { current } = {} } = useUserCurrentQuery();
+  const [current] = useCurrentUser();
 
   return (
     <Grid className='columns-2 pt-10 flex justify-center items-center'>

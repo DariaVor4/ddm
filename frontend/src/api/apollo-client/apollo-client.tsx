@@ -175,6 +175,6 @@ export const client = new ApolloClient({
       notifyOnNetworkStatusChange: true,
     },
   },
-  connectToDevTools: import.meta.env.MODE === 'development',
+  connectToDevTools: import.meta.env.DEV,
   queryDeduplication: true,
 });
