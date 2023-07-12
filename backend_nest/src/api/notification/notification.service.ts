@@ -1,25 +1,22 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { PubSub } from 'graphql-subscriptions';
 import { compact, isEmpty, values } from 'lodash';
 import { BotEnum } from '../../bots/bot.enum';
 import { BotsCommonService } from '../../bots/services/bots-common.service';
 import { EmailService } from '../../email/email.service';
 import { NotificationServiceEnum } from '../../generated/prisma-nestjs-graphql';
 import { PrismaService } from '../../prisma/prisma.service';
+import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { NotificationsSendInput } from './inputs/notifications-send.input';
-import { NotificationConstants } from './notification.constants';
-import { UserNotificationNoContentObject } from './objects/user-notification-no-content.object';
 
 @Injectable()
 export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
 
-  public readonly pubSub = new PubSub();
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
     private readonly botsCommonService: BotsCommonService,
+    private readonly subscriptionsService: SubscriptionsService,
   ) {}
 
   public async notificationsSend(input: NotificationsSendInput): Promise<boolean> {
@@ -79,7 +76,7 @@ export class NotificationService {
     // Связываем уведомление с пользователями.
     await this.prisma.notificationToUserEntity.createMany({
       data: await Promise.all(users.map(async (user) => {
-        const data = {
+        const dataItem = {
           userId: user.id,
           notificationId: notification.id,
           sentTo: compact([
@@ -93,11 +90,8 @@ export class NotificationService {
           isRead: false,
         };
         // Отправляем уведомление в подписки.
-        await this.pubSub.publish(
-          NotificationConstants.NotificationSubscription,
-          { [NotificationConstants.NotificationSubscription]: { ...data, ...notification } satisfies UserNotificationNoContentObject },
-        );
-        return data;
+        await this.subscriptionsService.publishNotificationSubscription({ ...dataItem, ...notification });
+        return dataItem;
       })),
     });
 

@@ -1,24 +1,21 @@
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
-import {
-  Args, Mutation, Query, Resolver, Subscription,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { GraphQLUUID } from 'graphql-scalars';
 import { isEmpty } from 'lodash';
 import type { PartialDeep } from 'type-fest';
-import {
-  extractPick, ifDebug, isRoleAdmin, strictKeys, strictMediumOmit, strictAdditionalMerge, throwCb, UUID,
-} from '../../common';
+import { extractPick, ifDebug, isRoleAdmin, strictAdditionalMerge, strictKeys, strictMediumOmit, throwCb, UUID } from '../../common';
 import { NotificationEntityScalarFieldEnum, NotificationToUserEntityScalarFieldEnum } from '../../generated/prisma-nestjs-graphql';
 import { PrismaSelector } from '../../prisma/decorators/prisma-selector.decorator';
 import { PaginationInput } from '../../prisma/inputs/pagination.input';
 import { PrismaService } from '../../prisma/prisma.service';
+import { SubscriptionEnum } from '../../subscriptions/subscription.enum';
+import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { IGraphqlWsContext } from '../../types/IGraphqlWsContext';
 import { CurrentSession, ISessionContext } from '../auth/decorators/current-session.decorator';
 import { PublicEndpoint } from '../auth/decorators/public.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import UserRoleEnum from '../auth/interfaces/user-role.enum';
 import { NotificationsSendInput } from './inputs/notifications-send.input';
-import { NotificationConstants } from './notification.constants';
 import { NotificationService } from './notification.service';
 import { UserNotificationNoContentObject, UserNotificationNoContentObjectSelect } from './objects/user-notification-no-content.object';
 import { UserNotificationObject, UserNotificationObjectSelect } from './objects/user-notification.object';
@@ -29,6 +26,7 @@ export class NotificationResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificationService: NotificationService,
+    private readonly subscriptionsService: SubscriptionsService,
   ) {}
 
   /**
@@ -160,15 +158,15 @@ export class NotificationResolver {
   @Subscription(() => UserNotificationNoContentObject, {
     description: 'Подписка на уведомления',
     filter(
-      payload: { [NotificationConstants.NotificationSubscription]: UserNotificationNoContentObject },
-      variables: object,
+      payload: { [SubscriptionEnum.NotificationSubscription]: UserNotificationNoContentObject },
+      variables: unknown,
       context: IGraphqlWsContext,
     ) {
       return payload.notificationSubscription.userId === context.extra.user.userId;
     },
   })
   async notificationSubscription(): Promise<AsyncIterator<UserNotificationNoContentObject>> {
-    return this.notificationService.pubSub.asyncIterator(NotificationConstants.NotificationSubscription);
+    return this.subscriptionsService.asyncIterator(SubscriptionEnum.NotificationSubscription);
   }
 
   /**

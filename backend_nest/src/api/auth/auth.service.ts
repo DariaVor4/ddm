@@ -5,14 +5,14 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { CookieOptions, Request, Response } from 'express';
 import { Context } from 'graphql-ws';
-import { isBoolean, isString, mapKeys } from 'lodash';
+import { isString, mapKeys } from 'lodash';
 import ms from 'ms';
 import { ifDebug, runtimeMode, throwCb } from '../../common';
 import { findInRawHeaders } from '../../common/findInRawHeaders';
 import { ConfigService } from '../../config/config.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserService } from '../user/user.service';
-import { ISessionContext, IWsContext } from './decorators/current-session.decorator';
+import { ISessionContext } from './decorators/current-session.decorator';
 import { CookieKeysEnum } from './enums/cookie-keys.enum';
 import { HeadersKeysEnum } from './enums/headers-keys.enum';
 import { IAccessTokenPayload, IAccessTokenPayloadCreate } from './interfaces/access-token-payload.interface';
@@ -192,7 +192,7 @@ export class AuthService {
       throw new UnauthorizedException(ifDebug('AccessToken not found'));
     }
     // Check RefreshToken if not dev
-    if (!runtimeMode.isDev || data.refreshToken) {
+    if (!runtimeMode.isDev) {
       if (!data.refreshToken) {
         throw new UnauthorizedException(ifDebug('RefreshToken not found'));
       }

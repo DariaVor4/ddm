@@ -1,11 +1,20 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { ForbiddenException } from '@nestjs/common';
+import {
+  Args, Mutation, Query, Resolver, Subscription,
+} from '@nestjs/graphql';
 import { CurrentSession, ISessionContext } from '../api/auth/decorators/current-session.decorator';
-import { BotsCommonService } from './services/bots-common.service';
+import { PublicEndpoint } from '../api/auth/decorators/public.decorator';
 import { Roles } from '../api/auth/decorators/roles.decorator';
 import UserRoleEnum from '../api/auth/interfaces/user-role.enum';
-import { BotConnectionInput } from './inputs/bot-connection.input';
+import { UserNotificationNoContentObject } from '../api/notification/objects/user-notification-no-content.object';
 import { ifDebug, isRoleAdmin } from '../common';
+import { IBotConnectedPayload } from '../subscriptions/payloads/bot-connected-payload';
+import { SubscriptionEnum } from '../subscriptions/subscription.enum';
+import { SubscriptionsService } from '../subscriptions/subscriptions.service';
+import { IGraphqlWsContext } from '../types/IGraphqlWsContext';
+import { BotEnum } from './bot.enum';
+import { BotConnectionInput } from './inputs/bot-connection.input';
+import { BotsCommonService } from './services/bots-common.service';
 
 /**
  * Резолвер для ботов.
@@ -14,6 +23,7 @@ import { ifDebug, isRoleAdmin } from '../common';
 export class BotsResolver {
   constructor(
     private readonly botsService: BotsCommonService,
+    private readonly subscriptionsService: SubscriptionsService,
   ) {}
 
   /**
@@ -23,9 +33,9 @@ export class BotsResolver {
    * @returns Реф-ссылка на Telegram бота.
    * @throws {BadRequestException} Telegram бот уже был подключен к аккаунту.
    */
-  @Mutation(() => String)
+  @Query(() => String)
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
-  public async botConnect(
+  public async botConnectionLink(
     @CurrentSession() session: ISessionContext,
     @Args('input') input: BotConnectionInput,
   ): Promise<string> {
@@ -51,5 +61,20 @@ export class BotsResolver {
     }
     await this.botsService.disconnect(input.userId || session.userId, input.botType);
     return true;
+  }
+
+  /**
+   * Подписка на подключение бота к аккаунту.
+   */
+  @PublicEndpoint()
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
+  @Subscription(() => BotEnum, {
+    filter(payload: IBotConnectedPayload, variables, context: IGraphqlWsContext) {
+      return payload.userId === context.extra.user.userId;
+    },
+    resolve: (payload: IBotConnectedPayload) => payload.botType,
+  })
+  async botConnected(): Promise<AsyncIterator<BotEnum>> {
+    return this.subscriptionsService.asyncIterator(SubscriptionEnum.BotConnected);
   }
 }

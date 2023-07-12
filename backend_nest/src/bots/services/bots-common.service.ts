@@ -5,6 +5,7 @@ import ms from 'ms';
 import crypto from 'crypto';
 import { UserEntity } from '@prisma/client';
 import { compact, isNil } from 'lodash';
+import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { BotEnum } from '../bot.enum';
 import { TelegramBotService } from '../telegram-bot/telegram-bot.service';
 import { VkBotService } from '../vk-bot/vk-bot.service';
@@ -39,6 +40,7 @@ export class BotsCommonService {
     private readonly prisma: PrismaService,
     private readonly telegramBotService: TelegramBotService,
     private readonly vkBotService: VkBotService,
+    private readonly subscriptionsService: SubscriptionsService,
   ) { }
 
   /**
@@ -98,11 +100,14 @@ export class BotsCommonService {
     })) {
       throw new BadRequestException('Данный аккаунт уже подключен к другому веб-профилю');
     }
-    // Update user external id.
-    await this.prisma.userEntity.update({
-      where: { id: connectRequest.userId },
-      data: { [this.getIdKey(connectRequest.botType)]: externalId },
-    });
+    // Update user external id, publish to subscription.
+    await Promise.all([
+      this.prisma.userEntity.update({
+        where: { id: connectRequest.userId },
+        data: { [this.getIdKey(connectRequest.botType)]: externalId },
+      }),
+      this.subscriptionsService.publishBotConnected({ botType: connectRequest.botType, userId: connectRequest.userId }),
+    ]);
     // Return user id.
     return connectRequest.userId;
   }

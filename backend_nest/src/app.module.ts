@@ -10,6 +10,7 @@ import { BotsModule } from './bots/bots.module';
 import { ConfigModule } from './config/config.module';
 import { EmailModule } from './email/email.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PrismaModule } from './prisma/prisma.module';
     EmailModule,
     ApiModule,
     BotsModule,
+    SubscriptionsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },

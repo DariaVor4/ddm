@@ -1,10 +1,14 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate, ExecutionContext, Injectable, InternalServerErrorException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { Kind, OperationDefinitionNode, OperationTypeNode } from 'graphql/language';
+import { IGraphqlWsContext } from '../../../types/IGraphqlWsContext';
+import { ISessionContext } from '../decorators/current-session.decorator';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import UserRoleEnum from '../interfaces/user-role.enum';
-import { ISessionContext } from '../decorators/current-session.decorator';
 
 /**
  * Security guard for checking access of users with specific roles
@@ -34,7 +38,16 @@ export class RolesGuard implements CanActivate {
     if (rolesRequired.length === 0) {
       rolesRequired.push(UserRoleEnum.Admin);
     }
-    const session = GqlExecutionContext.create(context).getContext()?.req?.user as ISessionContext | undefined;
+    // Get definition of operation and then get context of request.
+    const gqlExecutionContext = GqlExecutionContext.create(context);
+    const definition = gqlExecutionContext.getInfo().operation as OperationDefinitionNode;
+    if (definition?.kind !== Kind.OPERATION_DEFINITION) {
+      throw new InternalServerErrorException('Invalid operation definition');
+    }
+    // Get session from context
+    const session: ISessionContext | undefined = definition.operation === OperationTypeNode.SUBSCRIPTION
+      ? gqlExecutionContext.getContext<IGraphqlWsContext>()?.extra?.user
+      : gqlExecutionContext.getContext()?.req?.user;
     if (!session) {
       return false;
     }
