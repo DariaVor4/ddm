@@ -11,15 +11,15 @@ import { navigateFromMenu } from '../user-side-menu-store.ts';
 export const UserMenuEmployeeButtons:FC = () => (
   <>
     <ListItem disablePadding>
-      <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.VisaRequestsRoute)}>
-        <ListItemIcon><PortraitIcon /></ListItemIcon>
-        <ListItemText primary='Визовые анкеты' />
-      </ListItemButton>
-    </ListItem>
-    <ListItem disablePadding>
       <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.NotificationsRoute)}>
         <ListItemIcon><NotificationsIcon /></ListItemIcon>
         <ListItemText primary='Уведомления' />
+      </ListItemButton>
+    </ListItem>
+    <ListItem disablePadding>
+      <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.VisaRequestsRoute)}>
+        <ListItemIcon><PortraitIcon /></ListItemIcon>
+        <ListItemText primary='Визовые анкеты' />
       </ListItemButton>
     </ListItem>
     <ListItem disablePadding>

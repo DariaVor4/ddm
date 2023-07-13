@@ -46,6 +46,9 @@ export const AppRoutesEnum = {
   EmployeeRoute: (id:string) => `/employees/${id}`,
   EmployeePattern: '/employees/:employeeId',
 
+  /* Admins */
+  NotificationsSendRoute: '/notificationsSend',
+
   /* Not found */
   AnyRoute: '*',
 } as const;

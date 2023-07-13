@@ -4,6 +4,7 @@ query Employees {
     lastName
     firstName
     patronymic
+    fullName @client
     isAdmin
     createdAt
     updatedAt
@@ -44,6 +45,7 @@ query Employee($employeeId: UUID) {
     lastName
     firstName
     patronymic
+    fullName @client
     isAdmin
     createdAt
     updatedAt

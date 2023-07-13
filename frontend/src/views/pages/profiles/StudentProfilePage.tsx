@@ -53,7 +53,7 @@ const validationSchema = yup.object<TValidationSchemaCtx>({
     if (verdict === GEmailAvailabilityVerdictEnum.Occupied) { return ctx.createError({ message: 'Почта уже занята' }); }
     return ctx.createError({ message: 'Неизвестная ошибка' });
   }),
-  password: yup.string().when(['$pageMode'], ([pageMode], schema, { value: value1 }) => ([PageModeEnum.Register, PageModeEnum.Create].includes(pageMode) || value1
+  password: yup.string().when(['$pageMode'], ([pageMode], schema, { value: value1 }) => (!import.meta.env.DEV && ([PageModeEnum.Register, PageModeEnum.Create].includes(pageMode) || value1)
     ? schema.min(8, 'Пароль должен быть не менее 8 символов').test('password-estimator', async (value, ctx) => checkPassword(value || '', ctx))
     : schema.optional())),
   passwordRepeat: yup.string().when(['$pageMode', 'password'], ([pageMode, password], schema) => ([PageModeEnum.Register, PageModeEnum.SelfUpdate].includes(pageMode) && password
@@ -151,6 +151,9 @@ export const StudentProfilePage: FC = () => {
           success: pageMode === PageModeEnum.Create ? 'Создание успешно!' : 'Данные обновлены!',
           error: { render: ({ data: err }) => `Ошибка сохранения: ${err}` },
         });
+        if (pageMode === PageModeEnum.Create) {
+          navigate(-1);
+        }
       }
     },
     validate: yupFormikValidate(validationSchema, {
@@ -177,7 +180,7 @@ export const StudentProfilePage: FC = () => {
         {pageMode !== PageModeEnum.Register && <IconButton onClick={() => navigate(-1)}><ArrowBackIcon /></IconButton>}
         <Typography align='center' fontWeight='500' variant='h5'>{pageTitle}</Typography>
       </Stack>
-      <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-2xl' elevation={4}>
+      <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-4xl' elevation={4}>
         <FormikTextField label='Фамилия' name='lastName' required />
         <FormikTextField label='Имя' name='firstName' required />
         <FormikTextField label='Отчество' name='patronymic' />
@@ -189,7 +192,7 @@ export const StudentProfilePage: FC = () => {
           name='email'
           type='email'
           InputProps={{
-            endAdornment: formik.touched.email && !formik.errors.email && formik.values.email && (
+            endAdornment: formik.touched.email && !formik.errors.email && formik.values.email && pageMode === PageModeEnum.Register && (
               <InputAdornment position='end'>
                 {emailConfirmationDialog.isEmailConfirmed
                   ? [PageModeEnum.Register, PageModeEnum.SelfUpdate] && <Tooltip title='Почта подтверждена ✅'><VerifiedIcon color='success' /></Tooltip>

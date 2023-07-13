@@ -4,6 +4,11 @@ import type { DeepKeys } from '../../core/type-utils/deep_keys.type.ts';
 
 const sameThemeProperties: ThemeOptions = {
   components: {
+    MuiAutocomplete: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
     MuiTooltip: {
       defaultProps: {
         arrow: true,

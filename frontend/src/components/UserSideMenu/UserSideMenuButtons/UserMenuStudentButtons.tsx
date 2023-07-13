@@ -10,9 +10,16 @@ import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 
 import { navigateFromMenu } from '../user-side-menu-store.ts';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 export const UserMenuStudentButtons: FC = () => (
   <>
+    <ListItem disablePadding>
+      <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.NotificationsRoute)}>
+        <ListItemIcon><NotificationsIcon /></ListItemIcon>
+        <ListItemText primary='Уведомления' />
+      </ListItemButton>
+    </ListItem>
     <ListItem disablePadding>
       <ListItemButton onClick={() => navigateFromMenu(AppRoutesEnum.VisaRequestRoute)}>
         <ListItemIcon><PortraitIcon /></ListItemIcon>

@@ -6,8 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "prisma generate",
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "start": "dotenv -e .env.dev -- nest start -b swc",
     "start:dev": "dotenv -e .env.dev -- nest start --watch",
     "start:dev:swc": "dotenv -e .env.dev -- nest start -b swc --watch --type-check",
     "start:debug": "dotenv -e .env.dev -- nest start --debug --watch",
