@@ -1,22 +1,25 @@
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Badge, IconButton, Tooltip } from '@mui/material';
-import dayjs from 'dayjs';
-import { compact } from 'lodash';
 import { FC } from 'react';
 import { toast } from 'react-toastify';
-import { useNewNotificationSubscription, useNotificationsCountQuery } from '../../api/generated.ts';
+import { useNavigate } from 'react-router-dom';
+import { useNewNotificationSubscription, useNotificationsUnreadCountQuery } from '../../api/generated.ts';
+import { AppRoutesEnum } from '../../routes/app-routes.enum.ts';
+import { CacheNotificationsService } from '../../api/cache/cache-notifications-service.ts';
 
 export const HeaderNotificationsBadge: FC = () => {
-  const { data: { notifications: { unreadCount = 0 } = {} } = {}, refetch } = useNotificationsCountQuery();
+  const navigate = useNavigate();
+  const { data: { unreadCount = 0 } = {} } = useNotificationsUnreadCountQuery();
   useNewNotificationSubscription({
-    onData: async data => {
-      const notification = data?.data.data?.notificationSubscription;
-      toast.info(compact([
-        'Новое уведомление!',
-        notification?.title,
-        dayjs(notification?.createdAt).format('HH:mm DD.MM.YYYY'),
-      ]).join('\n'), { autoClose: false, closeButton: false });
-      await refetch();
+    onData: async ({ data }) => {
+      const notification = data.data?.notificationSubscription;
+      if (!notification) return;
+      CacheNotificationsService.writeNewNotification(notification);
+      toast.info(`Новое уведомление! ${notification.title}`, {
+        autoClose: false,
+        closeButton: false,
+        onClick: () => navigate(AppRoutesEnum.NotificationRoute(notification.id)),
+      });
     },
   });
 
@@ -28,7 +31,7 @@ export const HeaderNotificationsBadge: FC = () => {
 
   return (
     <Tooltip title={unreadCount ? tooltipText() : 'Нет новых уведомлений'}>
-      <IconButton color='inherit'>
+      <IconButton color='inherit' onClick={() => navigate(AppRoutesEnum.NotificationsRoute)}>
         <Badge badgeContent={unreadCount} color='error'>
           <NotificationsIcon />
         </Badge>

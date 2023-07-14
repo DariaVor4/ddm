@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply flex flex-col min-h-screen;
-}
-
 #root {
-  @apply flex flex-col grow;
+  @apply w-screen min-h-screen flex flex-col;
 }

@@ -590,16 +590,6 @@ export type GNotificationToUserEntityMinAggregate = {
   userId?: Maybe<Scalars['UUID']['output']>;
 };
 
-/** Ответ на запрос уведомлений пользователя */
-export type GNotificationsResponse = {
-  /** Уведомления */
-  notifications: Array<GUserNotificationNoContentObject>;
-  /** Общее количество уведомлений */
-  totalCount: Scalars['Float']['output'];
-  /** Количество непрочитанных уведомлений */
-  unreadCount: Scalars['Float']['output'];
-};
-
 export type GNotificationsSendInput = {
   /** Всем сотрудникам */
   allEmployees?: InputMaybe<Scalars['Boolean']['input']>;
@@ -632,7 +622,11 @@ export type GQuery = {
   /** Получение уведомления. Помечает уведомление как прочитанное. */
   notification: GUserNotificationObject;
   /** Получение уведомлений пользователя */
-  notifications: GNotificationsResponse;
+  notifications: Array<GUserNotificationObject>;
+  /** Сколько всего уведомлений у пользователя */
+  notificationsTotalCount: Scalars['Int']['output'];
+  /** Количество непрочитанных уведомлений пользователя */
+  notificationsUnreadCount: Scalars['Int']['output'];
   /** Получение студента по id. */
   student: GStudentEntity;
   /** Получение уведомления о прибытии студента */
@@ -681,6 +675,17 @@ export type GQueryNotificationArgs = {
 
 export type GQueryNotificationsArgs = {
   pagination?: InputMaybe<GPaginationInput>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
+export type GQueryNotificationsTotalCountArgs = {
+  userId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+
+export type GQueryNotificationsUnreadCountArgs = {
   userId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -1445,7 +1450,7 @@ export type GStudentVisaWithoutStudentResponse = {
 export type GSubscription = {
   botConnected: GBotEnum;
   /** Подписка на уведомления */
-  notificationSubscription: GUserNotificationNoContentObject;
+  notificationSubscription: GUserNotificationObject;
 };
 
 /** Ответ на запрос токена */
@@ -1534,19 +1539,6 @@ export type GUserEntityMinAggregate = {
   vkId?: Maybe<Scalars['String']['output']>;
 };
 
-/** Уведомление пользователя без контента */
-export type GUserNotificationNoContentObject = {
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['UUID']['output'];
-  /** Прочитано ли уведомление? */
-  isRead: Scalars['Boolean']['output'];
-  /** В какие сервисы отправлено уведомление */
-  sentTo?: Maybe<Array<GNotificationServiceEnum>>;
-  /** Заголовок */
-  title: Scalars['String']['output'];
-  userId: Scalars['UUID']['output'];
-};
-
 /** Уведомление пользователя */
 export type GUserNotificationObject = {
   /** Содержимое */
@@ -1612,7 +1604,7 @@ export type GLoginByPasswordMutation = { response: { accessToken: string, access
 export type GUserCurrentQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GUserCurrentQuery = { current: { role: GUserRoleEnum, roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs, telegramId?: string | null, vkId?: string | null, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt: Dayjs, arrivalNotice?: { id: string, studentId: string, profession?: string | null, address?: string | null, date?: Dayjs | null, expires?: Dayjs | null, invitingSide?: string | null, receivingSide?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, migrationCard?: { id: string, studentId: string, series?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, visa?: { id: string, studentId: string, blankSeries?: string | null, number?: string | null, issueDate?: Dayjs | null, expirationDate?: Dayjs | null, invitationNumber?: string | null, createdAt: Dayjs, updatedAt: Dayjs } | null, passport?: { id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, birthPlace?: string | null, gender?: GGenderEnum | null, citizenship?: string | null, series?: string | null, number?: string | null, issueDate?: Dayjs | null, issuedBy?: string | null, expirationDate?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs } | null, closeRelatives?: Array<{ id: string, studentId: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, birthDate?: Dayjs | null, citizenship?: string | null, addressContinuousResidence?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null, visaRequests?: Array<{ id: string, studentId: string, status: GVisaRequestStatusEnum, employeeComment?: string | null, registrationNumber?: string | null, category?: GVisaCategoryEnum | null, multiplicity?: GVisaMultiplicityEnum | null, reason?: string | null, addressOfMigrationRegistration?: string | null, estimatedRouteOfStay?: string | null, addressInCountryOfContinuousResidence?: string | null, placeOfWorkOrStudyAndEmploymentPosition?: string | null, russianFederationRelatives?: string | null, attachedDocuments?: string | null, createdAt: Dayjs, updatedAt: Dayjs }> | null } | null, notifications?: Array<{ notificationId: string, userId: string, isRead: boolean, createdAt: Dayjs, updatedAt: Dayjs, notification: { id: string, title: string, content: string, createdAt: Dayjs, updatedAt: Dayjs } }> | null } } };
+export type GUserCurrentQuery = { current: { role: GUserRoleEnum, roles: Array<GUserRoleEnum>, accessTokenExpires: Dayjs, user: { id: string, email: string, lastActivity?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs, telegramId?: string | null, vkId?: string | null, role: GUserRoleEnum, initials: string, fullName: string, employee?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null, isAdmin: boolean, createdAt: Dayjs, updatedAt: Dayjs } | null, student?: { id: string, phone?: string | null, curator?: string | null, faculty?: string | null, course?: number | null, group?: string | null, createdAt: Dayjs, updatedAt: Dayjs, passport?: { id: string, lastName?: string | null, firstName?: string | null, patronymic?: string | null } | null } | null } } };
 
 export type GBotConnectionLinkQueryVariables = Exact<{
   input: GBotConnectionInput;
@@ -1668,15 +1660,38 @@ export type GExportDocumentsMutationVariables = Exact<{
 
 export type GExportDocumentsMutation = { exportDocuments: Array<{ id: string, userId?: string | null, dir?: string | null, name?: string | null, ext?: string | null, description?: string | null, deletedAt?: Dayjs | null, createdAt: Dayjs, updatedAt: Dayjs, url: string, user?: { id: string } | null }> };
 
-export type GNotificationsCountQueryVariables = Exact<{ [key: string]: never; }>;
+export type GNotificationFragment = { id: string, title: string, content: string, createdAt: Dayjs, isRead: boolean };
+
+export type GNotificationsQueryVariables = Exact<{
+  userId?: InputMaybe<Scalars['UUID']['input']>;
+  pagination?: InputMaybe<GPaginationInput>;
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export type GNotificationsCountQuery = { notifications: { unreadCount: number } };
+export type GNotificationsQuery = { notifications: Array<{ id: string, title: string, content: string, createdAt: Dayjs, isRead: boolean }> };
+
+export type GNotificationsTotalCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GNotificationsTotalCountQuery = { totalCount: number };
+
+export type GNotificationsUnreadCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GNotificationsUnreadCountQuery = { unreadCount: number };
+
+export type GNotificationQueryVariables = Exact<{
+  id: Scalars['UUID']['input'];
+}>;
+
+
+export type GNotificationQuery = { notification: { id: string, title: string, content: string, createdAt: Dayjs, isRead: boolean } };
 
 export type GNewNotificationSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GNewNotificationSubscription = { notificationSubscription: { id: string, title: string, createdAt: Dayjs, userId: string, sentTo?: Array<GNotificationServiceEnum> | null, isRead: boolean } };
+export type GNewNotificationSubscription = { notificationSubscription: { id: string, title: string, content: string, createdAt: Dayjs, isRead: boolean } };
 
 export type GNotificationsSendMutationVariables = Exact<{
   input: GNotificationsSendInput;
@@ -1892,6 +1907,15 @@ export type GVisaRequestDeleteMutationVariables = Exact<{
 
 export type GVisaRequestDeleteMutation = { visaRequestDelete: { id: string } };
 
+export const NotificationFragmentDoc = gql`
+    fragment Notification on UserNotificationObject {
+  id
+  title
+  content
+  createdAt
+  isRead
+}
+    `;
 export const VisaRequestFragmentDoc = gql`
     fragment VisaRequest on StudentVisaRequestEntity {
   id
@@ -1991,100 +2015,11 @@ export const UserCurrentDocument = gql`
         group
         createdAt
         updatedAt
-        arrivalNotice {
-          id
-          studentId
-          profession
-          address
-          date
-          expires
-          invitingSide
-          receivingSide
-          createdAt
-          updatedAt
-        }
-        migrationCard {
-          id
-          studentId
-          series
-          number
-          issueDate
-          expirationDate
-          createdAt
-          updatedAt
-        }
-        visa {
-          id
-          studentId
-          blankSeries
-          number
-          issueDate
-          expirationDate
-          invitationNumber
-          createdAt
-          updatedAt
-        }
         passport {
           id
-          studentId
           lastName
           firstName
           patronymic
-          birthDate
-          birthPlace
-          gender
-          citizenship
-          series
-          number
-          issueDate
-          issuedBy
-          expirationDate
-          createdAt
-          updatedAt
-        }
-        closeRelatives {
-          id
-          studentId
-          lastName
-          firstName
-          patronymic
-          birthDate
-          citizenship
-          addressContinuousResidence
-          createdAt
-          updatedAt
-        }
-        visaRequests {
-          id
-          studentId
-          status
-          employeeComment
-          registrationNumber
-          category
-          multiplicity
-          reason
-          addressOfMigrationRegistration
-          estimatedRouteOfStay
-          addressInCountryOfContinuousResidence
-          placeOfWorkOrStudyAndEmploymentPosition
-          russianFederationRelatives
-          attachedDocuments
-          createdAt
-          updatedAt
-        }
-      }
-      notifications {
-        notificationId
-        userId
-        isRead
-        createdAt
-        updatedAt
-        notification {
-          id
-          title
-          content
-          createdAt
-          updatedAt
         }
       }
     }
@@ -2439,55 +2374,161 @@ export function useExportDocumentsMutation(baseOptions?: Apollo.MutationHookOpti
 export type ExportDocumentsMutationHookResult = ReturnType<typeof useExportDocumentsMutation>;
 export type ExportDocumentsMutationResult = Apollo.MutationResult<GExportDocumentsMutation>;
 export type ExportDocumentsMutationOptions = Apollo.BaseMutationOptions<GExportDocumentsMutation, GExportDocumentsMutationVariables>;
-export const NotificationsCountDocument = gql`
-    query NotificationsCount {
-  notifications {
-    unreadCount
+export const NotificationsDocument = gql`
+    query Notifications($userId: UUID, $pagination: PaginationInput, $search: String) {
+  notifications(userId: $userId, pagination: $pagination, search: $search) {
+    ...Notification
   }
 }
-    `;
+    ${NotificationFragmentDoc}`;
 
 /**
- * __useNotificationsCountQuery__
+ * __useNotificationsQuery__
  *
- * To run a query within a React component, call `useNotificationsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useNotificationsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useNotificationsCountQuery({
+ * const { data, loading, error } = useNotificationsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      pagination: // value for 'pagination'
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useNotificationsQuery(baseOptions?: Apollo.QueryHookOptions<GNotificationsQuery, GNotificationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GNotificationsQuery, GNotificationsQueryVariables>(NotificationsDocument, options);
+      }
+export function useNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GNotificationsQuery, GNotificationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GNotificationsQuery, GNotificationsQueryVariables>(NotificationsDocument, options);
+        }
+export type NotificationsQueryHookResult = ReturnType<typeof useNotificationsQuery>;
+export type NotificationsLazyQueryHookResult = ReturnType<typeof useNotificationsLazyQuery>;
+export type NotificationsQueryResult = Apollo.QueryResult<GNotificationsQuery, GNotificationsQueryVariables>;
+export function refetchNotificationsQuery(variables?: GNotificationsQueryVariables) {
+      return { query: NotificationsDocument, variables: variables }
+    }
+export const NotificationsTotalCountDocument = gql`
+    query NotificationsTotalCount {
+  totalCount: notificationsTotalCount
+}
+    `;
+
+/**
+ * __useNotificationsTotalCountQuery__
+ *
+ * To run a query within a React component, call `useNotificationsTotalCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsTotalCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationsTotalCountQuery({
  *   variables: {
  *   },
  * });
  */
-export function useNotificationsCountQuery(baseOptions?: Apollo.QueryHookOptions<GNotificationsCountQuery, GNotificationsCountQueryVariables>) {
+export function useNotificationsTotalCountQuery(baseOptions?: Apollo.QueryHookOptions<GNotificationsTotalCountQuery, GNotificationsTotalCountQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GNotificationsCountQuery, GNotificationsCountQueryVariables>(NotificationsCountDocument, options);
+        return Apollo.useQuery<GNotificationsTotalCountQuery, GNotificationsTotalCountQueryVariables>(NotificationsTotalCountDocument, options);
       }
-export function useNotificationsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GNotificationsCountQuery, GNotificationsCountQueryVariables>) {
+export function useNotificationsTotalCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GNotificationsTotalCountQuery, GNotificationsTotalCountQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GNotificationsCountQuery, GNotificationsCountQueryVariables>(NotificationsCountDocument, options);
+          return Apollo.useLazyQuery<GNotificationsTotalCountQuery, GNotificationsTotalCountQueryVariables>(NotificationsTotalCountDocument, options);
         }
-export type NotificationsCountQueryHookResult = ReturnType<typeof useNotificationsCountQuery>;
-export type NotificationsCountLazyQueryHookResult = ReturnType<typeof useNotificationsCountLazyQuery>;
-export type NotificationsCountQueryResult = Apollo.QueryResult<GNotificationsCountQuery, GNotificationsCountQueryVariables>;
-export function refetchNotificationsCountQuery(variables?: GNotificationsCountQueryVariables) {
-      return { query: NotificationsCountDocument, variables: variables }
+export type NotificationsTotalCountQueryHookResult = ReturnType<typeof useNotificationsTotalCountQuery>;
+export type NotificationsTotalCountLazyQueryHookResult = ReturnType<typeof useNotificationsTotalCountLazyQuery>;
+export type NotificationsTotalCountQueryResult = Apollo.QueryResult<GNotificationsTotalCountQuery, GNotificationsTotalCountQueryVariables>;
+export function refetchNotificationsTotalCountQuery(variables?: GNotificationsTotalCountQueryVariables) {
+      return { query: NotificationsTotalCountDocument, variables: variables }
+    }
+export const NotificationsUnreadCountDocument = gql`
+    query NotificationsUnreadCount {
+  unreadCount: notificationsUnreadCount
+}
+    `;
+
+/**
+ * __useNotificationsUnreadCountQuery__
+ *
+ * To run a query within a React component, call `useNotificationsUnreadCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsUnreadCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationsUnreadCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNotificationsUnreadCountQuery(baseOptions?: Apollo.QueryHookOptions<GNotificationsUnreadCountQuery, GNotificationsUnreadCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GNotificationsUnreadCountQuery, GNotificationsUnreadCountQueryVariables>(NotificationsUnreadCountDocument, options);
+      }
+export function useNotificationsUnreadCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GNotificationsUnreadCountQuery, GNotificationsUnreadCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GNotificationsUnreadCountQuery, GNotificationsUnreadCountQueryVariables>(NotificationsUnreadCountDocument, options);
+        }
+export type NotificationsUnreadCountQueryHookResult = ReturnType<typeof useNotificationsUnreadCountQuery>;
+export type NotificationsUnreadCountLazyQueryHookResult = ReturnType<typeof useNotificationsUnreadCountLazyQuery>;
+export type NotificationsUnreadCountQueryResult = Apollo.QueryResult<GNotificationsUnreadCountQuery, GNotificationsUnreadCountQueryVariables>;
+export function refetchNotificationsUnreadCountQuery(variables?: GNotificationsUnreadCountQueryVariables) {
+      return { query: NotificationsUnreadCountDocument, variables: variables }
+    }
+export const NotificationDocument = gql`
+    query Notification($id: UUID!) {
+  notification(notificationId: $id) {
+    ...Notification
+  }
+}
+    ${NotificationFragmentDoc}`;
+
+/**
+ * __useNotificationQuery__
+ *
+ * To run a query within a React component, call `useNotificationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useNotificationQuery(baseOptions: Apollo.QueryHookOptions<GNotificationQuery, GNotificationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GNotificationQuery, GNotificationQueryVariables>(NotificationDocument, options);
+      }
+export function useNotificationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GNotificationQuery, GNotificationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GNotificationQuery, GNotificationQueryVariables>(NotificationDocument, options);
+        }
+export type NotificationQueryHookResult = ReturnType<typeof useNotificationQuery>;
+export type NotificationLazyQueryHookResult = ReturnType<typeof useNotificationLazyQuery>;
+export type NotificationQueryResult = Apollo.QueryResult<GNotificationQuery, GNotificationQueryVariables>;
+export function refetchNotificationQuery(variables: GNotificationQueryVariables) {
+      return { query: NotificationDocument, variables: variables }
     }
 export const NewNotificationDocument = gql`
     subscription NewNotification {
   notificationSubscription {
-    id
-    title
-    createdAt
-    userId
-    sentTo
-    isRead
+    ...Notification
   }
 }
-    `;
+    ${NotificationFragmentDoc}`;
 
 /**
  * __useNewNotificationSubscription__

@@ -6,13 +6,13 @@ export const AppRoutesEnum = {
   AccountSettingsRoute: '/account',
   NotificationsRoute: '/notifications',
   NotificationRoute: (id:string) => `/notifications/${id}`,
+  NotificationPattern: '/notifications/:notificationId',
 
   /* Visa Requests */
   VisaRequestsRoute: '/visa-requests',
   VisaRequestRoute: '/visa-request',
   VisaRequestByStudentIdRoute: (id:string) => `/visa-requests/${id}`,
   VisaRequestPattern: '/visa-requests/:studentId',
-  VisaRequestByVisaRequestIdRoute: (requestId:string) => `/visa-requests/${requestId}`,
   VisaRequestByVisaRequestIdPattern: '/visa-requests/:requestId',
 
   /* Student Documents */
@@ -42,7 +42,7 @@ export const AppRoutesEnum = {
 
   /* Employees for admins */
   EmployeesRoute: '/employees',
-  EmployeeCreate: '/employees/create',
+  EmployeeCreateRoute: '/employees/create',
   EmployeeRoute: (id:string) => `/employees/${id}`,
   EmployeePattern: '/employees/:employeeId',
 

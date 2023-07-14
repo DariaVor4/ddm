@@ -10,7 +10,7 @@ import { useMatch, useNavigate, useParams } from 'react-router-dom';
 import { compact, omitBy } from 'lodash';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
-  GEmailAvailabilityVerdictEnum, GEmployeeUpsertInput, refetchEmployeeQuery, refetchEmployeesQuery, useEmployeeQuery, useEmployeeUpsertMutation,
+  GEmailAvailabilityVerdictEnum, GEmployeeUpsertInput, refetchEmployeeQuery, refetchEmployeesQuery, useEmployeeQuery, useEmployeeUpsertMutation, GBotEnum,
 } from '../../../api/generated.ts';
 import { checkPassword } from '../../../core/password-checker.ts';
 import { FormikTextField } from '../../../components/forms/FormikTextField.tsx';
@@ -20,6 +20,7 @@ import { AppRoutesEnum } from '../../../routes/app-routes.enum.ts';
 import { emailAvailabilityQuery } from '../../../api/global-methods/check-email-availability.ts';
 import { yupFormikValidate } from '../../../core/yup-formik-validate.ts';
 import { useCurrentUser } from '../../../core/hooks/useCurrentUser.ts';
+import { BotConnectionButton } from '../../../components/BotConnectionButton.tsx';
 
 enum PageModeEnum {Create, Update, SelfUpdate}
 
@@ -55,7 +56,7 @@ export const EmployeeProfilePage: React.FC = () => {
   const [current] = useCurrentUser();
 
   // Page mode
-  const isCreate = !!useMatch(AppRoutesEnum.EmployeeCreate);
+  const isCreate = !!useMatch(AppRoutesEnum.EmployeeCreateRoute);
 
   const pageMode = isCreate ? PageModeEnum.Create
     : employeeId ? PageModeEnum.Update
@@ -135,7 +136,7 @@ export const EmployeeProfilePage: React.FC = () => {
         <IconButton onClick={() => navigate(-1)}><ArrowBackIcon /></IconButton>
         <Typography align='center' fontWeight='500' variant='h5'>{pageTitle}</Typography>
       </Stack>
-      <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-lg' elevation={4}>
+      <Paper className='px-10 py-4 pt-10 flex flex-col gap-4 mx-auto max-w-2xl' elevation={4}>
         <FormikTextField label='Фамилия' name='lastName' required />
         <FormikTextField label='Имя' name='firstName' required />
         <FormikTextField label='Отчество' name='patronymic' />
@@ -187,8 +188,12 @@ export const EmployeeProfilePage: React.FC = () => {
           />
           )
         }
-        {pageMode !== PageModeEnum.SelfUpdate
-          && (
+        { pageMode === PageModeEnum.SelfUpdate ? (
+          <div className='flex gap-3 justify-stretch'>
+            <BotConnectionButton botType={GBotEnum.Vk} className='grow' />
+            <BotConnectionButton botType={GBotEnum.Telegram} className='grow' />
+          </div>
+        ) : (
           <FormControl className='!flex-row items-center gap-3'>
             <FormLabel>Администратор:</FormLabel>
             <Checkbox
@@ -198,7 +203,7 @@ export const EmployeeProfilePage: React.FC = () => {
               onChange={formik.handleChange}
             />
           </FormControl>
-          )}
+        )}
         <Stack direction='row' gap={2} justifyContent='flex-end'>
           <Button color='error' disabled={formik.isSubmitting} onClick={() => navigate(-1)}>Отмена</Button>
           <Button

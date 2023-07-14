@@ -538,18 +538,6 @@ type NotificationToUserEntityMinAggregate {
   userId: UUID
 }
 
-"""Ответ на запрос уведомлений пользователя"""
-type NotificationsResponse {
-  """Уведомления"""
-  notifications: [UserNotificationNoContentObject!]!
-
-  """Общее количество уведомлений"""
-  totalCount: Float!
-
-  """Количество непрочитанных уведомлений"""
-  unreadCount: Float!
-}
-
 input NotificationsSendInput {
   """Всем сотрудникам"""
   allEmployees: Boolean
@@ -594,7 +582,13 @@ type Query {
   notification(notificationId: UUID!, userId: UUID): UserNotificationObject!
 
   """Получение уведомлений пользователя"""
-  notifications(pagination: PaginationInput, userId: UUID): NotificationsResponse!
+  notifications(pagination: PaginationInput, search: String, userId: UUID): [UserNotificationObject!]!
+
+  """Сколько всего уведомлений у пользователя"""
+  notificationsTotalCount(userId: UUID): Int!
+
+  """Количество непрочитанных уведомлений пользователя"""
+  notificationsUnreadCount(userId: UUID): Int!
 
   """Получение студента по id."""
   student(
@@ -1458,7 +1452,7 @@ type Subscription {
   botConnected: BotEnum!
 
   """Подписка на уведомления"""
-  notificationSubscription: UserNotificationNoContentObject!
+  notificationSubscription: UserNotificationObject!
 }
 
 """Ответ на запрос токена"""
@@ -1574,22 +1568,6 @@ type UserEntityMinAggregate {
   telegramId: String
   updatedAt: DateTime
   vkId: String
-}
-
-"""Уведомление пользователя без контента"""
-type UserNotificationNoContentObject {
-  createdAt: DateTime!
-  id: UUID!
-
-  """Прочитано ли уведомление?"""
-  isRead: Boolean!
-
-  """В какие сервисы отправлено уведомление"""
-  sentTo: [NotificationServiceEnum!]
-
-  """Заголовок"""
-  title: String!
-  userId: UUID!
 }
 
 """Уведомление пользователя"""

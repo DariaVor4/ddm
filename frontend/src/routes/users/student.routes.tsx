@@ -7,14 +7,16 @@ import { StudentVisaPage } from '../../views/pages/student-documents/StudentVisa
 import { StudentProfilePage } from '../../views/pages/profiles/StudentProfilePage.tsx';
 import { AppRoutesEnum } from '../app-routes.enum.ts';
 import { VisaRequestPage } from '../../views/pages/VisaRequestPage.tsx';
+import { NotificationsPage } from '../../views/pages/notifications/NotificationsPage/NotificationsPage.tsx';
 
 export const StudentRoutes: JSX.Element = (
   <>
     <Route element={<StudentProfilePage />} path={AppRoutesEnum.AccountSettingsRoute} />
-    <Route element={<h1>Notifications</h1>} path='notifications' />
-    <Route element={<VisaRequestPage />} path={AppRoutesEnum.VisaRequestRoute}>
-      <Route element={<h1>Visa Request Edit</h1>} path='edit' />
-    </Route>
+    <Route element={<NotificationsPage />} path={AppRoutesEnum.NotificationsRoute} />
+    <Route element={<NotificationsPage />} path={AppRoutesEnum.NotificationPattern} />
+
+    <Route element={<VisaRequestPage />} path={AppRoutesEnum.VisaRequestRoute} />
+
     <Route element={<StudentPassportPage />} path={AppRoutesEnum.DocumentsPassportRoute} />
     <Route element={<StudentVisaPage />} path={AppRoutesEnum.DocumentsVisaRoute} />
     <Route element={<StudentMigrationCardPage />} path={AppRoutesEnum.DocumentsMigrationCardRoute} />

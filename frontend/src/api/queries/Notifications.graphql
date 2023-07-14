@@ -1,17 +1,34 @@
-query NotificationsCount {
-  notifications {
-    unreadCount
+fragment Notification on UserNotificationObject {
+  id
+  title
+  content
+  createdAt
+  isRead
+}
+
+query Notifications($userId: UUID, $pagination: PaginationInput, $search: String) {
+  notifications(userId: $userId, pagination: $pagination, search: $search) {
+    ...Notification
+  }
+}
+
+query NotificationsTotalCount {
+  totalCount: notificationsTotalCount
+}
+
+query NotificationsUnreadCount {
+  unreadCount: notificationsUnreadCount
+}
+
+query Notification($id: UUID!) {
+  notification(notificationId: $id) {
+    ...Notification
   }
 }
 
 subscription NewNotification {
   notificationSubscription {
-    id
-    title
-    createdAt
-    userId
-    sentTo
-    isRead
+    ...Notification
   }
 }
 

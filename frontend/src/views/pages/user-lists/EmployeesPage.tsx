@@ -71,7 +71,7 @@ export const EmployeesPage: React.FC = () => {
               <TableCell>№</TableCell>
               <TableCell>ФИО</TableCell>
               <TableCell align='right' width='min-width'>
-                <IconButton size='small' onClick={() => navigate(AppRoutesEnum.EmployeeCreate)}>
+                <IconButton size='small' onClick={() => navigate(AppRoutesEnum.EmployeeCreateRoute)}>
                   <AddCircleIcon />
                 </IconButton>
                 <IconButton

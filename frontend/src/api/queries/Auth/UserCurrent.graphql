@@ -32,100 +32,11 @@ query UserCurrent {
                 group
                 createdAt
                 updatedAt
-                arrivalNotice {
-                    id
-                    studentId
-                    profession
-                    address
-                    date
-                    expires
-                    invitingSide
-                    receivingSide
-                    createdAt
-                    updatedAt
-                }
-                migrationCard {
-                    id
-                    studentId
-                    series
-                    number
-                    issueDate
-                    expirationDate
-                    createdAt
-                    updatedAt
-                }
-                visa {
-                    id
-                    studentId
-                    blankSeries
-                    number
-                    issueDate
-                    expirationDate
-                    invitationNumber
-                    createdAt
-                    updatedAt
-                }
                 passport {
                     id
-                    studentId
                     lastName
                     firstName
                     patronymic
-                    birthDate
-                    birthPlace
-                    gender
-                    citizenship
-                    series
-                    number
-                    issueDate
-                    issuedBy
-                    expirationDate
-                    createdAt
-                    updatedAt
-                }
-                closeRelatives {
-                    id
-                    studentId
-                    lastName
-                    firstName
-                    patronymic
-                    birthDate
-                    citizenship
-                    addressContinuousResidence
-                    createdAt
-                    updatedAt
-                }
-                visaRequests {
-                    id
-                    studentId
-                    status
-                    employeeComment
-                    registrationNumber
-                    category
-                    multiplicity
-                    reason
-                    addressOfMigrationRegistration
-                    estimatedRouteOfStay
-                    addressInCountryOfContinuousResidence
-                    placeOfWorkOrStudyAndEmploymentPosition
-                    russianFederationRelatives
-                    attachedDocuments
-                    createdAt
-                    updatedAt
-                }
-            }
-            notifications {
-                notificationId
-                userId
-                isRead
-                createdAt
-                updatedAt
-                notification {
-                    id
-                    title
-                    content
-                    createdAt
-                    updatedAt
                 }
             }
         }

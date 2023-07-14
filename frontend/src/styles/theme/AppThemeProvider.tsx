@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Portal } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
 import { useSettingsStore } from '../../store/settings-store.ts';
@@ -12,10 +12,12 @@ export const AppThemeProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
-      <ToastContainer
-        position='bottom-left'
-        theme={isDarkTheme ? 'dark' : 'colored'}
-      />
+      <Portal>
+        <ToastContainer
+          position='bottom-left'
+          theme={isDarkTheme ? 'dark' : 'colored'}
+        />
+      </Portal>
       {children}
     </ThemeProvider>
   );
