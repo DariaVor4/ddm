@@ -6,7 +6,6 @@ import { CurrentSession, ISessionContext } from '../api/auth/decorators/current-
 import { PublicEndpoint } from '../api/auth/decorators/public.decorator';
 import { Roles } from '../api/auth/decorators/roles.decorator';
 import UserRoleEnum from '../api/auth/interfaces/user-role.enum';
-import { UserNotificationNoContentObject } from '../api/notification/objects/user-notification-no-content.object';
 import { ifDebug, isRoleAdmin } from '../common';
 import { IBotConnectedPayload } from '../subscriptions/payloads/bot-connected-payload';
 import { SubscriptionEnum } from '../subscriptions/subscription.enum';
@@ -69,7 +68,7 @@ export class BotsResolver {
   @PublicEndpoint()
   @Roles(UserRoleEnum.Admin, UserRoleEnum.Employee, UserRoleEnum.Student)
   @Subscription(() => BotEnum, {
-    filter(payload: IBotConnectedPayload, variables, context: IGraphqlWsContext) {
+    filter(payload: IBotConnectedPayload, _, context: IGraphqlWsContext) {
       return payload.userId === context.extra.user.userId;
     },
     resolve: (payload: IBotConnectedPayload) => payload.botType,

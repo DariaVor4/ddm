@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
-import { UserNotificationNoContentObject } from '../api/notification/objects/user-notification-no-content.object';
 import { IBotConnectedPayload } from './payloads/bot-connected-payload';
 import { SubscriptionEnum } from './subscription.enum';
+import { UserNotificationObject } from '../api/notification/objects/user-notification.object';
 
 @Injectable()
 export class SubscriptionsService {
@@ -12,13 +12,11 @@ export class SubscriptionsService {
     return this.pubSub.asyncIterator<T>(endpoint);
   }
 
-  public async publishNotificationSubscription(notification: UserNotificationNoContentObject) {
-    const triggerName = SubscriptionEnum.NotificationSubscription;
-    await this.pubSub.publish(triggerName, { [triggerName]: notification });
+  public async publishNotificationSubscription(notification: UserNotificationObject) {
+    await this.pubSub.publish(SubscriptionEnum.NotificationSubscription, notification);
   }
 
   public async publishBotConnected(payload: IBotConnectedPayload) {
-    const triggerName = SubscriptionEnum.BotConnected;
-    await this.pubSub.publish(triggerName, payload);
+    await this.pubSub.publish(SubscriptionEnum.BotConnected, payload);
   }
 }

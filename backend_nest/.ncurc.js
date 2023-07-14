@@ -17,5 +17,7 @@ module.exports = {
   reject: [
     // 'typescript', // Обновляется с 4.9.5 до 5.x.x версии. UPD: Вроде стал норм работать.
     '@nestjs/cli', // На версии > 10.0.5 не работает SWC hot-reload
+    '@prisma/client',  // Обновление до 5 версии с Breaking changes
+    'prisma', // Обновление до 5 версии с Breaking changes
   ],
 };
