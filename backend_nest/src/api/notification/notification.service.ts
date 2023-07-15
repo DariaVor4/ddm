@@ -19,6 +19,11 @@ export class NotificationService {
     private readonly subscriptionsService: SubscriptionsService,
   ) {}
 
+  /**
+   * Отправка уведомления.
+   * @param input Входные данные.
+   * @returns Успешность отправки уведомления.
+   */
   public async notificationsSend(input: NotificationsSendInput): Promise<boolean> {
     const {
       title, content, services, userIds, allEmployees, allStudents,
