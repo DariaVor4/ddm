@@ -46,7 +46,7 @@ export class FileService implements OnModuleInit {
    */
   private killExpiredFiles = async () => {
     const expiredFiles = await this.prisma.fileEntity.findMany({
-      where: { updatedAt: { lte: new Date() } },
+      where: { deletedAt: { lte: new Date() } },
       select: { id: true, dir: true, ext: true },
     });
     const deletedIds: string[] = [];

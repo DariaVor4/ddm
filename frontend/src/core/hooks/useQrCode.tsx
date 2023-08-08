@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash';
 import { QRCodeSVG } from 'qrcode.react';
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
+import { FC } from 'react';
 import { AppDialog } from '../../components/Dialogs/AppDialog.tsx';
 
 type TParams = {
@@ -27,7 +28,7 @@ export const useQrCodeDialog = create(combine(cloneDeep(initialState), set => ({
   close: () => set({ isOpen: false }),
 })));
 
-export const QrCodeDialog = () => {
+export const QrCodeDialog: FC = () => {
   const {
     isOpen, title, description, close, link,
   } = useQrCodeDialog();
