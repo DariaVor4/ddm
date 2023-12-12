@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { ConfigService } from './config/config.service';
 import { runtimeMode } from './common';
+import './common/dayjs-configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

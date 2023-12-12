@@ -5,10 +5,7 @@
 /node_modules
 /prisma/client
 
-# package lock files
-/package-lock.json
-/pnpm-lock.yaml
-/yarn.lock
+# User files
 /.env.dev
 
 # Logs

@@ -5,6 +5,7 @@ import { Reflector } from '@nestjs/core';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Kind, OperationDefinitionNode, OperationTypeNode } from 'graphql/language';
+import type { Request } from 'express';
 import { IGraphqlWsContext } from '../../../types/IGraphqlWsContext';
 import { ISessionContext } from '../decorators/current-session.decorator';
 import { ROLES_KEY } from '../decorators/roles.decorator';

@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   postgres_db:
-    image: postgres:15-alpine3.17
+    image: postgres:15
     ports:
       - "5433:5432"
     volumes:
